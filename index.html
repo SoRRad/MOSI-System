@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOSI Clinical Decision Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2336;
+    --border: #2a3050;
+    --border2: #3a4470;
+    --text: #e8eaf2;
+    --muted: #7a84a8;
+    --accent: #4f7cff;
+    --accent2: #7b5cf0;
+    --green: #22c87a;
+    --green-bg: #0d2e1e;
+    --green-border: #1a5c38;
+    --yellow: #f5c842;
+    --yellow-bg: #2a2208;
+    --yellow-border: #5a4a10;
+    --orange: #f07340;
+    --orange-bg: #2a1508;
+    --orange-border: #5a2e10;
+    --red: #e84040;
+    --red-bg: #2a0d0d;
+    --red-border: #5a1a1a;
+    --purple: #a855f7;
+    --purple-bg: #1e1030;
+    --teal: #2dd4bf;
+    --stage1: #22c87a; --stage1bg: #0d2e1e; --stage1b: #1a5c38;
+    --stage2: #f5c842; --stage2bg: #2a2208; --stage2b: #5a4a10;
+    --stage3: #f07340; --stage3bg: #2a1508; --stage3b: #5a2e10;
+    --stage4: #e84040; --stage4bg: #2a0d0d; --stage4b: #5a1a1a;
+    --tierA: #22c87a; --tierB: #f5c842; --tierC: #f07340; --tierD: #e84040;
+    --radius: 12px; --radius-sm: 8px;
+    --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    line-height:1.6;
+    font-size:15px;
+  }
+
+  /* ── HEADER ── */
+  .header{
+    background:linear-gradient(135deg,#0f1117 0%,#141928 50%,#0f1520 100%);
+    border-bottom:1px solid var(--border);
+    padding:32px 40px 28px;
+    position:relative;
+    overflow:hidden;
+  }
+  .header::before{
+    content:'';position:absolute;top:-60px;right:-60px;
+    width:300px;height:300px;border-radius:50%;
+    background:radial-gradient(circle,rgba(79,124,255,0.08) 0%,transparent 70%);
+  }
+  .header-inner{max-width:1100px;margin:0 auto;position:relative}
+  .header-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(79,124,255,0.12);border:1px solid rgba(79,124,255,0.25);
+    border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;
+    letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:12px;
+  }
+  .header h1{
+    font-family:'DM Serif Display',serif;
+    font-size:clamp(26px,4vw,42px);
+    font-weight:400;color:var(--text);
+    line-height:1.15;letter-spacing:-0.02em;margin-bottom:8px;
+  }
+  .header h1 span{color:var(--accent);font-style:italic}
+  .header-sub{color:var(--muted);font-size:14px;font-weight:300;max-width:620px}
+  .header-meta{
+    display:flex;gap:24px;margin-top:16px;flex-wrap:wrap;
+  }
+  .meta-pill{
+    font-size:12px;color:var(--muted);
+    display:flex;align-items:center;gap:6px;
+  }
+  .meta-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.6}
+
+  /* ── LAYOUT ── */
+  .main{max-width:1100px;margin:0 auto;padding:36px 40px 80px}
+
+  /* ── SECTION LABELS ── */
+  .step-label{
+    display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  }
+  .step-num{
+    width:28px;height:28px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:700;color:#fff;flex-shrink:0;
+  }
+  .step-title{font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+
+  /* ── CARDS ── */
+  .card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:24px;margin-bottom:20px;
+  }
+  .card-title{
+    font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text);
+    display:flex;align-items:center;gap:8px;
+  }
+  .card-title svg{opacity:0.6}
+
+  /* ── INPUTS: BMI ── */
+  .bmi-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .bmi-input-wrap{position:relative;flex:1;min-width:160px;max-width:220px}
+  .bmi-input{
+    width:100%;background:var(--surface2);border:1px solid var(--border2);
+    border-radius:var(--radius-sm);padding:12px 48px 12px 16px;
+    font-family:'DM Mono',monospace;font-size:22px;font-weight:500;
+    color:var(--text);outline:none;
+    transition:border-color var(--transition);
+  }
+  .bmi-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,124,255,0.12)}
+  .bmi-unit{
+    position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .bmi-scale{flex:1;min-width:260px}
+  .bmi-bar{
+    height:8px;border-radius:4px;
+    background:linear-gradient(to right,var(--stage1) 0%,var(--stage1) 20%,var(--stage2) 20%,var(--stage2) 40%,var(--stage3) 40%,var(--stage3) 60%,var(--stage4) 60%,var(--stage4) 80%,#8b0000 80%);
+    position:relative;margin:8px 0 4px;
+  }
+  .bmi-marker{
+    position:absolute;top:-4px;width:2px;height:16px;background:#fff;border-radius:1px;
+    transition:left var(--transition);
+    box-shadow:0 0 6px rgba(255,255,255,0.4);
+  }
+  .bmi-ticks{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+  .m-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:8px 16px;border-radius:var(--radius-sm);
+    font-size:14px;font-weight:700;font-family:'DM Mono',monospace;
+    border:1px solid; transition:all var(--transition);
+  }
+
+  /* ── CHECKBOX GRID ── */
+  .check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+  .check-item{
+    display:flex;align-items:center;gap:10px;
+    background:var(--surface2);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer;
+    transition:all var(--transition);user-select:none;
+  }
+  .check-item:hover{border-color:var(--border2);background:#222840}
+  .check-item.active{background:rgba(79,124,255,0.08);border-color:rgba(79,124,255,0.35)}
+  .check-item.tier-b.active{background:rgba(245,200,66,0.08);border-color:rgba(245,200,66,0.35)}
+  .check-item.tier-c.active{background:rgba(240,115,64,0.08);border-color:rgba(240,115,64,0.35)}
+  .check-item.tier-d.active{background:rgba(232,64,64,0.08);border-color:rgba(232,64,64,0.35)}
+  .check-box{
+    width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);
+    flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    transition:all var(--transition);
+  }
+  .check-item.active .check-box{
+    background:var(--accent);border-color:var(--accent);
+  }
+  .check-item.tier-b.active .check-box{background:var(--yellow);border-color:var(--yellow)}
+  .check-item.tier-c.active .check-box{background:var(--orange);border-color:var(--orange)}
+  .check-item.tier-d.active .check-box{background:var(--red);border-color:var(--red)}
+  .check-box svg{display:none}
+  .check-item.active .check-box svg{display:block}
+  .check-label{font-size:13px;font-weight:500;line-height:1.3}
+  .check-tier-dot{
+    width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-left:auto;
+  }
+
+  /* ── SI RADIO ── */
+  .si-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+  .si-item{
+    border:1px solid var(--border);border-radius:var(--radius-sm);
+    padding:12px 14px;cursor:pointer;transition:all var(--transition);
+  }
+  .si-item:hover{border-color:var(--border2)}
+  .si-item.active-si0{background:rgba(34,200,122,0.07);border-color:rgba(34,200,122,0.4)}
+  .si-item.active-si1{background:rgba(245,200,66,0.07);border-color:rgba(245,200,66,0.4)}
+  .si-item.active-si2{background:rgba(240,115,64,0.07);border-color:rgba(240,115,64,0.4)}
+  .si-item.active-si3{background:rgba(232,64,64,0.07);border-color:rgba(232,64,64,0.4)}
+  .si-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .si-badge{
+    font-size:11px;font-weight:700;font-family:'DM Mono',monospace;
+    padding:2px 8px;border-radius:4px;
+  }
+  .si-name{font-size:13px;font-weight:600}
+  .si-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+  /* ── DIVIDER ── */
+  .divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+  /* ── RESULTS PANEL ── */
+  .results{display:none;animation:slideIn 0.35s ease}
+  .results.visible{display:block}
+  @keyframes slideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  .stage-hero{
+    border-radius:var(--radius);padding:28px 32px;margin-bottom:20px;
+    border:1px solid;position:relative;overflow:hidden;
+  }
+  .stage-hero::before{
+    content:'';position:absolute;top:-40px;right:-40px;
+    width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,currentColor 0%,transparent 70%);
+    opacity:0.06;
+  }
+  .stage-hero-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .stage-label-small{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;opacity:0.7;margin-bottom:4px}
+  .stage-name{font-family:'DM Serif Display',serif;font-size:clamp(28px,5vw,46px);font-weight:400;line-height:1;margin-bottom:6px}
+  .stage-desc{font-size:14px;opacity:0.75;max-width:420px}
+  .stage-stats{display:flex;gap:20px;flex-wrap:wrap}
+  .stat-box{text-align:center;min-width:80px}
+  .stat-num{font-family:'DM Mono',monospace;font-size:26px;font-weight:500;line-height:1}
+  .stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.6;margin-top:2px}
+
+  /* ── TIER BANNER ── */
+  .tier-banner{
+    border-radius:var(--radius);padding:18px 24px;margin-bottom:20px;
+    border:1px solid;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .tier-icon{font-size:28px;flex-shrink:0}
+  .tier-main{flex:1;min-width:200px}
+  .tier-label-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .tier-badge-big{
+    font-family:'DM Mono',monospace;font-size:13px;font-weight:700;
+    padding:3px 10px;border-radius:6px;
+  }
+  .tier-target-num{font-size:22px;font-weight:700;font-family:'DM Mono',monospace}
+  .tier-desc{font-size:13px;opacity:0.75}
+  .tier-triggers{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .trigger-chip{
+    font-size:11px;padding:2px 8px;border-radius:10px;
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+    color:var(--muted);
+  }
+
+  /* ── PROCEDURE CARDS ── */
+  .proc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:20px}
+  .proc-card{
+    border-radius:var(--radius);padding:20px;border:1px solid var(--border);
+    background:var(--surface2);position:relative;overflow:hidden;
+    transition:transform var(--transition),box-shadow var(--transition);
+  }
+  .proc-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+  .proc-card.recommended{border-color:rgba(79,124,255,0.4);box-shadow:0 0 0 1px rgba(79,124,255,0.15)}
+  .proc-card.caution{border-color:rgba(245,200,66,0.35)}
+  .proc-card.avoid{border-color:rgba(232,64,64,0.3);opacity:0.8}
+  .proc-rec-badge{
+    position:absolute;top:0;right:0;
+    font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+    padding:4px 10px;border-radius:0 var(--radius) 0 var(--radius-sm);
+  }
+  .rec-star{background:rgba(79,124,255,0.25);color:var(--accent)}
+  .rec-caution{background:rgba(245,200,66,0.15);color:var(--yellow)}
+  .rec-avoid{background:rgba(232,64,64,0.15);color:var(--red)}
+  .proc-name{font-size:16px;font-weight:700;margin-bottom:14px;padding-right:60px}
+  .proc-n{font-size:11px;color:var(--muted);font-weight:400;margin-left:6px}
+  .proc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .proc-metric{background:rgba(255,255,255,0.03);border-radius:6px;padding:8px 10px;border:1px solid rgba(255,255,255,0.05)}
+  .proc-metric-val{font-family:'DM Mono',monospace;font-size:17px;font-weight:600;margin-bottom:1px}
+  .proc-metric-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+  .proc-bar-wrap{margin-top:10px}
+  .proc-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px}
+  .proc-bar-track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+  .proc-bar-fill{height:100%;border-radius:3px;transition:width 0.5s ease}
+  .proc-gerd-note{
+    font-size:11px;padding:6px 10px;border-radius:6px;margin-top:8px;
+    background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.2);
+    color:var(--yellow);
+  }
+
+  /* ── COMORBIDITY RESOLUTION ── */
+  .res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:20px}
+  .res-card{
+    background:var(--surface2);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:14px;
+  }
+  .res-name{font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px}
+  .res-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:600;margin-bottom:4px}
+  .res-bar-track{height:4px;background:rgba(255,255,255,0.06);border-radius:2px}
+  .res-bar-fill{height:100%;border-radius:2px;transition:width 0.5s ease 0.1s}
+  .res-note{font-size:10px;color:var(--muted);margin-top:4px}
+
+  /* ── ALERT BOXES ── */
+  .alert{
+    border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:10px;
+    border:1px solid;display:flex;align-items:flex-start;gap:10px;font-size:13px;
+  }
+  .alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+  .alert-warn{background:rgba(245,200,66,0.07);border-color:rgba(245,200,66,0.25);color:var(--yellow)}
+  .alert-danger{background:rgba(232,64,64,0.07);border-color:rgba(232,64,64,0.25);color:var(--red)}
+  .alert-info{background:rgba(79,124,255,0.07);border-color:rgba(79,124,255,0.25);color:var(--accent)}
+  .alert-success{background:rgba(34,200,122,0.07);border-color:rgba(34,200,122,0.25);color:var(--green)}
+
+  /* ── SECTION HEADERS ── */
+  .section-hd{
+    font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;
+    color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;
+  }
+  .section-hd::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* ── RESET BUTTON ── */
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 20px;border-radius:var(--radius-sm);
+    font-size:13px;font-weight:600;cursor:pointer;
+    border:1px solid;transition:all var(--transition);
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn-primary:hover{background:#3d6ae8;border-color:#3d6ae8}
+  .btn-outline{background:transparent;border-color:var(--border2);color:var(--muted)}
+  .btn-outline:hover{border-color:var(--text);color:var(--text)}
+
+  /* ── FOOTER NOTE ── */
+  .footnote{
+    font-size:11px;color:var(--muted);border-top:1px solid var(--border);
+    padding-top:20px;margin-top:32px;line-height:1.7;
+  }
+
+  /* ── GERD special modifier banner ── */
+  .gerd-mod{
+    background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.2);
+    border-radius:var(--radius-sm);padding:10px 14px;
+    font-size:12px;color:var(--yellow);margin-bottom:14px;
+    display:flex;align-items:center;gap:8px;
+  }
+
+  /* placeholder state */
+  .placeholder{
+    text-align:center;padding:48px 24px;color:var(--muted);
+  }
+  .placeholder-icon{font-size:48px;margin-bottom:12px;opacity:0.3}
+  .placeholder-text{font-size:15px}
+
+  @media(max-width:640px){
+    .main,.header{padding-left:20px;padding-right:20px}
+    .proc-metrics{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">
+      <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+      Clinical Decision Support
+    </div>
+    <h1>MOSI <span>Decision Tool</span></h1>
+    <div class="header-sub">Metabolic & Obesity Staging Index — Stage assignment, TWL target tier, and procedure recommendations derived from n=3,097 patients</div>
+    <div class="header-meta">
+      <span class="meta-pill">MOSI-S · Severity Staging</span>
+      <span class="meta-pill">MOSI-T · TWL Target Tier</span>
+      <span class="meta-pill">MOSI-D · Procedure Guidance</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- STEP 1: BMI -->
+  <div class="step-label"><div class="step-num">1</div><div class="step-title">M Score — Metabolic Load (BMI)</div></div>
+  <div class="card">
+    <div class="bmi-row">
+      <div class="bmi-input-wrap">
+        <input class="bmi-input" type="number" id="bmiInput" min="30" max="100" step="0.1" placeholder="e.g. 44.5">
+        <span class="bmi-unit">kg/m²</span>
+      </div>
+      <div class="bmi-scale">
+        <div class="bmi-bar"><div class="bmi-marker" id="bmiMarker" style="left:0%"></div></div>
+        <div class="bmi-ticks"><span>30</span><span>40</span><span>50</span><span>60</span><span>70+</span></div>
+      </div>
+      <div id="mBadge" class="m-badge" style="background:transparent;border-color:var(--border);color:var(--muted)">M —</div>
+    </div>
+  </div>
+
+  <!-- STEP 2: O Score -->
+  <div class="step-label"><div class="step-num">2</div><div class="step-title">O Score — Metabolic Comorbidity Burden (0–4)</div></div>
+  <div class="card">
+    <div class="card-title">Select all that apply <span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px">Each scores +1 point · Max 4</span></div>
+    <div class="check-grid" id="oGrid">
+      <div class="check-item tier-b" data-key="htn" data-tier="b" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Hypertension</span>
+        <span class="check-tier-dot" style="background:var(--tierB)"></span>
+      </div>
+      <div class="check-item tier-b" data-key="osa" data-tier="b" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Obstructive Sleep Apnea</span>
+        <span class="check-tier-dot" style="background:var(--tierB)"></span>
+      </div>
+      <div class="check-item tier-b" data-key="hld" data-tier="b" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Hyperlipidemia</span>
+        <span class="check-tier-dot" style="background:var(--tierB)"></span>
+      </div>
+      <div class="check-item tier-c" data-key="dysgly" data-tier="c" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Dysglycemia (DM or IFG)</span>
+        <span class="check-tier-dot" style="background:var(--tierC)"></span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px">
+      <div id="oScore" style="font-family:'DM Mono',monospace;font-size:18px;font-weight:600;color:var(--muted)">O score: <span style="color:var(--text)">—</span></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Si Level -->
+  <div class="step-label"><div class="step-num">3</div><div class="step-title">Si Level — Systemic Impairment (Hierarchical)</div></div>
+  <div class="card">
+    <div class="card-title">Select the highest applicable level</div>
+    <div class="si-grid">
+      <div class="si-item" data-si="0" onclick="selectSi(0)">
+        <div class="si-top">
+          <div class="si-badge" style="background:rgba(34,200,122,0.15);color:var(--green)">Si0</div>
+          <div class="si-name">None</div>
+        </div>
+        <div class="si-desc">No micro-endorgan damage, no organ dysfunction, no organ failure</div>
+      </div>
+      <div class="si-item" data-si="1" onclick="selectSi(1)">
+        <div class="si-top">
+          <div class="si-badge" style="background:rgba(245,200,66,0.15);color:var(--yellow)">Si1</div>
+          <div class="si-name">Micro-endorgan damage</div>
+        </div>
+        <div class="si-desc">Diabetic vasculopathy: retinopathy, neuropathy, or nephropathy in context of DM</div>
+      </div>
+      <div class="si-item" data-si="2" onclick="selectSi(2)">
+        <div class="si-top">
+          <div class="si-badge" style="background:rgba(240,115,64,0.15);color:var(--orange)">Si2</div>
+          <div class="si-name">Organ dysfunction</div>
+        </div>
+        <div class="si-desc">CKD, cirrhosis/MASH, pulmonary HTN, cardiac history, prior stroke/TIA</div>
+      </div>
+      <div class="si-item" data-si="3" onclick="selectSi(3)">
+        <div class="si-top">
+          <div class="si-badge" style="background:rgba(232,64,64,0.15);color:var(--red)">Si3</div>
+          <div class="si-name">Organ failure</div>
+        </div>
+        <div class="si-desc">Currently on dialysis OR solid organ transplant recipient</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">
+      Note: Si2 conditions (CKD, cardiac, stroke/TIA, cirrhosis) also trigger TWL Tier D or C — check additional comorbidities below.
+    </div>
+  </div>
+
+  <!-- STEP 4: Additional Comorbidities for Tier -->
+  <div class="step-label"><div class="step-num">4</div><div class="step-title">Additional Comorbidities — for TWL Tier Assignment</div></div>
+  <div class="card">
+    <div class="card-title">These do not change your MOSI stage but determine the TWL target tier</div>
+    <div class="check-grid" id="tierGrid">
+      <div class="check-item tier-b" data-key="gerd" data-tier="b" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">GERD</span>
+        <span class="check-tier-dot" style="background:var(--tierB)"></span>
+      </div>
+      <div class="check-item tier-b" data-key="arthro" data-tier="b" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Arthropathy / Arthroplasty</span>
+        <span class="check-tier-dot" style="background:var(--tierB)"></span>
+      </div>
+      <div class="check-item tier-c" data-key="masld" data-tier="c" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">MASLD / MASH (cirrhosis)</span>
+        <span class="check-tier-dot" style="background:var(--tierC)"></span>
+      </div>
+      <div class="check-item tier-c" data-key="micro" data-tier="c" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Diabetic vasculopathy</span>
+        <span class="check-tier-dot" style="background:var(--tierC)"></span>
+      </div>
+      <div class="check-item tier-d" data-key="cardiac" data-tier="d" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Cardiac history (MACE risk)</span>
+        <span class="check-tier-dot" style="background:var(--tierD)"></span>
+      </div>
+      <div class="check-item tier-d" data-key="stroke" data-tier="d" onclick="toggle(this)">
+        <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="check-label">Stroke / TIA</span>
+        <span class="check-tier-dot" style="background:var(--tierD)"></span>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:16px;font-size:11px;color:var(--muted)">
+      <span>● Tier B = 10–20% TWL</span>
+      <span style="color:var(--orange)">● Tier C = 20–30% TWL</span>
+      <span style="color:var(--red)">● Tier D = 25–35% TWL</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:12px;margin-bottom:32px">
+    <button class="btn btn-primary" onclick="compute()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      Generate Results
+    </button>
+    <button class="btn btn-outline" onclick="resetAll()">Reset</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <hr class="divider">
+
+    <!-- Stage Hero -->
+    <div id="stageHero" class="stage-hero"></div>
+
+    <!-- Tier Banner -->
+    <div id="tierBanner" class="tier-banner"></div>
+
+    <!-- Alerts -->
+    <div id="alertBox"></div>
+
+    <!-- Procedure Recommendations -->
+    <div class="section-hd">Procedure Recommendations</div>
+    <div class="proc-grid" id="procGrid"></div>
+
+    <!-- Comorbidity Resolution -->
+    <div class="section-hd">Expected Comorbidity Resolution (Stage-Level, Any Procedure)</div>
+    <div class="res-grid" id="resGrid"></div>
+
+    <div class="footnote" id="footnote"></div>
+  </div>
+
+  <div id="placeholder" class="placeholder">
+    <div class="placeholder-icon">⚕</div>
+    <div class="placeholder-text">Enter patient data above to generate MOSI staging and recommendations</div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const DATA = {
+  stagei:  { n:193,  success:73.1, dm_resolve:null, htn_resolve:8.3,  osa_resolve:72.7, hlp_resolve:37.5,
+    procs:{ sg:{n:53,success:56.6,twl12:25.9,twl60:21.1,meets12:79.2,meets60:43.4}, rygb:{n:140,success:79.3,twl12:32.3,twl60:24.5,meets12:92.9,meets60:46.4} }},
+  stageii: { n:1551, success:68.9, dm_resolve:86.0, htn_resolve:29.9, osa_resolve:57.1, hlp_resolve:55.1,
+    procs:{ sg:{n:398,success:50.0,twl12:25.0,twl60:17.8,meets12:65.1,meets60:17.3}, rygb:{n:1082,success:74.6,twl12:32.3,twl60:25.0,meets12:83.8,meets60:36.7}, bpdds:{n:63,success:88.9,twl12:37.4,twl60:35.8,meets12:92.1,meets60:65.1} }},
+  stageiii:{ n:1193, success:63.3, dm_resolve:68.6, htn_resolve:20.9, osa_resolve:45.7, hlp_resolve:37.1,
+    procs:{ sg:{n:295,success:40.7,twl12:20.7,twl60:16.6,meets12:27.8,meets60:8.1},  rygb:{n:817,success:68.8,twl12:29.6,twl60:23.5,meets12:65.1,meets60:25.5}, bpdds:{n:67,success:91.0,twl12:35.7,twl60:33.9,meets12:82.1,meets60:56.7} }},
+  stageiv: { n:160,  success:58.8, dm_resolve:38.9, htn_resolve:14.3, osa_resolve:40.6, hlp_resolve:17.1,
+    procs:{ sg:{n:145,success:55.2,twl12:22.4,twl60:19.9,meets12:45.5,meets60:9.7},  rygb:{n:14,success:92.9,twl12:32.6,twl60:31.4,meets12:78.6,meets60:64.3} }},
+};
+
+const STAGE_META = {
+  stagei:  { label:"Stage I",   color:"var(--stage1)", bg:"var(--stage1bg)", border:"var(--stage1b)",
+    desc:"Low BMI (30–40), minimal comorbidities, no systemic impairment" },
+  stageii: { label:"Stage II",  color:"var(--stage2)", bg:"var(--stage2bg)", border:"var(--stage2b)",
+    desc:"Moderate BMI or early metabolic disease; micro-damage if low M/O burden" },
+  stageiii:{ label:"Stage III", color:"var(--stage3)", bg:"var(--stage3bg)", border:"var(--stage3b)",
+    desc:"Organ dysfunction (CKD, cirrhosis, cardiac, stroke) or high BMI with micro-damage" },
+  stageiv: { label:"Stage IV",  color:"var(--stage4)", bg:"var(--stage4bg)", border:"var(--stage4b)",
+    desc:"Organ failure: active dialysis or solid organ transplant recipient" },
+};
+
+const TIER_META = {
+  A:{ color:"var(--green)",  bg:"var(--green-bg)",  border:"var(--green-border)",  icon:"🟢", label:"Tier A", range:"≥ 5–10%",  goal:"Functional improvement, quality of life, mechanical offloading" },
+  B:{ color:"var(--yellow)", bg:"var(--yellow-bg)", border:"var(--yellow-border)", icon:"🟡", label:"Tier B", range:"≥ 10–20%", goal:"OSA resolution, HTN improvement, HLD improvement, GERD resolution, joint function" },
+  C:{ color:"var(--orange)", bg:"var(--orange-bg)", border:"var(--orange-border)", icon:"🟠", label:"Tier C", range:"≥ 20–30%", goal:"T2D remission, MASLD/MASH regression, microvascular damage halt" },
+  D:{ color:"var(--red)",    bg:"var(--red-bg)",    border:"var(--red-border)",    icon:"🔴", label:"Tier D", range:"≥ 25–35%", goal:"MACE risk reduction, cardiovascular event prevention, HF risk reduction" },
+};
+
+const PROC_LABELS = { sg:"Sleeve Gastrectomy (SG)", rygb:"RYGB", bpdds:"BPD/DS" };
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let state = { bmi:null, oKeys:new Set(), siLevel:null, tierExtras:new Set() };
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function getMScore(bmi){ if(bmi<35)return 1; if(bmi<40)return 2; if(bmi<45)return 3; if(bmi<50)return 4; return 5; }
+function getOScore(){ return ['htn','osa','hld','dysgly'].filter(k=>state.oKeys.has(k)).length; }
+function getStageKey(){
+  const m=getMScore(state.bmi), o=getOScore(), si=state.siLevel;
+  if(si===3) return 'stageiv';
+  if(si===2) return 'stageiii';
+  if(si===1 && (m>=4||o>=3)) return 'stageiii';
+  if(si===0 && m<=2 && o<=1) return 'stagei';
+  return 'stageii';
+}
+function getTier(){
+  const d = ['cardiac','stroke'].some(k=>state.tierExtras.has(k));
+  const hasDysgly = state.oKeys.has('dysgly');
+  const cMasld = state.tierExtras.has('masld');
+  const cMicro = state.tierExtras.has('micro');
+  const c = hasDysgly || cMasld || cMicro;
+  const b = ['htn','osa','hld'].some(k=>state.oKeys.has(k)) || ['gerd','arthro'].some(k=>state.tierExtras.has(k));
+  if(d) return 'D';
+  if(c) return 'C';
+  if(b) return 'B';
+  return 'A';
+}
+function getTierTriggers(){
+  const triggers=[];
+  if(['cardiac','stroke'].some(k=>state.tierExtras.has(k))) triggers.push(...['cardiac','stroke'].filter(k=>state.tierExtras.has(k)).map(k=>({cardiac:'Cardiac history',stroke:'Stroke/TIA'})[k]));
+  if(state.oKeys.has('dysgly')) triggers.push('Dysglycemia (DM/IFG)');
+  if(state.tierExtras.has('masld')) triggers.push('MASLD/MASH');
+  if(state.tierExtras.has('micro')) triggers.push('Diabetic vasculopathy');
+  if(['htn','osa','hld'].some(k=>state.oKeys.has(k))) triggers.push(...['htn','osa','hld'].filter(k=>state.oKeys.has(k)).map(k=>({htn:'HTN',osa:'OSA',hld:'HLD'})[k]));
+  if(state.tierExtras.has('gerd')) triggers.push('GERD');
+  if(state.tierExtras.has('arthro')) triggers.push('Arthropathy');
+  return triggers;
+}
+function getBarColor(pct, tier){
+  const thresh = {A:7.5,B:15,C:25,D:30}[tier];
+  if(pct>=thresh*1.1) return 'var(--green)';
+  if(pct>=thresh) return 'var(--yellow)';
+  if(pct>=thresh*0.6) return 'var(--orange)';
+  return 'var(--red)';
+}
+function getProcRec(procKey, stageKey, tier){
+  const d = DATA[stageKey].procs[procKey];
+  if(!d) return null;
+  const thresh = {A:7.5,B:15,C:25,D:30}[tier];
+  const meets = d.meets12;
+  if(procKey==='bpdds') return meets>=80 ? 'recommended' : meets>=60 ? 'caution' : 'neutral';
+  if(meets>=75) return 'recommended';
+  if(meets>=50) return 'caution';
+  return 'avoid';
+}
+function fmtPct(v){ return v==null ? '—' : v.toFixed(1)+'%'; }
+
+// ── UI HELPERS ─────────────────────────────────────────────────────────────────
+function toggle(el){
+  el.classList.toggle('active');
+  const key=el.dataset.key;
+  if(el.closest('#oGrid')){ state.oKeys.has(key)?state.oKeys.delete(key):state.oKeys.add(key); }
+  else { state.tierExtras.has(key)?state.tierExtras.delete(key):state.tierExtras.add(key); }
+  updateODisplay();
+}
+function selectSi(level){
+  document.querySelectorAll('.si-item').forEach(el=>{
+    el.classList.remove('active-si0','active-si1','active-si2','active-si3');
+  });
+  const el = document.querySelector(`.si-item[data-si="${level}"]`);
+  if(el) el.classList.add(`active-si${level}`);
+  state.siLevel=level;
+}
+function updateODisplay(){
+  const o=getOScore();
+  document.getElementById('oScore').innerHTML=`O score: <span style="color:var(--text);font-size:22px">${o}</span>`;
+}
+function updateBMI(){
+  const val=parseFloat(document.getElementById('bmiInput').value);
+  if(isNaN(val)||val<30||val>120){ state.bmi=null; resetBMIUI(); return; }
+  state.bmi=val;
+  const m=getMScore(val);
+  const pct=Math.min(((val-30)/50)*100,100);
+  document.getElementById('bmiMarker').style.left=pct+'%';
+  const colors={1:'var(--stage1)',2:'var(--stage1)',3:'var(--stage2)',4:'var(--stage3)',5:'var(--stage4)'};
+  const bg={1:'var(--stage1bg)',2:'var(--stage1bg)',3:'var(--stage2bg)',4:'var(--stage3bg)',5:'var(--stage4bg)'};
+  const bd={1:'var(--stage1b)',2:'var(--stage1b)',3:'var(--stage2b)',4:'var(--stage3b)',5:'var(--stage4b)'};
+  const badge=document.getElementById('mBadge');
+  badge.textContent=`M${m}`;
+  badge.style.color=colors[m]; badge.style.borderColor=bd[m]; badge.style.background=bg[m]+'88';
+}
+function resetBMIUI(){
+  document.getElementById('bmiMarker').style.left='0%';
+  const b=document.getElementById('mBadge');
+  b.textContent='M —'; b.style.color='var(--muted)'; b.style.borderColor='var(--border)'; b.style.background='transparent';
+}
+
+// ── COMPUTE & RENDER ──────────────────────────────────────────────────────────
+function compute(){
+  if(state.bmi===null){ alert('Please enter a valid BMI (≥ 30)'); return; }
+  if(state.siLevel===null){ alert('Please select a Si level'); return; }
+
+  const stageKey = getStageKey();
+  const tier = getTier();
+  const meta = STAGE_META[stageKey];
+  const tierM = TIER_META[tier];
+  const d = DATA[stageKey];
+  const triggers = getTierTriggers();
+  const hasGerd = state.tierExtras.has('gerd');
+  const tierThresh = {A:7.5,B:15,C:25,D:30}[tier];
+
+  // ── STAGE HERO ──
+  document.getElementById('stageHero').innerHTML=`
+    <style>.stage-hero{color:${meta.color};background:${meta.bg};border-color:${meta.border}}</style>
+    <div class="stage-hero-top">
+      <div>
+        <div class="stage-label-small">MOSI Stage</div>
+        <div class="stage-name">${meta.label}</div>
+        <div class="stage-desc">${meta.desc}</div>
+        <div style="margin-top:10px;font-size:12px;font-family:'DM Mono',monospace;color:${meta.color};opacity:0.7">
+          M${getMScore(state.bmi)} · O${getOScore()} · Si${state.siLevel}
+        </div>
+      </div>
+      <div class="stage-stats">
+        <div class="stat-box">
+          <div class="stat-num" style="color:${meta.color}">${d.success}%</div>
+          <div class="stat-lbl">Overall Success<br>(TWL ≥20%)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:${meta.color}">${d.n.toLocaleString()}</div>
+          <div class="stat-lbl">Patients in<br>Derivation Cohort</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // ── TIER BANNER ──
+  document.getElementById('tierBanner').style.cssText=`background:${tierM.bg};border-color:${tierM.border};color:${tierM.color}`;
+  document.getElementById('tierBanner').innerHTML=`
+    <div class="tier-icon">${tierM.icon}</div>
+    <div class="tier-main">
+      <div class="tier-label-row">
+        <div class="tier-badge-big" style="background:${tierM.color}22;color:${tierM.color}">${tierM.label}</div>
+        <div class="tier-target-num" style="color:${tierM.color}">${tierM.range} TWL</div>
+      </div>
+      <div class="tier-desc">${tierM.goal}</div>
+      ${triggers.length>0?`<div class="tier-triggers">${triggers.map(t=>`<span class="trigger-chip">${t}</span>`).join('')}</div>`:''}
+    </div>
+  `;
+
+  // ── ALERTS ──
+  let alerts='';
+  if(hasGerd) alerts+=`<div class="alert alert-warn"><span class="alert-icon">⚠</span><span><strong>GERD detected:</strong> SG is relatively contraindicated — RYGB preferred as it typically resolves GERD. In this cohort, GERD patients choose RYGB 10–22% more often than non-GERD patients across all stages.</span></div>`;
+  if(tier==='D'&&(stageKey==='stageii'||stageKey==='stageiii')) alerts+=`<div class="alert alert-danger"><span class="alert-icon">⚠</span><span><strong>TWL gap warning (${meta.label} / Tier D):</strong> This patient requires ≥30% TWL for MACE risk reduction, but even RYGB achieves this in only ${stageKey==='stageii'?'48.7%':'36.2%'} of similar patients at 12 months. Consider BPD/DS if eligible, or counsel on realistic expectations.</span></div>`;
+  if(tier==='C'&&stageKey==='stageiii') alerts+=`<div class="alert alert-warn"><span class="alert-icon">⚠</span><span><strong>SG severely underperforms in Stage III / Tier C:</strong> Only 30.2% of similar patients achieved ≥25% TWL at 12m with SG, and 8.1% at 5 years. For T2D remission or MASLD benefit, SG is unlikely to be sufficient.</span></div>`;
+  if(stageKey==='stageiv') alerts+=`<div class="alert alert-info"><span class="alert-icon">ℹ</span><span><strong>Stage IV note:</strong> 90.6% of Stage IV patients in this cohort received SG — predominantly driven by perioperative risk in dialysis/transplant patients, not by SG's superiority. RYGB data in Stage IV (n=14) should be interpreted cautiously (CI 63–99%).</span></div>`;
+  if(tier==='C'&&stageKey==='stageii') alerts+=`<div class="alert alert-warn"><span class="alert-icon">⚠</span><span><strong>Stage II / Tier C — procedure matters:</strong> SG achieves the ≥25% TWL target in only 35% of similar Stage II patients. RYGB (76%) is strongly preferred when T2D remission or MASLD regression is the goal.</span></div>`;
+  document.getElementById('alertBox').innerHTML=alerts;
+
+  // ── PROCEDURES ──
+  const procOrder = ['bpdds','rygb','sg'];
+  let procHTML='';
+  procOrder.forEach(pk=>{
+    const pd=d.procs[pk]; if(!pd) return;
+    const rec=getProcRec(pk,stageKey,tier);
+    const barCol=getBarColor(pd.meets12,tier);
+    let recBadge='';
+    if(rec==='recommended') recBadge=`<div class="proc-rec-badge rec-star">★ Preferred</div>`;
+    else if(rec==='caution') recBadge=`<div class="proc-rec-badge rec-caution">Consider</div>`;
+    else if(rec==='avoid') recBadge=`<div class="proc-rec-badge rec-avoid">Caution</div>`;
+    const small = pd.n<30 ? ` <span style="color:var(--red);font-size:10px">⚠ small n</span>`:'';
+    const gerdNote=(pk==='sg'&&hasGerd)?`<div class="proc-gerd-note">⚠ GERD present — SG may worsen symptoms</div>`:'';
+    procHTML+=`
+      <div class="proc-card ${rec}">
+        ${recBadge}
+        <div class="proc-name">${PROC_LABELS[pk]}<span class="proc-n">n=${pd.n.toLocaleString()}${small}</span></div>
+        <div class="proc-metrics">
+          <div class="proc-metric">
+            <div class="proc-metric-val" style="color:${getBarColor(pd.twl12,tier)}">${fmtPct(pd.twl12)}</div>
+            <div class="proc-metric-lbl">Mean TWL 12m</div>
+          </div>
+          <div class="proc-metric">
+            <div class="proc-metric-val" style="color:${getBarColor(pd.twl60,tier)}">${fmtPct(pd.twl60)}</div>
+            <div class="proc-metric-lbl">Mean TWL 60m</div>
+          </div>
+          <div class="proc-metric">
+            <div class="proc-metric-val" style="color:${getBarColor(pd.meets12,tier)}">${fmtPct(pd.meets12)}</div>
+            <div class="proc-metric-lbl">Meets Target 12m</div>
+          </div>
+          <div class="proc-metric">
+            <div class="proc-metric-val" style="color:${getBarColor(pd.meets60,tier)}">${fmtPct(pd.meets60)}</div>
+            <div class="proc-metric-lbl">Meets Target 60m</div>
+          </div>
+        </div>
+        <div class="proc-bar-wrap">
+          <div class="proc-bar-label"><span>% achieving TWL success (≥20%) at 12m</span><span style="font-family:'DM Mono',monospace">${fmtPct(pd.success)}</span></div>
+          <div class="proc-bar-track"><div class="proc-bar-fill" style="width:${pd.success}%;background:${barCol}"></div></div>
+        </div>
+        ${gerdNote}
+      </div>`;
+  });
+  document.getElementById('procGrid').innerHTML=procHTML;
+
+  // ── COMORBIDITY RESOLUTION ──
+  const resItems=[
+    {key:'dm_resolve', label:'DM Resolution', color:'var(--accent)', note: d.dm_resolve===null?'Insufficient data':'Stage-level rate (70% missing data overall)'},
+    {key:'htn_resolve', label:'HTN Resolution', color:'var(--teal)', note:'Stage-level rate'},
+    {key:'osa_resolve', label:'OSA Resolution', color:'var(--purple)', note:'Stage-level rate'},
+    {key:'hlp_resolve', label:'HLD Resolution', color:'var(--yellow)', note:'Stage-level rate'},
+  ];
+  let resHTML='';
+  resItems.forEach(item=>{
+    const val=d[item.key];
+    resHTML+=`<div class="res-card">
+      <div class="res-name">${item.label}</div>
+      <div class="res-val" style="color:${item.color}">${val==null?'—':val.toFixed(1)+'%'}</div>
+      <div class="res-bar-track"><div class="res-bar-fill" style="width:${val||0}%;background:${item.color}"></div></div>
+      <div class="res-note">${item.note}</div>
+    </div>`;
+  });
+  document.getElementById('resGrid').innerHTML=resHTML;
+
+  // ── FOOTNOTE ──
+  document.getElementById('footnote').innerHTML=`
+    <strong>Data source:</strong> n=3,097 bariatric surgery patients (RYGB=2,053, SG=891, BPD/DS=131, SADI-S=22). 
+    Internal bootstrap validation AUC=0.603 (SD=0.010, 200 iterations). 
+    TWL success = ≥20% total weight loss. 
+    TWL target = midpoint of evidence-based Tier threshold range. 
+    60m data available in 54% of cohort overall (Stage IV: 28.7%). 
+    Comorbidity resolution rates are stage-level estimates with significant missing data (DM: 70% missing). 
+    Stage IV RYGB: n=14, 95% CI 63–99% — interpret with caution. 
+    This tool supports clinical decision-making and does not replace individualized assessment.
+  `;
+
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('placeholder').style.display='none';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function resetAll(){
+  state={bmi:null, oKeys:new Set(), siLevel:null, tierExtras:new Set()};
+  document.getElementById('bmiInput').value='';
+  resetBMIUI();
+  document.querySelectorAll('.check-item.active').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.si-item').forEach(el=>el.classList.remove('active-si0','active-si1','active-si2','active-si3'));
+  document.getElementById('oScore').innerHTML=`O score: <span style="color:var(--text)">—</span>`;
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('placeholder').style.display='block';
+}
+
+// ── EVENTS ───────────────────────────────────────────────────────────────────
+document.getElementById('bmiInput').addEventListener('input', updateBMI);
+document.getElementById('bmiInput').addEventListener('keydown', e=>{ if(e.key==='Enter') compute(); });
+</script>
+</body>
+</html>
