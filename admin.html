@@ -172,6 +172,42 @@ textarea{resize:vertical;min-height:72px}
 </head>
 <body>
 
+<!-- PASSWORD GATE -->
+<div id="pwGate" style="position:fixed;inset:0;background:var(--bg,#0e1117);z-index:9999;display:flex;align-items:center;justify-content:center">
+  <div style="background:var(--surface,#1a2235);border:1px solid var(--border2,rgba(255,255,255,.13));border-radius:14px;padding:2.5rem 2rem;width:90%;max-width:380px;box-shadow:0 12px 48px rgba(0,0,0,.5);text-align:center">
+    <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:#fff;letter-spacing:.04em;margin-bottom:.3rem">MOSI</div>
+    <div style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:600;margin-bottom:1.75rem">Administrator Panel</div>
+    <div style="font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:1rem">Enter administrator password to continue</div>
+    <input type="password" id="pwInput" placeholder="Password" autofocus
+      style="width:100%;border:1.5px solid rgba(255,255,255,.15);border-radius:7px;padding:.55rem .75rem;font-size:.9rem;font-family:Inter,sans-serif;color:#fff;background:rgba(255,255,255,.07);text-align:center;letter-spacing:.15em;margin-bottom:.75rem"
+      onkeydown="if(event.key==='Enter')checkPW()">
+    <div id="pwError" style="font-size:.74rem;color:#ef4444;margin-bottom:.65rem;min-height:1rem"></div>
+    <button onclick="checkPW()" style="width:100%;background:#3d82f6;color:#fff;border:none;border-radius:7px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;font-family:Inter,sans-serif;cursor:pointer">Enter →</button>
+  </div>
+</div>
+<script>
+(function(){
+  // Check if already authenticated this session
+  if(sessionStorage.getItem('mosi_admin_auth')==='1'){
+    document.getElementById('pwGate').style.display='none';
+  }
+})();
+function checkPW(){
+  const v=document.getElementById('pwInput').value;
+  const err=document.getElementById('pwError');
+  if(v==='MOSI123'){
+    sessionStorage.setItem('mosi_admin_auth','1');
+    document.getElementById('pwGate').style.display='none';
+    document.getElementById('pwInput').value='';
+  } else {
+    err.textContent='Incorrect password. Please try again.';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').focus();
+    setTimeout(()=>{if(err)err.textContent='';},3000);
+  }
+}
+</script>
+
 <header class="topbar">
   <div class="brand">
     <span class="brand-logo">MOSI</span>
@@ -378,6 +414,10 @@ mosi-system/<br>
 
   <div class="card">
     <div class="card-hdr"><span class="card-title">⚠ Workflow File Missing?</span></div>
+    <div class="alert a-warn mb2" style="margin-bottom:.85rem">
+      <span class="ai">⚠</span>
+      <span><strong>Jekyll Build Error?</strong> If you see a GitHub Pages build error about Jekyll, create a file named <strong>.nojekyll</strong> (empty file, exact name) in the root of your repository. This tells GitHub Pages to skip Jekyll processing entirely. Your HTML files will serve directly.</span>
+    </div>
     <p style="font-size:.78rem;color:var(--text2);margin-bottom:.85rem">If GitHub Actions submissions aren't working, the <span class="ci">submit_case.yml</span> workflow file is likely missing. To create it:</p>
     <ol style="padding-left:1.25rem;font-size:.78rem;color:var(--text2);line-height:1.9;display:flex;flex-direction:column;gap:.25rem">
       <li>In your GitHub repo, click <strong style="color:#fff">Add file → Create new file</strong></li>
