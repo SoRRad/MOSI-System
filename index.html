@@ -1134,9 +1134,9 @@ function loadS(){
   try{var s=localStorage.getItem(SK);if(s)S=JSON.parse(s);}catch(e){}
   try{var ac=localStorage.getItem('mosi_admin_cfg');if(ac){var c=JSON.parse(ac);if(c.owner&&c.token){if(!S.gh)S.gh={};S.gh.owner=c.owner||S.gh.owner;S.gh.repo=c.repo||S.gh.repo;S.gh.token=c.token||S.gh.token;}}}catch(e){}
   if(!S.surgeons||!S.surgeons.length)S.surgeons=[
-    {id:'s1',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'OG'},
+    {id:'s1',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'OmG'},
     {id:'s2',name:'Dr. S. Laplante',role:'Consultant Bariatric Surgeon',initials:'SL'},
-    {id:'s3',name:'Dr. R. Shahriarirad',role:'Fellow',initials:'RS'},
+    {id:'s3',name:'Dr. Reza Shahriarirad',role:'Fellow',initials:'RSh'},
     {id:'s4',name:'Dr. A. Alomar',role:'Research Fellow',initials:'AA'},
   ];
   if(!S.gh)S.gh={owner:'',repo:'',token:''};
