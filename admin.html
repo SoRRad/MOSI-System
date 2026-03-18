@@ -3,222 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOSI — Administrator Panel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>MOSI — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 [data-theme="dark"]{
-  --bg:#0e1117;--bg2:#151b27;--bg3:#1c2436;
-  --surface:#1a2235;--surface2:#202b42;--surface3:#28354f;
-  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.13);
-  --text:#e8edf5;--text2:#9aa5be;--text3:#5f6f8f;
+  --bg:#0c1118;--bg2:#111827;--surf:#161e2d;--surf2:#1e2a3e;--surf3:#253249;
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.12);
+  --tx:#e2e8f4;--tx2:#8899b8;--tx3:#4d607d;
+  --blue:#3b82f6;--bluD:#2563eb;--bluP:rgba(59,130,246,.15);
+  --grn:#22c55e;--grnP:rgba(34,197,94,.14);
+  --amb:#f59e0b;--ambP:rgba(245,158,11,.14);
+  --red:#ef4444;--redP:rgba(239,68,68,.14);
+  --tel:#14b8a6;--telP:rgba(20,184,166,.14);
+  --shd:0 2px 16px rgba(0,0,0,.4);--shdL:0 12px 48px rgba(0,0,0,.55);
+  --top:#080e18;--side:#09101e;
 }
 [data-theme="light"]{
-  --bg:#f0f4fa;--bg2:#e8eef8;--bg3:#dde5f5;
-  --surface:#ffffff;--surface2:#f5f8ff;--surface3:#eaf0ff;
-  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);
-  --text:#1a2030;--text2:#4a5568;--text3:#8a96b0;
+  --bg:#f1f5fb;--bg2:#e8eef8;--surf:#fff;--surf2:#f6f9ff;--surf3:#edf2ff;
+  --bdr:rgba(0,0,0,.07);--bdr2:rgba(0,0,0,.13);
+  --tx:#1a2030;--tx2:#4a5568;--tx3:#8a96b0;
+  --blue:#2563eb;--bluD:#1d4ed8;--bluP:#dbeafe;
+  --grn:#16a34a;--grnP:#dcfce7;
+  --amb:#d97706;--ambP:#fef3c7;
+  --red:#dc2626;--redP:#fee2e2;
+  --tel:#0d9488;--telP:#ccfbf1;
+  --shd:0 2px 12px rgba(26,47,90,.08);--shdL:0 8px 36px rgba(26,47,90,.14);
+  --top:#1a2f5a;--side:#1e3564;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0e1117;--bg2:#151b27;--bg3:#1c2436;
-  --surface:#1a2235;--surface2:#202b42;--surface3:#28354f;
-  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.13);
-  --text:#e8edf5;--text2:#9aa5be;--text3:#5f6f8f;
-  --blue:#3d82f6;--blue-d:#2563eb;--blue-pale:rgba(61,130,246,.15);
-  --green:#22c55e;--green-pale:rgba(34,197,94,.15);
-  --amber:#f59e0b;--amber-pale:rgba(245,158,11,.15);
-  --red:#ef4444;--red-pale:rgba(239,68,68,.15);
-  --orange:#f97316;--orange-pale:rgba(249,115,22,.15);
-  --teal:#14b8a6;--teal-pale:rgba(20,184,166,.15);
-  --shadow:0 2px 16px rgba(0,0,0,.35);
-  --shadow-lg:0 12px 48px rgba(0,0,0,.5);
-  --radius:10px;--radius-sm:6px;--radius-lg:14px;
-  --trans:.18s ease;
-}
-html{font-size:15px;scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+:root{--r:8px;--rs:5px;--rl:12px;--tr:.16s ease}
+html{font-size:15px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;transition:background var(--tr)}
 
-/* ── TOPBAR ────────────────────────────────────────────── */
-.topbar{background:var(--bg);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;flex-shrink:0}
-.brand{display:flex;align-items:center;gap:.75rem}
-.brand-logo{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--text);letter-spacing:.04em}
-.brand-tag{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-weight:600;padding:.18rem .5rem;border:1px solid var(--border);border-radius:3px;background:var(--surface2)}
-.admin-badge{font-size:.68rem;font-weight:700;letter-spacing:.08em;color:var(--amber);background:var(--amber-pale);padding:.18rem .5rem;border-radius:3px;border:1px solid rgba(245,158,11,.3)}
-.back-link{display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--text2);text-decoration:none;padding:.3rem .7rem;border:1px solid var(--border2);border-radius:var(--radius-sm);transition:all var(--trans)}
-.back-link:hover{color:#fff;border-color:var(--blue);background:var(--blue-pale)}
+/* TOPBAR */
+.topbar{background:var(--top);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:50;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:.65rem}
+.brand-logo{font-family:'DM Serif Display',serif;font-size:1.45rem;color:#fff;letter-spacing:.05em}
+.brand-tag{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:600;padding:.15rem .45rem;border:1px solid rgba(255,255,255,.1);border-radius:3px}
+.admin-badge{font-size:.64rem;font-weight:700;letter-spacing:.06em;color:var(--amb);background:var(--ambP);padding:.15rem .48rem;border-radius:3px;border:1px solid rgba(245,158,11,.3)}
+.top-r{display:flex;align-items:center;gap:.5rem}
+.back-link{display:flex;align-items:center;gap:.38rem;font-size:.74rem;color:var(--tx2);text-decoration:none;padding:.28rem .65rem;border:1px solid var(--bdr2);border-radius:var(--rs);transition:all var(--tr)}
+.back-link:hover{color:var(--tx);border-color:var(--blue);background:var(--bluP)}
+.icon-btn{width:30px;height:30px;border-radius:var(--rs);border:1px solid var(--bdr2);background:var(--surf);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:all var(--tr);color:var(--tx2)}
+.icon-btn:hover{background:var(--surf2);border-color:var(--blue)}
 
-/* ── MAIN ──────────────────────────────────────────────── */
-.admin-body{display:grid;grid-template-columns:220px 1fr;flex:1;overflow:hidden;height:calc(100vh - 56px)}
-.aside{background:var(--bg2);border-right:1px solid var(--border);padding:1rem 0;overflow-y:auto;display:flex;flex-direction:column;gap:.12rem}
-.aside-section{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-weight:600;padding:.5rem 1.25rem .3rem;margin-top:.35rem}
-.aside-item{display:flex;align-items:center;gap:.55rem;padding:.54rem 1.2rem;cursor:pointer;font-size:.79rem;color:var(--text2);font-weight:500;transition:all .15s;border-left:2px solid transparent}
-.aside-item:hover{background:var(--surface2);color:var(--text)}
-.aside-item.active{background:rgba(245,158,11,.15);color:var(--text);border-left-color:var(--amber);font-weight:600}
-.aside-icon{font-size:.88rem;width:17px;text-align:center;flex-shrink:0}
-.content{overflow-y:auto;padding:1.75rem 2rem}
+/* LAYOUT */
+.admin-main{display:grid;grid-template-columns:210px 1fr;flex:1;overflow:hidden;height:calc(100vh - 52px)}
+.aside{background:var(--side);border-right:1px solid var(--bdr);padding:.8rem 0;overflow-y:auto;display:flex;flex-direction:column}
+.aside-sec{font-size:.57rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.2);font-weight:600;padding:.45rem 1.05rem .25rem;margin-top:.4rem}
+.aside-item{display:flex;align-items:center;gap:.52rem;padding:.5rem 1.05rem;cursor:pointer;font-size:.77rem;color:rgba(255,255,255,.4);font-weight:500;transition:all .14s;border-left:2px solid transparent;white-space:nowrap}
+.aside-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.8)}
+.aside-item.active{background:rgba(245,158,11,.15);color:#fff;border-left-color:var(--amb);font-weight:600}
+.aside-icon{font-size:.84rem;width:15px;text-align:center;flex-shrink:0}
+.aside-spacer{flex:1}
+.aside-sep{height:1px;background:var(--bdr);margin:.5rem .85rem}
+
+/* CONTENT */
+.content{overflow-y:auto;padding:1.6rem 1.85rem;background:var(--bg)}
 .pane{display:none}.pane.active{display:block}
+.page-title{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--tx);margin-bottom:.25rem}
+.page-sub{font-size:.77rem;color:var(--tx2);margin-bottom:1.35rem;line-height:1.5}
+.sec-lbl{font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--tx3);margin-bottom:.65rem;padding-bottom:.3rem;border-bottom:1px solid var(--bdr)}
 
-/* ── STATUS STRIP ──────────────────────────────────────── */
-.status-strip{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.15rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:1.5rem;flex-wrap:wrap}
-.st-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;background:var(--text3)}
-.st-dot.ok{background:var(--green)}
-.st-dot.err{background:var(--red)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.st-dot.busy{background:var(--amber);animation:blink .85s infinite}
-.st-text{font-size:.8rem;color:var(--text2);font-weight:500}
-.st-text span{color:#fff;font-weight:600}
-.st-actions{margin-left:auto;display:flex;gap:.45rem;flex-wrap:wrap}
+/* CARDS */
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;box-shadow:var(--shd)}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+.card-title{font-size:.85rem;font-weight:600;color:var(--tx);display:flex;align-items:center;gap:.45rem}
+.card+.card,.mt2{margin-top:.9rem}
+.mt1{margin-top:.5rem}.mb1{margin-bottom:.5rem}.mb2{margin-bottom:.9rem}
 
-/* ── CARDS ─────────────────────────────────────────────── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem;box-shadow:var(--shadow)}
-.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.card-title{font-size:.87rem;font-weight:600;color:#fff;display:flex;align-items:center;gap:.5rem}
-.card+.card,.mt2{margin-top:1rem}.mt1{margin-top:.5rem}.mb1{margin-bottom:.5rem}.mb2{margin-bottom:1rem}
-
-/* ── PAGE ──────────────────────────────────────────────── */
-.page-title{font-family:'DM Serif Display',serif;font-size:1.55rem;color:#fff;margin-bottom:.28rem}
-.page-sub{font-size:.79rem;color:var(--text2);margin-bottom:1.4rem;line-height:1.5}
-.section-lbl{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--text3);margin-bottom:.7rem;padding-bottom:.32rem;border-bottom:1px solid var(--border)}
-
-/* ── FORMS ─────────────────────────────────────────────── */
-.fg{display:flex;flex-direction:column;gap:.35rem}
-.fg2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
-.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
-label,.lbl{font-size:.7rem;font-weight:600;color:var(--text2);letter-spacing:.04em}
-input[type=text],input[type=password],input[type=number],select,textarea{border:1.5px solid var(--border2);border-radius:var(--radius-sm);padding:.5rem .7rem;font-size:.82rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface2);transition:all var(--trans);width:100%}
-input::placeholder{color:var(--text3)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-pale)}
-select option{background:var(--surface2);color:var(--text)}
-textarea{resize:vertical;min-height:72px}
-.hint{font-size:.67rem;color:var(--text3);margin-top:.18rem;line-height:1.45}
+/* FORMS */
+.fg{display:flex;flex-direction:column;gap:.32rem}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+label,.lbl{font-size:.69rem;font-weight:600;color:var(--tx2);letter-spacing:.03em}
+input,select,textarea{border:1.5px solid var(--bdr2);border-radius:var(--rs);padding:.48rem .65rem;font-size:.81rem;font-family:'Inter',sans-serif;color:var(--tx);background:var(--surf2);transition:all var(--tr);width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--bluP)}
+input[type=password]{letter-spacing:.08em}
+textarea{resize:vertical;min-height:68px}
+.hint{font-size:.65rem;color:var(--tx3);margin-top:.14rem;line-height:1.4}
 .hint a{color:var(--blue);text-decoration:none}
-.hint a:hover{text-decoration:underline}
 
-/* ── BUTTONS ───────────────────────────────────────────── */
-.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.48rem 1rem;border-radius:var(--radius-sm);font-size:.79rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;border:none;letter-spacing:.02em;white-space:nowrap}
-.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:var(--blue-d)}
-.btn-s{background:rgba(255,255,255,.07);color:var(--text);border:1px solid var(--border2)}.btn-s:hover{background:rgba(255,255,255,.12);color:#fff}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.38rem;padding:.44rem .9rem;border-radius:var(--rs);font-size:.77rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .14s;border:none;letter-spacing:.02em;white-space:nowrap}
+.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:var(--bluD)}
+.btn-s{background:var(--surf2);color:var(--tx);border:1px solid var(--bdr2)}.btn-s:hover{background:var(--surf3)}
 .btn-g{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-g:hover{background:var(--blue);color:#fff}
-.btn-a{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(245,158,11,.3)}.btn-a:hover{background:var(--amber);color:#fff}
-.btn-d{background:var(--red-pale);color:var(--red);border:1px solid rgba(239,68,68,.3)}.btn-d:hover{background:var(--red);color:#fff}
-.btn-sm{padding:.3rem .7rem;font-size:.72rem}
-.btn-xs{padding:.2rem .5rem;font-size:.64rem}
-.btn-row{display:flex;gap:.48rem;flex-wrap:wrap;margin-top:.9rem}
+.btn-a{background:var(--ambP);color:var(--amb);border:1px solid rgba(245,158,11,.3)}.btn-a:hover{background:var(--amb);color:#fff}
+.btn-d{background:var(--redP);color:var(--red);border:1px solid rgba(239,68,68,.3)}.btn-d:hover{background:var(--red);color:#fff}
+.btn-sm{padding:.27rem .65rem;font-size:.71rem}
+.btn-xs{padding:.18rem .48rem;font-size:.64rem}
+.btn-row{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.85rem}
 
-/* ── LOG ───────────────────────────────────────────────── */
-.log-box{background:rgba(0,0,0,.4);border-radius:var(--radius-sm);padding:.8rem 1rem;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text3);max-height:160px;overflow-y:auto;border:1px solid var(--border);margin-top:.85rem}
-.log-ok{color:var(--green)}.log-err{color:var(--red)}.log-info{color:var(--amber)}.log-dim{color:var(--text3)}
+/* STATUS */
+.status-bar{display:flex;align-items:center;gap:.75rem;padding:.8rem 1.05rem;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:1.3rem;flex-wrap:wrap}
+.st-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--tx3)}
+.st-dot.ok{background:var(--grn)}.st-dot.err{background:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.st-dot.busy{background:var(--amb);animation:blink .85s infinite}
+.st-text{font-size:.78rem;color:var(--tx2);font-weight:500}
+.st-text b{color:var(--tx)}
+.st-acts{margin-left:auto;display:flex;gap:.4rem;flex-wrap:wrap}
 
-/* ── TABLE ─────────────────────────────────────────────── */
-.dt{width:100%;border-collapse:collapse;font-size:.78rem}
-.dt th{background:var(--surface2);color:var(--text2);padding:.5rem .75rem;text-align:left;font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--border)}
-.dt td{padding:.56rem .75rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
-.dt tr:hover td{background:var(--surface2)}
+/* LOG */
+.log-box{background:rgba(0,0,0,.3);border-radius:var(--rs);padding:.75rem .95rem;font-family:'DM Mono',monospace;font-size:.69rem;color:var(--tx3);max-height:155px;overflow-y:auto;border:1px solid var(--bdr);margin-top:.8rem}
+.lok{color:var(--grn)}.lerr{color:var(--red)}.linf{color:var(--amb)}.ldim{color:var(--tx3)}
+
+/* TABLE */
+.dt{width:100%;border-collapse:collapse;font-size:.77rem}
+.dt th{background:var(--surf2);color:var(--tx2);padding:.48rem .7rem;text-align:left;font-size:.61rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--bdr)}
+.dt td{padding:.54rem .7rem;border-bottom:1px solid var(--bdr);color:var(--tx);vertical-align:middle}
+.dt tr:hover td{background:var(--surf2)}
 .dt tr:last-child td{border-bottom:none}
-.dt .actions{display:flex;gap:.3rem;flex-wrap:wrap}
 
-/* ── PILLS ─────────────────────────────────────────────── */
-.pill{display:inline-block;padding:.12rem .48rem;border-radius:20px;font-size:.63rem;font-weight:600}
-.pg{background:var(--green-pale);color:var(--green)}
-.pa_{background:var(--amber-pale);color:var(--amber)}
-.pr{background:var(--red-pale);color:var(--red)}
-.pb{background:var(--blue-pale);color:var(--blue)}
-.pt{background:var(--teal-pale);color:var(--teal)}
-.pgy{background:rgba(255,255,255,.07);color:var(--text2)}
-.ppu{background:rgba(167,139,250,.15);color:#a78bfa}
+/* PILLS */
+.pill{display:inline-block;padding:.1rem .45rem;border-radius:20px;font-size:.62rem;font-weight:600}
+.pg{background:var(--grnP);color:var(--grn)}.pa_{background:var(--ambP);color:var(--amb)}
+.pr{background:var(--redP);color:var(--red)}.pb{background:var(--bluP);color:var(--blue)}
+.pt{background:var(--telP);color:var(--tel)}.pgy{background:var(--surf3);color:var(--tx2)}
 
-/* ── STATS ─────────────────────────────────────────────── */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.3rem}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}
-.stat-card .sn{font-family:'DM Mono',monospace;font-size:1.65rem;font-weight:500;color:#fff;line-height:1}
-.stat-card .sl{font-size:.65rem;color:var(--text2);margin-top:.25rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-.stat-card .sd{font-size:.72rem;color:var(--text2);margin-top:.38rem}
-.abl{border-top:3px solid var(--blue)}.abg{border-top:3px solid var(--green)}
-.aba{border-top:3px solid var(--amber)}.abr{border-top:3px solid var(--red)}
-.abt{border-top:3px solid var(--teal)}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.2rem}
+.stat-c{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:.9rem}
+.stat-c .sn{font-family:'DM Mono',monospace;font-size:1.55rem;font-weight:500;color:var(--tx);line-height:1}
+.stat-c .sl{font-size:.63rem;color:var(--tx2);margin-top:.22rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.abl{border-top:3px solid var(--blue)}.abg{border-top:3px solid var(--grn)}
+.aba{border-top:3px solid var(--amb)}.abr{border-top:3px solid var(--red)}
 
-/* ── BARS ──────────────────────────────────────────────── */
-.bar-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.5rem}
-.bar-lbl{width:110px;font-size:.7rem;color:var(--text2);flex-shrink:0;text-align:right}
-.bar-track{flex:1;background:rgba(255,255,255,.06);border-radius:4px;height:18px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;transition:width .6s ease;display:flex;align-items:center;padding-left:.42rem}
+/* BARS */
+.bar-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.48rem}
+.bar-lbl{width:105px;font-size:.68rem;color:var(--tx2);flex-shrink:0;text-align:right}
+.bar-track{flex:1;background:var(--surf3);border-radius:4px;height:16px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .55s ease;display:flex;align-items:center;padding-left:.38rem}
 .bar-fill span{font-size:.62rem;font-weight:600;color:#fff;white-space:nowrap}
-.bar-pct{width:35px;font-size:.7rem;font-family:'DM Mono',monospace;color:var(--text2)}
+.bar-pct{width:32px;font-size:.68rem;font-family:'DM Mono',monospace;color:var(--tx2)}
 
-/* ── ALERTS ────────────────────────────────────────────── */
-.alert{border-radius:var(--radius-sm);padding:.75rem .9rem;font-size:.77rem;line-height:1.5;display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.65rem;border:1px solid}
-.ai{font-size:.9rem;flex-shrink:0}
-.a-ok{background:var(--green-pale);border-color:rgba(34,197,94,.3);color:var(--green)}
-.a-err{background:var(--red-pale);border-color:rgba(239,68,68,.3);color:var(--red)}
-.a-warn{background:var(--amber-pale);border-color:rgba(245,158,11,.3);color:var(--amber)}
-.a-info{background:var(--blue-pale);border-color:rgba(61,130,246,.3);color:var(--blue)}
+/* ALERTS */
+.alert{border-radius:var(--rs);padding:.68rem .85rem;font-size:.75rem;line-height:1.5;display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.6rem;border:1px solid}
+.ai{font-size:.85rem;flex-shrink:0}
+.a-ok{background:var(--grnP);border-color:rgba(34,197,94,.3);color:var(--grn)}
+.a-err{background:var(--redP);border-color:rgba(239,68,68,.3);color:var(--red)}
+.a-warn{background:var(--ambP);border-color:rgba(245,158,11,.3);color:var(--amb)}
+.a-info{background:var(--bluP);border-color:rgba(59,130,246,.3);color:var(--blue)}
 
-/* ── MODAL ─────────────────────────────────────────────── */
+/* CODE */
+.code{font-family:'DM Mono',monospace;font-size:.74rem;background:rgba(0,0,0,.3);padding:.85rem 1rem;border-radius:var(--rs);color:var(--tx2);line-height:1.85;border:1px solid var(--bdr);overflow-x:auto}
+.code .c{color:var(--grn)}.code .v{color:var(--blue)}.code .k{color:var(--amb)}
+.ci2{font-family:'DM Mono',monospace;font-size:.75rem;background:rgba(255,255,255,.07);padding:.08rem .36rem;border-radius:4px;color:var(--blue)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.mono{font-family:'DM Mono',monospace}
+
+/* MODAL */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
 .overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.65rem;width:92%;max-width:620px;box-shadow:var(--shadow-lg);max-height:92vh;overflow-y:auto}
-.modal-title{font-family:'DM Serif Display',serif;font-size:1.2rem;color:#fff;margin-bottom:.28rem}
-.modal-sub{font-size:.74rem;color:var(--text2);margin-bottom:1.2rem;line-height:1.5}
-.modal-wide{max-width:820px}
+.modal{background:var(--surf);border:1px solid var(--bdr2);border-radius:var(--rl);padding:1.5rem;width:92%;max-width:600px;box-shadow:var(--shdL);max-height:92vh;overflow-y:auto}
+.modal-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--tx);margin-bottom:.25rem}
+.modal-sub{font-size:.73rem;color:var(--tx2);margin-bottom:1.15rem;line-height:1.5}
 
-/* ── HOW IT WORKS ──────────────────────────────────────── */
-.how-row{display:flex;gap:.9rem;padding:.8rem 0;border-bottom:1px solid var(--border)}
-.how-row:last-child{border-bottom:none}
-.how-n{width:24px;height:24px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0;margin-top:.1rem}
-.how-t{font-size:.81rem;font-weight:600;color:#fff;margin-bottom:.22rem}
-.how-d{font-size:.75rem;color:var(--text2);line-height:1.6}
-.code{font-family:'DM Mono',monospace;font-size:.76rem;background:rgba(0,0,0,.3);padding:.9rem 1.1rem;border-radius:var(--radius-sm);color:rgba(255,255,255,.6);line-height:1.85;border:1px solid var(--border);overflow-x:auto}
-.code .c{color:var(--green)}.code .v{color:var(--blue)}.code .k{color:var(--amber)}
-.ci{font-family:'DM Mono',monospace;font-size:.77rem;background:rgba(255,255,255,.06);padding:.1rem .38rem;border-radius:4px;color:var(--blue)}
-.divider{height:1px;background:var(--border);margin:.85rem 0}
-.empty{text-align:center;padding:2.5rem 1rem;color:var(--text2)}
-.empty .ei{font-size:1.9rem;margin-bottom:.55rem;opacity:.35}
-.empty .et{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.25rem}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+/* MISC */
+.divider{height:1px;background:var(--bdr);margin:.8rem 0}
+.empty{text-align:center;padding:2.2rem 1rem;color:var(--tx2)}
+.empty .ei{font-size:1.8rem;margin-bottom:.5rem;opacity:.35}
+.empty .et{font-size:.83rem;font-weight:600;color:var(--tx);margin-bottom:.22rem}
 .hidden{display:none}
-.mono{font-family:'DM Mono',monospace}
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:10px}
 </style>
 </head>
 <body>
 
 <!-- PASSWORD GATE -->
-<div id="pwGate" style="position:fixed;inset:0;background:var(--bg,#0e1117);z-index:9999;display:flex;align-items:center;justify-content:center">
-  <div style="background:var(--surface,#1a2235);border:1px solid var(--border2,rgba(255,255,255,.13));border-radius:14px;padding:2.5rem 2rem;width:90%;max-width:380px;box-shadow:0 12px 48px rgba(0,0,0,.5);text-align:center">
-    <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:#fff;letter-spacing:.04em;margin-bottom:.3rem">MOSI</div>
-    <div style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:600;margin-bottom:1.75rem">Administrator Panel</div>
-    <div style="font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:1rem">Enter administrator password to continue</div>
-    <input type="password" id="pwInput" placeholder="Password" autofocus
-      style="width:100%;border:1.5px solid rgba(255,255,255,.15);border-radius:7px;padding:.55rem .75rem;font-size:.9rem;font-family:Inter,sans-serif;color:#fff;background:rgba(255,255,255,.07);text-align:center;letter-spacing:.15em;margin-bottom:.75rem"
-      onkeydown="if(event.key==='Enter')checkPW()">
-    <div id="pwError" style="font-size:.74rem;color:#ef4444;margin-bottom:.65rem;min-height:1rem"></div>
-    <button onclick="checkPW()" style="width:100%;background:#3d82f6;color:#fff;border:none;border-radius:7px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;font-family:Inter,sans-serif;cursor:pointer">Enter →</button>
+<div id="pwGate" style="position:fixed;inset:0;background:#080e18;z-index:9999;display:flex;align-items:center;justify-content:center">
+  <div style="background:#161e2d;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:2.4rem 1.85rem;width:90%;max-width:360px;text-align:center">
+    <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:#fff;letter-spacing:.05em;margin-bottom:.25rem">MOSI</div>
+    <div style="font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.28);font-weight:600;margin-bottom:1.65rem">Administrator Panel</div>
+    <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.9rem">Enter administrator password</div>
+    <input type="password" id="pwInput" placeholder="••••••••" autofocus
+      style="width:100%;border:1.5px solid rgba(255,255,255,.14);border-radius:7px;padding:.55rem .75rem;font-size:.9rem;font-family:Inter,sans-serif;color:#fff;background:rgba(255,255,255,.07);text-align:center;letter-spacing:.15em;margin-bottom:.65rem;transition:border-color .15s"
+      onkeydown="if(event.key==='Enter')checkPW()"
+      onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='rgba(255,255,255,.14)'">
+    <div id="pwErr" style="font-size:.73rem;color:#ef4444;margin-bottom:.6rem;min-height:1.1rem"></div>
+    <button onclick="checkPW()" style="width:100%;background:#3b82f6;color:#fff;border:none;border-radius:7px;padding:.58rem 1rem;font-size:.85rem;font-weight:600;font-family:Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">Enter →</button>
   </div>
 </div>
-<script>
-(function(){
-  // Check if already authenticated this session
-  if(sessionStorage.getItem('mosi_admin_auth')==='1'){
-    document.getElementById('pwGate').style.display='none';
-  }
-})();
-function checkPW(){
-  const v=document.getElementById('pwInput').value;
-  const err=document.getElementById('pwError');
-  if(v==='MOSI123'){
-    sessionStorage.setItem('mosi_admin_auth','1');
-    document.getElementById('pwGate').style.display='none';
-    document.getElementById('pwInput').value='';
-  } else {
-    err.textContent='Incorrect password. Please try again.';
-    document.getElementById('pwInput').value='';
-    document.getElementById('pwInput').focus();
-    setTimeout(()=>{if(err)err.textContent='';},3000);
-  }
-}
-</script>
 
 <header class="topbar">
   <div class="brand">
@@ -226,235 +192,160 @@ function checkPW(){
     <span class="brand-tag">System</span>
     <span class="admin-badge">⚙ ADMIN</span>
   </div>
-  <div style="display:flex;align-items:center;gap:.65rem">
-    <div style="font-size:.76rem;color:var(--text2)" id="st-lbl">Checking status…</div>
-    <button onclick="toggleAdminTheme()" id="adminThemeBtn" style="width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .15s;color:rgba(255,255,255,.5)" title="Toggle dark/light mode">🌙</button>
+  <div class="top-r">
+    <div class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</div>
     <a class="back-link" href="index.html">← Surgeon Platform</a>
   </div>
 </header>
 
-<div class="admin-body">
+<div class="admin-main">
 <nav class="aside">
-  <div class="aside-section">Configuration</div>
-  <div class="aside-item active" onclick="switchPane('github')" id="a-github"><span class="aside-icon">🔗</span>GitHub Connection</div>
-  <div class="aside-item" onclick="switchPane('surgeons')" id="a-surgeons"><span class="aside-icon">👥</span>Surgeon Roster</div>
-  <div class="aside-section">Data & Validation</div>
-  <div class="aside-item" onclick="switchPane('cases')" id="a-cases"><span class="aside-icon">🗂</span>All Cases<span style="margin-left:auto;background:var(--amber);color:#fff;font-size:.58rem;padding:.08rem .38rem;border-radius:10px;font-weight:700" id="adminCaseBadge">—</span></div>
+  <div class="aside-sec">Data &amp; Validation</div>
+  <div class="aside-item active" onclick="switchPane('cases')" id="a-cases"><span class="aside-icon">🗂</span>All Cases<span style="margin-left:auto;background:var(--amb);color:#fff;font-size:.57rem;padding:.06rem .35rem;border-radius:10px;font-weight:700" id="cBadge">—</span></div>
   <div class="aside-item" onclick="switchPane('validation')" id="a-validation"><span class="aside-icon">✅</span>Validation Summary</div>
   <div class="aside-item" onclick="switchPane('outcomes')" id="a-outcomes"><span class="aside-icon">📊</span>Outcome Data</div>
-  <div class="aside-item" onclick="switchPane('comments')" id="a-comments"><span class="aside-icon">💬</span>Comments & Flags</div>
-  <div class="aside-section">Export & Docs</div>
-  <div class="aside-item" onclick="switchPane('export')" id="a-export"><span class="aside-icon">⬇️</span>Export & Sync</div>
+  <div class="aside-item" onclick="switchPane('comments')" id="a-comments"><span class="aside-icon">💬</span>Comments &amp; Flags</div>
+  <div class="aside-sec">Configuration</div>
+  <div class="aside-item" onclick="switchPane('surgeons')" id="a-surgeons"><span class="aside-icon">👥</span>Surgeon Roster</div>
   <div class="aside-item" onclick="switchPane('about-editor')" id="a-about-editor"><span class="aside-icon">✏️</span>Edit About Page</div>
+  <div class="aside-sec">Export &amp; Help</div>
+  <div class="aside-item" onclick="switchPane('export')" id="a-export"><span class="aside-icon">⬇️</span>Export &amp; Sync</div>
   <div class="aside-item" onclick="switchPane('howto')" id="a-howto"><span class="aside-icon">📖</span>How It Works</div>
+  <div class="aside-spacer"></div>
+  <div class="aside-sep"></div>
+  <div class="aside-sec">Connection</div>
+  <div class="aside-item" onclick="switchPane('github')" id="a-github"><span class="aside-icon">🔗</span>GitHub Connection</div>
 </nav>
 
 <main class="content">
 
-<!-- ── GITHUB PANE ─────────────────────────────────────── -->
-<div class="pane active" id="pane-github">
-  <div class="page-title">GitHub Connection</div>
-  <div class="page-sub">One-time administrator setup. Configure once — all surgeons connect automatically through the platform without needing credentials.</div>
-
-  <div class="status-strip">
-    <div class="st-dot" id="ghDot"></div>
-    <div class="st-text" id="ghText">Not configured</div>
-    <div class="st-actions">
-      <button class="btn btn-sm btn-g" onclick="testConn()">Test Connection</button>
-      <button class="btn btn-sm btn-s" onclick="checkWF()">Check Workflow</button>
-    </div>
+<!-- ALL CASES -->
+<div class="pane active" id="pane-cases">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
+    <div><div class="page-title">All Cases</div><div class="page-sub" style="margin-bottom:0">Complete case registry from GitHub.</div></div>
+    <div class="btn-row" style="margin-top:0"><button class="btn btn-p btn-sm" onclick="loadAllCases()">🔄 Refresh</button><button class="btn btn-s btn-sm" onclick="exportAllCSV()">⬇ CSV</button></div>
   </div>
-
-  <div class="alert a-ok mb2">
-    <span class="ai">✅</span>
-    <span><strong>Surgeons require zero setup.</strong> Save configuration here once. The platform reads it automatically through shared browser storage — surgeons just open the link and submit.</span>
-  </div>
-
-  <div class="card">
-    <div class="card-hdr"><span class="card-title">🔗 Repository Credentials</span></div>
-    <div class="fg2" style="gap:.9rem;margin-bottom:.9rem">
-      <div class="fg"><label>GitHub Username / Organisation</label><input type="text" id="cfg-owner" placeholder="e.g. yourusername"></div>
-      <div class="fg"><label>Repository Name</label><input type="text" id="cfg-repo" placeholder="e.g. mosi-system"></div>
-      <div class="fg" style="grid-column:1/-1">
-        <label>Personal Access Token (PAT)</label>
-        <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-        <div class="hint">Generate at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a> → tick <strong>repo</strong> scope only. Stored in your browser's localStorage. Also written to the platform's shared storage key so surgeons inherit the connection automatically.</div>
-      </div>
-    </div>
-    <div class="btn-row" style="margin-top:0">
-      <button class="btn btn-p" onclick="saveCfg()">Save & Test Connection</button>
-      <button class="btn btn-d btn-sm" onclick="clearCfg()">Clear Credentials</button>
-    </div>
-    <div class="log-box" id="ghLog"><span class="log-dim">No activity yet.</span></div>
-  </div>
-
-  <div class="card mt2">
-    <div class="card-hdr"><span class="card-title">📁 Workflow File Status</span></div>
-    <p style="font-size:.78rem;color:var(--text2);margin-bottom:.85rem">The <span class="ci">.github/workflows/submit_case.yml</span> file must exist in your repository for automatic submissions to work.</p>
-    <div id="wfStatus"><div class="alert a-warn"><span class="ai">⚠</span><span>Connect to GitHub first to check workflow status.</span></div></div>
-    <div class="btn-row"><button class="btn btn-sm btn-g" onclick="checkWF()">Check Workflow File</button></div>
-  </div>
+  <div id="allCasesEl"><div class="empty"><div class="ei">🗂</div><div class="et">Click Refresh to load from GitHub</div></div></div>
 </div>
 
-<!-- ── SURGEONS PANE ───────────────────────────────────── -->
-<div class="pane" id="pane-surgeons">
-  <div class="page-title">Surgeon Roster</div>
-  <div class="page-sub">Add, edit, or remove surgeons. Changes here are reflected immediately on the platform for all users. To make changes permanent, update the surgeons array in <span class="ci">index.html</span>.</div>
-
-  <div class="card mb2">
-    <div class="card-hdr"><span class="card-title">👥 Current Surgeons</span><button class="btn btn-p btn-sm" onclick="openAddSurgeon()">+ Add Surgeon</button></div>
-    <table class="dt">
-      <thead><tr><th>Name</th><th>Role</th><th>Initials</th><th>Cases Submitted</th><th>Outcomes Entered</th><th>Actions</th></tr></thead>
-      <tbody id="surgRosterTbl"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ── ALL CASES PANE ─────────────────────────────────── -->
-<div class="pane" id="pane-cases">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.4rem;flex-wrap:wrap;gap:.75rem">
-    <div><div class="page-title">All Cases</div><div class="page-sub" style="margin-bottom:0">Complete case registry from GitHub. Click a case to view, edit, or delete.</div></div>
-    <div class="btn-row" style="margin-top:0">
-      <button class="btn btn-p btn-sm" onclick="loadAllCases()">🔄 Refresh</button>
-      <button class="btn btn-s btn-sm" onclick="exportAllCSV()">⬇ Export CSV</button>
-    </div>
-  </div>
-  <div class="alert a-info mb2"><span class="ai">ℹ</span><span>Edits made here are saved locally and pushed to GitHub via workflow dispatch. Test/anonymised cases are shown with a badge.</span></div>
-  <div id="allCasesEl"><div class="empty"><div class="ei">🗂</div><div class="et">Click Refresh to load all cases from GitHub</div></div></div>
-</div>
-
-<!-- ── VALIDATION PANE ────────────────────────────────── -->
+<!-- VALIDATION -->
 <div class="pane" id="pane-validation">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.4rem;flex-wrap:wrap;gap:.75rem">
-    <div><div class="page-title">Internal Validation Summary</div><div class="page-sub" style="margin-bottom:0">Agreement rates, disagreement patterns, and algorithm performance metrics.</div></div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
+    <div><div class="page-title">Validation Summary</div><div class="page-sub" style="margin-bottom:0">Agreement rates, disagreement patterns, and feedback metrics.</div></div>
     <button class="btn btn-p btn-sm" onclick="loadValidation()">🔄 Refresh</button>
   </div>
-  <div id="validationEl"><div class="empty"><div class="ei">✅</div><div class="et">Click Refresh to load validation data</div></div></div>
+  <div id="validationEl"><div class="empty"><div class="ei">✅</div><div class="et">Click Refresh</div></div></div>
 </div>
 
-<!-- ── OUTCOMES PANE ──────────────────────────────────── -->
+<!-- OUTCOMES -->
 <div class="pane" id="pane-outcomes">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.4rem;flex-wrap:wrap;gap:.75rem">
-    <div><div class="page-title">Outcome Data (Ground Truth)</div><div class="page-sub" style="margin-bottom:0">Cases where surgeons have entered actual performed procedure and post-operative outcomes.</div></div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
+    <div><div class="page-title">Outcome Data</div><div class="page-sub" style="margin-bottom:0">Cases with actual procedure and post-operative outcome entered.</div></div>
     <button class="btn btn-p btn-sm" onclick="loadOutcomes()">🔄 Refresh</button>
   </div>
-  <div id="outcomesEl"><div class="empty"><div class="ei">📊</div><div class="et">Click Refresh to load outcomes</div></div></div>
+  <div id="outcomesEl"><div class="empty"><div class="ei">📊</div><div class="et">Click Refresh</div></div></div>
 </div>
 
-<!-- ── COMMENTS PANE ──────────────────────────────────── -->
+<!-- COMMENTS -->
 <div class="pane" id="pane-comments">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.4rem;flex-wrap:wrap;gap:.75rem">
-    <div><div class="page-title">Comments, Concerns & Flags</div><div class="page-sub" style="margin-bottom:0">All free-text feedback and recommendation flags from surgeons.</div></div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
+    <div><div class="page-title">Comments &amp; Flags</div><div class="page-sub" style="margin-bottom:0">All surgeon feedback, flags, and free-text comments.</div></div>
     <button class="btn btn-p btn-sm" onclick="loadComments()">🔄 Refresh</button>
   </div>
-  <div id="commentsEl"><div class="empty"><div class="ei">💬</div><div class="et">Click Refresh to load comments</div></div></div>
+  <div id="commentsEl"><div class="empty"><div class="ei">💬</div><div class="et">Click Refresh</div></div></div>
 </div>
 
-<!-- ── EXPORT PANE ────────────────────────────────────── -->
-<div class="pane" id="pane-export">
-  <div class="page-title">Export & Sync</div>
-  <div class="page-sub">Manual data operations and export options.</div>
-
-  <div class="two-col mb2">
-    <div class="card">
-      <div class="card-hdr"><span class="card-title">⬇ Export Data</span></div>
-      <p style="font-size:.78rem;color:var(--text2);margin-bottom:.85rem">Download all cases as a structured CSV for R analysis or archiving.</p>
-      <div class="btn-row" style="margin-top:0">
-        <button class="btn btn-p" onclick="exportAllCSV()">⬇ All Cases CSV</button>
-        <button class="btn btn-s" onclick="exportOutcomesCsv()">⬇ Outcomes Only CSV</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-hdr"><span class="card-title">🔄 Manual Sync</span></div>
-      <p style="font-size:.78rem;color:var(--text2);margin-bottom:.85rem">Push or pull data between this device and GitHub manually.</p>
-      <div class="btn-row" style="margin-top:0">
-        <button class="btn btn-g" onclick="pullFromGH()">⬇ Pull from GitHub</button>
-        <button class="btn btn-g" onclick="pushAllToGH()">⬆ Push All Local</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-hdr"><span class="card-title">📊 R Analysis Snippets</span></div>
-    <p style="font-size:.78rem;color:var(--text2);margin-bottom:.85rem">Load and analyse data directly from GitHub in R:</p>
-    <div class="code">
-      <span class="c"># Load from GitHub (public repo — no auth needed)</span><br>
-      <span class="k">library</span>(jsonlite); <span class="k">library</span>(tidyverse)<br><br>
-      url &lt;- <span class="c">"https://raw.githubusercontent.com/<span class="v">owner/mosi-system</span>/main/data/cases.json"</span><br>
-      cases &lt;- fromJSON(url) |&gt; filter(!isTest)<br><br>
-      <span class="c"># Agreement rates by MOSI stage</span><br>
-      cases |&gt; group_by(stage) |&gt;<br>
-      &nbsp;&nbsp;summarise(n=n(), stage_agree=<span class="k">mean</span>(stageAgreement=="Agree")*100,<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proc_agree=<span class="k">mean</span>(procAgreement=="Agree")*100)<br><br>
-      <span class="c"># Prediction vs ground truth (cases with outcomes)</span><br>
-      cases |&gt; filter(!is.na(actualTWL12)) |&gt;<br>
-      &nbsp;&nbsp;mutate(predicted_success = recommendedMet,<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;actual_success = actualTWL12 >= 20) |&gt;<br>
-      &nbsp;&nbsp;group_by(stage) |&gt;<br>
-      &nbsp;&nbsp;summarise(calibration = <span class="k">cor</span>(predicted_success, actual_success))
-    </div>
+<!-- SURGEONS -->
+<div class="pane" id="pane-surgeons">
+  <div class="page-title">Surgeon Roster</div>
+  <div class="page-sub">Add, edit, or remove surgeons. Changes apply immediately in this browser.</div>
+  <div class="card mb2"><div class="card-hdr"><span class="card-title">👥 Current Surgeons</span><button class="btn btn-p btn-sm" onclick="openAddSurgeon()">+ Add</button></div>
+    <table class="dt"><thead><tr><th>Name</th><th>Role</th><th>Initials</th><th>Cases</th><th></th></tr></thead><tbody id="surgTbl"></tbody></table>
   </div>
 </div>
 
-<!-- ── ABOUT EDITOR PANE ─────────────────────────────── -->
+<!-- ABOUT EDITOR -->
 <div class="pane" id="pane-about-editor">
   <div class="page-title">Edit About Page</div>
-  <div class="page-sub">Edit team member details and system information shown on the surgeon platform's About & Team section. Changes save to localStorage and apply immediately.</div>
-  <div class="alert a-info mb2"><span class="ai">ℹ</span><span>Changes apply immediately in this browser session. To make them permanent across all devices, update and redeploy <code>index.html</code>.</span></div>
-  <div class="card mb2">
-    <div class="card-hdr"><span class="card-title">👥 Team Members</span><button class="btn btn-p btn-sm" onclick="addTeamMember()">+ Add Member</button></div>
-    <div id="teamMembersList"><div style="font-size:.78rem;color:var(--text2);padding:.5rem 0">Loading…</div></div>
+  <div class="page-sub">Edit team member details shown on the surgeon platform's About &amp; Team section.</div>
+  <div class="alert a-info mb2"><span class="ai">ℹ</span><span>Changes apply immediately in this browser. To make them permanent across all devices, update and redeploy <code>index.html</code>.</span></div>
+  <div class="card mb2"><div class="card-hdr"><span class="card-title">👥 Team Members</span><button class="btn btn-p btn-sm" onclick="openAddMember()">+ Add</button></div>
+    <div id="membersList"><div style="font-size:.78rem;color:var(--tx2);padding:.5rem 0">Loading…</div></div>
   </div>
-  <div class="card mb2">
-    <div class="card-hdr"><span class="card-title">📋 System Description</span></div>
-    <div class="fg"><label>MOSI System Description</label><textarea id="ae-sysdesc" style="min-height:100px" placeholder="The Metabolic & Obesity Staging Index (MOSI) is…"></textarea></div>
-    <div class="fg mt1"><label>Institutional Affiliation</label><input type="text" id="ae-institution" placeholder="e.g. Mayo Clinic — Bariatric & Metabolic Surgery"></div>
+  <div class="card mb2"><div class="card-hdr"><span class="card-title">📋 System Description</span></div>
+    <div class="fg"><label>MOSI System Description</label><textarea id="ae-desc" style="min-height:100px" placeholder="The Metabolic &amp; Obesity Staging Index (MOSI) is…"></textarea></div>
+    <div class="fg mt1"><label>Institutional Affiliation</label><input type="text" id="ae-inst" placeholder="e.g. Mayo Clinic — Bariatric &amp; Metabolic Surgery"></div>
     <div class="btn-row"><button class="btn btn-p" onclick="saveAboutEdits()">✓ Save to Platform</button></div>
   </div>
 </div>
 
-<!-- ── HOW IT WORKS PANE ──────────────────────────────── -->
+<!-- EXPORT -->
+<div class="pane" id="pane-export">
+  <div class="page-title">Export &amp; Sync</div>
+  <div class="page-sub">Manual data operations and export options.</div>
+  <div class="two-col mb2">
+    <div class="card"><div class="card-hdr"><span class="card-title">⬇ Export</span></div>
+      <p style="font-size:.77rem;color:var(--tx2);margin-bottom:.75rem">Download all cases as structured CSV for analysis or archiving.</p>
+      <div class="btn-row" style="margin-top:0"><button class="btn btn-p" onclick="exportAllCSV()">⬇ All Cases CSV</button><button class="btn btn-s" onclick="exportOutcomesCSV()">⬇ Outcomes CSV</button></div>
+    </div>
+    <div class="card"><div class="card-hdr"><span class="card-title">🔄 Sync</span></div>
+      <p style="font-size:.77rem;color:var(--tx2);margin-bottom:.75rem">Push or pull data between this device and GitHub manually.</p>
+      <div class="btn-row" style="margin-top:0"><button class="btn btn-g" onclick="pullFromGH()">⬇ Pull from GitHub</button><button class="btn btn-g" onclick="pushAllToGH()">⬆ Push All Local</button></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-hdr"><span class="card-title">📊 R Analysis Snippets</span></div>
+    <div class="code"><span class="c"># Load from GitHub</span><br>library(jsonlite); library(tidyverse)<br><br>url &lt;- <span class="c">"https://raw.githubusercontent.com/<span class="v">owner/mosi-system</span>/main/data/cases.json"</span><br>cases &lt;- fromJSON(url) |&gt; filter(!isTest)<br><br><span class="c"># Agreement rates by stage</span><br>cases |&gt; group_by(stage) |&gt; summarise(n=n(), proc_agree=mean(procAgreement=="Agree")*100)</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
 <div class="pane" id="pane-howto">
   <div class="page-title">How It Works</div>
-  <div class="page-sub">Architecture overview for the MOSI Clinical Audit Platform.</div>
-
-  <div class="card mb2">
-    <div class="card-hdr"><span class="card-title">🔄 Submission Flow</span></div>
-    <div class="how-row"><div class="how-n">1</div><div><div class="how-t">Surgeon opens index.html</div><div class="how-d">No login, no token, no configuration. The admin's GitHub credentials are inherited automatically through shared localStorage.</div></div></div>
-    <div class="how-row"><div class="how-n">2</div><div><div class="how-t">Case submitted</div><div class="how-d">Saved instantly to the surgeon's browser localStorage. This always succeeds, even offline.</div></div></div>
-    <div class="how-row"><div class="how-n">3</div><div><div class="how-t">GitHub Actions workflow dispatched</div><div class="how-d">The platform calls <span class="ci">POST /repos/{owner}/{repo}/actions/workflows/submit_case.yml/dispatches</span> using the admin token. This triggers the workflow — surgeons never see the token.</div></div></div>
-    <div class="how-row"><div class="how-n">4</div><div><div class="how-t">GitHub's servers run the workflow (~30s)</div><div class="how-d">The runner reads <span class="ci">data/cases.json</span>, appends or updates the case, and commits back using GitHub's internal <span class="ci">GITHUB_TOKEN</span>. No external credentials needed.</div></div></div>
-    <div class="how-row"><div class="how-n">5</div><div><div class="how-t">Commit appears in repository</div><div class="how-d">Every submission is permanently versioned. Unit Aggregate reads <span class="ci">data/cases.json</span> directly — all surgeons see live pooled data immediately.</div></div></div>
+  <div class="page-sub">Architecture and setup guide for the MOSI platform.</div>
+  <div class="alert a-warn mb2"><span class="ai">⚠</span><span><strong>Jekyll Build Error?</strong> Create a file named <strong>.nojekyll</strong> (empty file, exact name including the dot) in the root of your repository. This stops GitHub Pages from running Jekyll.</span></div>
+  <div class="alert a-info mb2"><span class="ai">ℹ</span><span><strong>Workflow File Location:</strong> The <code>submit_case.yml</code> file must be at <strong>.github/workflows/submit_case.yml</strong> (with the dot at the start) for GitHub Actions to recognize it.</span></div>
+  <div class="card mb2"><div class="card-hdr"><span class="card-title">🔄 Submission Flow</span></div>
+    <div id="howtoSteps"></div>
   </div>
+  <div class="card"><div class="card-hdr"><span class="card-title">📂 Repository Structure</span></div>
+    <div class="code">mosi-system/<br>├── <span class="v">index.html</span>        ← Surgeon platform<br>├── <span class="k">admin.html</span>        ← This admin panel<br>├── .nojekyll             ← Prevents Jekyll build errors<br>└── .github/workflows/<br>&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="c">submit_case.yml</span>   ← GitHub Actions (must be here!)<br>└── data/<br>&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="v">cases.json</span>        ← All case records (auto-created)</div>
+  </div>
+</div>
 
-  <div class="card mb2">
-    <div class="card-hdr"><span class="card-title">📂 Repository Structure</span></div>
-    <div class="code">
-mosi-system/<br>
-├── <span class="v">index.html</span>        ← Surgeon platform (public-facing)<br>
-├── <span class="k">admin.html</span>        ← This admin panel (you only)<br>
-├── README.md<br>
-├── .github/<br>
-│&nbsp;&nbsp;&nbsp;└── workflows/<br>
-│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="c">submit_case.yml</span>   ← GitHub Actions (write layer)<br>
-└── data/<br>
-&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="v">cases.json</span>        ← All case records (auto-created)
+<!-- GITHUB CONNECTION — at the bottom of sidebar -->
+<div class="pane" id="pane-github">
+  <div class="page-title">GitHub Connection</div>
+  <div class="page-sub">One-time administrator setup. Configure here — all surgeons connect automatically via shared localStorage.</div>
+  <div class="status-bar">
+    <div class="st-dot" id="ghDot"></div>
+    <div class="st-text" id="ghText">Not configured</div>
+    <div class="st-acts">
+      <button class="btn btn-sm btn-g" onclick="testConn()">Test Connection</button>
+      <button class="btn btn-sm btn-s" onclick="checkWF()">Check Workflow</button>
     </div>
   </div>
-
+  <div class="alert a-ok mb2"><span class="ai">✅</span><span><strong>Surgeons need zero setup.</strong> Save configuration once here — the platform reads it automatically through shared localStorage.</span></div>
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">🔗 Repository Credentials</span></div>
+    <div class="fg2" style="margin-bottom:.85rem">
+      <div class="fg"><label>GitHub Username / Organisation</label><input type="text" id="cfg-owner" placeholder="e.g. SoRRad"></div>
+      <div class="fg"><label>Repository Name</label><input type="text" id="cfg-repo" placeholder="e.g. MOSI-System"></div>
+      <div class="fg" style="grid-column:1/-1"><label>Personal Access Token (PAT)</label>
+        <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="new-password">
+        <div class="hint">Generate at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a> → tick <strong>repo</strong> scope. Stored in browser localStorage only — never transmitted to any server except GitHub.</div>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn btn-p" onclick="saveCfg()">Save &amp; Test Connection</button>
+      <button class="btn btn-d btn-sm" onclick="clearCfg()">Clear Credentials</button>
+    </div>
+    <div class="log-box" id="ghLog"><span class="ldim">No activity yet.</span></div>
+  </div>
   <div class="card">
-    <div class="card-hdr"><span class="card-title">⚠ Workflow File Missing?</span></div>
-    <div class="alert a-warn mb2" style="margin-bottom:.85rem">
-      <span class="ai">⚠</span>
-      <span><strong>Jekyll Build Error?</strong> If you see a GitHub Pages build error about Jekyll, create a file named <strong>.nojekyll</strong> (empty file, exact name) in the root of your repository. This tells GitHub Pages to skip Jekyll processing entirely. Your HTML files will serve directly.</span>
-    </div>
-    <p style="font-size:.78rem;color:var(--text2);margin-bottom:.85rem">If GitHub Actions submissions aren't working, the <span class="ci">submit_case.yml</span> workflow file is likely missing. To create it:</p>
-    <ol style="padding-left:1.25rem;font-size:.78rem;color:var(--text2);line-height:1.9;display:flex;flex-direction:column;gap:.25rem">
-      <li>In your GitHub repo, click <strong style="color:#fff">Add file → Create new file</strong></li>
-      <li>In the filename box, type exactly: <span class="ci">.github/workflows/submit_case.yml</span></li>
-      <li>Paste the contents of the <span class="ci">submit_case.yml</span> file that was generated for you</li>
-      <li>Click <strong style="color:#fff">Commit changes</strong></li>
-    </ol>
+    <div class="card-hdr"><span class="card-title">📁 Workflow File Status</span></div>
+    <p style="font-size:.77rem;color:var(--tx2);margin-bottom:.8rem">The <span class="ci2">.github/workflows/submit_case.yml</span> file must exist for automatic submissions to work.</p>
+    <div id="wfStatus"><div class="alert a-warn"><span class="ai">⚠</span><span>Connect to GitHub first to check workflow status.</span></div></div>
+    <div class="btn-row"><button class="btn btn-sm btn-g" onclick="checkWF()">Check Workflow</button></div>
   </div>
 </div>
 
@@ -463,492 +354,366 @@ mosi-system/<br>
 
 <!-- MODAL -->
 <div class="overlay" id="adminModal">
-  <div class="modal modal-wide">
+  <div class="modal">
     <div id="adminModalBody"></div>
-    <div class="btn-row" id="adminModalBtns">
-      <button class="btn btn-s" onclick="closeModal()">Close</button>
-    </div>
+    <div class="btn-row" id="adminModalBtns"><button class="btn btn-s" onclick="closeModal()">Close</button></div>
   </div>
 </div>
 
 <script>
-/* ═══════════════════════ STATE ═══════════════════════ */
-const ADMIN_KEY='mosi_admin_cfg';
-const MAIN_KEY='mosi_v6';
+/* ══ STATE ══ */
+const AKEY='mosi_admin_cfg', MKEY='mosi_v7';
 let cfg={owner:'',repo:'',token:''};
 let allCases=[];
-
-const SURGEONS_DEFAULT=[
+const PANES=['cases','validation','outcomes','comments','surgeons','about-editor','export','howto','github'];
+const DEFAULT_SURGEONS=[
   {id:'s1',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'OG'},
   {id:'s2',name:'Dr. S. Laplante',role:'Consultant Bariatric Surgeon',initials:'SL'},
   {id:'s3',name:'Dr. R. Shahriarirad',role:'Fellow',initials:'RS'},
   {id:'s4',name:'Dr. A. Alomar',role:'Research Fellow',initials:'AA'},
 ];
+const G=id=>document.getElementById(id);
+const V=id=>G(id)?.value||'';
 
+/* ══ PASSWORD ══ */
+(function(){
+  // Check session auth — hide gate if already authenticated
+  if(sessionStorage.getItem('mosi_auth')==='1'){
+    var gate=G('pwGate');if(gate)gate.style.display='none';
+  }
+})();
+function checkPW(){
+  const v=G('pwInput').value,err=G('pwErr');
+  if(v==='MOSI123'){
+    sessionStorage.setItem('mosi_auth','1');
+    G('pwGate').style.display='none';
+    G('pwInput').value='';
+    // Init the panel after password is correct
+    initPanel();
+  }else{
+    err.textContent='Incorrect password.';
+    G('pwInput').value='';
+    G('pwInput').focus();
+    setTimeout(()=>{if(err)err.textContent='';},3000);
+  }
+}
+
+/* ══ THEME ══ */
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);const b=G('themeBtn');if(b)b.textContent=t==='dark'?'☀️':'🌙';localStorage.setItem('mosi_admin_theme',t);}
+function toggleTheme(){applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');}
+(function(){applyTheme(localStorage.getItem('mosi_admin_theme')||'dark');})();
+
+/* ══ CFG ══ */
 function loadCfg(){
-  try{const s=localStorage.getItem(ADMIN_KEY);if(s){cfg=JSON.parse(s);}}catch(e){}
-  try{const s=localStorage.getItem(MAIN_KEY);if(s){const st=JSON.parse(s);if(st.gh?.token&&!cfg.token)cfg=st.gh;}}catch(e){}
-  if(cfg.owner)G('cfg-owner').value=cfg.owner;
-  if(cfg.repo)G('cfg-repo').value=cfg.repo;
-  if(cfg.token)G('cfg-token').value=cfg.token;
-  updateStatusStrip();renderSurgRoster();
+  try{const s=localStorage.getItem(AKEY);if(s){cfg=JSON.parse(s);}}catch(e){}
+  // Also try reading from main storage key
+  try{const s=localStorage.getItem(MKEY);if(s){const st=JSON.parse(s);if(st.gh?.token&&!cfg.token)cfg=st.gh;}}catch(e){}
+  if(G('cfg-owner'))G('cfg-owner').value=cfg.owner||'';
+  if(G('cfg-repo'))G('cfg-repo').value=cfg.repo||'';
+  if(G('cfg-token'))G('cfg-token').value=cfg.token||'';
+  updateStatusBar();
+  renderSurgRoster();
 }
-function saveCfgLocal(){
-  localStorage.setItem(ADMIN_KEY,JSON.stringify(cfg));
-  try{const raw=localStorage.getItem(MAIN_KEY);const st=raw?JSON.parse(raw):{surgeons:[],currentSurgeonId:null,cases:[],gh:{}};st.gh=cfg;localStorage.setItem(MAIN_KEY,JSON.stringify(st));}catch(e){}
+function saveCfgToStorage(){
+  localStorage.setItem(AKEY,JSON.stringify(cfg));
+  try{
+    const r=localStorage.getItem(MKEY);
+    const st=r?JSON.parse(r):{surgeons:[],currentSurgeonId:null,cases:[],gh:{}};
+    st.gh=cfg;
+    localStorage.setItem(MKEY,JSON.stringify(st));
+  }catch(e){}
 }
-function G(id){return document.getElementById(id);}
-function V(id){return G(id)?.value||'';}
-
+function setGHStatus(cls,html){
+  const dot=G('ghDot'),txt=G('ghText');
+  if(dot){['ok','err','busy'].forEach(c=>dot.classList.remove(c));if(cls)dot.classList.add(cls);}
+  if(txt)txt.innerHTML=html;
+}
+function updateStatusBar(){
+  if(cfg.owner&&cfg.token)setGHStatus('ok',`Connected: <b>${cfg.owner}/${cfg.repo||'(no repo)'}</b>`);
+  else setGHStatus('','Not configured — go to GitHub Connection to set up.');
+  updateCBadge();
+}
+function updateCBadge(){const b=G('cBadge');if(b)b.textContent=allCases.length||'—';}
+function log(m,t='dim'){
+  const el=G('ghLog');if(!el)return;
+  const d=document.createElement('div');d.className='l'+t;d.textContent=`[${new Date().toLocaleTimeString()}] ${m}`;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
 const GH='https://api.github.com';
 function ghH(){return{'Authorization':`Bearer ${cfg.token}`,'Content-Type':'application/json','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};}
 
-function setGHStatus(cls,html){
-  const dot=G('ghDot'),txt=G('ghText');
-  ['ok','err','busy'].forEach(c=>dot.classList.remove(c));if(cls)dot.classList.add(cls);
-  txt.innerHTML=html;G('st-lbl').innerHTML=html;
-}
-function log(msg,t='dim'){
-  const el=G('ghLog');if(!el)return;
-  const d=document.createElement('div');d.className=`log-${t}`;
-  d.textContent=`[${new Date().toLocaleTimeString()}] ${msg}`;
-  el.appendChild(d);el.scrollTop=el.scrollHeight;
-}
-function updateStatusStrip(){
-  if(cfg.owner&&cfg.repo&&cfg.token)setGHStatus('ok',`Connected: <span>${cfg.owner}/${cfg.repo}</span>`);
-  else setGHStatus('','<span>Not configured</span>');
-  updateCaseBadge();
-}
-function updateCaseBadge(){
-  const b=G('adminCaseBadge');if(!b)return;
-  b.textContent=allCases.length||'—';
-}
-
-/* ─── CONFIG ───────────────────────────────────────── */
 function saveCfg(){
-  const o=V('cfg-owner'),r=V('cfg-repo'),t=V('cfg-token');
-  if(!o||!r||!t){alert('Please fill in all three fields.');return;}
-  cfg={owner:o,repo:r,token:t};saveCfgLocal();
-  log(`Config saved: ${o}/${r}`,'info');testConn();
+  const o=V('cfg-owner').trim(),r=V('cfg-repo').trim(),t=V('cfg-token').trim();
+  if(!o||!t){alert('Owner and token are required.');return;}
+  cfg={owner:o,repo:r||o,token:t};saveCfgToStorage();
+  log(`Config saved: ${o}/${r||o}`,'inf');testConn();
 }
 async function testConn(){
   if(!cfg.token){alert('Configure credentials first.');return;}
-  setGHStatus('busy','Testing…');log('Testing connection…','info');
+  setGHStatus('busy','Testing…');log('Testing connection…','inf');
   try{
-    const res=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo}`,{headers:ghH()});
+    const res=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo||cfg.owner}`,{headers:ghH()});
     if(!res.ok)throw new Error(`HTTP ${res.status} — repo not found or token invalid`);
     const d=await res.json();
-    setGHStatus('ok',`Connected: <span>${cfg.owner}/${cfg.repo}</span> (${d.private?'private':'public'})`);
-    log(`✓ Connected to "${d.full_name}" — ${d.private?'private':'public'} repository.`,'ok');
+    setGHStatus('ok',`Connected: <b>${d.full_name}</b> (${d.private?'private':'public'})`);
+    log(`✓ Connected to "${d.full_name}" — ${d.private?'private':'public'} repo.`,'ok');
     checkWF();
-  }catch(e){setGHStatus('err',`Error: <span>${e.message}</span>`);log(`✗ ${e.message}`,'err');}
+  }catch(e){setGHStatus('err',`Error: ${e.message}`);log(`✗ ${e.message}`,'err');}
 }
 async function checkWF(){
-  if(!cfg.token)return;const el=G('wfStatus');
-  el.innerHTML='<div class="log-info" style="font-size:.76rem;padding:.4rem 0">Checking…</div>';
-  try{
-    const res=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo}/contents/.github/workflows/submit_case.yml`,{headers:ghH()});
-    if(res.ok){el.innerHTML='<div class="alert a-ok"><span class="ai">✅</span><span>Workflow file found: <strong>.github/workflows/submit_case.yml</strong> — GitHub Actions submissions are active.</span></div>';log('✓ Workflow file found.','ok');}
-    else{el.innerHTML='<div class="alert a-err"><span class="ai">✗</span><span>Workflow file <strong>.github/workflows/submit_case.yml</strong> not found. See How It Works → Workflow File Missing.</span></div>';log('✗ Workflow file missing.','err');}
-  }catch(e){el.innerHTML=`<div class="alert a-err"><span class="ai">✗</span><span>${e.message}</span></div>`;}
+  if(!cfg.token)return;
+  const el=G('wfStatus');if(!el)return;
+  el.innerHTML='<div style="font-size:.74rem;color:var(--amb);padding:.3rem 0">Checking…</div>';
+  const paths=['.github/workflows/submit_case.yml','.github/workflows/submit_case.yaml','workflows/submit_case.yml','workflows/submit_case.yaml'];
+  for(const p of paths){
+    try{
+      const r=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo||cfg.owner}/contents/${p}`,{headers:ghH()});
+      if(r.ok){
+        el.innerHTML=`<div class="alert a-ok"><span class="ai">✅</span><span>Workflow found at: <strong>${p}</strong> — GitHub Actions submissions are active.${p.startsWith('workflows/')?' <strong>Note:</strong> This path will not trigger Actions automatically — move to <code>.github/workflows/</code> for Actions to work.':''}</span></div>`;
+        log(`✓ Workflow found: ${p}`,'ok');return;
+      }
+    }catch(e){}
+  }
+  let rootFiles=[];
+  try{const r=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo||cfg.owner}/contents/`,{headers:ghH()});if(r.ok){const f=await r.json();rootFiles=f.map(x=>x.name);}}catch(e){}
+  el.innerHTML=`<div class="alert a-err"><span class="ai">✗</span><span><strong>submit_case.yml not found</strong> in any expected location.<br>Root files: <code>${rootFiles.slice(0,12).join(', ')}</code><br><br><strong>Fix:</strong> In your GitHub repo → Add file → Create new file → name it <code>.github/workflows/submit_case.yml</code> → paste workflow YAML → commit.</span></div>`;
+  log(`✗ Workflow not found. Root: ${rootFiles.join(', ')}`,'err');
 }
-function clearCfg(){if(!confirm('Clear credentials?'))return;cfg={owner:'',repo:'',token:''};saveCfgLocal();G('cfg-owner').value='';G('cfg-repo').value='';G('cfg-token').value='';setGHStatus('','Not configured');log('Credentials cleared.','info');}
+function clearCfg(){
+  if(!confirm('Clear all GitHub credentials?'))return;
+  cfg={owner:'',repo:'',token:''};saveCfgToStorage();
+  if(G('cfg-owner'))G('cfg-owner').value='';
+  if(G('cfg-repo'))G('cfg-repo').value='';
+  if(G('cfg-token'))G('cfg-token').value='';
+  setGHStatus('','Not configured');log('Credentials cleared.','inf');
+}
 
-/* ─── GH DATA ──────────────────────────────────────── */
+/* ══ DATA OPS ══ */
 async function fetchGHCases(){
-  if(!cfg.owner||!cfg.repo)return null;
-  try{const res=await fetch(`https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/main/data/cases.json?t=${Date.now()}`);if(res.ok)return await res.json();}catch(e){}
+  if(!cfg.owner)return null;
+  try{const r=await fetch(`https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo||cfg.owner}/main/data/cases.json?t=${Date.now()}`);if(r.ok)return await r.json();}catch(e){}
   if(!cfg.token)return null;
-  try{const res=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo}/contents/data/cases.json`,{headers:ghH()});if(res.status===404)return[];if(!res.ok)return null;const d=await res.json();return JSON.parse(atob(d.content.replace(/\n/g,'')));}catch(e){return null;}
+  try{
+    const r=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo||cfg.owner}/contents/data/cases.json`,{headers:ghH()});
+    if(r.status===404)return[];if(!r.ok)return null;
+    const d=await r.json();return JSON.parse(atob(d.content.replace(/\n/g,'')));
+  }catch(e){return null;}
 }
 async function dispatchWF(rec){
   if(!cfg.token)return false;
-  try{const res=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo}/actions/workflows/submit_case.yml/dispatches`,{method:'POST',headers:ghH(),body:JSON.stringify({ref:'main',inputs:{case_payload:JSON.stringify(rec)}})});return res.status===204;}catch(e){return false;}
-}
-async function pullFromGH(){
-  if(!cfg.token){alert('Configure GitHub first.');return;}
-  setGHStatus('busy','Pulling…');log('Pulling from GitHub…','info');
-  const data=await fetchGHCases();
-  if(!data){setGHStatus('err','Pull failed');log('✗ Pull failed.','err');return;}
-  allCases=data;updateCaseBadge();
-  try{const raw=localStorage.getItem(MAIN_KEY);const st=raw?JSON.parse(raw):{};const merged=[...data];(st.cases||[]).forEach(lc=>{if(!merged.find(c=>c.id===lc.id))merged.push(lc);});st.cases=merged;st.gh=cfg;localStorage.setItem(MAIN_KEY,JSON.stringify(st));}catch(e){}
-  setGHStatus('ok',`Connected: <span>${cfg.owner}/${cfg.repo}</span> — ${data.length} cases`);
-  log(`✓ Pulled ${data.length} cases.`,'ok');alert(`✓ Pulled ${data.length} cases.`);
-}
-async function pushAllToGH(){
-  if(!cfg.token){alert('Configure first.');return;}
-  let local=[];try{const raw=localStorage.getItem(MAIN_KEY);if(raw){const st=JSON.parse(raw);local=st.cases||[];}}catch(e){}
-  if(!local.length){alert('No local cases.');return;}
-  setGHStatus('busy','Pushing…');log(`Dispatching ${local.length} cases…`,'info');
-  let ok=0;for(const c of local){if(await dispatchWF(c))ok++;}
-  setGHStatus('ok',`Connected: <span>${cfg.owner}/${cfg.repo}</span>`);
-  log(`✓ Dispatched ${ok}/${local.length}.`,'ok');alert(`Dispatched ${ok} workflow runs.`);
+  for(const wf of['submit_case.yml','submit_case.yaml']){
+    try{
+      const r=await fetch(`${GH}/repos/${cfg.owner}/${cfg.repo||cfg.owner}/actions/workflows/${wf}/dispatches`,
+        {method:'POST',headers:ghH(),body:JSON.stringify({ref:'main',inputs:{case_payload:JSON.stringify(rec)}})});
+      if(r.status===204||r.status===200){log(`✓ Dispatched via ${wf}`,'ok');return true;}
+    }catch(e){}
+  }
+  return false;
 }
 
-/* ─── CASES PANE ───────────────────────────────────── */
+/* ══ CASES ══ */
 async function loadAllCases(){
-  const el=G('allCasesEl');
-  el.innerHTML='<div class="empty"><div class="ei">🔄</div><div class="et">Loading from GitHub…</div></div>';
+  const el=G('allCasesEl');if(!el)return;
+  el.innerHTML='<div class="empty"><div class="ei">🔄</div></div>';
   setGHStatus('busy','Loading…');
   const data=await fetchGHCases();
   if(!data){
-    el.innerHTML='<div class="alert a-err"><span class="ai">✗</span><span>Could not fetch data. Check configuration.</span></div>';
+    el.innerHTML='<div class="alert a-err"><span class="ai">✗</span><span>Could not fetch. Check GitHub configuration in the GitHub Connection pane.</span></div>';
     setGHStatus('err','Fetch failed');return;
   }
-  allCases=data;updateCaseBadge();
-  setGHStatus('ok',`Connected: <span>${cfg.owner}/${cfg.repo}</span> — ${data.length} cases`);
+  allCases=data;updateCBadge();
+  setGHStatus('ok',`Connected: <b>${cfg.owner}/${cfg.repo||cfg.owner}</b> — ${data.length} cases`);
   if(!data.length){el.innerHTML='<div class="empty"><div class="ei">🗂</div><div class="et">No cases yet</div></div>';return;}
   const ac={Agree:'pg',Partial:'pa_',Disagree:'pr','Not recorded':'pgy'};
-  let h=`<table class="dt"><thead><tr><th>Case Ref</th><th>Surgeon</th><th>Date</th><th>Stage</th><th>Stage Agree</th><th>Proc Agree</th><th>Outcomes</th><th>Actions</th></tr></thead><tbody>`;
-  [...data].sort((a,b)=>b.submittedAt?.localeCompare(a.submittedAt||'')||0).forEach(c=>{
-    const sp=c.stage.includes('4')?'pt':c.stage==='Stage III'?'pr':c.stage==='Stage II'?'pa_':'pg';
-    const hasOutcome=c.actualProcedure||c.actualTWL12;
-    h+=`<tr>
-      <td class="mono" style="font-weight:600">${c.caseRef}${c.isTest?'<span class="pill pgy" style="margin-left:.3rem">test</span>':''}</td>
-      <td style="font-size:.74rem">${c.surgeonName||c.surgeonId}</td>
-      <td style="font-size:.74rem">${c.date}</td>
-      <td><span class="pill ${sp}">${c.stage}</span></td>
-      <td><span class="pill ${ac[c.stageAgreement]||'pgy'}">${c.stageAgreement}</span></td>
-      <td><span class="pill ${ac[c.procAgreement]||'pgy'}">${c.procAgreement}</span></td>
-      <td><span class="pill ${hasOutcome?'pg':'pgy'}">${hasOutcome?'✓':'Pending'}</span></td>
-      <td><div class="actions">
-        <button class="btn btn-xs btn-s" onclick="adminViewCase('${c.id}')">View</button>
-        <button class="btn btn-xs btn-g" onclick="adminEditCase('${c.id}')">Edit</button>
-        <button class="btn btn-xs btn-d" onclick="adminDeleteCase('${c.id}')">Delete</button>
-      </div></td>
-    </tr>`;
-  });h+='</tbody></table>';el.innerHTML=h;
+  let h=`<table class="dt"><thead><tr><th>Case Ref</th><th>Surgeon</th><th>Date</th><th>Stage</th><th>Proc Agree</th><th>Outcomes</th><th></th></tr></thead><tbody>`;
+  [...data].sort((a,b)=>(b.submittedAt||'').localeCompare(a.submittedAt||'')).forEach(c=>{
+    const sp=c.stage?.includes('4')?'pt':c.stage==='Stage III'?'pr':c.stage==='Stage II'?'pa_':'pg';
+    const ho=c.intraProc||c.actualProcedure||c.intraTWL12||c.actualTWL12;
+    h+=`<tr><td class="mono" style="font-weight:600">${c.caseRef||'—'}${c.isTest?'<span class="pill pgy" style="margin-left:.3rem">test</span>':''}</td><td style="font-size:.73rem">${c.surgeonName||c.surgeonId||'—'}</td><td style="font-size:.73rem">${c.date||'—'}</td><td><span class="pill ${sp}">${c.stage||'—'}</span></td><td><span class="pill ${ac[c.procAgreement]||'pgy'}">${c.procAgreement||'—'}</span></td><td><span class="pill ${ho?'pg':'pgy'}">${ho?'✓':'Pending'}</span></td><td style="display:flex;gap:.28rem"><button class="btn btn-xs btn-s" onclick="adminView('${c.id}')">View</button><button class="btn btn-xs btn-g" onclick="adminEdit('${c.id}')">Edit</button><button class="btn btn-xs btn-d" onclick="adminDel('${c.id}')">Del</button></td></tr>`;
+  });
+  el.innerHTML=h+'</tbody></table>';
 }
-
-function adminViewCase(id){
+function adminView(id){
   const c=allCases.find(x=>x.id===id);if(!c)return;
-  const ac={Agree:'color:var(--green)',Partial:'color:var(--amber)',Disagree:'color:var(--red)'};
-  const outRows=c.actualProcedure||c.actualTWL12?`
-    <tr><td colspan="2" style="padding:.4rem;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);background:var(--surface2)">POST-OP GROUND TRUTH</td></tr>
-    ${c.actualProcedure?`<tr><td style="padding:.4rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2);width:200px">Actual Procedure</td><td style="padding:.4rem;border-bottom:1px solid var(--border)">${c.actualProcedure}</td></tr>`:''}
-    ${c.actualTWL12?`<tr><td style="padding:.4rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Actual TWL 12m</td><td style="padding:.4rem;border-bottom:1px solid var(--border)">${c.actualTWL12}%</td></tr>`:''}
-    ${c.actualTWL60?`<tr><td style="padding:.4rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Actual TWL 60m</td><td style="padding:.4rem;border-bottom:1px solid var(--border)">${c.actualTWL60}%</td></tr>`:''}
-    ${c.outcomeNotes?`<tr><td style="padding:.4rem;font-weight:600;color:var(--text2)">Outcome Notes</td><td style="padding:.4rem">${c.outcomeNotes}</td></tr>`:''}
-  `:'';
-  G('adminModalBody').innerHTML=`
-    <div class="modal-title">${c.caseRef}</div>
-    <div class="modal-sub">${c.date} · ${c.surgeonName}</div>
-    <table style="width:100%;border-collapse:collapse;font-size:.78rem">
-      ${[['Stage',c.stage],['Tier',c.tier+' ('+c.tierTarget+')'],['BMI',c.bmi+' kg/m²'],['M/O/Si',`M${c.M} / O${c.O} / Si${c.Si}`],['Recommended',c.recommended],['Stage Agreement',c.stageAgreement],['Proc Agreement',c.procAgreement],['Intended',c.intendedProc||'—'],['Rec Feedback',c.recFeedback||'—'],['Reason',c.reason||'—'],['Comments',c.comments||'—']].map(([k,v])=>`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2);width:200px">${k}</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);${(k.includes('Agreement')&&ac[v])||''}">${v}</td></tr>`).join('')}
-      ${outRows}
-    </table>`;
-  G('adminModalBtns').innerHTML=`<button class="btn btn-g btn-sm" onclick="adminEditCase('${c.id}')">✏️ Edit</button><button class="btn btn-d btn-sm" onclick="adminDeleteCase('${c.id}')">🗑 Delete</button><button class="btn btn-s" onclick="closeModal()">Close</button>`;
+  G('adminModalBody').innerHTML=`<div class="modal-title">${c.caseRef||'—'}</div><div class="modal-sub">${c.date||''} · ${c.surgeonName||''}</div><table style="width:100%;border-collapse:collapse;font-size:.78rem">${[['Stage',c.stage],['Tier',c.tier],['Recommended',c.recommended],['Proc Agreement',c.procAgreement],['Intended',c.intendedProc||'—'],['Comments',c.comments||'—'],['Actual Proc',c.intraProc||c.actualProcedure||'—'],['TWL 12m',c.intraTWL12||c.actualTWL12||'—']].map(([k,v])=>`<tr><td style="padding:.38rem .45rem;border-bottom:1px solid var(--bdr);font-weight:600;color:var(--tx2);width:185px">${k}</td><td style="padding:.38rem .45rem;border-bottom:1px solid var(--bdr)">${v}</td></tr>`).join('')}</table>`;
+  G('adminModalBtns').innerHTML=`<button class="btn btn-g btn-sm" onclick="adminEdit('${c.id}')">Edit</button><button class="btn btn-d btn-sm" onclick="adminDel('${c.id}')">Delete</button><button class="btn btn-s" onclick="closeModal()">Close</button>`;
   G('adminModal').classList.add('open');
 }
-
-function adminEditCase(id){
+function adminEdit(id){
   const c=allCases.find(x=>x.id===id);if(!c)return;
-  G('adminModalBody').innerHTML=`
-    <div class="modal-title">Edit Case: ${c.caseRef}</div>
-    <div class="modal-sub">Changes will be saved locally and pushed to GitHub via workflow dispatch.</div>
-    <div class="fg2">
-      <div class="fg"><label>Case Reference</label><input type="text" id="ae-ref" value="${c.caseRef}"></div>
-      <div class="fg"><label>Surgeon Name</label><input type="text" id="ae-surg" value="${c.surgeonName}"></div>
-    </div>
-    <div class="fg2 mt1">
-      <div class="fg"><label>Stage Agreement</label><select id="ae-stag">${['Agree','Partial','Disagree','Not recorded'].map(o=>`<option ${c.stageAgreement===o?'selected':''}>${o}</option>`).join('')}</select></div>
-      <div class="fg"><label>Proc Agreement</label><select id="ae-pag">${['Agree','Partial','Disagree','Not recorded'].map(o=>`<option ${c.procAgreement===o?'selected':''}>${o}</option>`).join('')}</select></div>
-    </div>
-    <div class="fg mt1"><label>Intended Procedure</label><input type="text" id="ae-ip" value="${c.intendedProc}"></div>
-    <div class="fg mt1"><label>Reason / Context</label><textarea id="ae-reason">${c.reason}</textarea></div>
-    <div class="fg mt1"><label>Comments</label><textarea id="ae-comments">${c.comments}</textarea></div>
-    <div class="divider"></div>
-    <div class="section-lbl">Post-Operative Outcomes</div>
-    <div class="fg2">
-      <div class="fg"><label>Actual Procedure</label><select id="ae-aproc">${['','SG (Sleeve Gastrectomy)','RYGB (Roux-en-Y Gastric Bypass)','BPD/DS','SADI-S','Other'].map(o=>`<option ${c.actualProcedure===o?'selected':''}>${o}</option>`).join('')}</select></div>
-      <div class="fg"><label>Actual TWL 12m (%)</label><input type="number" id="ae-twl12" value="${c.actualTWL12}" step="0.1"></div>
-    </div>
-    <div class="fg2 mt1">
-      <div class="fg"><label>Actual TWL 60m (%)</label><input type="number" id="ae-twl60" value="${c.actualTWL60}" step="0.1"></div>
-      <div class="fg"><label>Outcome Notes</label><input type="text" id="ae-onotes" value="${c.outcomeNotes}"></div>
-    </div>`;
-  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="adminSaveEdit('${c.id}')">✓ Save & Push to GitHub</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
+  G('adminModalBody').innerHTML=`<div class="modal-title">Edit: ${c.caseRef||id}</div><div class="fg2 mt1"><div class="fg"><label>Case Ref</label><input type="text" id="ae-ref" value="${c.caseRef||''}"></div><div class="fg"><label>Surgeon</label><input type="text" id="ae-surg" value="${c.surgeonName||''}"></div></div><div class="fg2 mt1"><div class="fg"><label>Proc Agreement</label><select id="ae-pag">${['Agree','Partial','Disagree','Not recorded'].map(o=>`<option ${c.procAgreement===o?'selected':''}>${o}</option>`).join('')}</select></div><div class="fg"><label>Intended Procedure</label><input type="text" id="ae-ip" value="${c.intendedProc||''}"></div></div><div class="fg mt1"><label>Reason</label><textarea id="ae-reason">${c.reason||''}</textarea></div><div class="fg mt1"><label>Comments</label><textarea id="ae-comments">${c.comments||''}</textarea></div><div class="divider"></div><div class="fg2"><div class="fg"><label>Actual Procedure</label><select id="ae-ap">${['','SG','RYGB','BPD/DS','SADI-S','Other'].map(o=>`<option ${(c.actualProcedure===o||c.intraProc===o)?'selected':''}>${o}</option>`).join('')}</select></div><div class="fg"><label>TWL 12m (%)</label><input type="number" id="ae-t12" value="${c.actualTWL12||c.intraTWL12||''}" step="0.1"></div></div>`;
+  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="adminSaveEdit('${id}')">✓ Save & Push</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
   G('adminModal').classList.add('open');
 }
 async function adminSaveEdit(id){
   const c=allCases.find(x=>x.id===id);if(!c)return;
-  c.caseRef=V('ae-ref');c.surgeonName=V('ae-surg');c.stageAgreement=V('ae-stag');c.procAgreement=V('ae-pag');c.intendedProc=V('ae-ip');c.reason=V('ae-reason');c.comments=V('ae-comments');c.actualProcedure=V('ae-aproc');c.actualTWL12=V('ae-twl12');c.actualTWL60=V('ae-twl60');c.outcomeNotes=V('ae-onotes');c.outcomeUpdatedAt=new Date().toISOString();
+  c.caseRef=V('ae-ref');c.surgeonName=V('ae-surg');c.procAgreement=V('ae-pag');c.intendedProc=V('ae-ip');c.reason=V('ae-reason');c.comments=V('ae-comments');c.actualProcedure=V('ae-ap');c.actualTWL12=V('ae-t12');c.outcomeUpdatedAt=new Date().toISOString();
   const ok=await dispatchWF(c);closeModal();loadAllCases();
-  alert(ok?'✓ Case updated and dispatched to GitHub (commits in ~30s).':'Changes saved locally. GitHub dispatch failed — check connection.');
+  alert(ok?'✓ Updated and dispatched to GitHub.':'Saved locally. Dispatch failed — check connection.');
 }
-async function adminDeleteCase(id){
-  if(!confirm('Delete this case from the local registry and flag it for removal from GitHub? This action is logged.'))return;
+async function adminDel(id){
+  if(!confirm('Delete this case?'))return;
   const idx=allCases.findIndex(c=>c.id===id);if(idx>=0)allCases.splice(idx,1);
-  // Create a tombstone marker
-  const tombstone={id,deletedAt:new Date().toISOString(),deletedBy:'admin',_deleted:true};
-  await dispatchWF(tombstone);
-  closeModal();loadAllCases();updateCaseBadge();
-  alert('Case removed locally and deletion dispatched to GitHub.');
+  await dispatchWF({id,_deleted:true,deletedAt:new Date().toISOString()});
+  closeModal();loadAllCases();updateCBadge();
 }
 
-/* ─── VALIDATION PANE ──────────────────────────────── */
+/* ══ VALIDATION ══ */
 async function loadValidation(){
-  const el=G('validationEl');
+  const el=G('validationEl');if(!el)return;
   el.innerHTML='<div class="empty"><div class="ei">🔄</div></div>';
   if(!allCases.length){const d=await fetchGHCases();if(d)allCases=d;}
   const live=allCases.filter(c=>!c.isTest&&!c._deleted);
   if(!live.length){el.innerHTML='<div class="empty"><div class="ei">✅</div><div class="et">No data yet</div></div>';return;}
-  const n=live.length;
-  const saA=live.filter(c=>c.stageAgreement==='Agree').length;
-  const paA=live.filter(c=>c.procAgreement==='Agree').length;
-  const sdA=live.filter(c=>c.stageAgreement==='Disagree').length;
-  const pdA=live.filter(c=>c.procAgreement==='Disagree').length;
-  const fl=live.filter(c=>c.stageAgreement==='Disagree'||c.procAgreement==='Disagree').length;
+  const n=live.length,pa=live.filter(c=>c.procAgreement==='Agree').length,sd=live.filter(c=>c.procAgreement==='Disagree').length;
+  function pct(a,b){return b?Math.round(a/b*100)+'%':'0%';}
+  function bars(counts,total,colors){return Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{const p=Math.round(v/(total||1)*100),col=colors[k]||'var(--blue)';return`<div class="bar-row"><span class="bar-lbl">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"><span>${v}</span></div></div><span class="bar-pct">${p}%</span></div>`;}).join('');}
   const stC={};live.forEach(c=>stC[c.stage]=(stC[c.stage]||0)+1);
-  function pct(a,b){return b?Math.round(a/b*100)+'%':'0%';}
-  function bars(counts,total,colors){return Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{const p=Math.round(v/total*100),col=colors[k]||'var(--blue)';return`<div class="bar-row"><span class="bar-lbl">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"><span>${v}</span></div></div><span class="bar-pct">${p}%</span></div>`;}).join('');}
-  // Stage breakdown
-  const stageOrder=['Stage I','Stage II','Stage III','Stage 4A','Stage 4B'];
-  let stH='<table class="dt"><thead><tr><th>Stage</th><th>n</th><th>Stage Agree %</th><th>Proc Agree %</th><th>Stage Disagree</th><th>Proc Disagree</th><th>Disagree Rate</th></tr></thead><tbody>';
-  stageOrder.forEach(stage=>{
-    const g=live.filter(c=>c.stage===stage);if(!g.length)return;
-    const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length);
-    const pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length);
-    const sd=g.filter(c=>c.stageAgreement==='Disagree').length;
-    const pd=g.filter(c=>c.procAgreement==='Disagree').length;
-    const dr=pct(g.filter(c=>c.stageAgreement==='Disagree'||c.procAgreement==='Disagree').length,g.length);
-    const sp=stage.includes('4')?'pt':stage==='Stage III'?'pr':stage==='Stage II'?'pa_':'pg';
-    const ss=parseFloat(sa)>=80?'color:var(--green)':parseFloat(sa)<60?'color:var(--red)':'color:var(--amber)';
-    stH+=`<tr><td><span class="pill ${sp}">${stage}</span></td><td>${g.length}</td><td style="${ss};font-weight:600">${sa}</td><td style="${ss};font-weight:600">${pa}</td><td style="${sd>0?'color:var(--red)':''}">${sd}</td><td style="${pd>0?'color:var(--red)':''}">${pd}</td><td>${dr}</td></tr>`;
-  });stH+='</tbody></table>';
-  // Feedback analysis
-  let likes=0,dislikes=0,flags=0;
-  live.forEach(c=>{try{const fb=JSON.parse(c.recFeedback||'{}');Object.values(fb).forEach(f=>{if(f.type==='like')likes++;else if(f.type==='dislike')dislikes++;else if(f.type==='flag')flags++;});}catch(e){}});
-  el.innerHTML=`
-    <div class="stats-grid" style="grid-template-columns:repeat(5,1fr)">
-      <div class="stat-card abl"><div class="sn">${n}</div><div class="sl">Cases</div></div>
-      <div class="stat-card abg"><div class="sn">${pct(saA,n)}</div><div class="sl">Stage Agree</div></div>
-      <div class="stat-card abg"><div class="sn">${pct(paA,n)}</div><div class="sl">Proc Agree</div></div>
-      <div class="stat-card abr"><div class="sn">${fl}</div><div class="sl">Flagged Cases</div></div>
-      <div class="stat-card aba"><div class="sn">${flags}</div><div class="sl">Rec Flags</div></div>
-    </div>
-    <div class="two-col mb2">
-      <div class="card"><div class="card-hdr"><span class="card-title">Volume by Stage</span></div>${bars(stC,n,{'Stage I':'#22c55e','Stage II':'#f59e0b','Stage III':'#f97316','Stage 4A':'#14b8a6','Stage 4B':'#ef4444'})}</div>
-      <div class="card"><div class="card-hdr"><span class="card-title">Recommendation Feedback</span></div>
-        ${bars({'👍 Liked':likes,'👎 Disliked':dislikes,'🚩 Flagged':flags},likes+dislikes+flags||1,{'👍 Liked':'#22c55e','👎 Disliked':'#ef4444','🚩 Flagged':'#f59e0b'})}
-      </div>
-    </div>
-    <div class="card mb2"><div class="card-hdr"><span class="card-title">Agreement Rates by Stage</span></div>${stH}</div>`;
+  let stH='<table class="dt"><thead><tr><th>Stage</th><th>n</th><th>Proc Agree %</th><th>Disagree</th></tr></thead><tbody>';
+  ['Stage I','Stage II','Stage III','Stage 4A','Stage 4B'].forEach(s=>{
+    const g=live.filter(c=>c.stage===s);if(!g.length)return;
+    const pa2=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length);
+    const sp=s.includes('4')?'pt':s==='Stage III'?'pr':s==='Stage II'?'pa_':'pg';
+    const ss=parseFloat(pa2)>=80?'color:var(--grn)':parseFloat(pa2)<60?'color:var(--red)':'color:var(--amb)';
+    stH+=`<tr><td><span class="pill ${sp}">${s}</span></td><td>${g.length}</td><td style="${ss};font-weight:600">${pa2}</td><td style="${g.filter(c=>c.procAgreement==='Disagree').length>0?'color:var(--red)':''}">${g.filter(c=>c.procAgreement==='Disagree').length}</td></tr>`;
+  });
+  stH+='</tbody></table>';
+  el.innerHTML=`<div class="stats-grid"><div class="stat-c abl"><div class="sn">${n}</div><div class="sl">Cases</div></div><div class="stat-c abg"><div class="sn">${pct(pa,n)}</div><div class="sl">Proc Agree</div></div><div class="stat-c abr"><div class="sn">${sd}</div><div class="sl">Disagree</div></div><div class="stat-c aba"><div class="sn">${live.filter(c=>c.intraProc||c.actualProcedure).length}</div><div class="sl">Outcomes</div></div></div>
+  <div class="two-col mb2"><div class="card"><div class="card-hdr"><span class="card-title">By Stage</span></div>${bars(stC,n,{'Stage I':'#22c55e','Stage II':'#f59e0b','Stage III':'#f97316','Stage 4A':'#14b8a6','Stage 4B':'#ef4444'})}</div><div class="card"><div class="card-hdr"><span class="card-title">Agreement by Stage</span></div>${stH}</div></div>`;
 }
 
-/* ─── OUTCOMES PANE ────────────────────────────────── */
+/* ══ OUTCOMES ══ */
 async function loadOutcomes(){
-  const el=G('outcomesEl');
+  const el=G('outcomesEl');if(!el)return;
   el.innerHTML='<div class="empty"><div class="ei">🔄</div></div>';
   if(!allCases.length){const d=await fetchGHCases();if(d)allCases=d;}
-  const withOutcome=allCases.filter(c=>!c.isTest&&!c._deleted&&(c.actualProcedure||c.actualTWL12));
-  if(!withOutcome.length){el.innerHTML='<div class="empty"><div class="ei">📊</div><div class="et">No outcomes entered yet</div><div class="es">Surgeons enter outcomes via My Cases → 📊 button</div></div>';return;}
-  function pct(a,b){return b?Math.round(a/b*100)+'%':'0%';}
-  const n=withOutcome.length;
-  const twl12vals=withOutcome.filter(c=>c.actualTWL12).map(c=>parseFloat(c.actualTWL12));
-  const mean12=twl12vals.length?Math.round(twl12vals.reduce((a,b)=>a+b,0)/twl12vals.length*10)/10:null;
-  const success12=twl12vals.filter(v=>v>=20).length;
-  // Concordance: recommended vs actual
-  let concordant=0,discordant=0;
-  withOutcome.forEach(c=>{if(c.intendedProc&&c.actualProcedure){if(c.intendedProc.startsWith(c.actualProcedure.split(' ')[0])||c.actualProcedure.startsWith(c.intendedProc.split(' ')[0]))concordant++;else discordant++;}});
-  let h=`<div class="stats-grid"><div class="stat-card abt"><div class="sn">${n}</div><div class="sl">Outcomes Entered</div></div><div class="stat-card abg"><div class="sn">${mean12?mean12+'%':'—'}</div><div class="sl">Mean TWL 12m</div></div><div class="stat-card abg"><div class="sn">${twl12vals.length?pct(success12,twl12vals.length):'—'}</div><div class="sl">Success ≥20%</div></div><div class="stat-card aba"><div class="sn">${concordant}</div><div class="sl">Proc Concordant</div></div></div>
-  <table class="dt"><thead><tr><th>Case</th><th>Surgeon</th><th>Stage</th><th>Recommended</th><th>Actual Proc</th><th>TWL 12m</th><th>TWL 60m</th><th>DM</th><th>HTN</th><th>OSA</th></tr></thead><tbody>`;
-  withOutcome.forEach(c=>{
-    const sp=c.stage.includes('4')?'pt':c.stage==='Stage III'?'pr':c.stage==='Stage II'?'pa_':'pg';
-    const twl12n=parseFloat(c.actualTWL12);
-    const twlClass=!isNaN(twl12n)?twl12n>=20?'color:var(--green)':'color:var(--red)':'';
-    h+=`<tr><td class="mono" style="font-weight:600">${c.caseRef}</td><td style="font-size:.72rem">${c.surgeonName}</td><td><span class="pill ${sp}">${c.stage}</span></td><td style="font-size:.72rem">${c.recommended}</td><td style="font-size:.72rem">${c.actualProcedure||'—'}</td><td style="${twlClass};font-weight:600">${c.actualTWL12?c.actualTWL12+'%':'—'}</td><td>${c.actualTWL60?c.actualTWL60+'%':'—'}</td><td style="font-size:.72rem">${c.dm_resolved||'—'}</td><td style="font-size:.72rem">${c.htn_resolved||'—'}</td><td style="font-size:.72rem">${c.osa_resolved||'—'}</td></tr>`;
-  });h+='</tbody></table>';el.innerHTML=h;
+  const w=allCases.filter(c=>!c.isTest&&!c._deleted&&(c.intraProc||c.actualProcedure||c.intraTWL12||c.actualTWL12));
+  if(!w.length){el.innerHTML='<div class="empty"><div class="ei">📊</div><div class="et">No outcomes entered yet</div><div class="et" style="font-size:.78rem;font-weight:400">Surgeons enter outcomes via My Cases → 📊</div></div>';return;}
+  let h=`<table class="dt"><thead><tr><th>Case</th><th>Surgeon</th><th>Stage</th><th>Recommended</th><th>Actual Proc</th><th>TWL 12m</th><th>T2DM</th><th>HTN</th></tr></thead><tbody>`;
+  w.forEach(c=>{
+    const sp=c.stage?.includes('4')?'pt':c.stage==='Stage III'?'pr':c.stage==='Stage II'?'pa_':'pg';
+    const t=parseFloat(c.intraTWL12||c.actualTWL12);const tc=!isNaN(t)?t>=20?'color:var(--grn)':'color:var(--red)':'';
+    h+=`<tr><td class="mono" style="font-weight:600">${c.caseRef||'—'}</td><td style="font-size:.72rem">${c.surgeonName||'—'}</td><td><span class="pill ${sp}">${c.stage||'—'}</span></td><td style="font-size:.72rem">${c.recommended||'—'}</td><td style="font-size:.72rem">${c.intraProc||c.actualProcedure||'—'}</td><td style="${tc};font-weight:600">${(c.intraTWL12||c.actualTWL12)?((c.intraTWL12||c.actualTWL12)+'%'):'—'}</td><td style="font-size:.71rem">${c.r_dm||c.intraRes_dm||'—'}</td><td style="font-size:.71rem">${c.r_htn||c.intraRes_htn||'—'}</td></tr>`;
+  });
+  el.innerHTML=h+'</tbody></table>';
 }
 
-/* ─── COMMENTS PANE ────────────────────────────────── */
+/* ══ COMMENTS ══ */
 async function loadComments(){
-  const el=G('commentsEl');
+  const el=G('commentsEl');if(!el)return;
   el.innerHTML='<div class="empty"><div class="ei">🔄</div></div>';
   if(!allCases.length){const d=await fetchGHCases();if(d)allCases=d;}
-  const live=allCases.filter(c=>!c._deleted);
-  const withFeedback=live.filter(c=>c.comments?.trim()||c.reason?.trim());
-  let flagged=[];
-  live.forEach(c=>{try{const fb=JSON.parse(c.recFeedback||'{}');Object.values(fb).forEach(f=>{if(f.type==='flag'||f.type==='dislike')flagged.push({...c,_fb:f});});}catch(e){}});
-  if(!withFeedback.length&&!flagged.length){el.innerHTML='<div class="empty"><div class="ei">💬</div><div class="et">No comments or flags yet</div></div>';return;}
-  let h='';
-  if(flagged.length){
-    h+=`<div class="card mb2"><div class="card-hdr"><span class="card-title">🚩 Recommendation Flags & Dislikes (${flagged.length})</span></div>${flagged.map(c=>`<div style="padding:.7rem;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:.42rem;border-left:3px solid var(--${c._fb.type==='flag'?'amber':'red'})"><div style="font-size:.67rem;font-weight:600;color:var(--text2);margin-bottom:.18rem">${c.caseRef} · ${c.date} · ${c.stage} · ${c.surgeonName} · Rec: ${c._fb.proc}</div><div style="font-size:.76rem;color:var(--${c._fb.type==='flag'?'amber':'red'})">${c._fb.type==='flag'?'🚩 Flagged for review':c._fb.type==='dislike'?'👎 Disliked':''}${c._fb.reason?` — ${c._fb.reason}`:''}</div>${c._fb.detail?`<div style="font-size:.74rem;margin-top:.15rem">${c._fb.detail}</div>`:''}</div>`).join('')}</div>`;
-  }
-  if(withFeedback.length){
-    h+=`<div class="card"><div class="card-hdr"><span class="card-title">💬 Surgeon Comments & Concerns (${withFeedback.length})</span></div>${withFeedback.slice().reverse().map(c=>`<div style="padding:.7rem;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:.42rem;border-left:3px solid var(--blue)"><div style="font-size:.67rem;font-weight:600;color:var(--text2);margin-bottom:.18rem">${c.caseRef} · ${c.date} · ${c.stage} · ${c.surgeonName}</div>${c.reason?`<div style="font-size:.74rem;color:var(--text2);margin-bottom:.15rem"><strong>Reason:</strong> ${c.reason}</div>`:''}<div style="font-size:.76rem;color:var(--text)">${c.comments||''}</div></div>`).join('')}</div>`;
-  }
-  el.innerHTML=h;
+  const wc=allCases.filter(c=>!c._deleted&&(c.comments?.trim()||c.reason?.trim()));
+  if(!wc.length){el.innerHTML='<div class="empty"><div class="ei">💬</div><div class="et">No comments yet</div></div>';return;}
+  el.innerHTML=`<div class="card"><div class="card-hdr"><span class="card-title">💬 Surgeon Comments (${wc.length})</span></div>${wc.slice().reverse().map(c=>`<div style="padding:.65rem;background:var(--surf2);border-radius:var(--rs);margin-bottom:.42rem;border-left:3px solid var(--blue)"><div style="font-size:.66rem;font-weight:600;color:var(--tx2);margin-bottom:.15rem">${c.caseRef||'—'} · ${c.date||''} · ${c.stage||''} · ${c.surgeonName||''}</div>${c.reason?`<div style="font-size:.74rem;color:var(--tx2);margin-bottom:.14rem"><strong>Reason:</strong> ${c.reason}</div>`:''}<div style="font-size:.76rem">${c.comments||''}</div></div>`).join('')}</div>`;
 }
 
-/* ─── SURGEONS ─────────────────────────────────────── */
-function getSurgeons(){
-  try{const raw=localStorage.getItem(MAIN_KEY);if(raw){const st=JSON.parse(raw);if(st.surgeons?.length)return st.surgeons;}}catch(e){}
-  return SURGEONS_DEFAULT;
+/* ══ PULL/PUSH ══ */
+async function pullFromGH(){
+  if(!cfg.token){alert('Configure GitHub first.');return;}
+  setGHStatus('busy','Pulling…');log('Pulling from GitHub…','inf');
+  const data=await fetchGHCases();
+  if(!data){setGHStatus('err','Pull failed');log('✗ Pull failed.','err');return;}
+  allCases=data;updateCBadge();
+  try{const r=localStorage.getItem(MKEY),st=r?JSON.parse(r):{};const m=[...data];(st.cases||[]).forEach(lc=>{if(!m.find(c=>c.id===lc.id))m.push(lc);});st.cases=m;st.gh=cfg;localStorage.setItem(MKEY,JSON.stringify(st));}catch(e){}
+  setGHStatus('ok',`Connected: <b>${cfg.owner}/${cfg.repo||cfg.owner}</b> — ${data.length} cases`);
+  log(`✓ Pulled ${data.length} cases.`,'ok');alert(`✓ Pulled ${data.length} cases.`);
 }
-function saveSurgeons(arr){
-  try{const raw=localStorage.getItem(MAIN_KEY);const st=raw?JSON.parse(raw):{};st.surgeons=arr;localStorage.setItem(MAIN_KEY,JSON.stringify(st));}catch(e){}
-}
-function renderSurgRoster(){
-  const surgs=getSurgeons();
-  let local=[];try{const raw=localStorage.getItem(MAIN_KEY);if(raw){const st=JSON.parse(raw);local=st.cases||[];}}catch(e){}
-  G('surgRosterTbl').innerHTML=surgs.map(s=>{
-    const nc=local.filter(c=>c.surgeonId===s.id).length;
-    const no=local.filter(c=>c.surgeonId===s.id&&(c.actualProcedure||c.actualTWL12)).length;
-    return`<tr><td style="font-weight:600;color:#fff">${s.name}</td><td style="color:var(--text2)">${s.role}</td><td class="mono">${s.initials}</td><td>${nc}</td><td>${no}</td><td><div class="actions"><button class="btn btn-xs btn-s" onclick="editSurgeon('${s.id}')">Edit</button><button class="btn btn-xs btn-d" onclick="removeSurgeon('${s.id}')">Remove</button></div></td></tr>`;
-  }).join('');
-}
-function openAddSurgeon(){
-  G('adminModalBody').innerHTML=`
-    <div class="modal-title">Add Surgeon</div>
-    <div class="modal-sub">New surgeons will appear in the platform's profile selector immediately.</div>
-    <div class="fg2">
-      <div class="fg"><label>Full Name</label><input type="text" id="ns-name" placeholder="Dr. First Last"></div>
-      <div class="fg"><label>Role / Grade</label><input type="text" id="ns-role" placeholder="e.g. Consultant Bariatric Surgeon"></div>
-    </div>
-    <div class="fg mt1"><label>Initials (2–3 letters)</label><input type="text" id="ns-init" placeholder="e.g. OG" maxlength="3"></div>`;
-  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveNewSurgeon()">Add Surgeon</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
-  G('adminModal').classList.add('open');
-}
-function saveNewSurgeon(){
-  const name=V('ns-name').trim(),role=V('ns-role').trim(),init=(V('ns-init')||name.split(' ').map(w=>w[0]).join('')).toUpperCase().slice(0,3);
-  if(!name){alert('Name required.');return;}
-  const surgs=getSurgeons();surgs.push({id:'s_'+Date.now(),name,role:role||'Surgeon',initials:init});
-  saveSurgeons(surgs);renderSurgRoster();closeModal();
-}
-function editSurgeon(id){
-  const surgs=getSurgeons();const s=surgs.find(x=>x.id===id);if(!s)return;
-  G('adminModalBody').innerHTML=`
-    <div class="modal-title">Edit Surgeon</div>
-    <div class="fg2 mt1"><div class="fg"><label>Name</label><input type="text" id="es-name" value="${s.name}"></div><div class="fg"><label>Role</label><input type="text" id="es-role" value="${s.role}"></div></div>
-    <div class="fg mt1"><label>Initials</label><input type="text" id="es-init" value="${s.initials}" maxlength="3"></div>`;
-  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveSurgeonEdit('${id}')">Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
-  G('adminModal').classList.add('open');
-}
-function saveSurgeonEdit(id){
-  const surgs=getSurgeons();const i=surgs.findIndex(x=>x.id===id);if(i<0)return;
-  surgs[i].name=V('es-name');surgs[i].role=V('es-role');surgs[i].initials=V('es-init').toUpperCase().slice(0,3)||surgs[i].initials;
-  saveSurgeons(surgs);renderSurgRoster();closeModal();
-}
-function removeSurgeon(id){
-  const surgs=getSurgeons();const s=surgs.find(x=>x.id===id);if(!s)return;
-  if(!confirm(`Remove ${s.name} from the roster? Their historical cases will not be deleted.`))return;
-  saveSurgeons(surgs.filter(x=>x.id!==id));renderSurgRoster();
+async function pushAllToGH(){
+  if(!cfg.token){alert('Configure GitHub first.');return;}
+  let local=[];try{const r=localStorage.getItem(MKEY);if(r){const st=JSON.parse(r);local=st.cases||[];}}catch(e){}
+  if(!local.length){alert('No local cases.');return;}
+  setGHStatus('busy','Pushing…');let ok=0;
+  for(const c of local){if(await dispatchWF(c))ok++;}
+  setGHStatus('ok',`Connected: <b>${cfg.owner}/${cfg.repo}</b>`);
+  log(`✓ Dispatched ${ok}/${local.length}.`,'ok');alert(`Dispatched ${ok} workflow runs.`);
 }
 
-/* ─── EXPORTS ──────────────────────────────────────── */
+/* ══ EXPORTS ══ */
 function exportAllCSV(){
-  const cases=allCases.length?allCases:(()=>{try{const raw=localStorage.getItem(MAIN_KEY);return raw?JSON.parse(raw).cases||[]:[]}catch(e){return [];}})();
-  if(!cases.length){alert('No cases available. Load from GitHub first.');return;}
-  const hd=['id','caseRef','isTest','date','surgeonId','surgeonName','bmi','M','O','Si','stage','tier','tierTarget','recommended','stageAgreement','procAgreement','intendedProc','recFeedback','reason','comments','actualProcedure','actualTWL12','actualTWL60','dm_resolved','htn_resolved','osa_resolved','hld_resolved','outcomeNotes','submittedAt','outcomeUpdatedAt'];
+  const cases=allCases.length?allCases:(()=>{try{const r=localStorage.getItem(MKEY);return r?JSON.parse(r).cases||[]:[]}catch(e){return[];}})();
+  if(!cases.length){alert('No cases. Load from GitHub first.');return;}
+  const hd=['id','caseRef','isTest','date','surgeonId','surgeonName','bmi','M','O','Si','stage','tier','recommended','procAgreement','twlAgreement','intendedProc','reason','comments','intraProc','intraTWL12','intraTWL60','actualProcedure','actualTWL12','actualTWL60','outcomeNotes','submittedAt'];
   const rows=cases.filter(c=>!c._deleted).map(c=>hd.map(h=>`"${String(c[h]??'').replace(/"/g,'""')}"`).join(','));
   const blob=new Blob([[hd.join(','),...rows].join('\n')],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`MOSI_AllCases_${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
-function exportOutcomesCsv(){
-  const cases=(allCases.length?allCases:(()=>{try{const raw=localStorage.getItem(MAIN_KEY);return raw?JSON.parse(raw).cases||[]:[]}catch(e){return [];}})()).filter(c=>!c._deleted&&(c.actualProcedure||c.actualTWL12));
+function exportOutcomesCSV(){
+  const cases=(allCases.length?allCases:(()=>{try{const r=localStorage.getItem(MKEY);return r?JSON.parse(r).cases||[]:[]}catch(e){return[];}})()).filter(c=>!c._deleted&&(c.intraProc||c.actualProcedure||c.intraTWL12||c.actualTWL12));
   if(!cases.length){alert('No outcome data yet.');return;}
-  const hd=['id','caseRef','date','surgeonName','stage','recommended','intendedProc','actualProcedure','actualTWL12','actualTWL60','dm_resolved','htn_resolved','osa_resolved','hld_resolved','outcomeNotes','outcomeUpdatedAt'];
+  const hd=['id','caseRef','date','surgeonName','stage','recommended','intraProc','actualProcedure','intraTWL12','actualTWL12','intraTWL60','actualTWL60','outcomeNotes','submittedAt'];
   const rows=cases.map(c=>hd.map(h=>`"${String(c[h]??'').replace(/"/g,'""')}"`).join(','));
   const blob=new Blob([[hd.join(','),...rows].join('\n')],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`MOSI_Outcomes_${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
 
-/* ─── TABS & MODAL ─────────────────────────────────── */
-const PANES=['github','surgeons','cases','validation','outcomes','comments','export','about-editor','howto'];
+/* ══ SURGEONS ══ */
+function getSurgeons(){try{const r=localStorage.getItem(MKEY);if(r){const st=JSON.parse(r);if(st.surgeons?.length)return st.surgeons;}}catch(e){}return DEFAULT_SURGEONS;}
+function saveSurgeons(arr){try{const r=localStorage.getItem(MKEY),st=r?JSON.parse(r):{};st.surgeons=arr;localStorage.setItem(MKEY,JSON.stringify(st));}catch(e){}}
+function renderSurgRoster(){
+  const el=G('surgTbl');if(!el)return;
+  const ss=getSurgeons();let local=[];try{const r=localStorage.getItem(MKEY);if(r){const st=JSON.parse(r);local=st.cases||[];}}catch(e){}
+  el.innerHTML=ss.map(s=>`<tr><td style="font-weight:600">${s.name}</td><td style="color:var(--tx2)">${s.role}</td><td class="mono">${s.initials}</td><td>${local.filter(c=>c.surgeonId===s.id).length}</td><td style="display:flex;gap:.3rem"><button class="btn btn-xs btn-s" onclick="editSurgeon('${s.id}')">Edit</button><button class="btn btn-xs btn-d" onclick="removeSurgeon('${s.id}')">Remove</button></td></tr>`).join('');
+}
+function openAddSurgeon(){G('adminModalBody').innerHTML=`<div class="modal-title">Add Surgeon</div><div class="fg2 mt1"><div class="fg"><label>Full Name</label><input type="text" id="ns-nm" placeholder="Dr. First Last"></div><div class="fg"><label>Role</label><input type="text" id="ns-rl" placeholder="e.g. Consultant Bariatric Surgeon"></div></div><div class="fg mt1"><label>Initials</label><input type="text" id="ns-in" placeholder="e.g. OG" maxlength="3"></div>`;G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveNewSurgeon()">Add</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;G('adminModal').classList.add('open');}
+function saveNewSurgeon(){const nm=V('ns-nm').trim(),rl=V('ns-rl').trim(),ini=(V('ns-in')||nm.split(' ').map(w=>w[0]).join('')).toUpperCase().slice(0,3);if(!nm){alert('Name required.');return;}const ss=getSurgeons();ss.push({id:'s_'+Date.now(),name:nm,role:rl||'Surgeon',initials:ini});saveSurgeons(ss);renderSurgRoster();closeModal();}
+function editSurgeon(id){const ss=getSurgeons(),s=ss.find(x=>x.id===id);if(!s)return;G('adminModalBody').innerHTML=`<div class="modal-title">Edit Surgeon</div><div class="fg2 mt1"><div class="fg"><label>Name</label><input type="text" id="es-nm" value="${s.name}"></div><div class="fg"><label>Role</label><input type="text" id="es-rl" value="${s.role}"></div></div><div class="fg mt1"><label>Initials</label><input type="text" id="es-in" value="${s.initials}" maxlength="3"></div>`;G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveSurgEdit('${id}')">Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;G('adminModal').classList.add('open');}
+function saveSurgEdit(id){const ss=getSurgeons(),i=ss.findIndex(x=>x.id===id);if(i<0)return;ss[i].name=V('es-nm');ss[i].role=V('es-rl');ss[i].initials=V('es-in').toUpperCase().slice(0,3)||ss[i].initials;saveSurgeons(ss);renderSurgRoster();closeModal();}
+function removeSurgeon(id){const ss=getSurgeons(),s=ss.find(x=>x.id===id);if(!s||!confirm(`Remove ${s.name}?`))return;saveSurgeons(ss.filter(x=>x.id!==id));renderSurgRoster();}
+
+/* ══ ABOUT EDITOR ══ */
+const DEF_TEAM=[
+  {id:'sl',name:'Simon J. Laplante, M.D.',role:'Lead Clinician · Principal Conceptualist',org:'Surgery Innovation Team · Mayo Clinic',link:'https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20430965',linkLabel:'Mayo Clinic Profile'},
+  {id:'rs',name:'Reza Shahriarirad, M.D.',role:'Platform Development · Research Fellow',org:'Surgery Innovation Team · Mayo Clinic',link:'https://www.researchgate.net/profile/Reza-Shahriarirad',linkLabel:'Academic CV'},
+  {id:'aa',name:'Abdulrahman Alomar, M.D.',role:'Research Fellow',org:'Dept. of Gastroenterologic & General Surgery · Mayo Clinic',link:'https://www.researchgate.net/profile/Abdulrahman-Alomar',linkLabel:'Research Profile'},
+];
+function getTeam(){try{const s=localStorage.getItem('mosi_about_team');return s?JSON.parse(s):DEF_TEAM;}catch(e){return DEF_TEAM;}}
+function saveTeam(t){localStorage.setItem('mosi_about_team',JSON.stringify(t));}
+function renderMembers(){
+  const t=getTeam(),el=G('membersList');if(!el)return;
+  if(!t.length){el.innerHTML='<div style="font-size:.77rem;color:var(--tx2);padding:.5rem 0">No members. Click + Add.</div>';return;}
+  el.innerHTML=t.map((m,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.78rem;background:var(--surf2);border-radius:var(--rs);margin-bottom:.42rem;border:1px solid var(--bdr)"><div><div style="font-weight:600;font-size:.81rem">${m.name}</div><div style="font-size:.7rem;color:var(--tx2);margin-top:.08rem">${m.role} — ${m.org}</div></div><div style="display:flex;gap:.3rem"><button class="btn btn-xs btn-s" onclick="editMember(${i})">Edit</button><button class="btn btn-xs btn-d" onclick="removeMember(${i})">Remove</button></div></div>`).join('');
+}
+function openAddMember(){showMemberModal(-1,{name:'',role:'',org:'',link:'',linkLabel:''});}
+function editMember(i){showMemberModal(i,getTeam()[i]);}
+function removeMember(i){const t=getTeam();t.splice(i,1);saveTeam(t);renderMembers();}
+function showMemberModal(i,m){G('adminModalBody').innerHTML=`<div class="modal-title">${i<0?'Add':'Edit'} Team Member</div><div class="fg mt1"><label>Name &amp; Credentials</label><input type="text" id="tm-nm" value="${m.name||''}" placeholder="e.g. Reza Shahriarirad, M.D."></div><div class="fg mt1"><label>Role / Title</label><input type="text" id="tm-rl" value="${m.role||''}"></div><div class="fg mt1"><label>Department / Institution</label><input type="text" id="tm-org" value="${m.org||''}"></div><div class="fg mt1"><label>Profile Link URL</label><input type="text" id="tm-lk" value="${m.link||''}" placeholder="https://…"></div><div class="fg mt1"><label>Link Label</label><input type="text" id="tm-ll" value="${m.linkLabel||''}"></div>`;G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveMember(${i})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;G('adminModal').classList.add('open');}
+function saveMember(i){const t=getTeam(),m={name:V('tm-nm'),role:V('tm-rl'),org:V('tm-org'),link:V('tm-lk'),linkLabel:V('tm-ll')};if(i<0)t.push(m);else t[i]=m;saveTeam(t);renderMembers();closeModal();}
+function saveAboutEdits(){const e={desc:V('ae-desc'),inst:V('ae-inst'),updatedAt:new Date().toISOString()};localStorage.setItem('mosi_about_edits',JSON.stringify(e));alert('✓ Saved. Changes live in this browser.');}
+function loadAboutEditor(){renderMembers();try{const e=JSON.parse(localStorage.getItem('mosi_about_edits')||'{}');if(G('ae-desc'))G('ae-desc').value=e.desc||'';if(G('ae-inst'))G('ae-inst').value=e.inst||'';}catch(e){}}
+
+/* ══ PANE SWITCHING ══ */
 function switchPane(name){
   PANES.forEach(p=>{G('pane-'+p)?.classList.remove('active');G('a-'+p)?.classList.remove('active');});
   G('pane-'+name)?.classList.add('active');G('a-'+name)?.classList.add('active');
+  if(name==='about-editor')loadAboutEditor();
+  if(name==='surgeons')renderSurgRoster();
 }
-function closeModal(){G('adminModal').classList.remove('open');}
-function updateStatusStrip(){
-  if(cfg.owner&&cfg.repo&&cfg.token)setGHStatus('ok',`Connected: <span>${cfg.owner}/${cfg.repo}</span>`);
-  else setGHStatus('','Not configured');
-  updateCaseBadge();
+function closeModal(){G('adminModal')?.classList.remove('open');}
+
+/* ══ HOW TO ══ */
+function renderHowTo(){
+  const el=G('howtoSteps');if(!el)return;
+  const steps=['Surgeon opens index.html — no login, no token, no setup required.',
+    'Case submitted — saved instantly to browser localStorage. Always succeeds, even offline.',
+    'GitHub Actions workflow dispatched using the admin token stored via this panel.',
+    'GitHub runners read data/cases.json, append the case, and commit back (~30 seconds).',
+    'Commit appears in repository. All surgeons see live pooled data in Unit Aggregate.'];
+  el.innerHTML=steps.map((s,i)=>`<div style="display:flex;gap:.85rem;padding:.75rem 0;border-bottom:1px solid var(--bdr)"><div style="width:22px;height:22px;border-radius:50%;background:var(--amb);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:#fff;flex-shrink:0;margin-top:.08rem">${i+1}</div><div style="font-size:.78rem;color:var(--tx2);line-height:1.6">${s}</div></div>`).join('');
 }
 
-/* ─── THEME ─────────────────────────────────────────── */
-function toggleAdminTheme(){
-  const current=document.documentElement.getAttribute('data-theme')||'dark';
-  const next=current==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',next);
-  const btn=G('adminThemeBtn');
-  if(btn){btn.textContent=next==='dark'?'🌙':'☀️';btn.style.color=next==='dark'?'rgba(255,255,255,.6)':'rgba(0,0,60,.6)';}
-  localStorage.setItem('mosi_admin_theme',next);
-}
-function loadAdminTheme(){
-  const saved=localStorage.getItem('mosi_admin_theme')||'dark';
-  document.documentElement.setAttribute('data-theme',saved);
-  setTimeout(()=>{
-    const btn=G('adminThemeBtn');
-    if(btn){btn.textContent=saved==='dark'?'🌙':'☀️';btn.style.color=saved==='dark'?'rgba(255,255,255,.6)':'rgba(0,0,60,.6)';}
-  },0);
+/* ══ INIT PANEL ══ */
+function initPanel(){
+  loadCfg();
+  renderHowTo();
 }
 
-/* ─── ABOUT EDITOR ──────────────────────────────────── */
-const DEFAULT_TEAM=[
-  {id:'sl',name:'Simon J. Laplante, M.D.',role:'Lead Clinician · Principal Conceptualist',org:'Surgery Innovation Team · Mayo Clinic',color:'var(--blue)',link:'https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20430965',linkLabel:'Mayo Clinic Profile'},
-  {id:'rs',name:'Reza Shahriarirad, M.D.',role:'Platform Development · Research Fellow',org:'Surgery Innovation Team · Mayo Clinic',color:'var(--teal)',link:'https://www.researchgate.net/profile/Reza-Shahriarirad',linkLabel:'Academic CV'},
-  {id:'aa',name:'Abdulrahman Alomar, M.D.',role:'Research Fellow',org:'Dept. of Gastroenterologic & General Surgery · Mayo Clinic',color:'var(--amber)',link:'https://www.researchgate.net/profile/Abdulrahman-Alomar',linkLabel:'Research Profile'},
-];
-function getTeam(){try{const s=localStorage.getItem('mosi_about_team');return s?JSON.parse(s):DEFAULT_TEAM;}catch(e){return DEFAULT_TEAM;}}
-function saveTeam(team){localStorage.setItem('mosi_about_team',JSON.stringify(team));}
-function renderTeamList(){
-  const team=getTeam();
-  const el=G('teamMembersList');if(!el)return;
-  if(!team.length){el.innerHTML='<div style="font-size:.78rem;color:var(--text2);padding:.75rem 0">No team members defined. Click + Add Member.</div>';return;}
-  el.innerHTML=team.map((m,i)=>`
-    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;padding:.85rem;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:.5rem;border:1px solid var(--border)">
-      <div>
-        <div style="font-weight:600;font-size:.82rem;color:var(--text)">${m.name}</div>
-        <div style="font-size:.72rem;color:var(--text2);margin-top:.1rem">${m.role} — ${m.org}</div>
-      </div>
-      <div style="display:flex;gap:.4rem">
-        <button class="btn btn-s btn-xs" onclick="editTeamMember(${i})">Edit</button>
-        <button class="btn btn-d btn-xs" onclick="removeTeamMember(${i})">Remove</button>
-      </div>
-    </div>`).join('');
+/* ══ STARTUP ══ */
+// If already authenticated (session), init immediately
+if(sessionStorage.getItem('mosi_auth')==='1'){
+  // Small delay to ensure DOM is ready
+  setTimeout(initPanel, 0);
 }
-function addTeamMember(){showTeamMemberModal(-1,{name:'',role:'',org:'',color:'var(--blue)',link:'',linkLabel:''});}
-function editTeamMember(idx){const team=getTeam();showTeamMemberModal(idx,team[idx]);}
-function removeTeamMember(idx){const team=getTeam();team.splice(idx,1);saveTeam(team);renderTeamList();}
-function showTeamMemberModal(idx,m){
-  G('adminModalBody').innerHTML=`
-    <div class="modal-title">${idx<0?'Add Team Member':'Edit Team Member'}</div>
-    <div class="fg mt1"><label>Full Name &amp; Credentials</label><input type="text" id="tm-name" value="${m.name}" placeholder="e.g. Reza Shahriarirad, M.D."></div>
-    <div class="fg mt1"><label>Role / Title</label><input type="text" id="tm-role" value="${m.role}" placeholder="e.g. Platform Development · Research Fellow"></div>
-    <div class="fg mt1"><label>Department / Institution</label><input type="text" id="tm-org" value="${m.org}" placeholder="e.g. Surgery Innovation Team · Mayo Clinic"></div>
-    <div class="fg mt1"><label>Profile Link URL</label><input type="text" id="tm-link" value="${m.link||''}" placeholder="https://..."></div>
-    <div class="fg mt1"><label>Link Label</label><input type="text" id="tm-linklabel" value="${m.linkLabel||''}" placeholder="e.g. Mayo Clinic Profile"></div>`;
-  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveTeamMember(${idx})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
-  G('adminModal').classList.add('open');
-}
-function saveTeamMember(idx){
-  const team=getTeam();
-  const member={name:V('tm-name'),role:V('tm-role'),org:V('tm-org'),link:V('tm-link'),linkLabel:V('tm-linklabel'),color:'var(--blue)'};
-  if(idx<0)team.push(member);else team[idx]=member;
-  saveTeam(team);renderTeamList();closeModal();
-}
-function saveAboutEdits(){
-  const desc=V('ae-sysdesc');const inst=V('ae-institution');
-  const edits={desc,inst,updatedAt:new Date().toISOString()};
-  localStorage.setItem('mosi_about_edits',JSON.stringify(edits));
-  alert('✓ About page content saved. Changes are live in this browser.');
-}
-function loadAboutEditorFields(){
-  renderTeamList();
-  try{const e=JSON.parse(localStorage.getItem('mosi_about_edits')||'{}');if(G('ae-sysdesc'))G('ae-sysdesc').value=e.desc||'';if(G('ae-institution'))G('ae-institution').value=e.inst||'';}catch(e){}
-}
-// Override switchPane to load about editor data
-const _origSwitchPane=switchPane;
-function switchPane(name){
-  _origSwitchPane(name);
-  if(name==='about-editor')loadAboutEditorFields();
-}
-
-/* ─── INIT ─────────────────────────────────────────── */
-loadAdminTheme();
-loadCfg();
 </script>
 </body>
 </html>
