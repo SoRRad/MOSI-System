@@ -119,6 +119,8 @@
     "actualTWL60": "",
     "outcomeNotes": "",
     "outcomeUpdatedAt": "",
-    "submittedAt": "2026-03-18T20:06:45.712Z"
+    "submittedAt": "2026-03-18T20:06:45.712Z",
+    "_deleted": true,
+    "deletedAt": "2026-03-18T20:07:50.120Z"
   }
 ]
