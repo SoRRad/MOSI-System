@@ -138,11 +138,11 @@ select{cursor:pointer}
 
 /* ─── STEPS ──────────────────────────────────────────────── */
 .steps{display:flex;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:1.5rem}
-.step{flex:1;padding:.55rem .5rem;text-align:center;font-size:.68rem;font-weight:600;background:var(--surface);color:var(--text3);border-right:1px solid var(--border);transition:all .15s;cursor:default}
+.step{flex:1;padding:.65rem .5rem;text-align:center;font-size:.74rem;font-weight:600;background:var(--surface);color:var(--text3);border-right:1px solid var(--border);transition:all .15s;cursor:default}
 .step:last-child{border-right:none}
 .step.done{background:var(--navy);color:rgba(255,255,255,.7)}
 .step.active{background:var(--blue);color:#fff}
-.step-n{display:block;font-family:'DM Mono',monospace;font-size:.75rem;margin-bottom:.06rem}
+.step-n{display:none}
 
 /* ─── SCORE STRIP ─────────────────────────────────────────── */
 .score-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
@@ -213,7 +213,8 @@ select{cursor:pointer}
 @keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ─── SI SELECTOR ─────────────────────────────────────────── */
-.si-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.si-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.si-grid .si-row-full{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
 .si-card{border:2px solid var(--border);border-radius:var(--radius-sm);padding:.75rem .9rem;cursor:pointer;transition:all .15s;background:var(--surface2)}
 .si-card:hover{border-color:var(--blue);background:var(--blue-pale)}
 .si-card.selected{border-color:var(--blue);background:var(--blue-pale)}
@@ -370,10 +371,10 @@ select{cursor:pointer}
   <div class="page-sub">MOSI scores compute in real time. Submit to save locally and push to GitHub automatically.</div>
 
   <div class="steps">
-    <div class="step active" id="stp1" onclick="goStep(1)" style="cursor:pointer"><span class="step-n">1</span>Patient & Scoring</div>
-    <div class="step" id="stp2" onclick="if(CR)goStep(2)" style="cursor:pointer"><span class="step-n">2</span>Recommendation</div>
-    <div class="step" id="stp3" onclick="if(CR)goStep(3)" style="cursor:pointer"><span class="step-n">3</span>Clinical Judgement</div>
-    <div class="step" id="stp4" onclick="if(CR)goStep(4)" style="cursor:pointer"><span class="step-n">4</span>Review & Submit</div>
+    <div class="step active" id="stp1" onclick="goStep(1)" style="cursor:pointer">Patient & Scoring</div>
+    <div class="step" id="stp2" onclick="if(CR)goStep(2)" style="cursor:pointer">Recommendation</div>
+    <div class="step" id="stp3" onclick="if(CR)goStep(3)" style="cursor:pointer">Clinical Judgement</div>
+    <div class="step" id="stp4" onclick="if(CR)goStep(4)" style="cursor:pointer">Review & Submit</div>
   </div>
 
   <!-- PANE 1: SCORING -->
@@ -383,7 +384,7 @@ select{cursor:pointer}
       <div class="card-hdr"><span class="card-title">Patient Identifier</span></div>
       <div class="fg2">
         <div class="fg">
-          <label>MRN / Case Reference<span class="req">*</span></label>
+          <label>MRN / Case Reference</label>
           <div class="fg-row">
             <input type="text" id="caseRef" placeholder="e.g. 1234567" oninput="comp()" style="flex:1">
             <label class="chk-row" style="flex-shrink:0;white-space:nowrap;padding:.5rem .75rem" title="Mark this as a test or anonymised entry">
@@ -394,7 +395,7 @@ select{cursor:pointer}
         </div>
         <div class="fg">
           <label>Date of Entry</label>
-          <input type="text" id="caseDate" readonly>
+          <input type="date" id="caseDate" style="cursor:pointer">
         </div>
       </div>
     </div>
@@ -404,7 +405,7 @@ select{cursor:pointer}
       <div class="card-hdr"><span class="card-title">M Score — BMI Class</span></div>
       <div class="fg2">
         <div class="fg">
-          <label>Pre-operative BMI (kg/m²)<span class="req">*</span></label>
+          <label>Pre-operative BMI (kg/m²)</label>
           <input type="number" id="bmi" placeholder="e.g. 42.5" step="0.1" min="30" max="100" oninput="comp()">
           <div class="hint">Derivation cohort: 31.7–94.5 kg/m²</div>
         </div>
@@ -420,17 +421,12 @@ select{cursor:pointer}
       <div class="card-hdr"><span class="card-title">O Score — Metabolic Comorbidity Burden</span>
         <span style="font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--amber)" id="oDisp">Score: 0</span>
       </div>
-      <p style="font-size:.76rem;color:var(--text2);margin-bottom:.85rem">Tick all present pre-operatively. Each scores +1 (max O=4). GERD is a procedural modifier only — not included in the O score.</p>
+      <p style="font-size:.76rem;color:var(--text2);margin-bottom:.85rem">Tick all present pre-operatively. Each scores +1 point (max O=4).</p>
       <div class="fg3">
         <label class="chk-row" id="lbl-htn"><input type="checkbox" id="htn" onchange="comp()"> Hypertension</label>
         <label class="chk-row" id="lbl-dysgly"><input type="checkbox" id="dysgly" onchange="comp()"> Dysglycaemia (T2DM / IFG)</label>
-        <label class="chk-row" id="lbl-osa"><input type="checkbox" id="osa" onchange="comp()"> Obstructive Sleep Apnoea</label>
-        <label class="chk-row" id="lbl-hld"><input type="checkbox" id="hld" onchange="comp()"> Hyperlipidaemia</label>
-        <label class="chk-row" id="lbl-gerd" style="grid-column:span 2;border-style:dashed;opacity:.8">
-          <input type="checkbox" id="gerd" onchange="comp()">
-          GERD — Gastroesophageal Reflux Disease
-          <span style="font-size:.64rem;background:var(--blue-pale);color:var(--blue);padding:.1rem .4rem;border-radius:10px;margin-left:.3rem;font-weight:600">Procedural modifier</span>
-        </label>
+        <label class="chk-row" id="lbl-osa"><input type="checkbox" id="osa" onchange="comp()"> Obstructive Sleep Apnea</label>
+        <label class="chk-row" id="lbl-hld"><input type="checkbox" id="hld" onchange="comp()"> Hyperlipidemia</label>
       </div>
     </div>
 
@@ -455,16 +451,17 @@ select{cursor:pointer}
           <div class="si-title">Organ Dysfunction</div>
           <div class="si-desc">CKD, cirrhosis/MASH, cardiac history (MACE risk), or prior stroke/TIA.</div>
         </div>
-        <div class="fg2" style="grid-column:span 2;gap:.6rem">
+        <!-- Si3 spans full width, split internally into two equal cards -->
+        <div style="grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
           <div class="si-card si-sev-3a" onclick="selectSi('3a')" data-si="3a">
             <div class="si-num">Si 3A → Stage 4A</div>
-            <div class="si-title">Organ Failure: Transplant</div>
+            <div class="si-title">Organ Failure: Transplant Recipient</div>
             <div class="si-desc">Solid organ transplant recipient, NOT currently on dialysis (functioning graft).</div>
           </div>
           <div class="si-card si-sev-3b" onclick="selectSi('3b')" data-si="3b">
             <div class="si-num">Si 3B → Stage 4B</div>
-            <div class="si-title">Organ Failure: Dialysis</div>
-            <div class="si-desc">Currently requiring active dialysis at time of surgery (with or without prior transplant).</div>
+            <div class="si-title">Organ Failure: Active Dialysis</div>
+            <div class="si-desc">Currently requiring active dialysis at time of surgery (with or without prior transplant history).</div>
           </div>
         </div>
       </div>
@@ -472,13 +469,20 @@ select{cursor:pointer}
 
     <!-- TIER COMORBIDITIES -->
     <div class="card mt2">
-      <div class="card-hdr"><span class="card-title">Additional Comorbidities — TWL Tier Assignment</span></div>
-      <div class="fg3">
+      <div class="card-hdr"><span class="card-title">Additional Comorbidities</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem">
         <label class="chk-row" id="lbl-cardiac"><input type="checkbox" id="cardiac" onchange="comp()"> Cardiac History (MACE)</label>
         <label class="chk-row" id="lbl-stroke"><input type="checkbox" id="stroke" onchange="comp()"> Stroke / TIA</label>
         <label class="chk-row" id="lbl-masld"><input type="checkbox" id="masld" onchange="comp()"> MASLD / Cirrhosis</label>
         <label class="chk-row" id="lbl-microeo"><input type="checkbox" id="microeo" onchange="comp()"> Diabetic Microvascular Damage</label>
         <label class="chk-row" id="lbl-arthro"><input type="checkbox" id="arthro" onchange="comp()"> Arthropathy / Arthroplasty</label>
+        <!-- GERD moved here as procedural modifier -->
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.58rem .8rem;display:flex;flex-direction:column;gap:.18rem">
+          <label class="chk-row" id="lbl-gerd" style="background:transparent;border:none;padding:0;gap:.45rem">
+            <input type="checkbox" id="gerd" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)"> GERD
+          </label>
+          <div style="font-size:.67rem;color:var(--text3);line-height:1.35;padding-left:1.5rem">Gastroesophageal Reflux Disease — procedural modifier only, not scored in O</div>
+        </div>
       </div>
     </div>
 
@@ -505,18 +509,11 @@ select{cursor:pointer}
     <div class="card">
       <div class="card-hdr"><span class="card-title">⚖️ Clinical Judgement — Pre-operative Evaluation</span></div>
       <div id="judgeBody">
-        <!-- Stage agreement -->
-        <div class="ag-section" id="stageAg">
-          <div class="ag-top">
-            <div>
-              <div class="ag-q">Do you agree with the computed MOSI stage?</div>
-              <div class="ag-context" id="ag-stage-context">—</div>
-            </div>
-            <div class="ag-opts">
-              <button class="ab" id="ab-stage-agree" onclick="setAg('stage','Agree')">✓ Agree</button>
-              <button class="ab" id="ab-stage-partial" onclick="setAg('stage','Partial')">~ Partially</button>
-              <button class="ab" id="ab-stage-disagree" onclick="setAg('stage','Disagree')">✗ Disagree</button>
-            </div>
+        <!-- Stage context shown but no agree/disagree question -->
+        <div class="ag-section" id="stageAg" style="padding-bottom:.75rem">
+          <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.6rem">
+            <span style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)">Computed MOSI Stage</span>
+            <span id="ag-stage-context" style="font-size:.79rem;font-weight:600;color:var(--blue)">—</span>
           </div>
           <div class="stage-context" id="stageContextBox">
             <div id="stageContextText"></div>
@@ -545,7 +542,7 @@ select{cursor:pointer}
           <div class="section-lbl" style="margin-bottom:.75rem">Procedure Decision</div>
           <div class="fg2">
             <div class="fg">
-              <label>Intended Procedure <span style="font-weight:400;color:var(--text3)">(compared to recommended: <span id="judgeRecProc" style="font-style:normal;color:var(--blue)">—</span>)</span></label>
+              <label>What procedure would you perform for this patient? <span style="font-weight:400;color:var(--text3)">Based on full chart review — algorithm recommends: <span id="judgeRecProc" style="font-style:normal;color:var(--blue);font-weight:600">—</span></span></label>
               <select id="intProc">
                 <option value="">— Select —</option>
                 <option>SG (Sleeve Gastrectomy)</option>
@@ -586,6 +583,59 @@ select{cursor:pointer}
         <div class="fg mt1">
           <label>Additional comments, concerns or observations</label>
           <textarea id="commentsTxt" placeholder="Any concerns about algorithm scoring, clinical nuances not captured by MOSI, unusual patient profile, or anything relevant to this case..."></textarea>
+        </div>
+
+        <!-- Surgery performed toggle -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-top:.85rem">
+          <div class="section-lbl" style="margin-bottom:.85rem">Post-operative Follow-up (if surgery already performed)</div>
+          <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:.75rem;flex-wrap:wrap">
+            <span style="font-size:.82rem;font-weight:600;color:var(--text)">Has this patient already undergone surgery?</span>
+            <div style="display:flex;gap:.4rem">
+              <button class="ab" id="surg-done-yes" onclick="setSurgDone(true)">✓ Yes</button>
+              <button class="ab" id="surg-done-no" onclick="setSurgDone(false)">✗ Not yet</button>
+            </div>
+          </div>
+          <div id="surgOutcomeSection" class="hidden">
+            <div class="divider" style="margin:.5rem 0 .85rem"></div>
+            <div style="font-size:.74rem;color:var(--text3);margin-bottom:.85rem">Record actual outcomes below. This data forms the ground truth for MOSI algorithm validation.</div>
+            <div class="fg2">
+              <div class="fg">
+                <label>Actual Procedure Performed</label>
+                <select id="intraActualProc">
+                  <option value="">— Select —</option>
+                  <option>SG (Sleeve Gastrectomy)</option>
+                  <option>RYGB (Roux-en-Y Gastric Bypass)</option>
+                  <option>BPD/DS (Biliopancreatic Diversion with DS)</option>
+                  <option>SADI-S</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Reason if different from plan</label>
+                <input type="text" id="intraProcReason" placeholder="e.g. Intraoperative findings, adhesions, anaesthetic concern...">
+              </div>
+            </div>
+            <div class="fg2 mt1">
+              <div class="fg">
+                <label>Actual TWL at 12 months (%)</label>
+                <input type="number" id="intraTWL12" placeholder="e.g. 28.5" step="0.1" min="0" max="100">
+              </div>
+              <div class="fg">
+                <label>Actual TWL at 60 months (%) — if available</label>
+                <input type="number" id="intraTWL60" placeholder="e.g. 22.1" step="0.1" min="0" max="100">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.75rem">
+              <div class="fg"><label>T2DM Resolution</label><select id="intraRes0"><option value="">— Select —</option><option>Yes — complete remission</option><option>Yes — partial improvement</option><option>No — unchanged</option><option>Worsened</option><option>N/A</option></select></div>
+              <div class="fg"><label>Hypertension Resolution</label><select id="intraRes1"><option value="">— Select —</option><option>Yes — complete remission</option><option>Yes — partial improvement</option><option>No — unchanged</option><option>Worsened</option><option>N/A</option></select></div>
+              <div class="fg"><label>OSA Resolution</label><select id="intraRes2"><option value="">— Select —</option><option>Yes — complete remission</option><option>Yes — partial improvement</option><option>No — unchanged</option><option>Worsened</option><option>N/A</option></select></div>
+              <div class="fg"><label>Hyperlipidemia Resolution</label><select id="intraRes3"><option value="">— Select —</option><option>Yes — complete remission</option><option>Yes — partial improvement</option><option>No — unchanged</option><option>Worsened</option><option>N/A</option></select></div>
+            </div>
+            <div class="fg mt1">
+              <label>Outcome Notes / Complications</label>
+              <textarea id="intraOutcomeNotes" placeholder="Any observations about outcome vs prediction, complications, re-operations, readmissions..."></textarea>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -646,74 +696,116 @@ select{cursor:pointer}
 <!-- ══ ABOUT ══════════════════════════════════════════════ -->
 <div class="view" id="view-about">
   <div class="page-title">About & Team</div>
-  <div class="page-sub">MOSI Clinical Audit Platform — Development & Research Credits</div>
+  <div class="page-sub">MOSI Clinical Audit Platform — Development, Research & Institutional Support</div>
 
+  <!-- Team Cards -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+
+    <!-- Simon Laplante -->
     <div class="card" style="border-top:3px solid var(--blue)">
-      <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1rem">
-        <div style="width:52px;height:52px;border-radius:50%;background:var(--blue-pale);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:var(--blue);font-family:'DM Serif Display',serif;flex-shrink:0">RS</div>
+      <div style="display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.9rem">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;font-family:'DM Serif Display',serif;flex-shrink:0">SL</div>
         <div>
-          <div style="font-size:.95rem;font-weight:700;color:var(--text)">Reza Shahriarirad, M.D.</div>
-          <div style="font-size:.76rem;color:var(--text2);margin-top:.15rem">Platform Development</div>
-          <div style="font-size:.72rem;color:var(--blue);margin-top:.1rem">Research Fellow, Bariatric Surgery</div>
+          <div style="font-size:.97rem;font-weight:700;color:var(--text)">Simon J. Laplante, M.D.</div>
+          <div style="font-size:.73rem;color:var(--blue);margin-top:.12rem;font-weight:600">Lead Clinician · Principal Conceptualist</div>
+          <div style="font-size:.7rem;color:var(--text2);margin-top:.1rem">Surgery Innovation Team · Mayo Clinic</div>
         </div>
       </div>
-      <div style="font-size:.77rem;color:var(--text2);line-height:1.7;margin-bottom:.85rem">
-        Designed and developed the MOSI Clinical Audit Platform, including the decision support engine, the MOSI-T tier system, internal validation workflow, and GitHub integration infrastructure.
+      <div style="font-size:.77rem;color:var(--text2);line-height:1.7;margin-bottom:.8rem">
+        Conceptualized and led the clinical development of the MOSI staging system. Provided the clinical expertise, patient data oversight, and research direction underpinning the MOSI derivation cohort (n=3,097) and validation framework.
+      </div>
+      <a href="https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20430965" target="_blank" style="display:flex;align-items:center;gap:.45rem;font-size:.74rem;color:var(--blue);text-decoration:none;padding:.38rem .65rem;background:var(--blue-pale);border-radius:var(--radius-sm);border:1px solid rgba(61,130,246,.25)">
+        🏥 Mayo Clinic Profile
+      </a>
+    </div>
+
+    <!-- Reza Shahriarirad -->
+    <div class="card" style="border-top:3px solid var(--teal)">
+      <div style="display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.9rem">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;font-family:'DM Serif Display',serif;flex-shrink:0">RS</div>
+        <div>
+          <div style="font-size:.97rem;font-weight:700;color:var(--text)">Reza Shahriarirad, M.D.</div>
+          <div style="font-size:.73rem;color:var(--teal);margin-top:.12rem;font-weight:600">Platform Development · Research Fellow</div>
+          <div style="font-size:.7rem;color:var(--text2);margin-top:.1rem">Surgery Innovation Team · Mayo Clinic</div>
+        </div>
+      </div>
+      <div style="font-size:.77rem;color:var(--text2);line-height:1.7;margin-bottom:.8rem">
+        Designed and developed the MOSI Clinical Audit Platform — including the real-time decision engine, MOSI-T tier system, internal validation workflow, and GitHub integration. Academic CV and publications available via ResearchGate.
       </div>
       <div style="display:flex;flex-direction:column;gap:.38rem">
-        <a href="https://scholar.google.com" target="_blank" style="display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--blue);text-decoration:none;padding:.4rem .65rem;background:var(--blue-pale);border-radius:var(--radius-sm);border:1px solid rgba(61,130,246,.25)">
-          <span>🎓</span> Academic CV & Publications
+        <a href="https://www.researchgate.net/profile/Reza-Shahriarirad" target="_blank" style="display:flex;align-items:center;gap:.45rem;font-size:.74rem;color:var(--teal);text-decoration:none;padding:.38rem .65rem;background:var(--teal-pale);border-radius:var(--radius-sm);border:1px solid rgba(20,184,166,.25)">
+          🎓 Academic CV &amp; Publications
         </a>
-        <a href="mailto:reza.shahriarirad@mail.utoronto.ca" style="display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--text2);text-decoration:none;padding:.4rem .65rem;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border)">
-          <span>✉️</span> Contact
+        <a href="mailto:shahriarirad.reza@mayo.edu" style="display:flex;align-items:center;gap:.45rem;font-size:.74rem;color:var(--text2);text-decoration:none;padding:.38rem .65rem;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border)">
+          ✉️ shahriarirad.reza@mayo.edu
         </a>
       </div>
     </div>
 
-    <div class="card" style="border-top:3px solid var(--teal)">
-      <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1rem">
-        <div style="width:52px;height:52px;border-radius:10px;background:var(--teal-pale);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">⭐</div>
+    <!-- Abdulrahman Alomar -->
+    <div class="card" style="border-top:3px solid var(--amber)">
+      <div style="display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.9rem">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;font-family:'DM Serif Display',serif;flex-shrink:0">AA</div>
         <div>
-          <div style="font-size:.95rem;font-weight:700;color:var(--text)">MStar Lab</div>
-          <div style="font-size:.76rem;color:var(--text2);margin-top:.15rem">Research Support & Leadership</div>
-          <div style="font-size:.72rem;color:var(--teal);margin-top:.1rem">MSTAR — Metabolic Surgery Team & Research</div>
+          <div style="font-size:.97rem;font-weight:700;color:var(--text)">Abdulrahman Alomar, M.D.</div>
+          <div style="font-size:.73rem;color:var(--amber);margin-top:.12rem;font-weight:600">Research Fellow</div>
+          <div style="font-size:.7rem;color:var(--text2);margin-top:.1rem">Dept. of Gastroenterologic &amp; General Surgery · Mayo Clinic</div>
+        </div>
+      </div>
+      <div style="font-size:.77rem;color:var(--text2);line-height:1.7;margin-bottom:.8rem">
+        Research fellow contributing to MOSI clinical validation studies, data analysis, and manuscript preparation. Research profile available via ResearchGate.
+      </div>
+      <a href="https://www.researchgate.net/profile/Abdulrahman-Alomar" target="_blank" style="display:flex;align-items:center;gap:.45rem;font-size:.74rem;color:var(--amber);text-decoration:none;padding:.38rem .65rem;background:var(--amber-pale);border-radius:var(--radius-sm);border:1px solid rgba(245,158,11,.25)">
+        🔬 Research Profile
+      </a>
+    </div>
+
+    <!-- MStar + Mayo Clinic -->
+    <div class="card" style="border-top:3px solid var(--purple)">
+      <div style="display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.9rem">
+        <!-- MStar stylized logo text -->
+        <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;letter-spacing:.04em;flex-shrink:0;font-family:'DM Serif Display',serif;text-align:center;line-height:1.2">M<br>STAR</div>
+        <div>
+          <div style="font-size:.97rem;font-weight:700;color:var(--text)">MStar Research Lab</div>
+          <div style="font-size:.73rem;color:var(--purple);margin-top:.12rem;font-weight:600">Research Support &amp; Leadership</div>
+          <div style="font-size:.7rem;color:var(--text2);margin-top:.1rem">Mayo Clinic · Bariatric &amp; Metabolic Surgery</div>
         </div>
       </div>
       <div style="font-size:.77rem;color:var(--text2);line-height:1.7;margin-bottom:.85rem">
-        The MOSI system was developed under the support and academic guidance of the MStar Lab team. The derivation cohort (n=3,097) was curated and validated by the MStar research group.
+        The MOSI system was developed under the academic support of the MStar Research Lab at Mayo Clinic. The derivation cohort was curated and validated by the MStar team within the Division of Gastroenterologic and General Surgery.
       </div>
-      <div style="padding:.65rem .85rem;background:var(--teal-pale);border-radius:var(--radius-sm);border:1px solid rgba(20,184,166,.25);font-size:.74rem;color:var(--teal);line-height:1.6">
-        <strong>MStar Lab</strong> — Metabolic Surgery Team & Research<br>
-        Advancing evidence-based bariatric and metabolic surgery practice through rigorous data science and clinical validation.
+      <!-- Mayo Clinic wordmark as SVG text (no external image dependency) -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.65rem .85rem;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border)">
+        <div>
+          <div style="font-size:.82rem;font-weight:700;color:var(--text);letter-spacing:.02em">🏥 Mayo Clinic</div>
+          <div style="font-size:.68rem;color:var(--text2);margin-top:.08rem">Bariatric &amp; Metabolic and Abdominal Wall Surgery</div>
+        </div>
+        <a href="https://www.mayoclinic.org" target="_blank" style="font-size:.7rem;color:var(--blue);text-decoration:none;white-space:nowrap;padding:.3rem .6rem;border:1px solid rgba(61,130,246,.3);border-radius:var(--radius-sm);background:var(--blue-pale)">mayoclinic.org →</a>
       </div>
     </div>
+
   </div>
 
-  <div class="card" style="border-top:3px solid var(--amber)">
+  <!-- About MOSI System -->
+  <div class="card" style="border-top:3px solid var(--orange)">
     <div class="card-hdr"><span class="card-title">📋 About the MOSI System</span></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
       <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:.85rem;border:1px solid var(--border)">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Derivation Cohort</div>
-        <div style="font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--text)">3,097</div>
-        <div style="font-size:.72rem;color:var(--text2);margin-top:.2rem">patients · single tertiary centre</div>
+        <div style="font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Derivation Cohort</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:500;color:var(--text)">3,097</div>
+        <div style="font-size:.71rem;color:var(--text2);margin-top:.18rem">patients · single tertiary centre · Mayo Clinic</div>
       </div>
       <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:.85rem;border:1px solid var(--border)">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Algorithm Accuracy</div>
-        <div style="font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--green)">100%</div>
-        <div style="font-size:.72rem;color:var(--text2);margin-top:.2rem">validated on full cohort</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:.85rem;border:1px solid var(--border)">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Status</div>
-        <div style="font-size:1rem;font-weight:600;color:var(--amber);margin-top:.2rem">Pre-publication</div>
-        <div style="font-size:.72rem;color:var(--text2);margin-top:.2rem">internal validation phase</div>
+        <div style="font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Validation Phase</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--amber);margin-top:.18rem">Pre-publication</div>
+        <div style="font-size:.71rem;color:var(--text2);margin-top:.18rem">Internal validation in progress via this platform</div>
       </div>
     </div>
-    <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
-      The Metabolic & Obesity Staging Index (MOSI) is a three-dimensional bariatric surgery staging system (M score × O score × Si level) that assigns patients to Stages I, II, III, 4A, or 4B. The MOSI-T tier system maps each patient's comorbidity profile to a minimum TWL target required for metabolic goal achievement. This platform provides real-time clinical decision support and prospectively captures surgeon agreement/disagreement data to constitute the internal validation dataset.
+    <div style="font-size:.78rem;color:var(--text2);line-height:1.75">
+      The Metabolic &amp; Obesity Staging Index (MOSI) is a three-dimensional bariatric surgery staging system (M score × O score × Si level) that assigns patients to Stages I, II, III, 4A, or 4B. The MOSI-T tier system maps each patient's comorbidity profile to a minimum TWL target required for metabolic goal achievement. This platform simultaneously provides real-time clinical decision support and prospectively captures surgeon feedback to constitute the internal validation dataset.
     </div>
-    <div style="margin-top:.85rem;font-size:.73rem;color:var(--text3);font-style:italic">
-      Manuscript in preparation. Citation will be added upon publication. This tool is for clinical audit and research purposes — not a regulated medical device.
+    <div style="margin-top:.85rem;padding:.65rem .85rem;background:var(--surface2);border-radius:var(--radius-sm);border-left:3px solid var(--amber);font-size:.73rem;color:var(--text3);line-height:1.55">
+      <em>Manuscript in preparation. Citation will be added upon publication. This tool is intended for clinical audit and research purposes — it does not constitute a regulated medical device.</em>
     </div>
   </div>
 </div>
@@ -762,7 +854,7 @@ select{cursor:pointer}
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════════════════ STATE ═══════════════════════════════════ */
 const SK='mosi_v6';
 let S={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''},theme:'dark'};
@@ -869,8 +961,8 @@ function comp(){
   ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro'].forEach(id=>{
     const lbl=G('lbl-'+id);if(lbl)lbl.classList.toggle('checked',CK(id));
   });
-  if(bmi&&parseFloat(bmi)>=28){const b=parseFloat(bmi);let m;if(b<35)m='M1';else if(b<40)m='M2';else if(b<45)m='M3';else if(b<50)m='M4';else m='M5';G('mDisp').textContent=m;}
-  else G('mDisp').textContent='—';
+  if(bmi&&parseFloat(bmi)>=28){const b=parseFloat(bmi);let m,range;if(b<35){m='M1';range='30–34.9'}else if(b<40){m='M2';range='35–39.9'}else if(b<45){m='M3';range='40–44.9'}else if(b<50){m='M4';range='45–49.9'}else{m='M5';range='≥50';}G('mDisp').textContent=m;const mr=G('mBmiRange');if(mr)mr.textContent=range;}
+  else{G('mDisp').textContent='—';const mr=G('mBmiRange');if(mr)mr.textContent='';}
   G('btn-s2').disabled=!(bmi&&parseFloat(bmi)>=28&&selectedSi!==null);
   CR=(bmi&&parseFloat(bmi)>=28&&selectedSi!==null)?calcMOSI(bmi,htn,dy,osa,hld,gerd,selectedSi,card,str,masld,mic,arth):null;
 }
@@ -934,9 +1026,33 @@ function renderRec(){
     <div class="sb si-box"><div class="sl">Si Level</div><div class="sv">Si${r.Si==='3a'?3:r.Si==='3b'?3:r.Si}</div><div class="ss">${siL[r.Si]||''}</div></div>
     <div class="sb ${sc(r.stage)}"><div class="sl">MOSI Stage</div><div class="sv" style="font-size:1rem;line-height:1.2;margin-top:.15rem">${r.stage}</div><div class="ss">${r.stage.includes('4')?'Critical complexity':r.stage==='Stage III'?'High severity':r.stage==='Stage II'?'Moderate severity':'Low severity'}</div></div>`;
   G('tierRow').innerHTML=`
-    <span class="lbl" style="color:var(--text2)">TWL Target Tier</span>
-    <span class="tier-badge t${r.tier}">Tier ${r.tier} — ${r.tierTarget}</span>
-    <span style="font-size:.75rem;color:var(--text2)">${r.tierGoal}</span>`;
+    <div style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:.75rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap">
+          <span class="lbl" style="color:var(--text2)">TWL Target Tier</span>
+          <span class="tier-badge t${r.tier}">Tier ${r.tier} — ${r.tierTarget}</span>
+          <span style="font-size:.76rem;color:var(--text2)">${r.tierGoal}</span>
+        </div>
+        <div style="display:flex;gap:.4rem;flex-shrink:0">
+          <div class="rec-fb-btn" id="tier-fb-like" title="I agree with this tier target" onclick="tierFbLike()"><span>👍</span></div>
+          <div class="rec-fb-btn" id="tier-fb-dislike" title="I disagree with this tier target" onclick="tierFbDislike()"><span>👎</span></div>
+          <div class="rec-fb-btn" id="tier-fb-flag" title="Flag for review" onclick="tierFbFlag()"><span>🚩</span></div>
+        </div>
+      </div>
+      <div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.45rem">Why this tier?</div>
+        <div style="font-size:.78rem;color:var(--text2);line-height:1.6" id="tierReasoning"></div>
+      </div>
+      <div id="tier-fb-panel" style="margin-top:.5rem"></div>
+    </div>`;
+  // Populate tier reasoning
+  const tierReasoningMap={
+    A:'<strong>Tier A (≥7.5% TWL)</strong> — No qualifying metabolic comorbidities detected. The surgical indication is BMI-driven. At this tier, both RYGB and SG reliably achieve the target. The primary goals are functional improvement, quality of life, and mechanical offloading of joints.',
+    B:'<strong>Tier B (≥15% TWL)</strong> — One or more of the following are present: OSA, Hypertension, Hyperlipidemia, GERD, or Arthropathy. A minimum of 15% TWL is required to achieve reliable resolution of these conditions. RYGB achieves this more consistently than SG across all follow-up periods.',
+    C:'<strong>Tier C (≥25% TWL)</strong> — Dysglycemia (T2DM or IFG), MASLD/cirrhosis, or diabetic microvascular end-organ damage detected. These conditions require ≥25% TWL for meaningful remission probability. Based on STAMPEDE and SELECT trial thresholds, T2DM remission rates improve substantially above this threshold. BPD/DS is the only procedure reliably achieving this target at 5 years across all stages.',
+    D:'<strong>Tier D (≥30% TWL)</strong> — Cardiac history (MACE risk) or prior stroke/TIA detected. Cardiovascular event reduction requires the deepest and most sustained weight loss. At Tier D, no procedure guarantees target achievement in the majority — this represents the highest-risk group with the greatest unmet need.',
+  };
+  const trEl=G('tierReasoning');if(trEl)trEl.innerHTML=tierReasoningMap[r.tier]||'';
 
   // Colour legend
   const legendHTML=`<div class="rec-legend">
@@ -1024,7 +1140,7 @@ function renderRec(){
   if(relevantEntries.length>0){
     const items=relevantEntries.map(([k])=>{
       const res=stageRes[k];
-      const label={htn:'Hypertension',dysgly:'T2DM / Dysglycaemia',osa:'OSA',hld:'Hyperlipidaemia'}[k];
+      const label={htn:'Hypertension',dysgly:'T2DM / Dysglycaemia',osa:'OSA',hld:'Hyperlipidemia'}[k];
       const rateNum=parseFloat(res.r);
       const rateColor=rateNum>=70?'var(--green)':rateNum>=50?'var(--amber)':'var(--red)';
       return`<div class="cm-item"><div class="cm-name">${label}</div><div class="cm-rate" style="color:${rateColor}">${res.r} <span style="font-size:.62rem;opacity:.65">remission</span></div><div class="cm-note">n=${res.n} · ${res.note}</div></div>`;
@@ -1037,6 +1153,15 @@ function renderRec(){
 }
 
 /* ═══════════════════════════════════ REC FEEDBACK ════════════════════════════ */
+/* Tier feedback */
+let tierFeedback={};
+function tierFbLike(){tierFeedback={type:'like'};G('tier-fb-like')?.classList.add('active-like');G('tier-fb-dislike')?.classList.remove('active-dislike');G('tier-fb-flag')?.classList.remove('active-flag');if(G('tier-fb-panel'))G('tier-fb-panel').innerHTML='<div style="font-size:.7rem;color:var(--green);margin-top:.35rem">✓ You agree with this TWL target tier.</div>';}
+function tierFbDislike(){
+  tierFeedback={type:'dislike'};G('tier-fb-dislike')?.classList.add('active-dislike');G('tier-fb-like')?.classList.remove('active-like');G('tier-fb-flag')?.classList.remove('active-flag');
+  if(G('tier-fb-panel'))G('tier-fb-panel').innerHTML='<div style="margin-top:.5rem"><textarea id="tierDislikeDetail" style="width:100%;font-size:.76rem;padding:.45rem .65rem;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);color:var(--text);min-height:52px;resize:vertical;font-family:Inter,sans-serif" placeholder="Why do you disagree with this tier target?"></textarea><button class="btn btn-p btn-sm" style="margin-top:.4rem" onclick="tierFbSaveDislike()">Save</button></div>';
+}
+function tierFbSaveDislike(){const d=V('tierDislikeDetail');tierFeedback.detail=d;if(G('tier-fb-panel'))G('tier-fb-panel').innerHTML=`<div style="font-size:.7rem;color:var(--red);margin-top:.35rem">✗ Disagree${d?" — "+d:""}</div>`;}
+function tierFbFlag(){const isActive=G('tier-fb-flag')?.classList.toggle('active-flag');tierFeedback={type:'flag'};if(G('tier-fb-panel'))G('tier-fb-panel').innerHTML=isActive?'<div style="font-size:.7rem;color:var(--amber);margin-top:.35rem">🚩 Tier target flagged for review.</div>':'';}
 function fbLike(idx,proc){
   recFeedback[idx]={type:'like',proc};
   G(`fb-like-${idx}`)?.classList.add('active-like');
@@ -1145,6 +1270,13 @@ async function fetchGHCases(){
   try{const res=await fetch(`${GH}/repos/${owner}/${repo}/contents/data/cases.json`,{headers:ghH()});if(res.status===404)return[];if(!res.ok)return null;const d=await res.json();return JSON.parse(atob(d.content.replace(/\n/g,'')));}catch(e){return null;}
 }
 
+/* ═══════════════════════════════════ SURGERY TOGGLE ════════════════════════ */
+function setSurgDone(done){
+  const yes=G('surg-done-yes'),no=G('surg-done-no'),sec=G('surgOutcomeSection');
+  if(!yes||!no||!sec)return;
+  yes.className='ab'+(done?' ag':'');no.className='ab'+(done?'':' dg');
+  sec.classList.toggle('hidden',!done);
+}
 /* ═══════════════════════════════════ SUBMIT ═════════════════════════════════ */
 async function submitCase(){
   if(!S.currentSurgeonId){alert('Please select your surgeon profile first.');return;}
@@ -1158,6 +1290,7 @@ async function submitCase(){
     recommended:r.rec,stageAgreement:AG_vals.stage||'Not recorded',
     procAgreement:AG_vals.proc||'Not recorded',intendedProc:V('intProc')||'',
     recFeedback:JSON.stringify(recFeedback),
+    tierFeedback:JSON.stringify(tierFeedback),
     reason:V('reasonTxt')||'',comments:V('commentsTxt')||'',
     submittedAt:new Date().toISOString(),
     // Post-op outcomes (filled later)
@@ -1271,7 +1404,7 @@ function openOutcomeEntry(id){
       <div class="fg"><label>Actual TWL at 60 months (%) — if available</label><input type="number" id="out-twl60" value="${c.actualTWL60||''}" placeholder="e.g. 22.1" step="0.1" min="0" max="100"></div>
     </div>
     <div class="fg3 mt1">
-      ${['dm','htn','osa','hld'].map(cm=>`<div class="fg"><label>${{dm:'T2DM',htn:'Hypertension',osa:'OSA',hld:'Hyperlipidaemia'}[cm]} Resolution</label><select id="out-${cm}">${['',  ...resOpts].map(o=>`<option ${(c[cm+'_resolved']===o)?'selected':''}>${o}</option>`).join('')}</select></div>`).join('')}
+      ${['dm','htn','osa','hld'].map(cm=>`<div class="fg"><label>${{dm:'T2DM',htn:'Hypertension',osa:'OSA',hld:'Hyperlipidemia'}[cm]} Resolution</label><select id="out-${cm}">${['',  ...resOpts].map(o=>`<option ${(c[cm+'_resolved']===o)?'selected':''}>${o}</option>`).join('')}</select></div>`).join('')}
     </div>
     <div class="fg mt1"><label>Outcome Notes</label><textarea id="out-notes" placeholder="Any observations about the outcome vs prediction...">${c.outcomeNotes||''}</textarea></div>`;
   G('caseModalBtns').innerHTML=`
@@ -1421,7 +1554,9 @@ function exportCSV(){
 }
 
 function clearForm(){
-  ['bmi','caseRef','reasonTxt','commentsTxt','procFactorsTxt','twlFactorsTxt'].forEach(id=>G(id)&&(G(id).value=''));
+  ['bmi','caseRef','reasonTxt','commentsTxt','procFactorsTxt','twlFactorsTxt','intraProcReason','intraTWL12','intraTWL60','intraOutcomeNotes'].forEach(id=>G(id)&&(G(id).value=''));
+  ['intraActualProc','intraRes0','intraRes1','intraRes2','intraRes3'].forEach(id=>G(id)&&(G(id).value=''));
+  setSurgDone(false);
   ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro','isAnon'].forEach(id=>G(id)&&(G(id).checked=false));
   ['lbl-htn','lbl-dysgly','lbl-osa','lbl-hld','lbl-gerd','lbl-cardiac','lbl-stroke','lbl-masld','lbl-microeo','lbl-arthro'].forEach(id=>G(id)?.classList.remove('checked'));
   G('intProc').value='';G('mDisp').textContent='—';G('oDisp').textContent='O = 0';
@@ -1433,10 +1568,32 @@ function clearForm(){
 }
 
 /* ═══════════════════════════════════ INIT ════════════════════════════════════ */
+/* ─── BMI CALCULATOR ─────────────────────────────────────────────────── */
+function calcBMI(){
+  const hVal=parseFloat(G('calcH').value),wVal=parseFloat(G('calcW').value);
+  const hUnit=V('calcHUnit'),wUnit=V('calcWUnit');
+  const btn=G('useBmiBtn'),res=G('bmiCalcResult');
+  if(!hVal||!wVal||hVal<=0||wVal<=0){if(res)res.textContent='';if(btn)btn.style.display='none';return;}
+  // Convert to metres and kg
+  let hM,wKg;
+  if(hUnit==='cm')hM=hVal/100;
+  else if(hUnit==='ft')hM=hVal*0.3048;
+  else hM=hVal*0.0254; // inches
+  if(wUnit==='kg')wKg=wVal;
+  else wKg=wVal*0.453592; // lbs
+  const bmi=wKg/(hM*hM);
+  const cat=bmi<18.5?'Underweight':bmi<25?'Normal weight':bmi<30?'Overweight':bmi<35?'Class I obesity':bmi<40?'Class II obesity':bmi<50?'Class III obesity':'Super obesity';
+  if(res)res.innerHTML=`<strong style="color:var(--blue);font-family:'DM Mono',monospace;font-size:1.05rem">${bmi.toFixed(1)}</strong> kg/m² — <span style="color:var(--text2)">${cat}</span>`;
+  if(btn){btn.style.display='inline-flex';btn.dataset.bmi=bmi.toFixed(1);}
+  // Handle ft/in
+  const hSub=G('calcHSub');if(hSub){if(hUnit==='ft'){const totalIn=hVal*12;const ft2=Math.floor(totalIn/12);const in2=Math.round(totalIn%12);hSub.textContent=`= ${ft2}' ${in2}"`;hSub.style.display='block';}else hSub.style.display='none';}
+}
+function useBMI(){
+  const btn=G('useBmiBtn');if(!btn||!btn.dataset.bmi)return;
+  const bmi=btn.dataset.bmi;G('bmi').value=bmi;comp();
+  // Close the details
+  const det=G('bmi')?.closest('.card')?.querySelector('details');if(det)det.open=false;
+}
+/* ─── INIT ─────────────────────────────────────────────────────────── */
 loadS();
-G('caseDate').value=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-updateTopbar();updateBadges();
-if(!S.currentSurgeonId)setTimeout(openSurgModal,500);
-</script>
-</body>
-</html>
+G('caseDate').value=new Date().toLocaleDateString('
