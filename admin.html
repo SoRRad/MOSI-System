@@ -159,8 +159,50 @@ textarea{resize:vertical;min-height:68px}
 .modal-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--tx);margin-bottom:.25rem}
 .modal-sub{font-size:.73rem;color:var(--tx2);margin-bottom:1.15rem;line-height:1.5}
 
-/* MISC */
-.divider{height:1px;background:var(--bdr);margin:.8rem 0}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:.38rem;border-radius:var(--rs);border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);flex-shrink:0}
+.hamburger span{width:16px;height:2px;background:rgba(255,255,255,.6);border-radius:2px;transition:all .2s;display:block}
+.hamburger:hover span{background:#fff}
+
+/* SIDEBAR OVERLAY */
+.aside-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:80;backdrop-filter:blur(2px)}
+.aside-overlay.open{display:block}
+
+/* MOBILE RESPONSIVE */
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .admin-main{grid-template-columns:1fr;height:auto;overflow:visible}
+  .aside{
+    position:fixed;top:52px;left:0;bottom:0;z-index:90;
+    transform:translateX(-100%);transition:transform .25s ease;
+    width:240px;height:calc(100dvh - 52px);
+  }
+  .aside.open{transform:translateX(0)}
+  .content{height:calc(100dvh - 52px);overflow-y:auto}
+  .two-col{grid-template-columns:1fr}
+  .fg2{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .btn-row{flex-wrap:wrap}
+  .back-link span{display:none}
+  .back-link::after{content:'←'}
+  .admin-badge{display:none}
+  .dt{font-size:.72rem}
+  .dt th,.dt td{padding:.38rem .5rem}
+  .page-title{font-size:1.25rem}
+  .status-bar{flex-direction:column;align-items:flex-start;gap:.55rem}
+  .st-acts{margin-left:0;width:100%;flex-wrap:wrap}
+  .st-acts .btn{flex:1;justify-content:center}
+  .reset-danger-zone{padding:1rem}
+}
+@media(max-width:480px){
+  .topbar{padding:0 .9rem;gap:.4rem}
+  .content{padding:1rem .9rem}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .card{padding:.95rem}
+  .btn{font-size:.73rem;padding:.4rem .75rem}
+  .btn-sm{padding:.25rem .55rem;font-size:.68rem}
+  .aside-item{padding:.5rem .85rem;font-size:.75rem}
+}
 .empty{text-align:center;padding:2.2rem 1rem;color:var(--tx2)}
 .empty .ei{font-size:1.8rem;margin-bottom:.5rem;opacity:.35}
 .empty .et{font-size:.83rem;font-weight:600;color:var(--tx);margin-bottom:.22rem}
@@ -188,18 +230,23 @@ textarea{resize:vertical;min-height:68px}
 
 <header class="topbar">
   <div class="brand">
+    <div class="hamburger" id="adminHamburger" onclick="toggleAside()">
+      <span></span><span></span><span></span>
+    </div>
     <span class="brand-logo">MOSI</span>
     <span class="brand-tag">System</span>
     <span class="admin-badge">⚙ ADMIN</span>
   </div>
   <div class="top-r">
     <div class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</div>
-    <a class="back-link" href="index.html">← Surgeon Platform</a>
+    <a class="back-link" href="index.html"><span>← Surgeon Platform</span></a>
   </div>
 </header>
 
+<div class="aside-overlay" id="asideOverlay" onclick="toggleAside()"></div>
+
 <div class="admin-main">
-<nav class="aside">
+<nav class="aside" id="adminAside">
   <div class="aside-sec">Data &amp; Validation</div>
   <div class="aside-item active" onclick="switchPane('cases')" id="a-cases"><span class="aside-icon">🗂</span>All Cases<span style="margin-left:auto;background:var(--amb);color:#fff;font-size:.57rem;padding:.06rem .35rem;border-radius:10px;font-weight:700" id="cBadge">—</span></div>
   <div class="aside-item" onclick="switchPane('validation')" id="a-validation"><span class="aside-icon">✅</span>Validation Summary</div>
@@ -299,26 +346,77 @@ textarea{resize:vertical;min-height:68px}
 <!-- EXPORT -->
 <div class="pane" id="pane-export">
   <div class="page-title">Export &amp; Sync</div>
-  <div class="page-sub">Manual data operations and export options.</div>
-  <div class="two-col mb2">
-    <div class="card"><div class="card-hdr"><span class="card-title">⬇ Export</span></div>
-      <p style="font-size:.77rem;color:var(--tx2);margin-bottom:.75rem">Download all cases as structured CSV for analysis or archiving.</p>
-      <div class="btn-row" style="margin-top:0"><button class="btn btn-p" onclick="exportAllCSV()">⬇ All Cases CSV</button><button class="btn btn-s" onclick="exportOutcomesCSV()">⬇ Outcomes CSV</button></div>
-    </div>
-    <div class="card"><div class="card-hdr"><span class="card-title">🔄 Sync</span></div>
-      <p style="font-size:.77rem;color:var(--tx2);margin-bottom:.75rem">Push or pull data between this device and GitHub manually.</p>
-      <div class="btn-row" style="margin-top:0"><button class="btn btn-g" onclick="pullFromGH()">⬇ Pull from GitHub</button><button class="btn btn-g" onclick="pushAllToGH()">⬆ Push All Local</button></div>
+  <div class="page-sub">Data operations — export, synchronise, and manage collected case data.</div>
+
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">⬇ Export Data</span></div>
+    <p style="font-size:.77rem;color:var(--tx2);line-height:1.6;margin-bottom:.85rem">Download all cases as a structured CSV for analysis, archiving, or import into statistical software (Excel, R, SPSS, Stata).</p>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn btn-p" onclick="exportAllCSV()">⬇ All Cases CSV</button>
+      <button class="btn btn-s" onclick="exportOutcomesCSV()">⬇ Outcomes Only CSV</button>
     </div>
   </div>
-  <div class="card"><div class="card-hdr"><span class="card-title">📊 R Analysis Snippets</span></div>
+
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">🔄 Sync with GitHub</span></div>
+    <p style="font-size:.77rem;color:var(--tx2);line-height:1.6;margin-bottom:.85rem">Push or pull data between this device and the GitHub repository manually. Pull to bring remote changes into this browser. Push to send any local-only cases to GitHub.</p>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn btn-g" onclick="pullFromGH()">⬇ Pull from GitHub</button>
+      <button class="btn btn-g" onclick="pushAllToGH()">⬆ Push All Local Cases</button>
+    </div>
+  </div>
+
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">📊 R Analysis Snippets</span></div>
     <div class="code"><span class="c"># Load from GitHub</span><br>library(jsonlite); library(tidyverse)<br><br>url &lt;- <span class="c">"https://raw.githubusercontent.com/<span class="v">owner/mosi-system</span>/main/data/cases.json"</span><br>cases &lt;- fromJSON(url) |&gt; filter(!isTest)<br><br><span class="c"># Agreement rates by stage</span><br>cases |&gt; group_by(stage) |&gt; summarise(n=n(), proc_agree=mean(procAgreement=="Agree")*100)</div>
+  </div>
+
+  <!-- DANGER ZONE -->
+  <div class="card" style="border:2px solid rgba(239,68,68,.35);background:linear-gradient(135deg,var(--surf),rgba(239,68,68,.04))">
+    <div class="card-hdr" style="margin-bottom:.65rem">
+      <span class="card-title" style="color:var(--red)">⚠ Danger Zone — Data Reset</span>
+    </div>
+    <p style="font-size:.77rem;color:var(--tx2);line-height:1.65;margin-bottom:1rem">
+      Permanently delete collected data from this device's localStorage. <strong style="color:var(--tx)">This cannot be undone.</strong> Always export a CSV backup before resetting. Data already committed to GitHub is unaffected — manage remote data directly in the GitHub repository.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:.6rem">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.85rem 1rem;background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr);flex-wrap:wrap">
+        <div style="flex:1;min-width:160px">
+          <div style="font-size:.82rem;font-weight:600;color:var(--tx)">Reset Local Case Data</div>
+          <div style="font-size:.72rem;color:var(--tx2);margin-top:.1rem">Clears all cases stored in this browser only. GitHub data is preserved.</div>
+        </div>
+        <button class="btn btn-d btn-sm" onclick="resetLocalCases()" style="flex-shrink:0">🗑 Clear Local Cases</button>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.85rem 1rem;background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr);flex-wrap:wrap">
+        <div style="flex:1;min-width:160px">
+          <div style="font-size:.82rem;font-weight:600;color:var(--tx)">Reset Surgeon Roster</div>
+          <div style="font-size:.72rem;color:var(--tx2);margin-top:.1rem">Restores the default 4 surgeons. Any added surgeons will be removed.</div>
+        </div>
+        <button class="btn btn-d btn-sm" onclick="resetSurgeons()" style="flex-shrink:0">↩ Reset Surgeons</button>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.85rem 1rem;background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr);flex-wrap:wrap">
+        <div style="flex:1;min-width:160px">
+          <div style="font-size:.82rem;font-weight:600;color:var(--tx)">Reset About Page Edits</div>
+          <div style="font-size:.72rem;color:var(--tx2);margin-top:.1rem">Clears custom team members, labs, hospitals, and description edits.</div>
+        </div>
+        <button class="btn btn-d btn-sm" onclick="resetAboutEdits()" style="flex-shrink:0">↩ Reset About Page</button>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.9rem 1rem;background:rgba(239,68,68,.08);border-radius:var(--r);border:2px solid rgba(239,68,68,.3);flex-wrap:wrap">
+        <div style="flex:1;min-width:160px">
+          <div style="font-size:.84rem;font-weight:700;color:var(--red)">Full Factory Reset</div>
+          <div style="font-size:.72rem;color:var(--tx2);margin-top:.12rem">Wipes <strong>all</strong> data — cases, config, surgeons, about edits, GitHub credentials, and theme. Restores factory defaults.</div>
+        </div>
+        <button class="btn btn-d" onclick="factoryReset()" style="flex-shrink:0;font-weight:700">💥 Full Reset</button>
+      </div>
+
+    </div>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
-<div class="pane" id="pane-howto">
-  <div class="page-title">How It Works</div>
-  <div class="page-sub">Architecture and setup guide for the MOSI platform.</div>
   <div class="alert a-warn mb2"><span class="ai">⚠</span><span><strong>Jekyll Build Error?</strong> Create a file named <strong>.nojekyll</strong> (empty file, exact name including the dot) in the root of your repository. This stops GitHub Pages from running Jekyll.</span></div>
   <div class="alert a-info mb2"><span class="ai">ℹ</span><span><strong>Workflow File Location:</strong> The <code>submit_case.yml</code> file must be at <strong>.github/workflows/submit_case.yml</strong> (with the dot at the start) for GitHub Actions to recognize it.</span></div>
   <div class="card mb2"><div class="card-hdr"><span class="card-title">🔄 Submission Flow</span></div>
@@ -735,8 +833,67 @@ function switchPane(name){
   G('pane-'+name)?.classList.add('active');G('a-'+name)?.classList.add('active');
   if(name==='about-editor')loadAboutEditor();
   if(name==='surgeons')renderSurgRoster();
+  // Close sidebar on mobile after navigation
+  const aside=G('adminAside'),ov=G('asideOverlay');
+  if(aside)aside.classList.remove('open');
+  if(ov)ov.classList.remove('open');
+}
+function toggleAside(){
+  const aside=G('adminAside'),ov=G('asideOverlay');
+  if(!aside)return;
+  const open=aside.classList.toggle('open');
+  if(ov)ov.classList.toggle('open',open);
 }
 function closeModal(){G('adminModal')?.classList.remove('open');}
+
+/* ══ DATA RESET FUNCTIONS ══ */
+function resetLocalCases(){
+  if(!confirm('⚠ This will permanently delete all cases stored in this browser.\n\nGitHub data is NOT affected.\n\nAre you sure? This cannot be undone.'))return;
+  try{
+    const sk=localStorage.getItem(MKEY);
+    if(sk){const st=JSON.parse(sk);st.cases=[];localStorage.setItem(MKEY,JSON.stringify(st));}
+    allCases=[];updateCBadge();
+    alert('✓ Local case data cleared. GitHub data is unaffected.');
+    log('Local cases cleared.','inf');
+  }catch(e){alert('Error: '+e.message);}
+}
+function resetSurgeons(){
+  if(!confirm('Reset surgeon roster to the default 4 surgeons?\n\nAny custom surgeons will be removed. Case attribution to removed surgeons will still appear in exported data.'))return;
+  try{
+    const sk=localStorage.getItem(MKEY);
+    const st=sk?JSON.parse(sk):{};
+    st.surgeons=[
+      {id:'s1',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'OG'},
+      {id:'s2',name:'Dr. S. Laplante',role:'Consultant Bariatric Surgeon',initials:'SL'},
+      {id:'s3',name:'Dr. R. Shahriarirad',role:'Fellow',initials:'RS'},
+      {id:'s4',name:'Dr. A. Alomar',role:'Research Fellow',initials:'AA'},
+    ];
+    localStorage.setItem(MKEY,JSON.stringify(st));
+    renderSurgRoster();
+    alert('✓ Surgeon roster reset to defaults.');
+    log('Surgeon roster reset.','inf');
+  }catch(e){alert('Error: '+e.message);}
+}
+function resetAboutEdits(){
+  if(!confirm('Reset all About page customisations?\n\nThis clears custom team members, research labs, affiliated hospitals, and the system description you may have edited.'))return;
+  try{
+    ['mosi_about_team','mosi_about_labs','mosi_about_hospitals','mosi_about_edits'].forEach(k=>localStorage.removeItem(k));
+    alert('✓ About page edits cleared. Defaults restored.');
+    log('About page edits cleared.','inf');
+  }catch(e){alert('Error: '+e.message);}
+}
+function factoryReset(){
+  if(!confirm('⚠ FULL FACTORY RESET\n\nThis will permanently delete ALL platform data from this browser:\n• All submitted cases\n• GitHub credentials\n• Surgeon roster\n• About page edits\n• Admin config\n• Theme setting\n\nGitHub repository data is NOT affected.\n\nType RESET to confirm this action.'))return;
+  const confirm2=prompt('Type RESET (all caps) to confirm the full factory reset:');
+  if(confirm2!=='RESET'){alert('Reset cancelled — text did not match.');return;}
+  try{
+    const keysToRemove=[MKEY,AKEY,'mosi_about_team','mosi_about_labs','mosi_about_hospitals','mosi_about_edits','mosi_admin_theme'];
+    keysToRemove.forEach(k=>localStorage.removeItem(k));
+    allCases=[];cfg={owner:'',repo:'',token:''};
+    alert('✓ Full factory reset complete. The page will now reload.');
+    window.location.reload();
+  }catch(e){alert('Error: '+e.message);}
+}
 
 /* ══ HOW TO ══ */
 function renderHowTo(){
