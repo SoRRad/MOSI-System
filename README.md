@@ -1,242 +1,260 @@
 # MOSI Clinical Audit Platform
 
-**Metabolic & Obesity Staging Index — Clinical Decision Support and Internal Validation System**
+**Metabolic & Obesity Staging Index — Bariatric Surgery Decision Support & Prospective Validation Tool**
 
-[![GitHub Pages](https://img.shields.io/badge/Deployed-GitHub%20Pages-blue)](https://yourusername.github.io/mosi-system/)
-[![Status](https://img.shields.io/badge/Status-Pre--publication%20Internal%20Validation-orange)]()
-[![Cohort](https://img.shields.io/badge/Derivation%20Cohort-n%20%3D%203%2C097-green)]()
-
----
-
-## What This Is
-
-This repository contains the MOSI Clinical Audit Platform — a self-contained, browser-based clinical decision support and prospective internal validation tool for the **Metabolic and Obesity Staging Index (MOSI)**.
-
-MOSI is a three-dimensional bariatric surgery staging system that stratifies patients by:
-
-- **M score** — BMI class (M1–M5, BMI 30–≥50 kg/m²)
-- **O score** — metabolic comorbidity burden (HTN + dysglycaemia + OSA + HLD, scored 0–4)
-- **Si level** — systemic impairment level (Si0 = none → Si3 = organ failure)
-
-The algorithm assigns patients to **Stage I, II, III, 4A, or 4B**, with corresponding TWL Target Tiers (A–D) and evidence-based procedure recommendations derived from a validated derivation cohort of **n = 3,097 patients**.
+> Derivation cohort: **n = 3,097 patients** · Algorithm validated at **100% accuracy**
+> Repository: `SoRRad/MOSI-System` (public)
 
 ---
 
-## Purpose of This Tool
+## Overview
 
-This platform serves two simultaneous functions:
+The MOSI Clinical Audit Platform is a single-file, offline-capable web application for bariatric surgeons to record procedure decisions, capture clinical judgement, and prospectively validate the MOSI staging algorithm against real surgical outcomes. Cases are stored locally in the browser and optionally synced to a shared GitHub repository via GitHub Actions.
 
-| Function | Description |
+Two deliverable files make up the platform:
+
+| File | Purpose |
 |---|---|
-| **Clinical decision support** | Real-time MOSI scoring and procedure recommendation at point of care |
-| **Internal validation** | Prospective capture of surgeon agreement/disagreement with algorithm outputs |
-
-Every case entered generates a structured audit record. Aggregate agreement rates, per-stage disagreement patterns, and surgeon comments constitute the **internal validation dataset** that will precede external multi-centre validation.
+| `index.html` | Surgeon-facing platform (no login required) |
+| `admin.html` | Admin panel (password-gated, GitHub integration) |
 
 ---
 
-## Live Demo
+## Repository Setup
 
-👉 **[Open the Platform](https://yourusername.github.io/mosi-system/)**
+Before going live, complete these steps in the GitHub repository.
 
-> Replace `yourusername` with your GitHub username once deployed.
+### 1. Workflow files
+
+Place both workflow files inside `.github/workflows/` (the dot prefix is required):
+
+```
+.github/workflows/submit_case.yml
+.github/workflows/deploy_pages.yml
+```
+
+### 2. `.nojekyll`
+
+Place an empty `.nojekyll` file in the **repository root**. Without it, GitHub Pages runs a Jekyll build that breaks the site.
+
+```bash
+touch .nojekyll
+```
+
+### 3. GitHub Pages
+
+In **Settings → Pages → Source**, set the source to **GitHub Actions**.
+
+### 4. Personal Access Token (PAT)
+
+Generate a PAT with **`repo`** and **`workflow`** scopes. Enter it in the Admin panel under **GitHub Connection** (bottom of the sidebar). It is stored in `localStorage` key `mosi_admin_cfg` and never leaves the browser.
 
 ---
 
-## How to Use
+## How Submissions Work
 
-### For Surgeons
-
-1. Open the platform link in any modern browser (Chrome, Firefox, Safari, Edge)
-2. Click your name in the top-right corner to select or create your surgeon profile
-3. Use **New Case** to enter a pre-operative patient:
-   - Enter BMI → M score computes automatically
-   - Tick comorbidities → O score computes automatically
-   - Select Si level → MOSI stage assigns instantly
-4. Review the **Recommendation** screen — procedure guidance, outcome rates, and clinical alerts
-5. On the **Feedback** screen, record your clinical judgement:
-   - Agreement with computed MOSI stage (Agree / Partially / Disagree)
-   - Agreement with procedure recommendation (Agree / Partially / Disagree)
-   - Your intended procedure
-   - Any reasons for deviation or clinical concerns
-6. Submit the case
-
-### For the Research Team
-
-- **My Cases** — individual case log with detail view
-- **My Dashboard** — personal agreement rates and pattern charts
-- **Unit Aggregate** — pooled data across all surgeons (this is the validation dataset)
-- **Export CSV** — download all cases as a structured CSV for R analysis
+1. Surgeon opens `index.html` — no login, no token, no setup required.
+2. Case submitted — saved instantly to browser `localStorage` (key `mosi_v7`). Always succeeds, even offline.
+3. GitHub Actions workflow dispatched using the admin token stored via the admin panel.
+4. GitHub runners read `data/cases.json`, append the case, and commit back (~30 seconds).
+5. Commit appears in the repository. All surgeons see live pooled data in the **Unit Aggregate** view.
 
 ---
 
-## Data Storage
+## MOSI Algorithm
 
-> **Important: understanding where your data lives**
+### M Score (BMI Class)
 
-This is a **client-side application** — there is no server, no cloud database, and no external data transmission of any kind.
-
-### Where data is stored
-
-All case data is stored in your **browser's `localStorage`** — a private, sandboxed storage area built into every modern browser. Data never leaves your device unless you explicitly export it.
-
-```
-Browser localStorage key: "mosi_platform_v2"
-Storage format: JSON
-Location: Local to the browser and device being used
-Capacity: ~5MB (supports thousands of cases)
-Persistence: Survives browser close/restart; cleared only if browser data is cleared
-```
-
-### Implications for multi-surgeon use
-
-Because localStorage is **per browser, per device**, each surgeon's data exists only on their own machine. There is no automatic sync between devices.
-
-**Recommended workflow for data pooling:**
-
-```
-Surgeon A  →  Export CSV  ─┐
-Surgeon B  →  Export CSV  ─┼─→  Researcher merges in R  →  Analysis
-Surgeon C  →  Export CSV  ─┘
-```
-
-Each surgeon exports their CSV (Data → Export CSV) and sends it to the research coordinator. The coordinator merges with:
-
-```r
-library(tidyverse)
-
-files <- list.files("data/", pattern = "*.csv", full.names = TRUE)
-all_cases <- map_dfr(files, read_csv)
-
-# Agreement rates by stage
-all_cases %>%
-  group_by(stage) %>%
-  summarise(
-    n = n(),
-    stage_agree_pct = mean(stageAgreement == "Agree") * 100,
-    proc_agree_pct  = mean(procAgreement  == "Agree") * 100
-  )
-```
-
-### CSV export schema
-
-| Column | Description |
+| Score | BMI Range |
 |---|---|
-| `id` | Unique case identifier (timestamp-based) |
-| `caseRef` | Anonymised patient reference (surgeon-assigned) |
-| `date` | Date of entry |
-| `surgeonId` | Internal surgeon ID |
-| `surgeonName` | Surgeon full name |
-| `bmi` | Pre-operative BMI (kg/m²) |
-| `M` | M score (1–5) |
-| `O` | O score (0–4) |
-| `Si` | Si level (0, 1, 2, 3a, 3b) |
-| `stage` | MOSI stage (Stage I / II / III / 4A / 4B) |
-| `tier` | TWL Target Tier (Tier A / B / C / D) |
-| `tierTarget` | Minimum TWL target (%) |
-| `recommended` | Algorithm's procedure recommendation |
-| `stageAgreement` | Surgeon response: Agree / Partial / Disagree |
-| `procAgreement` | Surgeon response: Agree / Partial / Disagree |
-| `intendedProc` | Procedure surgeon intends to perform |
-| `reason` | Free text: reason for deviation (if any) |
-| `comments` | Free text: concerns, observations, clinical nuances |
+| M1 | 30–34.9 |
+| M2 | 35–39.9 |
+| M3 | 40–44.9 |
+| M4 | 45–49.9 |
+| M5 | ≥ 50 |
 
----
+### O Score (Comorbidity Count, additive 0–4)
 
-## MOSI Algorithm Summary
+Hypertension + Dysglycemia + OSA + Hyperlipidaemia
 
-### Scoring
+### Si Level (Severity Index)
 
-| Dimension | Variable | Levels |
-|---|---|---|
-| **M** | BMI class | M1 (30–34.9) → M5 (≥50) |
-| **O** | Comorbidity count | 0–4 (HTN + dysglycaemia + OSA + HLD) |
-| **Si** | Systemic impairment | Si0 (none) → Si3 (organ failure) |
+| Level | Criteria |
+|---|---|
+| Si0 | None |
+| Si1 | Diabetic vasculopathy / microvascular disease |
+| Si2 | Organ dysfunction (CKD, cirrhosis, cardiac, stroke) |
+| Si3A | Solid organ transplant (no dialysis) |
+| Si3B | Dialysis-dependent |
 
-### Staging Rules (applied in order)
+### Staging Rules
 
-1. **Stage 4A** — Si=3, transplant recipient, NOT on dialysis
-2. **Stage 4B** — Si=3, active dialysis
-3. **Stage III** — Si=2 (any) OR Si=1 AND (M ≥ 4 OR O ≥ 3)
-4. **Stage I** — Si=0 AND M ≤ 2 AND O ≤ 1
-5. **Stage II** — all remaining combinations
+| Stage | Criteria |
+|---|---|
+| I | Si0 + M ≤ 2 + O ≤ 1 |
+| II | Default (does not meet I or III/IV criteria) |
+| III | Si2 **or** (Si1 and M ≥ 4 **or** O ≥ 3) |
+| IV-A | Si3 + transplant (no dialysis) |
+| IV-B | Si3 + dialysis |
 
-*Algorithm validated at 100% accuracy on derivation cohort (n = 3,097).*
+### Derivation Cohort Outcomes
 
-### TWL Target Tiers
-
-| Tier | Min. TWL Target | Triggering Conditions |
-|---|---|---|
-| A | ≥ 7.5% | BMI indication only — no metabolic comorbidities |
-| B | ≥ 15% | OSA, HTN, HLD, GORD, arthropathy |
-| C | ≥ 25% | T2DM/IFG, MASLD/cirrhosis, microvascular damage |
-| D | ≥ 30% | Cardiac history (MACE risk), stroke/TIA |
-
-### Procedure Success Rates (derivation cohort)
-
-| Stage | Procedure | TWL ≥20% at 12m | TWL ≥20% at 60m* |
+| Stage | n | % | 12-month TWL Success |
 |---|---|---|---|
-| I | RYGB | 79.3% (CI 71.8–85.2%) | 73.7% |
-| I | SG | 54.7% (CI 41.5–67.3%) | 59.3% |
-| II | RYGB | 74.6% (CI 71.9–77.1%) | 67.4% |
-| II | SG | 50.0% (CI 45.1–54.9%) | 40.5% |
-| II | BPD/DS | 88.9% (CI 78.8–94.5%) | 87.2% |
-| III | RYGB | 68.8% (CI 65.5–71.9%) | 62.5% |
-| III | SG | 40.7% (CI 35.2–46.4%) ⚠ | 36.7% |
-| III | BPD/DS | 89.6% (CI 80.0–94.8%) | 87.8% |
-| 4A | SG | 65.3% (CI 53.8–75.2%) | — |
-| 4B | SG | 43.8% (CI 33.0–55.2%) | — |
-
-*60m rates are observed and pessimistically biased (MNAR dropout confirmed). Procedure ranking BPD/DS > RYGB > SG is stable under all sensitivity bounds.*
+| I | 193 | 6.2% | 73.1% |
+| II | 1,551 | 50.1% | 68.9% |
+| III | 1,193 | 38.5% | 63.3% |
+| IV (total) | 160 | 5.2% | 58.8% |
+| — IV-A (transplant) | 84 | — | 69.0% |
+| — IV-B (dialysis) | 76 | — | 47.4% |
 
 ---
 
-## Files in This Repository
+## MOSI-T TWL Target Tier System
 
-```
-mosi-system/
-├── index.html          ← The complete platform (single self-contained file)
-└── README.md           ← This file
-```
+| Tier | Target TWL | Conditions |
+|---|---|---|
+| A | ≥ 7.5% | BMI alone |
+| B | ≥ 15% | OSA, hypertension, hyperlipidaemia, GERD, arthropathy |
+| C | ≥ 25% | T2DM, IFG, MASLD, microvascular disease |
+| D | ≥ 30% | Cardiac disease, stroke history |
 
-The entire application — MOSI algorithm, decision engine, feedback forms, dashboards, CSV export — is contained within `index.html`. No dependencies, no build step, no server required.
+The platform displays a prominent colour-coded banner on each case showing the calculated tier and target.
 
 ---
 
-## Clinical Validation Status
+## index.html — Surgeon Platform
 
-| Step | Status |
+### New Case Wizard (4 steps)
+
+**Step 1 — Patient & Scoring**
+- BMI calculator supporting cm/ft/in and kg/lb
+- Real-time M, O, and Si computation
+- Live MOSI stage display
+
+**Step 2 — Recommendation**
+- Per-procedure recommendation cards with derivation cohort outcome statistics
+- 👍 👎 🚩 feedback buttons per procedure
+- Prominent TWL Tier banner
+
+**Step 3 — Clinical Judgement**
+- Q1: Procedure agreement (Agree / Partial / Disagree) with free-text reason
+- Q2: Per-procedure ranking — each recommended procedure rated as Priority / Alternative / Contraindicated / Agree; Expected Tier Outcome selector (A / B / C / D / Below A) with mismatch warning if below algorithm target
+- Q3: Alternative approaches (Yes / No + free text)
+- Q4: TWL target agreement with reason
+
+**Step 4 — Review & Submit**
+- Full case summary before submission
+
+### My Cases
+
+Full case table with View / Edit / 📊 / Delete. The edit modal covers all fields including actual procedure, 12-month and 60-month TWL, and outcome notes.
+
+### CSV Export
+
+45+ labelled columns in logical sections, UTF-8 BOM for Excel compatibility. Human-readable values (e.g. "Yes/No", "M3", "Si2").
+
+### Unit Aggregate
+
+Pooled outcomes drawn from the shared `data/cases.json` in the GitHub repository.
+
+---
+
+## admin.html — Admin Panel
+
+**Password:** `MOSI123`
+
+### Dashboard
+
+- 4 stat cards: active cases, agreement %, outcomes entered, disagreements
+- Bar charts: stage distribution, agreement breakdown, tier distribution, intended procedures
+- Per-surgeon metrics table: cases, agree%, disagreements, most common stage, outcomes entered
+- Full cases table with View / Edit / Delete
+
+### Delete behaviour
+
+Cases are **soft-deleted** — marked `_deleted: true` locally and dispatched to GitHub. They are hidden from all dashboard views but preserved in `data/cases.json`.
+
+### Edit Form
+
+All fields editable: Case Ref, Date, Surgeon, Procedure Agreement, TWL Agreement, Intended Procedure, Procedure Placement Ratings, Expected Tier Outcome, Reason, Rating Reasoning, Alternative Approaches, Comments, Actual Procedure, TWL 12m / 60m, Outcome Notes. MOSI scores are shown read-only.
+
+### About Editor
+
+Manages the content displayed in the About section of `index.html`. Includes:
+
+- **Team members** — name, role, institution, profile link
+- **Research Labs** — MStar Research Lab (with embedded M-STAR logo)
+- **Affiliated Hospitals** — Mayo Clinic (with embedded logo)
+- **System Description** — free-text platform description
+
+Changes are stored in `localStorage` and reflected in `index.html` immediately.
+
+### Danger Zone
+
+**Reset Case Data** — clears local cases only. GitHub data is unaffected.
+
+### GitHub Connection
+
+Located at the bottom of the sidebar. Enter the PAT here. The connection status is shown live.
+
+---
+
+## Default Team
+
+| Initials | Name | Role |
+|---|---|---|
+| SL | Simon J. Laplante, M.D. | Lead Clinician · Principal Conceptualist |
+| RS | Reza Shahriarirad, M.D. | Platform Development · Research Fellow |
+| AA | Abdulrahman Alomar, M.D. | Research Fellow |
+
+Default affiliation: **Surgery Innovation Team · Mayo Clinic** (SL, RS) and **Dept. of Metabolic and Abdominal Wall Reconstructive Surgery & General Surgery · Mayo Clinic** (AA).
+
+---
+
+## Surgeon Roster (Default)
+
+| ID | Name | Role |
+|---|---|---|
+| s1 | Dr. O. Ghanem | Consultant Bariatric Surgeon |
+| s2 | Dr. S. Laplante | Consultant Bariatric Surgeon |
+| s3 | Dr. Reza Shahriarirad | Fellow |
+| s4 | Dr. A. Alomar | Research Fellow |
+
+New surgeons can be added from the Select Surgeon modal in `index.html`, or from the Surgeon Roster pane in `admin.html`.
+
+---
+
+## localStorage Keys
+
+| Key | Contents |
 |---|---|
-| Algorithm development | ✅ Complete |
-| Derivation cohort validation (n=3,097) | ✅ 100% accuracy |
-| TWL Target Tier system (MOSI-T) | ✅ Complete |
-| Stage IV redesign (4A/4B split) | ✅ Complete |
-| MNAR sensitivity analysis (60m data) | ✅ Complete |
-| Manuscript (Methods + Results) | ✅ Complete |
-| **Internal validation (this tool)** | 🔄 In progress |
-| External multi-centre validation | ⬜ Planned |
+| `mosi_v7` | All local case data (array of case objects) |
+| `mosi_admin_cfg` | Admin config including GitHub PAT and repo details |
+| `mosi_about_team` | Edited team member data |
+| `mosi_about_labs` | Edited research lab data |
+| `mosi_about_hospitals` | Edited affiliated hospital data |
+| `mosi_about_edits` | System description and institution text |
 
 ---
 
-## Privacy and Data Security
+## Workflow Files
 
-- No patient identifiable information should be entered. Use anonymised case references only (e.g. PT-2024-001).
-- All data is stored locally in your browser. Nothing is transmitted to any external server.
-- Exported CSVs should be handled in accordance with your institution's research data governance policy.
-- This tool is intended for clinical research audit purposes. It does not constitute a regulated medical device.
+Both workflows use `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true` at the **workflow level** (above `jobs:`) to suppress Node 20 deprecation warnings.
 
----
+### `submit_case.yml`
 
-## Citation
+Triggered by `workflow_dispatch`. Reads `data/cases.json`, upserts or soft-deletes the submitted case, and commits back to the repository. Uses `actions/checkout@v4`.
 
-> *Manuscript in preparation. Full citation will be added upon publication.*
+### `deploy_pages.yml`
 
----
-
-## Contact
-
-For questions about the MOSI system, algorithm, or this platform, contact the research team via your institutional channels.
+Deploys `index.html` (and any other root files) to GitHub Pages. Uses `actions/configure-pages@v5`, `actions/upload-pages-artifact@v3`, and `actions/deploy-pages@v4`.
 
 ---
 
-*MOSI Clinical Audit Platform · March 2026 · Pre-publication internal validation phase*
+## Notes
+
+- The platform is fully **offline-capable** — cases are always saved locally first, GitHub sync is best-effort.
+- The `.github/workflows/` path requires the leading dot. A folder named `workflows/` at the root will not be detected.
+- The `.nojekyll` file prevents Jekyll from processing the repository, which would otherwise cause Pages deployment to fail.
+- Node 20 deprecation warnings from GitHub Actions are informational only and do not affect functionality. They are suppressed by the workflow-level env var above.
