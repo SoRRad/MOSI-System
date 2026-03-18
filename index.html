@@ -181,11 +181,32 @@ select{cursor:pointer}
 
 /* feedback buttons on rec block */
 .rec-fb{position:absolute;top:.85rem;right:.85rem;display:flex;gap:.35rem}
-.rec-fb-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border2);background:rgba(255,255,255,.06);font-size:.85rem;transition:all .15s}
-.rec-fb-btn:hover{background:rgba(255,255,255,.14);border-color:var(--border2)}
+.rec-fb-btn{height:28px;padding:0 .55rem;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border2);background:rgba(255,255,255,.06);font-size:.82rem;transition:all .15s;user-select:none;gap:.28rem}
+.rec-fb-btn:hover{background:rgba(255,255,255,.14);border-color:var(--border2);transform:scale(1.05)}
+.rec-fb-btn *{pointer-events:none}
 .rec-fb-btn.active-like{background:var(--green-pale);border-color:var(--green);color:var(--green)}
 .rec-fb-btn.active-dislike{background:var(--red-pale);border-color:var(--red);color:var(--red)}
 .rec-fb-btn.active-flag{background:var(--amber-pale);border-color:var(--amber);color:var(--amber)}
+
+/* colour legend */
+.rec-legend{display:flex;align-items:center;gap:1rem;padding:.65rem 1rem;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:1rem;border:1px solid var(--border);flex-wrap:wrap}
+.rec-legend-item{display:flex;align-items:center;gap:.38rem;font-size:.72rem;color:var(--text2)}
+.rec-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* reasoning box */
+.reasoning-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-top:.85rem;border-left:3px solid var(--blue)}
+.reasoning-box .rtitle{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.55rem}
+.reasoning-box .rbody{font-size:.79rem;color:var(--text);line-height:1.7}
+.reasoning-box .rbody strong{color:var(--blue)}
+
+/* comorbidity resolution */
+.comorbidity-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-top:.85rem;border-left:3px solid var(--teal)}
+.comorbidity-box .ctitle{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:.75rem}
+.comorbidity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem}
+.cm-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.65rem .85rem}
+.cm-item .cm-name{font-size:.72rem;font-weight:600;color:var(--text2);margin-bottom:.18rem}
+.cm-item .cm-rate{font-family:'DM Mono',monospace;font-size:1rem;font-weight:500;margin-bottom:.1rem}
+.cm-item .cm-note{font-size:.66rem;color:var(--text3);line-height:1.3}
 
 /* dislike reason */
 .dislike-panel{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.85rem;margin-top:.6rem;animation:slideDown .2s ease}
@@ -336,6 +357,8 @@ select{cursor:pointer}
   <div class="nav-item" onclick="show('aggregate')" id="nav-aggregate"><span class="nav-icon">🏥</span>Unit Aggregate</div>
   <div class="sidebar-section">Data</div>
   <div class="nav-item" onclick="exportCSV()"><span class="nav-icon">⬇️</span>Export CSV</div>
+  <div class="sidebar-section" style="margin-top:auto;padding-top:.75rem">About</div>
+  <div class="nav-item" onclick="show('about')" id="nav-about"><span class="nav-icon">ℹ️</span>About & Team</div>
 </nav>
 
 <!-- CONTENT -->
@@ -347,10 +370,10 @@ select{cursor:pointer}
   <div class="page-sub">MOSI scores compute in real time. Submit to save locally and push to GitHub automatically.</div>
 
   <div class="steps">
-    <div class="step active" id="stp1"><span class="step-n">01</span>Patient & Scoring</div>
-    <div class="step" id="stp2"><span class="step-n">02</span>Recommendation</div>
-    <div class="step" id="stp3"><span class="step-n">03</span>Clinical Judgement</div>
-    <div class="step" id="stp4"><span class="step-n">04</span>Review & Submit</div>
+    <div class="step active" id="stp1" onclick="goStep(1)" style="cursor:pointer"><span class="step-n">1</span>Patient & Scoring</div>
+    <div class="step" id="stp2" onclick="if(CR)goStep(2)" style="cursor:pointer"><span class="step-n">2</span>Recommendation</div>
+    <div class="step" id="stp3" onclick="if(CR)goStep(3)" style="cursor:pointer"><span class="step-n">3</span>Clinical Judgement</div>
+    <div class="step" id="stp4" onclick="if(CR)goStep(4)" style="cursor:pointer"><span class="step-n">4</span>Review & Submit</div>
   </div>
 
   <!-- PANE 1: SCORING -->
@@ -395,9 +418,9 @@ select{cursor:pointer}
     <!-- O SCORE -->
     <div class="card mt2">
       <div class="card-hdr"><span class="card-title">O Score — Metabolic Comorbidity Burden</span>
-        <span style="font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--amber)" id="oDisp">O = 0</span>
+        <span style="font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--amber)" id="oDisp">Score: 0</span>
       </div>
-      <p style="font-size:.76rem;color:var(--text2);margin-bottom:.85rem">Tick all present pre-operatively. Each scores +1 (max O=4). GORD is a procedural modifier only — not included in the O score.</p>
+      <p style="font-size:.76rem;color:var(--text2);margin-bottom:.85rem">Tick all present pre-operatively. Each scores +1 (max O=4). GERD is a procedural modifier only — not included in the O score.</p>
       <div class="fg3">
         <label class="chk-row" id="lbl-htn"><input type="checkbox" id="htn" onchange="comp()"> Hypertension</label>
         <label class="chk-row" id="lbl-dysgly"><input type="checkbox" id="dysgly" onchange="comp()"> Dysglycaemia (T2DM / IFG)</label>
@@ -405,7 +428,7 @@ select{cursor:pointer}
         <label class="chk-row" id="lbl-hld"><input type="checkbox" id="hld" onchange="comp()"> Hyperlipidaemia</label>
         <label class="chk-row" id="lbl-gerd" style="grid-column:span 2;border-style:dashed;opacity:.8">
           <input type="checkbox" id="gerd" onchange="comp()">
-          GORD — Gastro-oesophageal Reflux Disease
+          GERD — Gastroesophageal Reflux Disease
           <span style="font-size:.64rem;background:var(--blue-pale);color:var(--blue);padding:.1rem .4rem;border-radius:10px;margin-left:.3rem;font-weight:600">Procedural modifier</span>
         </label>
       </div>
@@ -516,24 +539,53 @@ select{cursor:pointer}
         </div>
 
         <div class="divider"></div>
-        <div class="fg">
-          <label>Intended Procedure</label>
-          <select id="intProc">
-            <option value="">— Select —</option>
-            <option>SG (Sleeve Gastrectomy)</option>
-            <option>RYGB (Roux-en-Y Gastric Bypass)</option>
-            <option>BPD/DS (Biliopancreatic Diversion with DS)</option>
-            <option>SADI-S</option>
-            <option>Other / Not yet decided</option>
-          </select>
+
+        <!-- Intended procedure + influencing factors -->
+        <div class="fg" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem">
+          <div class="section-lbl" style="margin-bottom:.75rem">Procedure Decision</div>
+          <div class="fg2">
+            <div class="fg">
+              <label>Intended Procedure <span style="font-weight:400;color:var(--text3)">(compared to recommended: <span id="judgeRecProc" style="font-style:normal;color:var(--blue)">—</span>)</span></label>
+              <select id="intProc">
+                <option value="">— Select —</option>
+                <option>SG (Sleeve Gastrectomy)</option>
+                <option>RYGB (Roux-en-Y Gastric Bypass)</option>
+                <option>BPD/DS (Biliopancreatic Diversion with DS)</option>
+                <option>SADI-S</option>
+                <option>Other / Not yet decided</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Reason for deviation <span style="font-weight:400;color:var(--text3)">(if different from recommendation)</span></label>
+              <textarea id="reasonTxt" placeholder="e.g. Patient preference, GERD, prior abdominal surgery, frailty, anaesthetic risk, centre preference..." style="min-height:68px"></textarea>
+            </div>
+          </div>
+          <div class="fg mt1">
+            <label>Other patient factors influencing your procedure choice <span style="font-weight:400;color:var(--text3)">(beyond MOSI scoring)</span></label>
+            <textarea id="procFactorsTxt" placeholder="e.g. Body habitus / access, prior weight loss surgery, patient comorbidity not captured in MOSI (PCOS, liver volume, hiatus hernia), surgeon/centre expertise, patient age or frailty index, social factors, patient preference after shared decision-making..."></textarea>
+          </div>
         </div>
-        <div class="fg mt1">
-          <label>Reason for deviation / clinical context <span style="font-weight:400;color:var(--text3)">(if disagreeing or deviating)</span></label>
-          <textarea id="reasonTxt" placeholder="e.g. Patient preference, GORD contraindication to SG, prior abdominal surgery, anaesthetic risk, frailty..."></textarea>
+
+        <!-- TWL target factors -->
+        <div class="fg mt1" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem">
+          <div class="section-lbl" style="margin-bottom:.75rem">Weight Loss Target</div>
+          <div class="fg">
+            <label>Do you agree with the calculated TWL target? <span style="font-weight:400;color:var(--text3)">(Tier <span id="judgeTierLabel" style="font-style:normal;color:var(--amber)">—</span> — <span id="judgeTierTarget" style="font-style:normal;color:var(--amber)">—</span>)</span></label>
+            <div class="ag-opts" style="margin-top:.45rem">
+              <button class="ab" id="ab-twl-agree" onclick="setAg('twl','Agree')">✓ Agree</button>
+              <button class="ab" id="ab-twl-partial" onclick="setAg('twl','Partial')">~ Partially</button>
+              <button class="ab" id="ab-twl-disagree" onclick="setAg('twl','Disagree')">✗ Disagree</button>
+            </div>
+          </div>
+          <div class="fg mt1">
+            <label>Other patient factors influencing your weight loss target <span style="font-weight:400;color:var(--text3)">(beyond MOSI-T tier)</span></label>
+            <textarea id="twlFactorsTxt" placeholder="e.g. Patient's own weight loss goal, transplant listing BMI threshold, fertility goals, specific comorbidity remission threshold not captured by tier (e.g. partial remission acceptable for this patient's DM), cardiopulmonary reserve considerations, prior bariatric surgery baseline..."></textarea>
+          </div>
         </div>
+
         <div class="fg mt1">
           <label>Additional comments, concerns or observations</label>
-          <textarea id="commentsTxt" placeholder="Any concerns about algorithm scoring, clinical nuances not captured by MOSI, unusual patient profile..."></textarea>
+          <textarea id="commentsTxt" placeholder="Any concerns about algorithm scoring, clinical nuances not captured by MOSI, unusual patient profile, or anything relevant to this case..."></textarea>
         </div>
       </div>
     </div>
@@ -591,6 +643,81 @@ select{cursor:pointer}
   <div id="aggEl"><div class="empty"><div class="ei">🏥</div><div class="et">Loading from GitHub…</div></div></div>
 </div>
 
+<!-- ══ ABOUT ══════════════════════════════════════════════ -->
+<div class="view" id="view-about">
+  <div class="page-title">About & Team</div>
+  <div class="page-sub">MOSI Clinical Audit Platform — Development & Research Credits</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1rem">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--blue-pale);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:var(--blue);font-family:'DM Serif Display',serif;flex-shrink:0">RS</div>
+        <div>
+          <div style="font-size:.95rem;font-weight:700;color:var(--text)">Reza Shahriarirad, M.D.</div>
+          <div style="font-size:.76rem;color:var(--text2);margin-top:.15rem">Platform Development</div>
+          <div style="font-size:.72rem;color:var(--blue);margin-top:.1rem">Research Fellow, Bariatric Surgery</div>
+        </div>
+      </div>
+      <div style="font-size:.77rem;color:var(--text2);line-height:1.7;margin-bottom:.85rem">
+        Designed and developed the MOSI Clinical Audit Platform, including the decision support engine, the MOSI-T tier system, internal validation workflow, and GitHub integration infrastructure.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.38rem">
+        <a href="https://scholar.google.com" target="_blank" style="display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--blue);text-decoration:none;padding:.4rem .65rem;background:var(--blue-pale);border-radius:var(--radius-sm);border:1px solid rgba(61,130,246,.25)">
+          <span>🎓</span> Academic CV & Publications
+        </a>
+        <a href="mailto:reza.shahriarirad@mail.utoronto.ca" style="display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--text2);text-decoration:none;padding:.4rem .65rem;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border)">
+          <span>✉️</span> Contact
+        </a>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:3px solid var(--teal)">
+      <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1rem">
+        <div style="width:52px;height:52px;border-radius:10px;background:var(--teal-pale);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">⭐</div>
+        <div>
+          <div style="font-size:.95rem;font-weight:700;color:var(--text)">MStar Lab</div>
+          <div style="font-size:.76rem;color:var(--text2);margin-top:.15rem">Research Support & Leadership</div>
+          <div style="font-size:.72rem;color:var(--teal);margin-top:.1rem">MSTAR — Metabolic Surgery Team & Research</div>
+        </div>
+      </div>
+      <div style="font-size:.77rem;color:var(--text2);line-height:1.7;margin-bottom:.85rem">
+        The MOSI system was developed under the support and academic guidance of the MStar Lab team. The derivation cohort (n=3,097) was curated and validated by the MStar research group.
+      </div>
+      <div style="padding:.65rem .85rem;background:var(--teal-pale);border-radius:var(--radius-sm);border:1px solid rgba(20,184,166,.25);font-size:.74rem;color:var(--teal);line-height:1.6">
+        <strong>MStar Lab</strong> — Metabolic Surgery Team & Research<br>
+        Advancing evidence-based bariatric and metabolic surgery practice through rigorous data science and clinical validation.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--amber)">
+    <div class="card-hdr"><span class="card-title">📋 About the MOSI System</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem">
+      <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:.85rem;border:1px solid var(--border)">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Derivation Cohort</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--text)">3,097</div>
+        <div style="font-size:.72rem;color:var(--text2);margin-top:.2rem">patients · single tertiary centre</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:.85rem;border:1px solid var(--border)">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Algorithm Accuracy</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--green)">100%</div>
+        <div style="font-size:.72rem;color:var(--text2);margin-top:.2rem">validated on full cohort</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:.85rem;border:1px solid var(--border)">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">Status</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--amber);margin-top:.2rem">Pre-publication</div>
+        <div style="font-size:.72rem;color:var(--text2);margin-top:.2rem">internal validation phase</div>
+      </div>
+    </div>
+    <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
+      The Metabolic & Obesity Staging Index (MOSI) is a three-dimensional bariatric surgery staging system (M score × O score × Si level) that assigns patients to Stages I, II, III, 4A, or 4B. The MOSI-T tier system maps each patient's comorbidity profile to a minimum TWL target required for metabolic goal achievement. This platform provides real-time clinical decision support and prospectively captures surgeon agreement/disagreement data to constitute the internal validation dataset.
+    </div>
+    <div style="margin-top:.85rem;font-size:.73rem;color:var(--text3);font-style:italic">
+      Manuscript in preparation. Citation will be added upon publication. This tool is for clinical audit and research purposes — not a regulated medical device.
+    </div>
+  </div>
+</div>
+
 </main>
 </div>
 </div>
@@ -639,7 +766,7 @@ select{cursor:pointer}
 /* ═══════════════════════════════════ STATE ═══════════════════════════════════ */
 const SK='mosi_v6';
 let S={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''},theme:'dark'};
-let CR=null, AG={stage:null,proc:null}, recFeedback={}, currentDislikeTarget=null;
+let CR=null, AG={stage:null,proc:null,twl:null}, recFeedback={}, currentDislikeTarget=null;
 
 function loadS(){
   try{const s=localStorage.getItem(SK);if(s)S=JSON.parse(s);}catch(e){}
@@ -705,7 +832,7 @@ function calcMOSI(bmi,htn,dy,osa,hld,gerd,si_raw,card,str,masld,mic,arth){
   else if(htn||osa||hld||gerd||arth)tier='B';
   else tier='A';
   const tt={A:'≥7.5% TWL',B:'≥15% TWL',C:'≥25% TWL',D:'≥30% TWL'};
-  const tg={A:'Functional improvement & QoL',B:'OSA/HTN/HLD/GORD resolution',C:'T2DM remission, MASLD regression',D:'MACE risk reduction, cardiovascular event prevention'};
+  const tg={A:'Functional improvement & QoL',B:'OSA/HTN/HLD/GERD resolution',C:'T2DM remission, MASLD regression',D:'MACE risk reduction, cardiovascular event prevention'};
   let rec,rp=[],al=[];
   if(stage==='Stage I'){rec='RYGB (preferred) or SG';rp=['RYGB','SG'];}
   else if(stage==='Stage II'){rec='RYGB (standard)';rp=['RYGB'];
@@ -718,7 +845,7 @@ function calcMOSI(bmi,htn,dy,osa,hld,gerd,si_raw,card,str,masld,mic,arth){
     al.push({t:'info',m:'Transplant recipient with functioning graft. RYGB requires multidisciplinary transplant team input — tacrolimus/ciclosporin absorption may be significantly altered.'});}
   else if(stage==='Stage 4B'){rec='SG (perioperative risk dominates all decisions)';rp=['SG'];
     al.push({t:'warn',m:'Active dialysis. TWL is a misspecified outcome — primary goal is achieving weight threshold for transplant listing eligibility. Standard success metrics do not apply.'});}
-  if(gerd&&!['Stage 4A','Stage 4B'].includes(stage))al.push({t:'info',m:'GORD present: RYGB preferred at all stages. SG may worsen reflux symptoms — relative contraindication to SG.'});
+  if(gerd&&!['Stage 4A','Stage 4B'].includes(stage))al.push({t:'info',m:'GERD present: RYGB preferred at all stages. SG may worsen reflux symptoms — relative contraindication to SG.'});
   return{M,O,Si:si_raw,stage,tier,tierTarget:tt[tier],tierGoal:tg[tier],rec,rp,al};
 }
 
@@ -737,7 +864,7 @@ function comp(){
   const htn=CK('htn'),dy=CK('dysgly'),osa=CK('osa'),hld=CK('hld'),gerd=CK('gerd');
   const card=CK('cardiac'),str=CK('stroke'),masld=CK('masld'),mic=CK('microeo'),arth=CK('arthro');
   const O=(htn?1:0)+(dy?1:0)+(osa?1:0)+(hld?1:0);
-  G('oDisp').textContent=`O = ${O}`;
+  G('oDisp').textContent=`Score: ${O}`;
   // highlight checked
   ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro'].forEach(id=>{
     const lbl=G('lbl-'+id);if(lbl)lbl.classList.toggle('checked',CK(id));
@@ -768,11 +895,41 @@ function goStep(n){
 }
 
 /* ═══════════════════════════════════ RENDER REC ══════════════════════════════ */
+const COMORBIDITY_RES={
+  'Stage I':{osa:{r:'72.7%',n:44,note:'Excellent OSA resolution'},htn:{r:'8.3%',n:12,note:'Limited — needs ≥20% TWL'}},
+  'Stage II':{dysgly:{r:'86.0%',n:107,note:'High T2DM remission — RYGB superior to SG'},htn:{r:'29.9%',n:368,note:'Moderate HTN improvement'},osa:{r:'57.1%',n:760,note:'Good OSA resolution'},hld:{r:'55.1%',n:296,note:'Consistent lipid improvement'}},
+  'Stage III':{dysgly:{r:'68.6%',n:727,note:'Lower remission due to longer disease duration & microvascular damage'},htn:{r:'20.9%',n:676,note:'Modest HTN improvement in high-severity patients'},osa:{r:'45.7%',n:911,note:'Moderate OSA resolution despite high comorbidity burden'},hld:{r:'37.1%',n:754,note:'Reduced lipid improvement at higher severity'}},
+  'Stage 4A':{dysgly:{r:'38.9%',n:90,note:'Reduced — immunosuppression may counteract metabolic benefits'},htn:{r:'14.3%',n:105,note:'Limited improvement in transplant recipients'},osa:{r:'40.6%',n:101,note:'Moderate OSA resolution'},hld:{r:'17.1%',n:117,note:'Modest lipid improvement'}},
+  'Stage 4B':{dysgly:{r:'38.9%',n:90,note:'Misspecified endpoint — transplant listing is the true goal'},htn:{r:'14.3%',n:105,note:'Perioperative context dominates metabolic goals'},osa:{r:'40.6%',n:101,note:'Limited data (77% missing at 60m)'},hld:{r:'17.1%',n:117,note:'Very limited data available'}},
+};
+
+const PROC_REASONING={
+  'Stage I':{
+    RYGB:'RYGB is preferred at Stage I because it consistently outperforms SG across all follow-up periods (79.3% vs 54.7% success at 12m; 73.7% vs 59.3% at 60m). Although Stage I patients have low metabolic burden, RYGB provides superior and more durable weight loss. SG remains acceptable when patient preference is strong, GERD is absent, and the patient is fully counselled on lower success rates.',
+    SG:'SG is an acceptable alternative at Stage I for patients with strong preference for sleeve anatomy and no GERD. The 54.7% success rate is below RYGB but clinically acceptable at low severity, where metabolic stakes are lower. Both procedures achieve acceptable Tier A/B targets at 12 months.',
+  },
+  'Stage II':{
+    RYGB:'RYGB is the standard recommendation at Stage II. The 24.6 percentage-point success advantage over SG (74.6% vs 50.0%) is highly significant (RR 1.45, p<0.001). Stage II encompasses the majority of patients with T2DM, OSA, and dysglycaemia — conditions where RYGB consistently achieves superior comorbidity resolution rates. SG at 50.0% success is at the lower boundary of clinical acceptability and is inadequate for Tier C or D metabolic targets.',
+    'BPD/DS':'BPD/DS achieves the highest rates at Stage II (88.9% at 12m, 87.2% at 60m) and should be considered in patients with Tier C/D targets. Note: n=63, CI 78.8–94.5% — estimates carry wide confidence intervals. Requires specialist centre experience.',
+  },
+  'Stage III':{
+    'BPD/DS':'BPD/DS is the preferred procedure at Stage III as it is the only option achieving consistently high success (89.6% at 12m, 87.8% at 60m). Stage III patients — dominated by T2DM, microvascular damage, and organ dysfunction — have the highest metabolic demands, requiring deep and sustained weight loss. BPD/DS is the only procedure achieving >30% TWL in the majority of patients at this stage.',
+    RYGB:'RYGB is the standard recommendation when BPD/DS is not eligible or available (68.8% success, 62.5% at 60m). It provides substantially better outcomes than SG (RR 1.70, p<0.001). RYGB is appropriate as the primary procedure when BPD/DS eligibility is not met or centre expertise is unavailable.',
+    SG_CONTRAINDICATED:'SG is contraindicated at Stage III. The 40.7% success rate (95% CI 35.2–46.4%) falls below any acceptable metabolic threshold. Under pessimistic MNAR assumptions, the true 5-year success rate may be as low as 14.9%. The 28.1 percentage-point gap versus RYGB is not explainable by selection bias. SG should not be performed in Stage III patients unless there are absolute contraindications to all other procedures.',
+  },
+  'Stage 4A':{
+    SG:'SG is standard for transplant recipients with functioning grafts. RYGB significantly alters absorption of calcineurin inhibitors (tacrolimus, ciclosporin), representing a pharmacokinetic hazard. SG achieves 65.3% success (95% CI 53.8–75.2%), acceptable given the elevated perioperative risk profile of this population. RYGB may be considered only after multidisciplinary transplant team assessment and only in highly selected patients.',
+  },
+  'Stage 4B':{
+    SG:'SG is near-universally performed in Stage 4B (96.1% of cases). Perioperative risk in dialysis-dependent patients — including volume management, anastomotic healing, and cardiopulmonary demands — makes sleeve anatomy the only practical option in the vast majority of cases. The primary surgical goal is achieving the weight threshold required for transplant listing; TWL percentage is a misspecified primary outcome for this population.',
+  },
+};
+
 function renderRec(){
   const r=CR;
   const siL={'0':'None','1':'Microvascular damage','2':'Organ dysfunction','3a':'Organ failure (4A)','3b':'Organ failure (4B)'};
   G('scoreStrip').innerHTML=`
-    <div class="sb m"><div class="sl">M Score</div><div class="sv">M${r.M}</div><div class="ss">BMI class ${['','30–34.9','35–39.9','40–44.9','45–49.9','≥50'][r.M]} kg/m²</div></div>
+    <div class="sb m"><div class="sl">M Score</div><div class="sv">M${r.M}</div><div class="ss">BMI ${['','30–34.9','35–39.9','40–44.9','45–49.9','≥50'][r.M]} kg/m²</div></div>
     <div class="sb o"><div class="sl">O Score</div><div class="sv">${r.O}</div><div class="ss">${r.O}/4 comorbidities</div></div>
     <div class="sb si-box"><div class="sl">Si Level</div><div class="sv">Si${r.Si==='3a'?3:r.Si==='3b'?3:r.Si}</div><div class="ss">${siL[r.Si]||''}</div></div>
     <div class="sb ${sc(r.stage)}"><div class="sl">MOSI Stage</div><div class="sv" style="font-size:1rem;line-height:1.2;margin-top:.15rem">${r.stage}</div><div class="ss">${r.stage.includes('4')?'Critical complexity':r.stage==='Stage III'?'High severity':r.stage==='Stage II'?'Moderate severity':'Low severity'}</div></div>`;
@@ -780,43 +937,102 @@ function renderRec(){
     <span class="lbl" style="color:var(--text2)">TWL Target Tier</span>
     <span class="tier-badge t${r.tier}">Tier ${r.tier} — ${r.tierTarget}</span>
     <span style="font-size:.75rem;color:var(--text2)">${r.tierGoal}</span>`;
+
+  // Colour legend
+  const legendHTML=`<div class="rec-legend">
+    <span style="font-size:.68rem;font-weight:700;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-right:.35rem">Colour key:</span>
+    <div class="rec-legend-item"><div class="rec-legend-dot" style="background:var(--green)"></div><span>Priority / Preferred</span></div>
+    <div class="rec-legend-item"><div class="rec-legend-dot" style="background:var(--amber)"></div><span>Alternative / Acceptable</span></div>
+    <div class="rec-legend-item"><div class="rec-legend-dot" style="background:var(--red)"></div><span>Contraindicated — avoid</span></div>
+    <div style="margin-left:auto;font-size:.66rem;color:var(--text3)">👍 👎 🚩 click to record your feedback on each card</div>
+  </div>`;
+
   recFeedback={};
   const so=OC[r.stage]||{};let rH='';
   r.rp.forEach((proc,idx)=>{
-    const o=so[proc],cls=idx===0?'pref':'nblk';
-    const lbl=idx===0&&r.rp.length>1?`★ ${proc} — Preferred`:idx===0?`★ ${proc} — Recommended`:proc;
-    const rates=o?`<div class="rr">${o.s12!=null?`<div><div class="stat-n">${o.s12}%</div><div class="stat-l">Success @12m</div></div>`:''}<div><div class="stat-n">${o.t12}%</div><div class="stat-l">Mean TWL 12m</div></div>${o.s60!=null?`<div><div class="stat-n">${o.s60}%</div><div class="stat-l">Success @60m†</div></div>`:''}</div>`:'';
+    const o=so[proc];
+    const isPref=idx===0;
+    const cls=isPref?'pref':'nblk';
+    const rankBadge=isPref&&r.rp.length>1
+      ?`<span style="font-size:.6rem;background:var(--green);color:#fff;padding:.12rem .48rem;border-radius:10px;font-weight:700;letter-spacing:.05em;flex-shrink:0">PRIORITY</span>`
+      :isPref
+      ?`<span style="font-size:.6rem;background:var(--green);color:#fff;padding:.12rem .48rem;border-radius:10px;font-weight:700;letter-spacing:.05em;flex-shrink:0">RECOMMENDED</span>`
+      :`<span style="font-size:.6rem;background:var(--amber);color:#fff;padding:.12rem .48rem;border-radius:10px;font-weight:700;letter-spacing:.05em;flex-shrink:0">ALTERNATIVE</span>`;
+    const statBar=o?`<div style="display:grid;grid-template-columns:${o.s60!=null?'1fr 1fr 1fr':'1fr 1fr'};border-radius:var(--radius-sm);overflow:hidden;background:rgba(0,0,0,.1);margin-top:.65rem;border:1px solid rgba(255,255,255,.08)">
+      ${o.s12!=null?`<div style="text-align:center;padding:.55rem .4rem;border-right:1px solid rgba(255,255,255,.08)"><div style="font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500">${o.s12}%</div><div style="font-size:.6rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-top:.12rem">Success @12m</div></div>`:''}
+      <div style="text-align:center;padding:.55rem .4rem;border-right:${o.s60!=null?'1px solid rgba(255,255,255,.08)':'none'}"><div style="font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500">${o.t12}%</div><div style="font-size:.6rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-top:.12rem">Mean TWL 12m</div></div>
+      ${o.s60!=null?`<div style="text-align:center;padding:.55rem .4rem"><div style="font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500">${o.s60}%</div><div style="font-size:.6rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-top:.12rem">Success @60m †</div></div>`:''}
+    </div>`:'';
     const pid=`rec_${idx}`;
     rH+=`<div class="rec-blk ${cls}" id="${pid}">
       <div class="rec-fb">
-        <div class="rec-fb-btn" id="fb-like-${idx}" title="This recommendation is appropriate" onclick="fbLike(${idx},'${proc}')">👍</div>
-        <div class="rec-fb-btn" id="fb-dislike-${idx}" title="I disagree with this recommendation" onclick="fbDislike(${idx},'${proc}')">👎</div>
-        <div class="rec-fb-btn" id="fb-flag-${idx}" title="Report an issue with this recommendation" onclick="fbFlag(${idx},'${proc}')">🚩</div>
+        <div class="rec-fb-btn" id="fb-like-${idx}" title="Appropriate recommendation" onclick="fbLike(${idx},'${proc}')"><span>👍</span></div>
+        <div class="rec-fb-btn" id="fb-dislike-${idx}" title="I disagree" onclick="fbDislike(${idx},'${proc}')"><span>👎</span></div>
+        <div class="rec-fb-btn" id="fb-flag-${idx}" title="Flag for review" onclick="fbFlag(${idx},'${proc}')"><span>🚩</span></div>
       </div>
-      <div class="rt">${lbl}</div>
-      <div class="rp">${proc}</div>
-      <div class="rm">${r.rec}</div>
-      ${rates}
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.45rem;flex-wrap:wrap;padding-right:5.5rem">${rankBadge}<span style="font-size:.68rem;font-weight:600;opacity:.7;text-transform:uppercase;letter-spacing:.08em">${isPref&&r.rp.length>1?'Preferred Procedure':isPref?'Primary Recommendation':'Acceptable Alternative'}</span></div>
+      <div style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:.3rem">${proc}</div>
+      ${statBar}
       <div id="fb-panel-${idx}"></div>
     </div>`;
   });
+
+  // Contraindication card for Stage III
   if(r.stage==='Stage III'){
-    const sg=so['SG'];if(sg)rH+=`<div class="rec-blk wblk" id="rec_sg_warn">
-      <div class="rec-fb">
-        <div class="rec-fb-btn" id="fb-like-sg" title="Appropriate warning" onclick="fbLike('sg','SG')">👍</div>
-        <div class="rec-fb-btn" id="fb-dislike-sg" title="I disagree" onclick="fbDislike('sg','SG')">👎</div>
-        <div class="rec-fb-btn" id="fb-flag-sg" title="Report issue" onclick="fbFlag('sg','SG')">🚩</div>
-      </div>
-      <div class="rt">⚠ SG — Contraindicated at Stage III</div>
-      <div class="rp">Sleeve Gastrectomy</div>
-      <div class="rm">12m success 40.7% (95% CI 35.2–46.4%). Pessimistic 5-year bound 14.9%. Below any acceptable threshold for metabolic efficacy at this stage.</div>
-      <div class="rr"><div><div class="stat-n">${sg.s12}%</div><div class="stat-l">Success @12m</div></div><div><div class="stat-n">${sg.t12}%</div><div class="stat-l">Mean TWL 12m</div></div></div>
-      <div id="fb-panel-sg"></div>
-    </div>`;
+    const sg=so['SG'];if(sg){
+      rH+=`<div class="rec-blk wblk" id="rec_sg_warn">
+        <div class="rec-fb">
+          <div class="rec-fb-btn" id="fb-like-sg" title="Appropriate warning" onclick="fbLike('sg','SG')"><span>👍</span></div>
+          <div class="rec-fb-btn" id="fb-dislike-sg" title="I disagree" onclick="fbDislike('sg','SG')"><span>👎</span></div>
+          <div class="rec-fb-btn" id="fb-flag-sg" title="Flag for review" onclick="fbFlag('sg','SG')"><span>🚩</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.45rem;flex-wrap:wrap;padding-right:5.5rem">
+          <span style="font-size:.6rem;background:var(--red);color:#fff;padding:.12rem .48rem;border-radius:10px;font-weight:700;letter-spacing:.05em;flex-shrink:0">CONTRAINDICATED</span>
+          <span style="font-size:.68rem;font-weight:600;opacity:.7;text-transform:uppercase;letter-spacing:.08em">⚠ Avoid</span>
+        </div>
+        <div style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:.3rem">Sleeve Gastrectomy (SG)</div>
+        <div style="font-size:.77rem;opacity:.85;line-height:1.5;margin-bottom:.5rem">12m success 40.7% (95% CI 35.2–46.4%). Pessimistic 5-year bound: 14.9%. Below any acceptable metabolic threshold for Stage III.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-radius:var(--radius-sm);overflow:hidden;background:rgba(0,0,0,.1);border:1px solid rgba(255,255,255,.08)">
+          <div style="text-align:center;padding:.55rem .4rem;border-right:1px solid rgba(255,255,255,.08)"><div style="font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500">${sg.s12}%</div><div style="font-size:.6rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-top:.12rem">Success @12m</div></div>
+          <div style="text-align:center;padding:.55rem .4rem;border-right:1px solid rgba(255,255,255,.08)"><div style="font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500">${sg.t12}%</div><div style="font-size:.6rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-top:.12rem">Mean TWL 12m</div></div>
+          <div style="text-align:center;padding:.55rem .4rem"><div style="font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500">${sg.s60}%</div><div style="font-size:.6rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-top:.12rem">Success @60m †</div></div>
+        </div>
+        <div id="fb-panel-sg"></div>
+      </div>`;
+    }
   }
-  G('recBlocks').innerHTML=rH;
-  let aH='<div style="font-size:.64rem;color:var(--text3);margin-top:.2rem;margin-bottom:.75rem">† 60m rates are pessimistically biased (MNAR dropout confirmed). Procedure ranking BPD/DS > RYGB > SG is stable under all sensitivity scenarios.</div>';
+
+  // Alert blocks
+  let aH='<div style="font-size:.63rem;color:var(--text3);margin-top:.2rem;margin-bottom:.75rem">† 60m rates are pessimistically biased (MNAR dropout confirmed). Procedure ranking BPD/DS > RYGB > SG is stable under all sensitivity scenarios.</div>';
   (r.al||[]).forEach(a=>{const m={warn:'a-warn ⚠',info:'a-info ℹ',note:'a-note 📌'};const[c,i]=(m[a.t]||'a-info ℹ').split(' ');aH+=`<div class="alert ${c}"><span class="ai">${i}</span><span>${a.m}</span></div>`;});
+
+  // Reasoning box
+  const stageReasoning=PROC_REASONING[r.stage]||{};
+  let reasoningLines=[];
+  r.rp.forEach(proc=>{if(stageReasoning[proc])reasoningLines.push(`<p style="margin-bottom:.6rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)"><strong style="color:var(--blue)">${proc}:</strong> ${stageReasoning[proc]}</p>`);});
+  if(r.stage==='Stage III'&&stageReasoning.SG_CONTRAINDICATED)reasoningLines.push(`<p style="margin-bottom:0"><strong style="color:var(--red)">SG (Contraindicated):</strong> ${stageReasoning.SG_CONTRAINDICATED}</p>`);
+  if(reasoningLines.length){
+    const last=reasoningLines[reasoningLines.length-1];
+    reasoningLines[reasoningLines.length-1]=last.replace('margin-bottom:.6rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)','margin-bottom:0');
+    aH+=`<div class="reasoning-box"><div class="rtitle">📖 Reasoning for Procedure Selection — ${r.stage}</div><div class="rbody">${reasoningLines.join('')}</div></div>`;
+  }
+
+  // Comorbidity resolution
+  const stageRes=COMORBIDITY_RES[r.stage]||{};
+  const activeComorbidities={htn:CK('htn'),dysgly:CK('dysgly'),osa:CK('osa'),hld:CK('hld')};
+  const relevantEntries=Object.entries(activeComorbidities).filter(([k,v])=>v&&stageRes[k]);
+  if(relevantEntries.length>0){
+    const items=relevantEntries.map(([k])=>{
+      const res=stageRes[k];
+      const label={htn:'Hypertension',dysgly:'T2DM / Dysglycaemia',osa:'OSA',hld:'Hyperlipidaemia'}[k];
+      const rateNum=parseFloat(res.r);
+      const rateColor=rateNum>=70?'var(--green)':rateNum>=50?'var(--amber)':'var(--red)';
+      return`<div class="cm-item"><div class="cm-name">${label}</div><div class="cm-rate" style="color:${rateColor}">${res.r} <span style="font-size:.62rem;opacity:.65">remission</span></div><div class="cm-note">n=${res.n} · ${res.note}</div></div>`;
+    }).join('');
+    aH+=`<div class="comorbidity-box"><div class="ctitle">🎯 Expected Comorbidity Resolution — ${r.stage}</div><div class="comorbidity-grid">${items}</div><div style="font-size:.66rem;color:var(--text3);margin-top:.6rem">Pooled across all procedures at this stage from the derivation cohort (n=3,097). Rates reflect last follow-up, not specifically 12-month. Procedure choice affects individual rates.</div></div>`;
+  }
+
+  G('recBlocks').innerHTML=legendHTML+rH;
   G('alertBlocks').innerHTML=aH;
 }
 
@@ -863,13 +1079,18 @@ function renderJudge(){
     <strong>${ctx.title||r.stage}</strong><br>
     ${ctx.desc||''}<br>
     <span style="color:var(--text3);font-size:.7rem;margin-top:.3rem;display:block">
-      Derivation cohort outcome: ${ctx.ci||''} &nbsp;|&nbsp; ${ctx.procs||''}
+      Derivation cohort: ${ctx.ci||''} &nbsp;|&nbsp; ${ctx.procs||''}
     </span>`;
+  // Populate new fields
+  const rp=G('judgeRecProc');if(rp)rp.textContent=r.rec;
+  const tl=G('judgeTierLabel');if(tl)tl.textContent=`Tier ${r.tier}`;
+  const tt=G('judgeTierTarget');if(tt)tt.textContent=r.tierTarget;
 }
 
-let AG_vals={stage:null,proc:null};
+let AG_vals={stage:null,proc:null,twl:null};
 function setAg(f,v){
   AG_vals[f]=v;
+  // Handle both twl (uses ab-twl-*) and stage/proc (uses ab-stage-*/ab-proc-*)
   ['agree','partial','disagree'].forEach(k=>{
     const el=G(`ab-${f}-${k}`);if(!el)return;
     el.className='ab';
@@ -947,7 +1168,7 @@ async function submitCase(){
   S.cases.push(rec);saveS();
   const ok=await dispatchWF(rec);
   btn.disabled=false;btn.textContent='✓ Submit Case';
-  AG_vals={stage:null,proc:null};recFeedback={};clearForm();goStep(1);updateBadges();show('my-cases');
+  AG_vals={stage:null,proc:null,twl:null};recFeedback={};clearForm();goStep(1);updateBadges();show('my-cases');
   alert(ok?`✓ Submitted and pushed to GitHub (commits within ~30 seconds).`:'✓ Saved locally. GitHub not configured — see admin panel.');
 }
 
@@ -1200,14 +1421,15 @@ function exportCSV(){
 }
 
 function clearForm(){
-  ['bmi','caseRef','reasonTxt','commentsTxt'].forEach(id=>G(id)&&(G(id).value=''));
+  ['bmi','caseRef','reasonTxt','commentsTxt','procFactorsTxt','twlFactorsTxt'].forEach(id=>G(id)&&(G(id).value=''));
   ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro','isAnon'].forEach(id=>G(id)&&(G(id).checked=false));
   ['lbl-htn','lbl-dysgly','lbl-osa','lbl-hld','lbl-gerd','lbl-cardiac','lbl-stroke','lbl-masld','lbl-microeo','lbl-arthro'].forEach(id=>G(id)?.classList.remove('checked'));
   G('intProc').value='';G('mDisp').textContent='—';G('oDisp').textContent='O = 0';
   G('anonHint').style.display='none';
   G('btn-s2').disabled=true;selectedSi=null;
   document.querySelectorAll('.si-card').forEach(c=>c.classList.remove('selected'));
-  CR=null;AG_vals={stage:null,proc:null};recFeedback={};goStep(1);
+  CR=null;AG_vals={stage:null,proc:null,twl:null};recFeedback={};goStep(1);
+  G('mDisp').textContent='—';G('oDisp').textContent='Score: 0';
 }
 
 /* ═══════════════════════════════════ INIT ════════════════════════════════════ */
