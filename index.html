@@ -464,7 +464,7 @@ textarea{resize:vertical;min-height:80px}
 const SK='mosi_v4';
 let S={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''}};
 function loadS(){try{const s=localStorage.getItem(SK);if(s)S=JSON.parse(s);}catch(e){}
-  if(!S.surgeons?.length)S.surgeons=[{id:'s1',name:'Dr. A. Rahman',role:'Consultant Bariatric Surgeon',initials:'AR'},{id:'s2',name:'Dr. S. Patel',role:'Associate Specialist',initials:'SP'},{id:'s3',name:'Dr. L. Chen',role:'Fellow',initials:'LC'}];
+  if(!S.surgeons?.length)S.surgeons=[{id:'s1',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'OmG'},{id:'s2',name:'Dr. S. Laplante',role:'Consultant Bariatric Surgeon',initials:'SL'},{id:'s3',name:'Dr. R. Shahriarirad',role:'Fellow',initials:'RSh'}];
   if(!S.gh)S.gh={owner:'',repo:'',token:''};
 }
 function saveS(){localStorage.setItem(SK,JSON.stringify(S));}
