@@ -267,15 +267,32 @@ textarea{resize:vertical;min-height:68px}
 <!-- ABOUT EDITOR -->
 <div class="pane" id="pane-about-editor">
   <div class="page-title">Edit About Page</div>
-  <div class="page-sub">Edit team member details shown on the surgeon platform's About &amp; Team section.</div>
-  <div class="alert a-info mb2"><span class="ai">ℹ</span><span>Changes apply immediately in this browser. To make them permanent across all devices, update and redeploy <code>index.html</code>.</span></div>
-  <div class="card mb2"><div class="card-hdr"><span class="card-title">👥 Team Members</span><button class="btn btn-p btn-sm" onclick="openAddMember()">+ Add</button></div>
+  <div class="page-sub">Edit team members, research labs, affiliated hospitals, and system description shown on the platform.</div>
+  <div class="alert a-info mb2"><span class="ai">ℹ</span><span>Changes are saved to browser localStorage and applied immediately. They persist across sessions on this device but are not pushed to GitHub automatically.</span></div>
+
+  <!-- TEAM MEMBERS -->
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">👥 Team Members</span><button class="btn btn-p btn-sm" onclick="openAddMember()">+ Add Member</button></div>
     <div id="membersList"><div style="font-size:.78rem;color:var(--tx2);padding:.5rem 0">Loading…</div></div>
   </div>
+
+  <!-- RESEARCH LABS -->
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">🔬 Research Labs</span><button class="btn btn-p btn-sm" onclick="openAddLab()">+ Add Lab</button></div>
+    <div id="labsList"><div style="font-size:.78rem;color:var(--tx2);padding:.5rem 0">Loading…</div></div>
+  </div>
+
+  <!-- AFFILIATED HOSPITALS -->
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">🏥 Affiliated Hospitals</span><button class="btn btn-p btn-sm" onclick="openAddHospital()">+ Add Hospital</button></div>
+    <div id="hospitalsList"><div style="font-size:.78rem;color:var(--tx2);padding:.5rem 0">Loading…</div></div>
+  </div>
+
+  <!-- SYSTEM DESCRIPTION -->
   <div class="card mb2"><div class="card-hdr"><span class="card-title">📋 System Description</span></div>
     <div class="fg"><label>MOSI System Description</label><textarea id="ae-desc" style="min-height:100px" placeholder="The Metabolic &amp; Obesity Staging Index (MOSI) is…"></textarea></div>
     <div class="fg mt1"><label>Institutional Affiliation</label><input type="text" id="ae-inst" placeholder="e.g. Mayo Clinic — Bariatric &amp; Metabolic Surgery"></div>
-    <div class="btn-row"><button class="btn btn-p" onclick="saveAboutEdits()">✓ Save to Platform</button></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="saveAboutEdits()">✓ Save Description</button></div>
   </div>
 </div>
 
@@ -679,8 +696,38 @@ function editMember(i){showMemberModal(i,getTeam()[i]);}
 function removeMember(i){const t=getTeam();t.splice(i,1);saveTeam(t);renderMembers();}
 function showMemberModal(i,m){G('adminModalBody').innerHTML=`<div class="modal-title">${i<0?'Add':'Edit'} Team Member</div><div class="fg mt1"><label>Name &amp; Credentials</label><input type="text" id="tm-nm" value="${m.name||''}" placeholder="e.g. Reza Shahriarirad, M.D."></div><div class="fg mt1"><label>Role / Title</label><input type="text" id="tm-rl" value="${m.role||''}"></div><div class="fg mt1"><label>Department / Institution</label><input type="text" id="tm-org" value="${m.org||''}"></div><div class="fg mt1"><label>Profile Link URL</label><input type="text" id="tm-lk" value="${m.link||''}" placeholder="https://…"></div><div class="fg mt1"><label>Link Label</label><input type="text" id="tm-ll" value="${m.linkLabel||''}"></div>`;G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveMember(${i})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;G('adminModal').classList.add('open');}
 function saveMember(i){const t=getTeam(),m={name:V('tm-nm'),role:V('tm-rl'),org:V('tm-org'),link:V('tm-lk'),linkLabel:V('tm-ll')};if(i<0)t.push(m);else t[i]=m;saveTeam(t);renderMembers();closeModal();}
-function saveAboutEdits(){const e={desc:V('ae-desc'),inst:V('ae-inst'),updatedAt:new Date().toISOString()};localStorage.setItem('mosi_about_edits',JSON.stringify(e));alert('✓ Saved. Changes live in this browser.');}
-function loadAboutEditor(){renderMembers();try{const e=JSON.parse(localStorage.getItem('mosi_about_edits')||'{}');if(G('ae-desc'))G('ae-desc').value=e.desc||'';if(G('ae-inst'))G('ae-inst').value=e.inst||'';}catch(e){}}
+function saveAboutEdits(){const e={desc:V('ae-desc'),inst:V('ae-inst'),updatedAt:new Date().toISOString()};localStorage.setItem('mosi_about_edits',JSON.stringify(e));alert('✓ Description saved.');}
+function loadAboutEditor(){renderMembers();renderLabs();renderHospitals();try{const e=JSON.parse(localStorage.getItem('mosi_about_edits')||'{}');if(G('ae-desc'))G('ae-desc').value=e.desc||'';if(G('ae-inst'))G('ae-inst').value=e.inst||'';}catch(e){}}
+
+/* ══ LABS ══ */
+const DEF_LABS=[{id:'mstar',name:'MStar Research Lab',subtitle:'MSTAR — Metabolic Surgery Team & Research',desc:'The MOSI system was developed under the academic support of the MStar Research Lab. The derivation cohort was curated and validated by the MStar team within the Division of Gastroenterologic and General Surgery at Mayo Clinic.',color:'#9b72f8'}];
+function getLabs(){try{const s=localStorage.getItem('mosi_about_labs');return s?JSON.parse(s):DEF_LABS;}catch(e){return DEF_LABS;}}
+function saveLabs(t){localStorage.setItem('mosi_about_labs',JSON.stringify(t));}
+function renderLabs(){
+  const t=getLabs(),el=G('labsList');if(!el)return;
+  if(!t.length){el.innerHTML='<div style="font-size:.77rem;color:var(--tx2);padding:.5rem 0">No labs. Click + Add Lab.</div>';return;}
+  el.innerHTML=t.map((m,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.78rem;background:var(--surf2);border-radius:var(--rs);margin-bottom:.42rem;border:1px solid var(--bdr)"><div style="border-left:3px solid ${m.color||'#9b72f8'};padding-left:.65rem"><div style="font-weight:600;font-size:.81rem">${m.name}</div><div style="font-size:.7rem;color:var(--tx2);margin-top:.06rem">${m.subtitle||''}</div></div><div style="display:flex;gap:.3rem"><button class="btn btn-xs btn-s" onclick="editLab(${i})">Edit</button><button class="btn btn-xs btn-d" onclick="removeLab(${i})">Remove</button></div></div>`).join('');
+}
+function openAddLab(){showLabModal(-1,{name:'',subtitle:'',desc:'',color:'#9b72f8'});}
+function editLab(i){showLabModal(i,getLabs()[i]);}
+function removeLab(i){const t=getLabs();t.splice(i,1);saveLabs(t);renderLabs();}
+function showLabModal(i,m){G('adminModalBody').innerHTML=`<div class="modal-title">${i<0?'Add':'Edit'} Research Lab</div><div class="fg mt1"><label>Lab Name</label><input type="text" id="lb-nm" value="${m.name||''}" placeholder="e.g. MStar Research Lab"></div><div class="fg mt1"><label>Subtitle</label><input type="text" id="lb-st" value="${m.subtitle||''}" placeholder="e.g. MSTAR — Metabolic Surgery Team & Research"></div><div class="fg mt1"><label>Description</label><textarea id="lb-desc">${m.desc||''}</textarea></div><div class="fg mt1"><label>Accent Color</label><input type="color" id="lb-col" value="${m.color||'#9b72f8'}" style="width:60px;height:36px;padding:2px;cursor:pointer"></div>`;G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveLab(${i})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;G('adminModal').classList.add('open');}
+function saveLab(i){const t=getLabs(),m={name:V('lb-nm'),subtitle:V('lb-st'),desc:V('lb-desc'),color:V('lb-col')};if(i<0)t.push(m);else t[i]=m;saveLabs(t);renderLabs();closeModal();}
+
+/* ══ HOSPITALS ══ */
+const DEF_HOSPITALS=[{id:'mayo',name:'Mayo Clinic',dept:'Bariatric & Metabolic and Abdominal Wall Surgery',location:'Rochester, Minnesota, USA',desc:'The derivation cohort of 3,097 patients was drawn from the Mayo Clinic bariatric and metabolic surgery programme — one of the highest-volume academic bariatric surgery centres in North America.',url:'https://www.mayoclinic.org',color:'#0057b8'}];
+function getHospitals(){try{const s=localStorage.getItem('mosi_about_hospitals');return s?JSON.parse(s):DEF_HOSPITALS;}catch(e){return DEF_HOSPITALS;}}
+function saveHospitals(t){localStorage.setItem('mosi_about_hospitals',JSON.stringify(t));}
+function renderHospitals(){
+  const t=getHospitals(),el=G('hospitalsList');if(!el)return;
+  if(!t.length){el.innerHTML='<div style="font-size:.77rem;color:var(--tx2);padding:.5rem 0">No hospitals. Click + Add Hospital.</div>';return;}
+  el.innerHTML=t.map((m,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.78rem;background:var(--surf2);border-radius:var(--rs);margin-bottom:.42rem;border:1px solid var(--bdr)"><div style="border-left:3px solid ${m.color||'#0057b8'};padding-left:.65rem"><div style="font-weight:600;font-size:.81rem">${m.name}</div><div style="font-size:.7rem;color:var(--tx2);margin-top:.06rem">${m.dept||''} · ${m.location||''}</div></div><div style="display:flex;gap:.3rem"><button class="btn btn-xs btn-s" onclick="editHospital(${i})">Edit</button><button class="btn btn-xs btn-d" onclick="removeHospital(${i})">Remove</button></div></div>`).join('');
+}
+function openAddHospital(){showHospitalModal(-1,{name:'',dept:'',location:'',desc:'',url:'',color:'#0057b8'});}
+function editHospital(i){showHospitalModal(i,getHospitals()[i]);}
+function removeHospital(i){const t=getHospitals();t.splice(i,1);saveHospitals(t);renderHospitals();}
+function showHospitalModal(i,m){G('adminModalBody').innerHTML=`<div class="modal-title">${i<0?'Add':'Edit'} Hospital</div><div class="fg mt1"><label>Hospital Name</label><input type="text" id="ho-nm" value="${m.name||''}" placeholder="e.g. Mayo Clinic"></div><div class="fg mt1"><label>Department / Division</label><input type="text" id="ho-dept" value="${m.dept||''}" placeholder="e.g. Bariatric & Metabolic Surgery"></div><div class="fg mt1"><label>Location</label><input type="text" id="ho-loc" value="${m.location||''}" placeholder="e.g. Rochester, Minnesota, USA"></div><div class="fg mt1"><label>Description</label><textarea id="ho-desc">${m.desc||''}</textarea></div><div class="fg mt1"><label>Website URL</label><input type="text" id="ho-url" value="${m.url||''}" placeholder="https://…"></div><div class="fg mt1"><label>Accent Color</label><input type="color" id="ho-col" value="${m.color||'#0057b8'}" style="width:60px;height:36px;padding:2px;cursor:pointer"></div>`;G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveHospital(${i})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;G('adminModal').classList.add('open');}
+function saveHospital(i){const t=getHospitals(),m={name:V('ho-nm'),dept:V('ho-dept'),location:V('ho-loc'),desc:V('ho-desc'),url:V('ho-url'),color:V('ho-col')};if(i<0)t.push(m);else t[i]=m;saveHospitals(t);renderHospitals();closeModal();}
 
 /* ══ PANE SWITCHING ══ */
 function switchPane(name){
