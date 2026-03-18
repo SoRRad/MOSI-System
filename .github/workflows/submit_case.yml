@@ -8,6 +8,10 @@ on:
         required: true
         type: string
 
+# Force Node.js 24 for all actions in this workflow
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   save-case:
     runs-on: ubuntu-latest
@@ -17,8 +21,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Append or update case in data/cases.json
         env:
@@ -68,8 +70,7 @@ jobs:
 
           fs.writeFileSync('data/cases.json', JSON.stringify(existing, null, 2));
           const active = existing.filter(c => !c._deleted && !c.isTest).length;
-          const total  = existing.length;
-          console.log('Total records: ' + total + ' | Active (non-test, non-deleted): ' + active);
+          console.log('Total records: ' + existing.length + ' | Active: ' + active);
           JS
 
       - name: Commit and push
