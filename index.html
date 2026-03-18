@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & ROOT ─────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#1a2f5a;--navy-light:#233770;--navy-dark:#0f1c38;
@@ -25,70 +24,58 @@
 }
 html{font-size:15px;scroll-behavior:smooth}
 body{font-family:'Sora',sans-serif;background:var(--slate-lighter);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* ── LAYOUT ───────────────────────────────────────────────── */
 .app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
 .topbar{background:var(--navy-dark);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
 .topbar-brand{display:flex;align-items:center;gap:.75rem}
 .topbar-brand .logo{font-family:'DM Serif Display',serif;font-size:1.4rem;color:#fff;letter-spacing:.04em}
 .topbar-brand .tagline{font-size:.68rem;color:var(--slate);letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.1);border-radius:3px}
-.topbar-right{display:flex;align-items:center;gap:1rem}
+.topbar-right{display:flex;align-items:center;gap:.75rem}
+.sync-status{display:flex;align-items:center;gap:.4rem;font-size:.72rem;padding:.3rem .65rem;border-radius:5px;border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:all .2s}
+.sync-status.ok{color:#6fcf97;border-color:rgba(111,207,151,.3)}
+.sync-status.err{color:#f08080;border-color:rgba(240,128,128,.3)}
+.sync-status.syncing{color:#f5c842;border-color:rgba(245,200,66,.3)}
+.sync-status.uncfg{color:var(--slate);border-color:rgba(130,146,168,.3)}
+.sync-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sync-dot.ok{background:#6fcf97}.sync-dot.err{background:#f08080}.sync-dot.syncing{background:#f5c842;animation:pulse 1s infinite}
+.sync-dot.uncfg{background:var(--slate)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .surgeon-badge{display:flex;align-items:center;gap:.5rem;padding:.3rem .7rem .3rem .4rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;cursor:pointer}
 .surgeon-dot{width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;color:#fff}
 .surgeon-name{font-size:.8rem;color:#e2e8f4;font-weight:500}
-
 .main{display:grid;grid-template-columns:220px 1fr;height:calc(100vh - 56px)}
 .sidebar{background:var(--navy);padding:1.5rem 0;overflow-y:auto;border-right:1px solid rgba(255,255,255,.05)}
-.sidebar-section{padding:0 1rem .5rem;margin-bottom:.25rem}
-.sidebar-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:600;padding:.5rem .5rem .4rem;margin-bottom:.25rem}
-.nav-item{display:flex;align-items:center;gap:.65rem;padding:.6rem .75rem;border-radius:6px;cursor:pointer;font-size:.82rem;color:rgba(255,255,255,.55);font-weight:500;transition:all .15s;margin:1px 0}
+.sidebar-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:600;padding:.5rem 1.5rem .4rem;margin-bottom:.25rem}
+.nav-item{display:flex;align-items:center;gap:.65rem;padding:.6rem 1.25rem;cursor:pointer;font-size:.82rem;color:rgba(255,255,255,.55);font-weight:500;transition:all .15s;margin:1px 0}
 .nav-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85)}
 .nav-item.active{background:rgba(46,107,230,.25);color:#fff;border-left:3px solid var(--blue-light)}
-.nav-item.active .nav-icon{color:var(--blue-light)}
 .nav-icon{font-size:1rem;width:18px;text-align:center;flex-shrink:0}
 .nav-badge{margin-left:auto;background:var(--blue);color:#fff;font-size:.6rem;padding:.1rem .4rem;border-radius:10px;font-weight:600}
-
 .content{overflow-y:auto;padding:2rem}
-.view{display:none}
-.view.active{display:block}
-
-/* ── TYPOGRAPHY ───────────────────────────────────────────── */
+.view{display:none}.view.active{display:block}
 .page-title{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--navy);line-height:1.2;margin-bottom:.35rem}
 .page-sub{font-size:.82rem;color:var(--text-light);margin-bottom:1.75rem;line-height:1.5}
 .section-title{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--slate);margin-bottom:.85rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
-
-/* ── CARDS ────────────────────────────────────────────────── */
 .card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.5rem;box-shadow:var(--shadow)}
-.card+.card{margin-top:1rem}
+.card+.card,.card+div>.card{margin-top:1rem}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
 .card-title{font-size:.95rem;font-weight:600;color:var(--navy)}
-
-/* ── FORMS ────────────────────────────────────────────────── */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
 .form-group{display:flex;flex-direction:column;gap:.4rem}
 .form-group.full{grid-column:1/-1}
 label{font-size:.75rem;font-weight:600;color:var(--text-mid);letter-spacing:.04em}
 label .req{color:var(--red);margin-left:.2rem}
-input[type=text],input[type=number],select,textarea{
-  border:1.5px solid var(--border);border-radius:7px;padding:.55rem .75rem;font-size:.85rem;font-family:'Sora',sans-serif;
-  color:var(--text);background:#fff;transition:border-color .15s,box-shadow .15s;width:100%
-}
+input[type=text],input[type=number],input[type=password],select,textarea{border:1.5px solid var(--border);border-radius:7px;padding:.55rem .75rem;font-size:.85rem;font-family:'Sora',sans-serif;color:var(--text);background:#fff;transition:border-color .15s,box-shadow .15s;width:100%}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(46,107,230,.12)}
 textarea{resize:vertical;min-height:80px}
-select{cursor:pointer}
 .input-hint{font-size:.7rem;color:var(--text-light);margin-top:.2rem}
-
-/* ── BUTTONS ──────────────────────────────────────────────── */
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1.2rem;border-radius:7px;font-size:.82rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;transition:all .15s;border:none;letter-spacing:.02em}
 .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-light)}
+.btn-primary:disabled{background:#aaa;cursor:not-allowed}
 .btn-secondary{background:var(--slate-light);color:var(--navy)}.btn-secondary:hover{background:#dde3ee}
-.btn-danger{background:var(--red-pale);color:var(--red);border:1px solid var(--red)}.btn-danger:hover{background:var(--red);color:#fff}
-.btn-sm{padding:.35rem .8rem;font-size:.75rem}
 .btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-ghost:hover{background:var(--blue);color:#fff}
+.btn-sm{padding:.35rem .8rem;font-size:.75rem}
 .btn-group{display:flex;gap:.6rem;margin-top:1.25rem;flex-wrap:wrap}
-
-/* ── MOSI SCORE DISPLAY ───────────────────────────────────── */
 .score-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.25rem}
 .score-box{border-radius:8px;padding:1rem;text-align:center;border:1.5px solid transparent}
 .score-box .label{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:.3rem}
@@ -97,36 +84,28 @@ select{cursor:pointer}
 .score-box.m{background:#eef3ff;border-color:#b4c8f7;color:var(--navy)}
 .score-box.o{background:var(--amber-pale);border-color:#f0c96c;color:#7a4c00}
 .score-box.si{background:var(--orange-pale);border-color:#f5b080;color:var(--orange)}
-.score-box.stage{border-width:2px}
 .stage-I{background:var(--green-pale);border-color:#6fccaa;color:var(--green)}
 .stage-II{background:var(--amber-pale);border-color:#f0c96c;color:var(--amber)}
 .stage-III{background:var(--orange-pale);border-color:#f5a060;color:var(--orange)}
 .stage-IV{background:var(--red-pale);border-color:#f08080;color:var(--red)}
-
 .tier-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border-radius:20px;font-size:.78rem;font-weight:600;border:1.5px solid}
 .tier-A{background:var(--green-pale);border-color:#6fccaa;color:var(--green)}
 .tier-B{background:var(--amber-pale);border-color:#f0c96c;color:var(--amber)}
 .tier-C{background:var(--orange-pale);border-color:#f5a060;color:var(--orange)}
 .tier-D{background:var(--red-pale);border-color:#f08080;color:var(--red)}
-
-/* ── RECOMMENDATION BLOCK ─────────────────────────────────── */
 .rec-block{border-radius:10px;padding:1.25rem 1.5rem;border:2px solid;margin-bottom:1rem}
-.rec-block .rec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem}
-.rec-block .rec-title{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.rec-block .rec-proc{font-family:'DM Serif Display',serif;font-size:1.3rem}
-.rec-block .rec-meta{font-size:.78rem;margin-top:.4rem;opacity:.85;line-height:1.5}
+.rec-block .rec-title{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.rec-block .rec-proc{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:.4rem}
+.rec-block .rec-meta{font-size:.78rem;opacity:.85;line-height:1.5}
 .rec-block .rec-rates{display:flex;gap:1.5rem;margin-top:.65rem;flex-wrap:wrap}
-.rec-block .rec-rate{text-align:center}
 .rec-block .rec-rate .rn{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:500}
 .rec-block .rec-rate .rl{font-size:.65rem;opacity:.75;text-transform:uppercase;letter-spacing:.06em}
 .warn-block{background:var(--red-pale);border-color:#f08080;color:var(--red)}
 .pref-block{background:var(--green-pale);border-color:#6fccaa;color:var(--green)}
 .note-block{background:var(--amber-pale);border-color:#f0c96c;color:var(--amber)}
 .info-block{background:var(--blue-pale);border-color:#89bcf5;color:#1a4fa0}
-
-/* ── FEEDBACK SECTION ─────────────────────────────────────── */
-.feedback-card{border:2px solid var(--border);border-radius:10px;overflow:hidden}
-.feedback-header{background:var(--navy);padding:1rem 1.5rem;color:#fff;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.feedback-card{border:2px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1rem}
+.feedback-header{background:var(--navy);padding:1rem 1.5rem;color:#fff;font-size:.85rem;font-weight:600}
 .feedback-body{padding:1.5rem;background:#fff}
 .agree-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;padding:1rem;background:var(--slate-lighter);border-radius:8px;margin-bottom:.75rem}
 .agree-label{font-size:.82rem;font-weight:500;color:var(--text-mid)}
@@ -137,22 +116,18 @@ select{cursor:pointer}
 .agree-btn.sel-agree{background:var(--green);border-color:var(--green);color:#fff}
 .agree-btn.sel-partial{background:var(--amber);border-color:var(--amber);color:#fff}
 .agree-btn.sel-disagree{background:var(--red);border-color:var(--red);color:#fff}
-
-/* ── TABLES ───────────────────────────────────────────────── */
 .data-table{width:100%;border-collapse:collapse;font-size:.8rem}
 .data-table th{background:var(--navy);color:#fff;padding:.6rem .85rem;text-align:left;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .data-table td{padding:.65rem .85rem;border-bottom:1px solid var(--border);vertical-align:middle}
 .data-table tr:hover td{background:var(--slate-lighter)}
 .data-table tr:last-child td{border-bottom:none}
-.pill{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.68rem;font-weight:600;letter-spacing:.04em}
+.pill{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.68rem;font-weight:600}
 .pill-green{background:var(--green-pale);color:var(--green)}
 .pill-amber{background:var(--amber-pale);color:var(--amber)}
 .pill-red{background:var(--red-pale);color:var(--red)}
 .pill-blue{background:var(--blue-pale);color:#1a4fa0}
 .pill-teal{background:var(--teal-pale);color:var(--teal)}
 .pill-gray{background:var(--slate-light);color:var(--text-mid)}
-
-/* ── STATS CARDS ──────────────────────────────────────────── */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
 .stat-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;box-shadow:var(--shadow)}
 .stat-card .sn{font-family:'DM Mono',monospace;font-size:1.8rem;font-weight:500;color:var(--navy);line-height:1}
@@ -162,23 +137,17 @@ select{cursor:pointer}
 .stat-card.accent-green{border-top:3px solid var(--green)}
 .stat-card.accent-amber{border-top:3px solid var(--amber)}
 .stat-card.accent-red{border-top:3px solid var(--red)}
-
-/* ── CHART BARS ───────────────────────────────────────────── */
 .bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem}
-.bar-row .bar-label{width:140px;font-size:.75rem;color:var(--text-mid);flex-shrink:0;text-align:right}
+.bar-row .bar-label{width:130px;font-size:.75rem;color:var(--text-mid);flex-shrink:0;text-align:right}
 .bar-track{flex:1;background:var(--slate-light);border-radius:4px;height:20px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;transition:width .6s ease;display:flex;align-items:center;padding-left:.5rem}
 .bar-fill span{font-size:.67rem;font-weight:600;color:#fff;white-space:nowrap}
 .bar-row .bar-pct{width:42px;font-size:.75rem;font-family:'DM Mono',monospace;color:var(--text-mid)}
-
-/* ── MODAL ────────────────────────────────────────────────── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,50,.55);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:14px;padding:2rem;width:90%;max-width:540px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto}
+.modal{background:#fff;border-radius:14px;padding:2rem;width:90%;max-width:560px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto}
 .modal-title{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:.35rem}
-.modal-sub{font-size:.78rem;color:var(--text-light);margin-bottom:1.5rem}
-
-/* ── SURGEON SELECTOR ─────────────────────────────────────── */
+.modal-sub{font-size:.78rem;color:var(--text-light);margin-bottom:1.5rem;line-height:1.6}
 .surgeon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
 .surgeon-card{padding:.85rem;border:2px solid var(--border);border-radius:8px;cursor:pointer;text-align:center;transition:all .15s}
 .surgeon-card:hover{border-color:var(--blue);background:var(--blue-pale)}
@@ -188,67 +157,54 @@ select{cursor:pointer}
 .surgeon-card .sc-name{font-size:.78rem;font-weight:600}
 .surgeon-card .sc-role{font-size:.67rem;color:var(--text-light);margin-top:.15rem}
 .surgeon-card.selected .sc-role{color:rgba(255,255,255,.75)}
-
-/* ── ALERTS ───────────────────────────────────────────────── */
 .alert{border-radius:8px;padding:.85rem 1rem;font-size:.8rem;line-height:1.5;display:flex;gap:.65rem;align-items:flex-start;margin-bottom:.75rem}
-.alert-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem}
+.alert-icon{font-size:1rem;flex-shrink:0}
 .alert-warn{background:var(--red-pale);border:1px solid #f08080;color:var(--red)}
 .alert-info{background:var(--blue-pale);border:1px solid #89bcf5;color:#1a4fa0}
 .alert-ok{background:var(--green-pale);border:1px solid #6fccaa;color:var(--green)}
 .alert-note{background:var(--amber-pale);border:1px solid #f0c96c;color:var(--amber)}
-
-/* ── MISC ─────────────────────────────────────────────────── */
 .divider{height:1px;background:var(--border);margin:1.25rem 0}
 .empty-state{text-align:center;padding:3rem 1.5rem;color:var(--text-light)}
 .empty-state .ei{font-size:2.5rem;margin-bottom:.75rem;opacity:.4}
 .empty-state .et{font-size:.9rem;font-weight:600;color:var(--text-mid);margin-bottom:.35rem}
-.empty-state .es{font-size:.8rem}
-.mono{font-family:'DM Mono',monospace}
-.text-red{color:var(--red)}
-.text-green{color:var(--green)}
-.text-amber{color:var(--amber)}
-.text-blue{color:var(--blue)}
-.flex{display:flex}.gap-1{gap:.5rem}.items-center{align-items:center}.justify-between{justify-content:space-between}
-.mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}
-.w-full{width:100%}
-.hidden{display:none}
-
-/* ── PROGRESS STEPS ───────────────────────────────────────── */
 .steps{display:flex;gap:0;margin-bottom:1.75rem;overflow:hidden;border-radius:8px;border:1px solid var(--border)}
 .step{flex:1;padding:.6rem .5rem;text-align:center;font-size:.72rem;font-weight:600;background:#fff;color:var(--text-light);border-right:1px solid var(--border);cursor:pointer;transition:all .15s}
 .step:last-child{border-right:none}
 .step.done{background:var(--navy);color:#fff}
 .step.active{background:var(--blue);color:#fff}
 .step-num{display:block;font-family:'DM Mono',monospace;font-size:.8rem;margin-bottom:.1rem}
-
-/* ── SCROLLBAR ────────────────────────────────────────────── */
+.hidden{display:none}
+.mono{font-family:'DM Mono',monospace}
+.mt-2{margin-top:1rem}.mb-2{margin-bottom:1rem}
+/* GitHub config panel */
+.cfg-panel{background:var(--navy-dark);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,.08)}
+.cfg-panel .cfg-title{color:#fff;font-size:.85rem;font-weight:600;margin-bottom:.25rem;display:flex;align-items:center;gap:.5rem}
+.cfg-panel .cfg-sub{color:rgba(255,255,255,.45);font-size:.75rem;margin-bottom:1rem;line-height:1.5}
+.cfg-panel input{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:#fff}
+.cfg-panel input::placeholder{color:rgba(255,255,255,.3)}
+.cfg-panel input:focus{border-color:var(--blue-light);background:rgba(255,255,255,.1)}
+.cfg-panel label{color:rgba(255,255,255,.6)}
+.token-hint{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:.35rem;line-height:1.5}
+.token-hint a{color:var(--blue-light);text-decoration:none}
+.sync-log{background:rgba(0,0,0,.3);border-radius:6px;padding:.75rem 1rem;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.5);max-height:120px;overflow-y:auto;margin-top:1rem}
+.sync-log .log-ok{color:#6fcf97}.sync-log .log-err{color:#f08080}.sync-log .log-info{color:#f5c842}
 ::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
-
-/* ── CASE STATUS TIMELINE ─────────────────────────────────── */
-.timeline{display:flex;flex-direction:column;gap:0}
-.tl-item{display:flex;gap:1rem;padding:.75rem 0}
-.tl-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;margin-top:.1rem}
-.tl-dot.done{background:var(--green);color:#fff}
-.tl-dot.active{background:var(--blue);color:#fff}
-.tl-dot.pending{background:var(--slate-light);color:var(--text-light)}
-.tl-content{flex:1}
-.tl-title{font-size:.82rem;font-weight:600;color:var(--text)}
-.tl-meta{font-size:.72rem;color:var(--text-light);margin-top:.1rem}
-.tl-connector{width:1px;background:var(--border);margin-left:14px;height:16px}
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- TOP BAR -->
 <header class="topbar">
   <div class="topbar-brand">
     <span class="logo">MOSI</span>
     <span class="tagline">Clinical Audit Platform</span>
   </div>
   <div class="topbar-right">
+    <div class="sync-status uncfg" id="syncStatus" onclick="showView('settings')" title="GitHub sync status — click to configure">
+      <div class="sync-dot uncfg" id="syncDot"></div>
+      <span id="syncLabel">GitHub: not configured</span>
+    </div>
     <div class="surgeon-badge" onclick="openSurgeonModal()">
       <div class="surgeon-dot" id="topDot">?</div>
       <span class="surgeon-name" id="topName">Select Surgeon</span>
@@ -257,47 +213,24 @@ select{cursor:pointer}
 </header>
 
 <div class="main">
-
-<!-- SIDEBAR -->
 <nav class="sidebar">
-  <div class="sidebar-section">
-    <div class="sidebar-label">Workflow</div>
-    <div class="nav-item active" onclick="showView('case-entry')" id="nav-case-entry">
-      <span class="nav-icon">📋</span> New Case
-    </div>
-    <div class="nav-item" onclick="showView('my-cases')" id="nav-my-cases">
-      <span class="nav-icon">🗂</span> My Cases
-      <span class="nav-badge" id="myCaseBadge">0</span>
-    </div>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-label">Analytics</div>
-    <div class="nav-item" onclick="showView('my-dashboard')" id="nav-my-dashboard">
-      <span class="nav-icon">📊</span> My Dashboard
-    </div>
-    <div class="nav-item" onclick="showView('aggregate')" id="nav-aggregate">
-      <span class="nav-icon">🏥</span> Unit Aggregate
-    </div>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-label">Data</div>
-    <div class="nav-item" onclick="exportCSV()" id="nav-export">
-      <span class="nav-icon">⬇️</span> Export CSV
-    </div>
-  </div>
+  <div class="sidebar-label">Workflow</div>
+  <div class="nav-item active" onclick="showView('case-entry')" id="nav-case-entry"><span class="nav-icon">📋</span>New Case</div>
+  <div class="nav-item" onclick="showView('my-cases')" id="nav-my-cases"><span class="nav-icon">🗂</span>My Cases<span class="nav-badge" id="myCaseBadge">0</span></div>
+  <div class="sidebar-label" style="margin-top:.75rem">Analytics</div>
+  <div class="nav-item" onclick="showView('my-dashboard')" id="nav-my-dashboard"><span class="nav-icon">📊</span>My Dashboard</div>
+  <div class="nav-item" onclick="showView('aggregate')" id="nav-aggregate"><span class="nav-icon">🏥</span>Unit Aggregate</div>
+  <div class="sidebar-label" style="margin-top:.75rem">System</div>
+  <div class="nav-item" onclick="showView('settings')" id="nav-settings"><span class="nav-icon">⚙️</span>GitHub Settings</div>
+  <div class="nav-item" onclick="exportCSV()"><span class="nav-icon">⬇️</span>Export CSV</div>
 </nav>
 
-<!-- MAIN CONTENT -->
 <main class="content">
 
-<!-- ════════════════════════════════════════════
-     VIEW 1: NEW CASE / DECISION TOOL
-════════════════════════════════════════════ -->
+<!-- ── NEW CASE ───────────────────────────────────────────── -->
 <div class="view active" id="view-case-entry">
   <div class="page-title">New Case Entry</div>
-  <div class="page-sub">Enter pre-operative patient data. MOSI scores compute in real time. Review the recommendation, then submit your clinical judgement.</div>
-
-  <!-- STEPS -->
+  <div class="page-sub">Enter pre-operative patient data. MOSI scores compute in real time. On submission, the case is saved to your browser and pushed to GitHub automatically.</div>
   <div class="steps">
     <div class="step active" id="step1"><span class="step-num">01</span>Scoring</div>
     <div class="step" id="step2"><span class="step-num">02</span>Recommendation</div>
@@ -305,7 +238,7 @@ select{cursor:pointer}
     <div class="step" id="step4"><span class="step-num">04</span>Confirm</div>
   </div>
 
-  <!-- STEP 1: SCORING INPUT -->
+  <!-- PANE 1 -->
   <div id="pane1">
     <div class="card">
       <div class="card-header"><span class="card-title">Patient Identifiers</span></div>
@@ -320,14 +253,13 @@ select{cursor:pointer}
         </div>
       </div>
     </div>
-
     <div class="card mt-2">
       <div class="card-header"><span class="card-title">M Score — BMI Class</span></div>
       <div class="form-grid">
         <div class="form-group">
           <label>Pre-operative BMI (kg/m²)<span class="req">*</span></label>
           <input type="number" id="bmi" placeholder="e.g. 42.5" step="0.1" min="30" max="100" oninput="computeScores()">
-          <div class="input-hint">Range in derivation cohort: 31.7 – 94.5 kg/m²</div>
+          <div class="input-hint">Derivation cohort range: 31.7–94.5 kg/m²</div>
         </div>
         <div class="form-group" style="justify-content:flex-end">
           <label>Computed M Score</label>
@@ -335,91 +267,53 @@ select{cursor:pointer}
         </div>
       </div>
     </div>
-
     <div class="card mt-2">
       <div class="card-header"><span class="card-title">O Score — Metabolic Comorbidity Burden</span></div>
-      <p style="font-size:.78rem;color:var(--text-light);margin-bottom:1rem">Check all that are present pre-operatively. Each scores +1 point (max O=4).</p>
+      <p style="font-size:.78rem;color:var(--text-light);margin-bottom:1rem">Tick all present pre-operatively. Each scores +1 (max O=4).</p>
       <div class="form-grid-3">
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)" id="lbl-htn">
-          <input type="checkbox" id="htn" onchange="computeScores()" style="width:16px;height:16px;border-radius:3px;cursor:pointer;accent-color:var(--blue)">
-          Hypertension
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)" id="lbl-dysgly">
-          <input type="checkbox" id="dysgly" onchange="computeScores()" style="width:16px;height:16px;border-radius:3px;cursor:pointer;accent-color:var(--blue)">
-          Dysglycaemia (T2DM/IFG)
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)" id="lbl-osa">
-          <input type="checkbox" id="osa" onchange="computeScores()" style="width:16px;height:16px;border-radius:3px;cursor:pointer;accent-color:var(--blue)">
-          Obstructive Sleep Apnoea
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)" id="lbl-hld">
-          <input type="checkbox" id="hld" onchange="computeScores()" style="width:16px;height:16px;border-radius:3px;cursor:pointer;accent-color:var(--blue)">
-          Hyperlipidaemia
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border);grid-column:span 2" id="lbl-gerd">
-          <input type="checkbox" id="gerd" onchange="computeScores()" style="width:16px;height:16px;border-radius:3px;cursor:pointer;accent-color:var(--blue)">
-          GORD (procedural modifier — not scored in O)
-        </label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="htn" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Hypertension</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="dysgly" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Dysglycaemia (T2DM/IFG)</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="osa" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Obstructive Sleep Apnoea</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="hld" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Hyperlipidaemia</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border);grid-column:span 2"><input type="checkbox" id="gerd" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">GORD (procedural modifier — not scored in O)</label>
       </div>
-      <div class="form-group mt-2" style="flex-direction:row;align-items:center;justify-content:space-between;background:var(--slate-lighter);padding:.75rem 1rem;border-radius:7px;border:1.5px solid var(--border)">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--slate-lighter);padding:.75rem 1rem;border-radius:7px;border:1.5px solid var(--border);margin-top:1rem">
         <span style="font-size:.82rem;font-weight:600;color:var(--text-mid)">O Score Total</span>
         <span style="font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:500;color:var(--navy)" id="oDisplay">0</span>
       </div>
     </div>
-
     <div class="card mt-2">
-      <div class="card-header"><span class="card-title">Si Level — Systemic Impairment (Hierarchical)</span></div>
-      <p style="font-size:.78rem;color:var(--text-light);margin-bottom:1rem">Assign the <strong>highest applicable</strong> level. Si=3 overrides all staging dimensions.</p>
-      <div class="form-group">
-        <select id="si" onchange="computeScores()">
-          <option value="">— Select Si level —</option>
-          <option value="0">Si0 — No systemic impairment</option>
-          <option value="1">Si1 — Microvascular end-organ damage (diabetic retinopathy, neuropathy, nephropathy)</option>
-          <option value="2">Si2 — Organ dysfunction (CKD, cirrhosis/MASH, cardiac history, stroke/TIA)</option>
-          <option value="3a">Si3A — Organ failure: Transplant recipient, NOT on dialysis (→ Stage 4A)</option>
-          <option value="3b">Si3B — Organ failure: Active dialysis (→ Stage 4B)</option>
-        </select>
-      </div>
+      <div class="card-header"><span class="card-title">Si Level — Systemic Impairment</span></div>
+      <p style="font-size:.78rem;color:var(--text-light);margin-bottom:1rem">Assign the <strong>highest applicable</strong> level.</p>
+      <select id="si" onchange="computeScores()">
+        <option value="">— Select Si level —</option>
+        <option value="0">Si0 — No systemic impairment</option>
+        <option value="1">Si1 — Microvascular end-organ damage (retinopathy, neuropathy, nephropathy in T2DM)</option>
+        <option value="2">Si2 — Organ dysfunction (CKD, cirrhosis/MASH, cardiac history, stroke/TIA)</option>
+        <option value="3a">Si3A — Organ failure: Transplant recipient, NOT on dialysis → Stage 4A</option>
+        <option value="3b">Si3B — Organ failure: Active dialysis → Stage 4B</option>
+      </select>
     </div>
-
     <div class="card mt-2">
-      <div class="card-header"><span class="card-title">Additional Comorbidities (for Tier Assignment)</span></div>
+      <div class="card-header"><span class="card-title">Additional Comorbidities (Tier Assignment)</span></div>
       <div class="form-grid-3">
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)">
-          <input type="checkbox" id="cardiac" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">
-          Cardiac history (MACE risk)
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)">
-          <input type="checkbox" id="stroke" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">
-          Stroke / TIA
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)">
-          <input type="checkbox" id="masld" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">
-          MASLD / Cirrhosis
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)">
-          <input type="checkbox" id="microeo" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">
-          Diabetic microvascular damage
-        </label>
-        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)">
-          <input type="checkbox" id="arthropathy" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">
-          Arthropathy / Arthroplasty
-        </label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="cardiac" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Cardiac history (MACE)</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="stroke" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Stroke / TIA</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="masld" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">MASLD / Cirrhosis</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="microeo" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Diabetic microvascular damage</label>
+        <label style="flex-direction:row;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;background:var(--slate-lighter);padding:.65rem .85rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="arthropathy" onchange="computeScores()" style="width:16px;height:16px;accent-color:var(--blue)">Arthropathy / Arthroplasty</label>
       </div>
     </div>
-
     <div class="btn-group">
       <button class="btn btn-primary" onclick="goStep(2)" id="btn-to-step2" disabled>View Recommendation →</button>
       <button class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
     </div>
   </div>
 
-  <!-- STEP 2: RECOMMENDATION -->
+  <!-- PANE 2 -->
   <div id="pane2" class="hidden">
     <div id="scoreStrip" class="score-strip"></div>
-    <div id="tierRow" style="margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
-      <span style="font-size:.78rem;font-weight:600;color:var(--text-mid)">TWL Target Tier</span>
-    </div>
+    <div id="tierRow" style="margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap"></div>
     <div id="recBlocks"></div>
     <div id="alertBlocks"></div>
     <div class="btn-group">
@@ -428,40 +322,32 @@ select{cursor:pointer}
     </div>
   </div>
 
-  <!-- STEP 3: FEEDBACK -->
+  <!-- PANE 3 -->
   <div id="pane3" class="hidden">
     <div class="feedback-card">
       <div class="feedback-header">⚖️ Clinical Judgement — Pre-operative Evaluation</div>
       <div class="feedback-body">
-        <div class="section-title">Agreement with MOSI Stage Assignment</div>
+        <div class="section-title">Agreement with MOSI Stage</div>
         <div class="agree-row">
-          <div>
-            <div class="agree-label">Do you agree with the computed MOSI stage?</div>
-            <div class="agree-sublabel" id="fb-stage-label">Stage — not yet computed</div>
-          </div>
+          <div><div class="agree-label">Do you agree with the computed MOSI stage?</div><div class="agree-sublabel" id="fb-stage-label">—</div></div>
           <div class="agree-options">
             <button class="agree-btn" id="ab-stage-agree" onclick="setAgreement('stage','Agree')">Agree</button>
             <button class="agree-btn" id="ab-stage-partial" onclick="setAgreement('stage','Partial')">Partially</button>
             <button class="agree-btn" id="ab-stage-disagree" onclick="setAgreement('stage','Disagree')">Disagree</button>
           </div>
         </div>
-
         <div class="section-title mt-2">Agreement with Procedure Recommendation</div>
         <div class="agree-row">
-          <div>
-            <div class="agree-label">Do you agree with the recommended procedure?</div>
-            <div class="agree-sublabel" id="fb-proc-label">Recommendation — not yet computed</div>
-          </div>
+          <div><div class="agree-label">Do you agree with the recommended procedure?</div><div class="agree-sublabel" id="fb-proc-label">—</div></div>
           <div class="agree-options">
             <button class="agree-btn" id="ab-proc-agree" onclick="setAgreement('proc','Agree')">Agree</button>
             <button class="agree-btn" id="ab-proc-partial" onclick="setAgreement('proc','Partial')">Partially</button>
             <button class="agree-btn" id="ab-proc-disagree" onclick="setAgreement('proc','Disagree')">Disagree</button>
           </div>
         </div>
-
         <div class="divider"></div>
         <div class="form-group">
-          <label>Intended Procedure (what you plan to perform)</label>
+          <label>Intended Procedure</label>
           <select id="intendedProc">
             <option value="">— Select —</option>
             <option>SG (Sleeve Gastrectomy)</option>
@@ -471,68 +357,114 @@ select{cursor:pointer}
             <option>Other / Not yet decided</option>
           </select>
         </div>
-
         <div class="form-group mt-2">
-          <label>If disagreeing or deviating — reason / clinical context</label>
-          <textarea id="reasonText" placeholder="e.g. Patient preference, GORD contraindication to SG, prior abdominal surgery, anaesthetic risk, waiting list factors, patient frailty..."></textarea>
+          <label>Reason for deviation / clinical context (if disagreeing)</label>
+          <textarea id="reasonText" placeholder="e.g. Patient preference, GORD contraindication, prior abdominal surgery, anaesthetic risk..."></textarea>
         </div>
-
         <div class="form-group mt-2">
-          <label>Additional comments, concerns or observations about this case</label>
-          <textarea id="commentsText" placeholder="Any concerns about the algorithm's scoring, clinical nuances not captured by MOSI, unusual patient profile..."></textarea>
+          <label>Additional comments, concerns or observations</label>
+          <textarea id="commentsText" placeholder="Any concerns about the algorithm scoring, clinical nuances not captured by MOSI, unusual patient profile..."></textarea>
         </div>
       </div>
     </div>
-
     <div class="btn-group">
       <button class="btn btn-primary" onclick="goStep(4)">Review & Submit →</button>
       <button class="btn btn-secondary" onclick="goStep(2)">← Back</button>
     </div>
   </div>
 
-  <!-- STEP 4: CONFIRM & SUBMIT -->
+  <!-- PANE 4 -->
   <div id="pane4" class="hidden">
     <div class="card">
-      <div class="card-header"><span class="card-title">Case Summary — Review Before Submitting</span></div>
+      <div class="card-header"><span class="card-title">Review Before Submitting</span></div>
       <div id="summaryBlock"></div>
+      <div id="ghSyncNote" style="margin-top:1rem"></div>
       <div class="btn-group">
-        <button class="btn btn-primary" onclick="submitCase()">✓ Submit Case</button>
-        <button class="btn btn-secondary" onclick="goStep(3)">← Edit Feedback</button>
+        <button class="btn btn-primary" onclick="submitCase()" id="submitBtn">✓ Submit &amp; Push to GitHub</button>
+        <button class="btn btn-secondary" onclick="goStep(3)">← Edit</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     VIEW 2: MY CASES
-════════════════════════════════════════════ -->
+<!-- ── MY CASES ───────────────────────────────────────────── -->
 <div class="view" id="view-my-cases">
   <div class="page-title">My Cases</div>
-  <div class="page-sub">All cases you have submitted. Click any case to view details.</div>
-  <div id="myCasesTable">
-    <div class="empty-state"><div class="ei">🗂</div><div class="et">No cases submitted yet</div><div class="es">Submit your first case using the New Case form.</div></div>
-  </div>
+  <div class="page-sub">All cases you have submitted. Data is saved locally and pushed to GitHub on each submission.</div>
+  <div id="myCasesTable"></div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     VIEW 3: MY DASHBOARD
-════════════════════════════════════════════ -->
+<!-- ── MY DASHBOARD ──────────────────────────────────────── -->
 <div class="view" id="view-my-dashboard">
   <div class="page-title">My Dashboard</div>
-  <div class="page-sub">Your personal agreement rates, feedback patterns, and case history summary.</div>
-  <div id="myDashContent">
-    <div class="empty-state"><div class="ei">📊</div><div class="et">No data yet</div><div class="es">Submit cases to see your personal analytics.</div></div>
-  </div>
+  <div class="page-sub">Your personal agreement rates and case patterns.</div>
+  <div id="myDashContent"><div class="empty-state"><div class="ei">📊</div><div class="et">No data yet</div><div class="es">Submit cases to see your analytics.</div></div></div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     VIEW 4: UNIT AGGREGATE
-════════════════════════════════════════════ -->
+<!-- ── UNIT AGGREGATE ─────────────────────────────────────── -->
 <div class="view" id="view-aggregate">
   <div class="page-title">Unit Aggregate</div>
-  <div class="page-sub">Pooled data across all surgeons. This is the internal validation dataset.</div>
-  <div id="aggContent">
-    <div class="empty-state"><div class="ei">🏥</div><div class="et">No aggregate data yet</div><div class="es">Cases from all surgeons will appear here.</div></div>
+  <div class="page-sub">Pooled data from all surgeons — pulled live from GitHub.</div>
+  <div id="aggContent"><div class="empty-state"><div class="ei">🏥</div><div class="et">Loading...</div><div class="es">Fetching data from GitHub repository.</div></div></div>
+</div>
+
+<!-- ── GITHUB SETTINGS ────────────────────────────────────── -->
+<div class="view" id="view-settings">
+  <div class="page-title">GitHub Integration</div>
+  <div class="page-sub">Configure your GitHub repository so case data is pushed automatically on every submission.</div>
+
+  <div class="cfg-panel">
+    <div class="cfg-title">🔗 Repository Configuration</div>
+    <div class="cfg-sub">Cases will be written to <code>data/cases.json</code> in your repository on every submission. All surgeons sharing this tool should use the same repository and token.</div>
+    <div class="form-grid" style="gap:.85rem">
+      <div class="form-group">
+        <label>GitHub Username</label>
+        <input type="text" id="cfg-owner" placeholder="e.g. yourusername">
+      </div>
+      <div class="form-group">
+        <label>Repository Name</label>
+        <input type="text" id="cfg-repo" placeholder="e.g. mosi-system">
+      </div>
+      <div class="form-group full">
+        <label>Personal Access Token (PAT)</label>
+        <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        <div class="token-hint">
+          Generate at: <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a><br>
+          Scopes required: <strong>repo</strong> (tick the top-level repo checkbox — that's all)<br>
+          ⚠ The token is stored only in your browser's localStorage. It is never sent anywhere except the GitHub API.
+        </div>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="saveGHConfig()">Save &amp; Test Connection</button>
+      <button class="btn btn-secondary" onclick="clearGHConfig()">Clear Credentials</button>
+    </div>
+    <div class="sync-log" id="syncLog"><span class="log-info">No sync attempts yet.</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">How This Works</span></div>
+    <div style="font-size:.82rem;color:var(--text-mid);line-height:1.8">
+      <p style="margin-bottom:.75rem">Every time a surgeon submits a case, the platform:</p>
+      <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:.4rem">
+        <li>Saves the case to the browser's localStorage (instant, always works offline)</li>
+        <li>Fetches the current <code>data/cases.json</code> file from your GitHub repository</li>
+        <li>Appends the new case to the JSON array</li>
+        <li>Commits the updated file back to GitHub with a timestamped message</li>
+        <li>Updates the sync status indicator in the top bar</li>
+      </ol>
+      <p style="margin-top:.75rem">The <strong>Unit Aggregate</strong> view always reads from GitHub, so all surgeons see the same pooled data in real time, regardless of which device they used.</p>
+      <p style="margin-top:.75rem">If GitHub sync fails (no internet, token expired), the case is still saved locally and flagged for retry. No data is ever lost.</p>
+    </div>
+  </div>
+
+  <div class="card mt-2">
+    <div class="card-header"><span class="card-title">Manual Sync &amp; Recovery</span></div>
+    <p style="font-size:.82rem;color:var(--text-mid);margin-bottom:1rem">Push all locally-stored cases to GitHub now (useful after an offline session or token change).</p>
+    <div class="btn-group">
+      <button class="btn btn-ghost" onclick="pushAllToGitHub()">⬆ Push All Local Cases to GitHub</button>
+      <button class="btn btn-secondary" onclick="pullFromGitHub()">⬇ Pull Latest from GitHub</button>
+    </div>
   </div>
 </div>
 
@@ -544,20 +476,14 @@ select{cursor:pointer}
 <div class="modal-overlay" id="surgeonModal">
   <div class="modal">
     <div class="modal-title">Select Surgeon Profile</div>
-    <div class="modal-sub">Choose your profile to associate cases with your account. In a hosted deployment this would be replaced by secure login.</div>
+    <div class="modal-sub">Choose your profile to tag cases with your name.</div>
     <div class="surgeon-grid" id="surgeonGrid"></div>
     <div class="form-grid" style="margin-bottom:1rem">
-      <div class="form-group">
-        <label>Or add new surgeon</label>
-        <input type="text" id="newSurgeonName" placeholder="Full name">
-      </div>
-      <div class="form-group">
-        <label>Role / Grade</label>
-        <input type="text" id="newSurgeonRole" placeholder="e.g. Consultant Bariatric Surgeon">
-      </div>
+      <div class="form-group"><label>Add new surgeon — name</label><input type="text" id="newSurgeonName" placeholder="Full name"></div>
+      <div class="form-group"><label>Role / Grade</label><input type="text" id="newSurgeonRole" placeholder="e.g. Consultant Bariatric Surgeon"></div>
     </div>
     <div class="btn-group">
-      <button class="btn btn-primary" onclick="addSurgeon()">Add & Select</button>
+      <button class="btn btn-primary" onclick="addSurgeon()">Add &amp; Select</button>
       <button class="btn btn-secondary" onclick="closeModal('surgeonModal')">Cancel</button>
     </div>
   </div>
@@ -565,38 +491,36 @@ select{cursor:pointer}
 
 <!-- CASE DETAIL MODAL -->
 <div class="modal-overlay" id="caseModal">
-  <div class="modal" style="max-width:680px">
+  <div class="modal" style="max-width:640px">
     <div id="caseModalContent"></div>
-    <div class="btn-group">
-      <button class="btn btn-secondary" onclick="closeModal('caseModal')">Close</button>
-    </div>
+    <div class="btn-group"><button class="btn btn-secondary" onclick="closeModal('caseModal')">Close</button></div>
   </div>
 </div>
 
 <script>
 // ═══════════════════════════════════════════════════════════
-// DATA STORE
+// STATE
 // ═══════════════════════════════════════════════════════════
-const STORE_KEY = 'mosi_platform_v2';
-let state = {surgeons:[], currentSurgeonId:null, cases:[]};
+const STORE_KEY='mosi_platform_v3';
+let state={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''}};
 
 function loadState(){
-  try{ const s = localStorage.getItem(STORE_KEY); if(s) state = JSON.parse(s); } catch(e){}
-  // seed demo surgeons if empty
-  if(!state.surgeons || state.surgeons.length===0){
+  try{const s=localStorage.getItem(STORE_KEY);if(s)state=JSON.parse(s);}catch(e){}
+  if(!state.surgeons||state.surgeons.length===0){
     state.surgeons=[
-      {id:'s1', name:'Dr. A. Rahman', role:'Consultant Bariatric Surgeon', initials:'AR'},
-      {id:'s2', name:'Dr. S. Patel', role:'Associate Specialist', initials:'SP'},
-      {id:'s3', name:'Dr. L. Chen', role:'Fellow', initials:'LC'},
+      {id:'s1',name:'Dr. A. Rahman',role:'Consultant Bariatric Surgeon',initials:'AR'},
+      {id:'s2',name:'Dr. S. Patel',role:'Associate Specialist',initials:'SP'},
+      {id:'s3',name:'Dr. L. Chen',role:'Fellow',initials:'LC'},
     ];
   }
+  if(!state.gh) state.gh={owner:'',repo:'',token:''};
 }
-function saveState(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+function saveState(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
 
 // ═══════════════════════════════════════════════════════════
 // MOSI ALGORITHM
 // ═══════════════════════════════════════════════════════════
-const OUTCOMES = {
+const OUTCOMES={
   'Stage I':{'SG':{s12:54.7,t12:25.9,s60:59.3,t60:21.1},'RYGB':{s12:79.3,t12:32.3,s60:73.7,t60:24.5}},
   'Stage II':{'SG':{s12:50.0,t12:25.0,s60:40.5,t60:17.8},'RYGB':{s12:74.6,t12:32.3,s60:67.4,t60:25.0},'BPD/DS':{s12:88.9,t12:37.4,s60:87.2,t60:35.8}},
   'Stage III':{'SG':{s12:40.7,t12:20.7,s60:36.7,t60:16.6},'RYGB':{s12:68.8,t12:29.6,s60:62.5,t60:23.5},'BPD/DS':{s12:89.6,t12:35.7,s60:87.8,t60:33.9}},
@@ -604,317 +528,346 @@ const OUTCOMES = {
   'Stage 4B':{'SG':{s12:43.8,t12:20.5,s60:null,t60:21.9}},
 };
 
-function computeMOSI(bmi, htn, dysgly, osa, hld, gerd, si_raw, cardiac, stroke, masld, microeo, arthro){
-  if(!bmi || si_raw==='') return null;
-  const b = parseFloat(bmi);
-  if(isNaN(b) || b<28) return null;
-
-  // M score
-  let M;
-  if(b<35) M=1; else if(b<40) M=2; else if(b<45) M=3; else if(b<50) M=4; else M=5;
-
-  // O score
-  const O = (htn?1:0)+(dysgly?1:0)+(osa?1:0)+(hld?1:0);
-
-  // Si and stage
-  let Si, stage;
-  if(si_raw==='3a'){ Si=3; stage='Stage 4A'; }
-  else if(si_raw==='3b'){ Si=3; stage='Stage 4B'; }
-  else {
-    Si = parseInt(si_raw);
-    if(Si===2) stage='Stage III';
-    else if(Si===1 && (M>=4 || O>=3)) stage='Stage III';
-    else if(Si===0 && M<=2 && O<=1) stage='Stage I';
+function computeMOSI(bmi,htn,dysgly,osa,hld,gerd,si_raw,cardiac,stroke,masld,microeo,arthro){
+  if(!bmi||si_raw==='')return null;
+  const b=parseFloat(bmi);if(isNaN(b)||b<28)return null;
+  let M;if(b<35)M=1;else if(b<40)M=2;else if(b<45)M=3;else if(b<50)M=4;else M=5;
+  const O=(htn?1:0)+(dysgly?1:0)+(osa?1:0)+(hld?1:0);
+  let Si,stage;
+  if(si_raw==='3a'){Si=3;stage='Stage 4A';}
+  else if(si_raw==='3b'){Si=3;stage='Stage 4B';}
+  else{
+    Si=parseInt(si_raw);
+    if(Si===2)stage='Stage III';
+    else if(Si===1&&(M>=4||O>=3))stage='Stage III';
+    else if(Si===0&&M<=2&&O<=1)stage='Stage I';
     else stage='Stage II';
   }
-
-  // TWL Tier
   let tier;
-  if(cardiac||stroke) tier='D';
-  else if(dysgly||masld||microeo) tier='C';
-  else if(htn||osa||hld||gerd||arthro) tier='B';
+  if(cardiac||stroke)tier='D';
+  else if(dysgly||masld||microeo)tier='C';
+  else if(htn||osa||hld||gerd||arthro)tier='B';
   else tier='A';
-
   const tierTargets={A:'≥7.5%',B:'≥15%',C:'≥25%',D:'≥30%'};
-  const tierGoals={
-    A:'Functional improvement, QoL, mechanical offloading',
-    B:'OSA resolution, HTN control, HLD improvement, GORD resolution',
-    C:'T2DM remission, MASLD regression, microvascular damage arrest',
-    D:'MACE risk reduction, cardiovascular event prevention'
-  };
-
-  // Recommendation
-  let rec='', recRationale='', recProcs=[], alerts=[];
-  if(stage==='Stage I'){
-    rec='RYGB (preferred) or SG';
-    recProcs=['RYGB','SG'];
-    recRationale='Both procedures acceptable at Stage I. RYGB preferred for superior 5-year durable success. SG acceptable if no GORD and patient preference.';
-  } else if(stage==='Stage II'){
-    rec='RYGB (standard)';
-    recProcs=['RYGB'];
-    recRationale='RYGB is the standard recommendation at Stage II (74.6% success). SG is borderline (50.0%) and inadequate for Tier C/D patients.';
-    if(tier==='C'||tier==='D'){
-      alerts.push({type:'warn',msg:`Stage II + Tier ${tier}: SG achieves the ≥${tier==='C'?'25':'30'}% TWL target in only ${tier==='C'?'38.3':'15.4'}% of patients. RYGB is required for this patient's metabolic goals.`});
-    }
-    if(tier==='D'){
-      alerts.push({type:'note',msg:'Stage II + Tier D (cardiac/stroke): RYGB achieves ≥30% TWL in only 48.7% — counsel patient on realistic expectations. Consider BPD/DS if eligible.'});
-    }
-  } else if(stage==='Stage III'){
-    rec='BPD/DS (preferred if eligible) or RYGB';
-    recProcs=['BPD/DS','RYGB'];
-    recRationale='SG is contraindicated at Stage III (40.7% success — below acceptable threshold). RYGB is standard (68.8%). BPD/DS preferred where eligible (89.6%).';
-    alerts.push({type:'warn',msg:'SG is not recommended at Stage III. 12-month success 40.7% (95% CI 35.2–46.4%); 5-year success under pessimistic assumptions as low as 14.9%.'});
-    if(tier==='D'){
-      alerts.push({type:'note',msg:'Stage III + Tier D: RYGB achieves ≥30% TWL in only 36.2%. BPD/DS should be prioritised where the patient is eligible.'});
-    }
-  } else if(stage==='Stage 4A'){
-    rec='SG (standard); RYGB in selected patients with MDT input';
-    recProcs=['SG'];
-    recRationale='Transplant recipients off dialysis. SG: 65.3% success. RYGB n=12 (selection bias) — only with transplant team input (immunosuppressant absorption implications).';
-    alerts.push({type:'info',msg:'Stage 4A: Solid organ transplant recipient with functioning graft. RYGB use requires multidisciplinary transplant team involvement — tacrolimus/ciclosporin absorption may be significantly altered.'});
-    if(gerd) alerts.push({type:'note',msg:'GORD present: note reflux implications post-SG. RYGB preferred for GORD management but requires MDT clearance in this population.'});
-  } else if(stage==='Stage 4B'){
-    rec='SG (dominant — periop risk drives all decisions)';
-    recProcs=['SG'];
-    recRationale='Active dialysis patients. Near-universal SG (96.1%). Primary goal is transplant listing eligibility, not TWL per se — standard success metrics do not apply.';
-    alerts.push({type:'warn',msg:'Stage 4B: Active dialysis. TWL success (47.4%) is a misspecified outcome — the true goal is achieving weight threshold for transplant listing. Counsel accordingly.'});
-    alerts.push({type:'note',msg:'60-month data for Stage 4B is extremely sparse (19.7% completeness) due to competing events (transplant, graft failure). Do not use 5-year predictions for this patient.'});
+  const tierGoals={A:'Functional improvement, QoL',B:'OSA, HTN, HLD, GORD resolution',C:'T2DM remission, MASLD regression, microvascular arrest',D:'MACE risk reduction, cardiovascular event prevention'};
+  let rec='',recProcs=[],alerts=[];
+  if(stage==='Stage I'){rec='RYGB (preferred) or SG';recProcs=['RYGB','SG'];}
+  else if(stage==='Stage II'){
+    rec='RYGB (standard)';recProcs=['RYGB'];
+    if(tier==='C'||tier==='D')alerts.push({type:'warn',msg:`Stage II + Tier ${tier}: SG achieves the ≥${tier==='C'?'25':'30'}% TWL target in only ${tier==='C'?'38.3':'15.4'}% of patients. RYGB is required.`});
+    if(tier==='D')alerts.push({type:'note',msg:'Stage II + Tier D: RYGB achieves ≥30% TWL in only 48.7%. Counsel patient. Consider BPD/DS if eligible.'});
+  }else if(stage==='Stage III'){
+    rec='BPD/DS (preferred if eligible) or RYGB';recProcs=['BPD/DS','RYGB'];
+    alerts.push({type:'warn',msg:'SG is contraindicated at Stage III. 12m success 40.7%; pessimistic 5-year bound 14.9%.'});
+    if(tier==='D')alerts.push({type:'note',msg:'Stage III + Tier D: RYGB achieves ≥30% TWL in only 36.2%. BPD/DS strongly preferred.'});
+  }else if(stage==='Stage 4A'){
+    rec='SG (standard); RYGB in selected patients with MDT input';recProcs=['SG'];
+    alerts.push({type:'info',msg:'Transplant recipient with functioning graft. RYGB requires transplant team input — immunosuppressant absorption risk.'});
+  }else if(stage==='Stage 4B'){
+    rec='SG (periop risk drives all decisions)';recProcs=['SG'];
+    alerts.push({type:'warn',msg:'Active dialysis. TWL is a misspecified outcome — primary goal is achieving weight threshold for transplant listing.'});
   }
-  if(gerd && (stage==='Stage I'||stage==='Stage II'||stage==='Stage III')){
-    alerts.push({type:'info',msg:'GORD present: RYGB preferred at all stages. SG may worsen reflux symptoms. This preference is independent of MOSI stage and TWL Tier.'});
-  }
-
-  return {M,O,Si:si_raw,stage,tier,tierTarget:tierTargets[tier],tierGoal:tierGoals[tier],rec,recProcs,recRationale,alerts};
+  if(gerd&&(stage==='Stage I'||stage==='Stage II'||stage==='Stage III'))
+    alerts.push({type:'info',msg:'GORD present: RYGB preferred. SG may worsen reflux.'});
+  return{M,O,Si:si_raw,stage,tier,tierTarget:tierTargets[tier],tierGoal:tierGoals[tier],rec,recProcs,alerts};
 }
 
-// ═══════════════════════════════════════════════════════════
-// LIVE COMPUTATION
-// ═══════════════════════════════════════════════════════════
-let currentResult = null;
-
+let currentResult=null;
 function computeScores(){
-  const bmi = document.getElementById('bmi').value;
-  const si = document.getElementById('si').value;
-  const htn = document.getElementById('htn').checked;
-  const dysgly = document.getElementById('dysgly').checked;
-  const osa = document.getElementById('osa').checked;
-  const hld = document.getElementById('hld').checked;
-  const gerd = document.getElementById('gerd').checked;
-  const cardiac = document.getElementById('cardiac').checked;
-  const stroke = document.getElementById('stroke').checked;
-  const masld = document.getElementById('masld').checked;
-  const microeo = document.getElementById('microeo').checked;
-  const arthro = document.getElementById('arthropathy').checked;
-
-  const O = (htn?1:0)+(dysgly?1:0)+(osa?1:0)+(hld?1:0);
-  document.getElementById('oDisplay').textContent = O;
-
-  if(bmi && parseFloat(bmi)>=28){
-    const b=parseFloat(bmi);
-    let M; if(b<35) M='M1'; else if(b<40) M='M2'; else if(b<45) M='M3'; else if(b<50) M='M4'; else M='M5';
-    document.getElementById('mDisplay').textContent = M;
-  } else {
-    document.getElementById('mDisplay').textContent = '—';
-  }
-
-  const btn = document.getElementById('btn-to-step2');
-  if(bmi && parseFloat(bmi)>=28 && si!==''){
-    btn.disabled = false;
-    currentResult = computeMOSI(bmi,htn,dysgly,osa,hld,gerd,si,cardiac,stroke,masld,microeo,arthro);
-  } else {
-    btn.disabled = true;
-    currentResult = null;
-  }
+  const bmi=document.getElementById('bmi').value,si=document.getElementById('si').value;
+  const htn=document.getElementById('htn').checked,dysgly=document.getElementById('dysgly').checked;
+  const osa=document.getElementById('osa').checked,hld=document.getElementById('hld').checked;
+  const gerd=document.getElementById('gerd').checked,cardiac=document.getElementById('cardiac').checked;
+  const stroke=document.getElementById('stroke').checked,masld=document.getElementById('masld').checked;
+  const microeo=document.getElementById('microeo').checked,arthro=document.getElementById('arthropathy').checked;
+  const O=(htn?1:0)+(dysgly?1:0)+(osa?1:0)+(hld?1:0);
+  document.getElementById('oDisplay').textContent=O;
+  if(bmi&&parseFloat(bmi)>=28){const b=parseFloat(bmi);let M;if(b<35)M='M1';else if(b<40)M='M2';else if(b<45)M='M3';else if(b<50)M='M4';else M='M5';document.getElementById('mDisplay').textContent=M;}
+  else document.getElementById('mDisplay').textContent='—';
+  document.getElementById('btn-to-step2').disabled=!(bmi&&parseFloat(bmi)>=28&&si!=='');
+  if(bmi&&parseFloat(bmi)>=28&&si!=='')currentResult=computeMOSI(bmi,htn,dysgly,osa,hld,gerd,si,cardiac,stroke,masld,microeo,arthro);
+  else currentResult=null;
 }
 
 // ═══════════════════════════════════════════════════════════
-// STEP NAVIGATION
+// STEPS
 // ═══════════════════════════════════════════════════════════
 function goStep(n){
-  if(n===2 && !currentResult) return;
+  if(n===2&&!currentResult)return;
   [1,2,3,4].forEach(i=>{
-    document.getElementById(`pane${i}`).classList.toggle('hidden', i!==n);
+    document.getElementById(`pane${i}`).classList.toggle('hidden',i!==n);
     const s=document.getElementById(`step${i}`);
     s.className='step'+(i<n?' done':i===n?' active':'');
   });
-  if(n===2) renderRecommendation();
-  if(n===3) renderFeedbackContext();
-  if(n===4) renderSummary();
+  if(n===2)renderRec();
+  if(n===3)renderFeedbackCtx();
+  if(n===4)renderSummary();
   window.scrollTo(0,0);
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDER RECOMMENDATION
-// ═══════════════════════════════════════════════════════════
-function stageClass(stage){
-  if(stage==='Stage I') return 'stage-I';
-  if(stage==='Stage II') return 'stage-II';
-  if(stage==='Stage III') return 'stage-III';
-  return 'stage-IV';
-}
-function stageLong(stage){
-  const m={
-    'Stage I':'Stage I — Low Severity',
-    'Stage II':'Stage II — Moderate Severity',
-    'Stage III':'Stage III — High Severity',
-    'Stage 4A':'Stage 4A — Transplant Recipient (Off Dialysis)',
-    'Stage 4B':'Stage 4B — Active Dialysis',
-  };
-  return m[stage]||stage;
-}
+function stageClass(s){return s==='Stage I'?'stage-I':s==='Stage II'?'stage-II':s==='Stage III'?'stage-III':'stage-IV';}
 
-function renderRecommendation(){
-  const r = currentResult;
-  // Score strip
-  const siLabels={'0':'None','1':'Micro-endorgan damage','2':'Organ dysfunction','3a':'Organ failure (4A)','3b':'Organ failure (4B)'};
+function renderRec(){
+  const r=currentResult;
+  const siLabels={'0':'None','1':'Microvascular damage','2':'Organ dysfunction','3a':'Organ failure (4A)','3b':'Organ failure (4B)'};
   document.getElementById('scoreStrip').innerHTML=`
     <div class="score-box m"><div class="label">M Score</div><div class="value">M${r.M}</div><div class="sublabel">BMI class</div></div>
     <div class="score-box o"><div class="label">O Score</div><div class="value">${r.O}</div><div class="sublabel">of 4 comorbidities</div></div>
-    <div class="score-box si"><div class="label">Si Level</div><div class="value">Si${r.Si==='3a'?'3':'Si3b'===r.Si?'3':r.Si}</div><div class="sublabel">${siLabels[r.Si]||''}</div></div>
-    <div class="score-box stage ${stageClass(r.stage)}"><div class="label">MOSI Stage</div><div class="value" style="font-size:1.1rem;margin-top:.2rem">${r.stage}</div><div class="sublabel">${r.stage.includes('4')?'Critical complexity':r.stage==='Stage III'?'High severity':r.stage==='Stage II'?'Moderate severity':'Low severity'}</div></div>
-  `;
-  // Tier row
-  document.getElementById('tierRow').innerHTML=`
-    <span style="font-size:.78rem;font-weight:600;color:var(--text-mid)">TWL Target Tier</span>
-    <span class="tier-badge tier-${r.tier}">Tier ${r.tier} — ${r.tierTarget}</span>
-    <span style="font-size:.78rem;color:var(--text-light)">${r.tierGoal}</span>
-  `;
-  // Recommendation blocks
-  const stageOutcomes = OUTCOMES[r.stage]||{};
-  let recHTML='';
+    <div class="score-box si"><div class="label">Si Level</div><div class="value">Si${r.Si==='3a'?3:r.Si==='3b'?3:r.Si}</div><div class="sublabel">${siLabels[r.Si]||''}</div></div>
+    <div class="score-box ${stageClass(r.stage)}"><div class="label">MOSI Stage</div><div class="value" style="font-size:1.1rem;margin-top:.2rem">${r.stage}</div><div class="sublabel">${r.stage.includes('4')?'Critical complexity':r.stage==='Stage III'?'High severity':r.stage==='Stage II'?'Moderate severity':'Low severity'}</div></div>`;
+  document.getElementById('tierRow').innerHTML=`<span style="font-size:.78rem;font-weight:600;color:var(--text-mid)">TWL Target Tier</span><span class="tier-badge tier-${r.tier}">Tier ${r.tier} — ${r.tierTarget}</span><span style="font-size:.78rem;color:var(--text-light)">${r.tierGoal}</span>`;
+  const stageOut=OUTCOMES[r.stage]||{};
+  let rHTML='';
   r.recProcs.forEach((proc,idx)=>{
-    const o=stageOutcomes[proc];
-    const colorClass=idx===0?'pref-block':'note-block';
-    const procLabel=idx===0&&r.recProcs.length>1?`★ ${proc} — Preferred`:(r.recProcs.length===1?`★ ${proc} — Recommended`:proc);
-    const rates=o?`
-      <div class="rec-rates">
-        <div class="rec-rate"><div class="rn">${o.s12}%</div><div class="rl">Success @12m</div></div>
-        <div class="rec-rate"><div class="rn">${o.t12}%</div><div class="rl">Mean TWL 12m</div></div>
-        ${o.s60!==null?`<div class="rec-rate"><div class="rn">${o.s60}%</div><div class="rl">Success @60m†</div></div>`:''}
-        ${o.t60!==null?`<div class="rec-rate"><div class="rn">${o.t60}%</div><div class="rl">Mean TWL 60m</div></div>`:''}
-      </div>`:'';
-    recHTML+=`<div class="rec-block ${colorClass}">
-      <div class="rec-header"><span class="rec-title">${procLabel}</span></div>
-      <div class="rec-proc">${proc}</div>
-      <div class="rec-meta">${r.recRationale}</div>
-      ${rates}
-    </div>`;
+    const o=stageOut[proc],cls=idx===0?'pref-block':'note-block';
+    const lbl=idx===0&&r.recProcs.length>1?`★ ${proc} — Preferred`:idx===0?`★ ${proc} — Recommended`:proc;
+    const rates=o?`<div class="rec-rates">${o.s12!==null?`<div class="rec-rate"><div class="rn">${o.s12}%</div><div class="rl">Success @12m</div></div>`:''}<div class="rec-rate"><div class="rn">${o.t12}%</div><div class="rl">Mean TWL 12m</div></div>${o.s60!==null?`<div class="rec-rate"><div class="rn">${o.s60}%</div><div class="rl">Success @60m†</div></div>`:''}</div>`:'';
+    rHTML+=`<div class="rec-block ${cls}"><div class="rec-title">${lbl}</div><div class="rec-proc">${proc}</div><div class="rec-meta">${r.rec}</div>${rates}</div>`;
   });
-  // SG warning if applicable
-  if(r.stage==='Stage III'||r.stage==='Stage 4B'){
-    const sgO=stageOutcomes['SG'];
-    if(sgO) recHTML+=`<div class="rec-block warn-block">
-      <div class="rec-header"><span class="rec-title">⚠ SG — Avoid / Not Recommended</span></div>
-      <div class="rec-proc" style="font-size:1rem">Sleeve Gastrectomy (SG)</div>
-      <div class="rec-meta">Stage III: success 40.7% at 12m, as low as 14.9% under pessimistic 5-year assumptions. Below any acceptable threshold for metabolic efficacy.</div>
-      <div class="rec-rates"><div class="rec-rate"><div class="rn">${sgO.s12}%</div><div class="rl">Success @12m</div></div><div class="rec-rate"><div class="rn">${sgO.t12}%</div><div class="rl">Mean TWL 12m</div></div></div>
-    </div>`;
-  }
-  document.getElementById('recBlocks').innerHTML=recHTML;
-  // Alerts
-  let alertHTML='<div style="font-size:.67rem;color:var(--text-light);margin-top:.25rem">† 60m observed rates are pessimistically biased (MNAR dropout analysis); true population rates likely higher. Procedure ranking is stable under all sensitivity bounds.</div>';
-  (r.alerts||[]).forEach(a=>{
-    const typeMap={warn:'alert-warn ⚠',info:'alert-info ℹ',note:'alert-note 📌',ok:'alert-ok ✓'};
-    const [cls,icon]=(typeMap[a.type]||'alert-info ℹ').split(' ');
-    alertHTML+=`<div class="alert ${cls}" style="margin-top:.5rem"><span class="alert-icon">${icon}</span><span>${a.msg}</span></div>`;
-  });
-  document.getElementById('alertBlocks').innerHTML=alertHTML;
+  if(r.stage==='Stage III'){const sg=stageOut['SG'];if(sg)rHTML+=`<div class="rec-block warn-block"><div class="rec-title">⚠ SG — Avoid / Contraindicated at Stage III</div><div class="rec-proc">Sleeve Gastrectomy (SG)</div><div class="rec-meta">40.7% success at 12m; pessimistic 5-year bound 14.9%. Below any acceptable threshold.</div><div class="rec-rates"><div class="rec-rate"><div class="rn">${sg.s12}%</div><div class="rl">Success @12m</div></div><div class="rec-rate"><div class="rn">${sg.t12}%</div><div class="rl">Mean TWL 12m</div></div></div></div>`;}
+  document.getElementById('recBlocks').innerHTML=rHTML;
+  let aHTML='<div style="font-size:.67rem;color:var(--text-light);margin-top:.25rem">† 60m rates are pessimistically biased (MNAR dropout). Procedure ranking stable under all sensitivity bounds.</div>';
+  (r.alerts||[]).forEach(a=>{const m={warn:'alert-warn ⚠',info:'alert-info ℹ',note:'alert-note 📌'};const[cls,ico]=(m[a.type]||'alert-info ℹ').split(' ');aHTML+=`<div class="alert ${cls}" style="margin-top:.5rem"><span class="alert-icon">${ico}</span><span>${a.msg}</span></div>`;});
+  document.getElementById('alertBlocks').innerHTML=aHTML;
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDER FEEDBACK CONTEXT
-// ═══════════════════════════════════════════════════════════
-function renderFeedbackContext(){
+function renderFeedbackCtx(){
   const r=currentResult;
   document.getElementById('fb-stage-label').textContent=`Computed: ${r.stage} (M${r.M}, O${r.O}, Si${r.Si})`;
   document.getElementById('fb-proc-label').textContent=`Recommended: ${r.rec}`;
 }
 
-// ═══════════════════════════════════════════════════════════
-// AGREEMENT BUTTONS
-// ═══════════════════════════════════════════════════════════
-let agreements={stage:null, proc:null};
-function setAgreement(field, val){
+let agreements={stage:null,proc:null};
+function setAgreement(field,val){
   agreements[field]=val;
-  const prefix=`ab-${field}-`;
   ['agree','partial','disagree'].forEach(k=>{
-    const el=document.getElementById(prefix+k);
+    const el=document.getElementById(`ab-${field}-${k}`);
     el.className='agree-btn';
-    if((k==='agree'&&val==='Agree')||(k==='partial'&&val==='Partial')||(k==='disagree'&&val==='Disagree'))
-      el.classList.add(`sel-${k}`);
+    if((k==='agree'&&val==='Agree')||(k==='partial'&&val==='Partial')||(k==='disagree'&&val==='Disagree'))el.classList.add(`sel-${k}`);
   });
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDER SUMMARY
-// ═══════════════════════════════════════════════════════════
 function renderSummary(){
   const r=currentResult;
   const surgeon=state.surgeons.find(s=>s.id===state.currentSurgeonId);
-  const rows=[
-    ['Case Reference', document.getElementById('caseRef').value||'—'],
-    ['Date', document.getElementById('caseDate').value],
-    ['Surgeon', surgeon?surgeon.name:'Not selected'],
-    ['BMI', document.getElementById('bmi').value+' kg/m²'],
-    ['MOSI Stage', r.stage], ['MOSI Tier', `Tier ${r.tier} (${r.tierTarget})`],
-    ['Recommended Procedure', r.rec],
-    ['Stage Agreement', agreements.stage||'Not recorded'],
-    ['Procedure Agreement', agreements.proc||'Not recorded'],
-    ['Intended Procedure', document.getElementById('intendedProc').value||'Not stated'],
-    ['Reason/Context', document.getElementById('reasonText').value||'—'],
-    ['Comments', document.getElementById('commentsText').value||'—'],
-  ];
-  const agreeColor={Agree:'text-green',Partial:'text-amber',Disagree:'text-red'};
+  const ghOk=state.gh.owner&&state.gh.repo&&state.gh.token;
+  const rows=[['Case Reference',document.getElementById('caseRef').value||'—'],['Date',document.getElementById('caseDate').value],['Surgeon',surgeon?surgeon.name:'Not selected'],['BMI',document.getElementById('bmi').value+' kg/m²'],['MOSI Stage',r.stage],['Tier',`Tier ${r.tier} (${r.tierTarget})`],['Recommended',r.rec],['Stage Agreement',agreements.stage||'Not recorded'],['Procedure Agreement',agreements.proc||'Not recorded'],['Intended Procedure',document.getElementById('intendedProc').value||'—'],['Reason/Context',document.getElementById('reasonText').value||'—'],['Comments',document.getElementById('commentsText').value||'—']];
+  const ac={Agree:'color:var(--green)',Partial:'color:var(--amber)',Disagree:'color:var(--red)'};
   let html='<table style="width:100%;border-collapse:collapse;font-size:.82rem">';
-  rows.forEach(([k,v])=>{
-    const cls=(k.includes('Agreement')&&agreeColor[v])||'';
-    html+=`<tr><td style="padding:.5rem .75rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid);width:200px">${k}</td><td style="padding:.5rem .75rem;border-bottom:1px solid var(--border)" class="${cls}">${v}</td></tr>`;
-  });
+  rows.forEach(([k,v])=>{const st=(k.includes('Agreement')&&ac[v])||'';html+=`<tr><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid);width:180px">${k}</td><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);${st}">${v}</td></tr>`;});
   html+='</table>';
   document.getElementById('summaryBlock').innerHTML=html;
+  document.getElementById('ghSyncNote').innerHTML=ghOk
+    ?'<div class="alert alert-ok"><span class="alert-icon">🔗</span><span>GitHub is configured. This case will be pushed to <strong>'+state.gh.owner+'/'+state.gh.repo+'</strong> automatically on submission.</span></div>'
+    :'<div class="alert alert-note"><span class="alert-icon">⚠</span><span>GitHub is not configured. Case will be saved locally only. <a href="#" onclick="showView(\'settings\')" style="color:var(--amber)">Configure now →</a></span></div>';
+}
+
+// ═══════════════════════════════════════════════════════════
+// GITHUB API
+// ═══════════════════════════════════════════════════════════
+const GH_API='https://api.github.com';
+const DATA_PATH='data/cases.json';
+
+function ghHeaders(){
+  return{'Authorization':`Bearer ${state.gh.token}`,'Content-Type':'application/json','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+}
+
+function logSync(msg,type='info'){
+  const el=document.getElementById('syncLog');
+  if(!el)return;
+  const line=document.createElement('div');
+  line.className=`log-${type}`;
+  line.textContent=`[${new Date().toLocaleTimeString()}] ${msg}`;
+  el.appendChild(line);
+  el.scrollTop=el.scrollHeight;
+}
+
+function setSyncStatus(state_str,label){
+  const st=document.getElementById('syncStatus');
+  const dot=document.getElementById('syncDot');
+  const lbl=document.getElementById('syncLabel');
+  ['ok','err','syncing','uncfg'].forEach(c=>{st.classList.remove(c);dot.classList.remove(c);});
+  st.classList.add(state_str);dot.classList.add(state_str);
+  lbl.textContent=label;
+}
+
+async function ghGetFile(){
+  const{owner,repo,token}=state.gh;
+  if(!owner||!repo||!token)return null;
+  const url=`${GH_API}/repos/${owner}/${repo}/contents/${DATA_PATH}`;
+  const res=await fetch(url,{headers:ghHeaders()});
+  if(res.status===404)return{content:[],sha:null};
+  if(!res.ok)throw new Error(`GitHub GET failed: ${res.status} ${res.statusText}`);
+  const data=await res.json();
+  const content=JSON.parse(atob(data.content.replace(/\n/g,'')));
+  return{content,sha:data.sha};
+}
+
+async function ghPutFile(cases,sha){
+  const{owner,repo}=state.gh;
+  const url=`${GH_API}/repos/${owner}/${repo}/contents/${DATA_PATH}`;
+  const body={message:`MOSI audit: ${cases.length} case(s) [${new Date().toISOString()}]`,content:btoa(unescape(encodeURIComponent(JSON.stringify(cases,null,2))))};
+  if(sha)body.sha=sha;
+  const res=await fetch(url,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)});
+  if(!res.ok){const err=await res.json();throw new Error(err.message||`GitHub PUT failed: ${res.status}`);}
+  return await res.json();
+}
+
+async function pushCaseToGitHub(newCase){
+  const{owner,repo,token}=state.gh;
+  if(!owner||!repo||!token){logSync('GitHub not configured — skipped','info');return false;}
+  setSyncStatus('syncing','Syncing…');
+  logSync(`Pushing case ${newCase.caseRef} to ${owner}/${repo}…`,'info');
+  try{
+    const file=await ghGetFile();
+    const cases=[...(file.content||[])];
+    // Upsert: replace if same id exists, else append
+    const idx=cases.findIndex(c=>c.id===newCase.id);
+    if(idx>=0)cases[idx]=newCase;else cases.push(newCase);
+    await ghPutFile(cases,file.sha);
+    setSyncStatus('ok',`GitHub ✓ ${cases.length} case(s)`);
+    logSync(`✓ Pushed. Repository now has ${cases.length} case(s).`,'ok');
+    return true;
+  }catch(e){
+    setSyncStatus('err','GitHub sync failed');
+    logSync(`✗ ${e.message}`,'err');
+    return false;
+  }
+}
+
+async function pullFromGitHub(){
+  const{owner,repo,token}=state.gh;
+  if(!owner||!repo||!token){alert('GitHub not configured. Go to Settings first.');return;}
+  setSyncStatus('syncing','Pulling…');
+  logSync('Pulling all cases from GitHub…','info');
+  try{
+    const file=await ghGetFile();
+    const ghCases=file.content||[];
+    // Merge: GitHub is source of truth, local additions are preserved
+    const merged=[...ghCases];
+    state.cases.forEach(lc=>{if(!merged.find(c=>c.id===lc.id))merged.push(lc);});
+    state.cases=merged;
+    saveState();
+    setSyncStatus('ok',`GitHub ✓ ${merged.length} case(s)`);
+    logSync(`✓ Pulled. Merged to ${merged.length} case(s).`,'ok');
+    updateBadges();
+    alert(`✓ Pulled ${ghCases.length} cases from GitHub. Merged with local data.`);
+  }catch(e){
+    setSyncStatus('err','Pull failed');
+    logSync(`✗ ${e.message}`,'err');
+    alert('Pull failed: '+e.message);
+  }
+}
+
+async function pushAllToGitHub(){
+  const{owner,repo,token}=state.gh;
+  if(!owner||!repo||!token){alert('GitHub not configured.');return;}
+  if(!state.cases.length){alert('No local cases to push.');return;}
+  setSyncStatus('syncing','Pushing all…');
+  logSync(`Pushing all ${state.cases.length} local cases…`,'info');
+  try{
+    const file=await ghGetFile();
+    const ghCases=file.content||[];
+    const merged=[...ghCases];
+    state.cases.forEach(lc=>{const i=merged.findIndex(c=>c.id===lc.id);if(i>=0)merged[i]=lc;else merged.push(lc);});
+    await ghPutFile(merged,file.sha);
+    setSyncStatus('ok',`GitHub ✓ ${merged.length} case(s)`);
+    logSync(`✓ All ${merged.length} cases pushed.`,'ok');
+    alert(`✓ Pushed ${merged.length} cases to GitHub.`);
+  }catch(e){
+    setSyncStatus('err','Push failed');
+    logSync(`✗ ${e.message}`,'err');
+    alert('Push failed: '+e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// GITHUB CONFIG
+// ═══════════════════════════════════════════════════════════
+function saveGHConfig(){
+  const owner=document.getElementById('cfg-owner').value.trim();
+  const repo=document.getElementById('cfg-repo').value.trim();
+  const token=document.getElementById('cfg-token').value.trim();
+  if(!owner||!repo||!token){alert('Please fill in all three fields.');return;}
+  state.gh={owner,repo,token};
+  saveState();
+  logSync(`Config saved: ${owner}/${repo}`,'info');
+  testGHConnection();
+}
+
+async function testGHConnection(){
+  setSyncStatus('syncing','Testing…');
+  logSync('Testing GitHub connection…','info');
+  try{
+    const url=`${GH_API}/repos/${state.gh.owner}/${state.gh.repo}`;
+    const res=await fetch(url,{headers:ghHeaders()});
+    if(!res.ok)throw new Error(`Repo not found or token invalid (${res.status})`);
+    const data=await res.json();
+    setSyncStatus('ok',`GitHub ✓ ${state.gh.owner}/${state.gh.repo}`);
+    logSync(`✓ Connected to "${data.full_name}" (${data.private?'private':'public'} repo)`,'ok');
+    updateTopbar();
+  }catch(e){
+    setSyncStatus('err','Connection failed');
+    logSync(`✗ ${e.message}`,'err');
+  }
+}
+
+function clearGHConfig(){
+  if(!confirm('Clear GitHub credentials?'))return;
+  state.gh={owner:'',repo:'',token:''};
+  saveState();
+  document.getElementById('cfg-owner').value='';
+  document.getElementById('cfg-repo').value='';
+  document.getElementById('cfg-token').value='';
+  setSyncStatus('uncfg','GitHub: not configured');
+  logSync('Credentials cleared.','info');
+}
+
+function loadCFGInputs(){
+  if(state.gh.owner)document.getElementById('cfg-owner').value=state.gh.owner;
+  if(state.gh.repo)document.getElementById('cfg-repo').value=state.gh.repo;
+  if(state.gh.token)document.getElementById('cfg-token').value=state.gh.token;
 }
 
 // ═══════════════════════════════════════════════════════════
 // SUBMIT CASE
 // ═══════════════════════════════════════════════════════════
-function submitCase(){
-  if(!state.currentSurgeonId){ alert('Please select your surgeon profile before submitting.'); return; }
+async function submitCase(){
+  if(!state.currentSurgeonId){alert('Please select your surgeon profile first.');return;}
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Submitting…';
   const r=currentResult;
   const record={
     id:'case_'+Date.now(),
-    surgeonId: state.currentSurgeonId,
-    caseRef: document.getElementById('caseRef').value||'Unnamed',
-    date: document.getElementById('caseDate').value,
-    bmi: parseFloat(document.getElementById('bmi').value),
-    M: r.M, O: r.O, Si: r.Si,
-    stage: r.stage, tier: `Tier ${r.tier}`, tierTarget: r.tierTarget,
-    recommended: r.rec,
-    stageAgreement: agreements.stage||'Not recorded',
-    procAgreement: agreements.proc||'Not recorded',
-    intendedProc: document.getElementById('intendedProc').value||'',
-    reason: document.getElementById('reasonText').value||'',
-    comments: document.getElementById('commentsText').value||'',
+    surgeonId:state.currentSurgeonId,
+    surgeonName:(state.surgeons.find(s=>s.id===state.currentSurgeonId)||{}).name||'',
+    caseRef:document.getElementById('caseRef').value||'Unnamed',
+    date:document.getElementById('caseDate').value,
+    bmi:parseFloat(document.getElementById('bmi').value),
+    M:r.M,O:r.O,Si:r.Si,stage:r.stage,
+    tier:`Tier ${r.tier}`,tierTarget:r.tierTarget,
+    recommended:r.rec,
+    stageAgreement:agreements.stage||'Not recorded',
+    procAgreement:agreements.proc||'Not recorded',
+    intendedProc:document.getElementById('intendedProc').value||'',
+    reason:document.getElementById('reasonText').value||'',
+    comments:document.getElementById('commentsText').value||'',
+    submittedAt:new Date().toISOString(),
   };
+  // Save locally first — always
   state.cases.push(record);
   saveState();
+  // Push to GitHub
+  const ghOk=await pushCaseToGitHub(record);
+  btn.disabled=false;btn.textContent='✓ Submit & Push to GitHub';
   agreements={stage:null,proc:null};
   clearForm();
   goStep(1);
-  showView('my-cases');
   updateBadges();
-  alert('✓ Case submitted successfully. View it in My Cases.');
-}
-
-function clearForm(){
-  ['bmi','caseRef','reasonText','commentsText'].forEach(id=>document.getElementById(id).value='');
-  ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthropathy'].forEach(id=>document.getElementById(id).checked=false);
-  document.getElementById('si').value='';
-  document.getElementById('intendedProc').value='';
-  document.getElementById('mDisplay').textContent='—';
-  document.getElementById('oDisplay').textContent='0';
-  document.getElementById('btn-to-step2').disabled=true;
-  currentResult=null; agreements={stage:null,proc:null};
-  goStep(1);
+  showView('my-cases');
+  alert(ghOk
+    ?`✓ Case submitted and pushed to GitHub (${state.gh.owner}/${state.gh.repo}).`
+    :'✓ Case saved locally. GitHub sync failed — check Settings. You can push manually from Settings → Push All Local Cases.');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -924,42 +877,35 @@ function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
-  document.getElementById('nav-'+name).classList.add('active');
-  if(name==='my-cases') renderMyCases();
-  if(name==='my-dashboard') renderMyDashboard();
-  if(name==='aggregate') renderAggregate();
+  const nav=document.getElementById('nav-'+name);
+  if(nav)nav.classList.add('active');
+  if(name==='my-cases')renderMyCases();
+  if(name==='my-dashboard')renderMyDash();
+  if(name==='aggregate')renderAggregate();
+  if(name==='settings')loadCFGInputs();
 }
 
 // ═══════════════════════════════════════════════════════════
-// MY CASES VIEW
+// MY CASES
 // ═══════════════════════════════════════════════════════════
 function renderMyCases(){
-  const myCases = state.cases.filter(c=>c.surgeonId===state.currentSurgeonId);
+  const mine=state.cases.filter(c=>c.surgeonId===state.currentSurgeonId);
   const el=document.getElementById('myCasesTable');
-  if(!myCases.length){
-    el.innerHTML='<div class="empty-state"><div class="ei">🗂</div><div class="et">No cases yet</div><div class="es">Submit your first case using the New Case form.</div></div>';
-    return;
-  }
-  const agreeIcon={Agree:'✓','Partially':'~',Disagree:'✗','Not recorded':'?'};
-  const agreeClass={Agree:'pill-green','Partially':'pill-amber',Disagree:'pill-red','Not recorded':'pill-gray','Partial':'pill-amber'};
-  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem">
-    <span style="font-size:.82rem;color:var(--text-light)">${myCases.length} case${myCases.length!==1?'s':''} recorded</span>
-    <button class="btn btn-sm btn-ghost" onclick="exportCSV()">⬇ Export CSV</button>
-  </div>
-  <table class="data-table"><thead><tr>
-    <th>Case Ref</th><th>Date</th><th>Stage</th><th>Tier</th><th>Recommended</th><th>Stage Agreement</th><th>Proc Agreement</th><th>Intended Proc</th><th></th>
-  </tr></thead><tbody>`;
-  [...myCases].reverse().forEach(c=>{
-    const stPill=c.stage.includes('4')?'pill-teal':c.stage==='Stage III'?'pill-red':c.stage==='Stage II'?'pill-amber':'pill-green';
+  if(!mine.length){el.innerHTML='<div class="empty-state"><div class="ei">🗂</div><div class="et">No cases yet</div></div>';return;}
+  const ac={Agree:'pill-green',Partial:'pill-amber',Disagree:'pill-red','Not recorded':'pill-gray'};
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem"><span style="font-size:.82rem;color:var(--text-light)">${mine.length} case${mine.length!==1?'s':''}</span><button class="btn btn-sm btn-ghost" onclick="exportCSV()">⬇ Export CSV</button></div>
+  <table class="data-table"><thead><tr><th>Case Ref</th><th>Date</th><th>Stage</th><th>Tier</th><th>Stage Agree</th><th>Proc Agree</th><th>Intended Proc</th><th>GitHub</th><th></th></tr></thead><tbody>`;
+  [...mine].reverse().forEach(c=>{
+    const sp=c.stage.includes('4')?'pill-teal':c.stage==='Stage III'?'pill-red':c.stage==='Stage II'?'pill-amber':'pill-green';
+    const ghOk=state.gh.owner&&state.gh.repo&&state.gh.token;
     html+=`<tr>
-      <td class="mono">${c.caseRef}</td>
-      <td>${c.date}</td>
-      <td><span class="pill ${stPill}">${c.stage}</span></td>
+      <td class="mono">${c.caseRef}</td><td>${c.date}</td>
+      <td><span class="pill ${sp}">${c.stage}</span></td>
       <td><span class="pill pill-blue">${c.tier}</span></td>
-      <td style="font-size:.75rem;max-width:160px">${c.recommended}</td>
-      <td><span class="pill ${agreeClass[c.stageAgreement]||'pill-gray'}">${c.stageAgreement}</span></td>
-      <td><span class="pill ${agreeClass[c.procAgreement]||'pill-gray'}">${c.procAgreement}</span></td>
+      <td><span class="pill ${ac[c.stageAgreement]||'pill-gray'}">${c.stageAgreement}</span></td>
+      <td><span class="pill ${ac[c.procAgreement]||'pill-gray'}">${c.procAgreement}</span></td>
       <td style="font-size:.75rem">${c.intendedProc||'—'}</td>
+      <td><span class="pill ${ghOk?'pill-green':'pill-gray'}">${ghOk?'✓ Synced':'Local'}</span></td>
       <td><button class="btn btn-sm btn-secondary" onclick="viewCase('${c.id}')">View</button></td>
     </tr>`;
   });
@@ -968,30 +914,19 @@ function renderMyCases(){
 }
 
 function viewCase(id){
-  const c=state.cases.find(x=>x.id===id);
-  if(!c) return;
-  const surgeon=state.surgeons.find(s=>s.id===c.surgeonId);
-  const agreeClass={Agree:'text-green',Partial:'text-amber',Disagree:'text-red','Not recorded':'','Partially':'text-amber'};
+  const c=state.cases.find(x=>x.id===id);if(!c)return;
+  const ac={Agree:'color:var(--green)',Partial:'color:var(--amber)',Disagree:'color:var(--red)'};
   document.getElementById('caseModalContent').innerHTML=`
     <div class="modal-title">${c.caseRef}</div>
-    <div class="modal-sub">${c.date} · ${surgeon?surgeon.name:'Unknown surgeon'}</div>
-    <div class="section-title">MOSI Scores</div>
-    <div class="score-strip" style="margin-bottom:1rem">
+    <div class="modal-sub">${c.date} · ${c.surgeonName||'Unknown surgeon'}</div>
+    <div class="score-strip" style="margin:1rem 0">
       <div class="score-box m"><div class="label">M Score</div><div class="value">M${c.M}</div></div>
       <div class="score-box o"><div class="label">O Score</div><div class="value">${c.O}</div></div>
       <div class="score-box si"><div class="label">Si Level</div><div class="value">Si${c.Si==='3a'?3:c.Si==='3b'?3:c.Si}</div></div>
-      <div class="score-box stage ${stageClass(c.stage)}"><div class="label">Stage</div><div class="value" style="font-size:1rem">${c.stage}</div></div>
+      <div class="score-box ${stageClass(c.stage)}"><div class="label">Stage</div><div class="value" style="font-size:1rem">${c.stage}</div></div>
     </div>
-    <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap">
-      <span class="tier-badge tier-${c.tier.replace('Tier ','')}">TWL ${c.tier} — ${c.tierTarget}</span>
-    </div>
-    <div class="section-title">Clinical Judgement</div>
-    <table style="width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:1rem">
-      <tr><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid);width:180px">Stage Agreement</td><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border)" class="${agreeClass[c.stageAgreement]||''}">${c.stageAgreement}</td></tr>
-      <tr><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid)">Proc Agreement</td><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border)" class="${agreeClass[c.procAgreement]||''}">${c.procAgreement}</td></tr>
-      <tr><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid)">Intended Procedure</td><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border)">${c.intendedProc||'—'}</td></tr>
-      <tr><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid)">Reason / Context</td><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border)">${c.reason||'—'}</td></tr>
-      <tr><td style="padding:.45rem .5rem;font-weight:600;color:var(--text-mid)">Comments</td><td style="padding:.45rem .5rem">${c.comments||'—'}</td></tr>
+    <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+      ${[['Tier',c.tier+' ('+c.tierTarget+')'],['Recommended',c.recommended],['Stage Agreement',c.stageAgreement],['Proc Agreement',c.procAgreement],['Intended Procedure',c.intendedProc||'—'],['Reason',c.reason||'—'],['Comments',c.comments||'—']].map(([k,v],i)=>`<tr><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid);width:180px">${k}</td><td style="padding:.45rem .5rem;border-bottom:1px solid var(--border);${(k.includes('Agreement')&&ac[v])||''}">${v}</td></tr>`).join('')}
     </table>`;
   document.getElementById('caseModal').classList.add('open');
 }
@@ -999,268 +934,160 @@ function viewCase(id){
 // ═══════════════════════════════════════════════════════════
 // MY DASHBOARD
 // ═══════════════════════════════════════════════════════════
-function renderMyDashboard(){
-  const myCases=state.cases.filter(c=>c.surgeonId===state.currentSurgeonId);
-  const el=document.getElementById('myDashContent');
-  if(!myCases.length){
-    el.innerHTML='<div class="empty-state"><div class="ei">📊</div><div class="et">No data yet</div><div class="es">Submit cases to see your personal analytics.</div></div>';
-    return;
-  }
-  const total=myCases.length;
-  const stageAgree=myCases.filter(c=>c.stageAgreement==='Agree').length;
-  const procAgree=myCases.filter(c=>c.procAgreement==='Agree').length;
-  const stageDisagree=myCases.filter(c=>c.stageAgreement==='Disagree').length;
-  const procDisagree=myCases.filter(c=>c.procAgreement==='Disagree').length;
-  const withComments=myCases.filter(c=>c.comments.trim().length>0).length;
-
-  // Stage distribution
-  const stageCounts={};
-  myCases.forEach(c=>stageCounts[c.stage]=(stageCounts[c.stage]||0)+1);
-
-  el.innerHTML=`
-    <div class="stats-grid">
-      <div class="stat-card accent-blue"><div class="sn">${total}</div><div class="sl">Total Cases</div><div class="sd">Submitted by you</div></div>
-      <div class="stat-card accent-green"><div class="sn">${pct(stageAgree,total)}</div><div class="sl">Stage Agreement</div><div class="sd">${stageAgree}/${total} cases agree with MOSI stage</div></div>
-      <div class="stat-card accent-amber"><div class="sn">${pct(procAgree,total)}</div><div class="sl">Procedure Agreement</div><div class="sd">${procAgree}/${total} cases agree with recommendation</div></div>
-      <div class="stat-card accent-red"><div class="sn">${stageDisagree}</div><div class="sl">Stage Disagreements</div><div class="sd">${pct(stageDisagree,total)} of your cases</div></div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-      <div class="card">
-        <div class="card-header"><span class="card-title">Your Case Distribution by Stage</span></div>
-        ${renderBars(stageCounts,total,{'Stage I':'#1a7a4a','Stage II':'#c47800','Stage III':'#c45c00','Stage 4A':'#0d7c8c','Stage 4B':'#b82020'})}
-      </div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">Agreement Breakdown</span></div>
-        ${renderAgreementBreakdown(myCases)}
-      </div>
-    </div>
-
-    ${withComments>0?`
-    <div class="card mt-2">
-      <div class="card-header"><span class="card-title">Your Recent Comments & Concerns</span></div>
-      ${myCases.filter(c=>c.comments.trim()).slice(-5).reverse().map(c=>`
-        <div style="padding:.75rem;background:var(--slate-lighter);border-radius:7px;margin-bottom:.5rem;border-left:3px solid var(--blue)">
-          <div style="font-size:.72rem;font-weight:600;color:var(--text-mid);margin-bottom:.25rem">${c.caseRef} · ${c.date} · ${c.stage}</div>
-          <div style="font-size:.8rem;color:var(--text)">${c.comments}</div>
-        </div>`).join('')}
-    </div>`:''}
-  `;
-}
-
-// ═══════════════════════════════════════════════════════════
-// AGGREGATE VIEW
-// ═══════════════════════════════════════════════════════════
-function renderAggregate(){
-  const all=state.cases;
-  const el=document.getElementById('aggContent');
-  if(!all.length){
-    el.innerHTML='<div class="empty-state"><div class="ei">🏥</div><div class="et">No aggregate data yet</div><div class="es">Cases from all surgeons will appear here once submitted.</div></div>';
-    return;
-  }
-  const total=all.length;
-  const stageAgreeAll=all.filter(c=>c.stageAgreement==='Agree').length;
-  const procAgreeAll=all.filter(c=>c.procAgreement==='Agree').length;
-  const stageCounts={},tierCounts={};
-  all.forEach(c=>{stageCounts[c.stage]=(stageCounts[c.stage]||0)+1;tierCounts[c.tier]=(tierCounts[c.tier]||0)+1;});
-
-  // Per-stage agreement rates
-  const stages=['Stage I','Stage II','Stage III','Stage 4A','Stage 4B'];
-  let stageBreakHTML='<table class="data-table"><thead><tr><th>Stage</th><th>n</th><th>Stage Agree</th><th>Proc Agree</th><th>Stage Disagree</th><th>Most Common Intended Proc</th></tr></thead><tbody>';
-  stages.forEach(stage=>{
-    const g=all.filter(c=>c.stage===stage);
-    if(!g.length) return;
-    const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length);
-    const pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length);
-    const sd=g.filter(c=>c.stageAgreement==='Disagree').length;
-    const procFreq={};
-    g.forEach(c=>{if(c.intendedProc) procFreq[c.intendedProc]=(procFreq[c.intendedProc]||0)+1;});
-    const topProc=Object.entries(procFreq).sort((a,b)=>b[1]-a[1])[0];
-    const stPill=stage.includes('4')?'pill-teal':stage==='Stage III'?'pill-red':stage==='Stage II'?'pill-amber':'pill-green';
-    stageBreakHTML+=`<tr>
-      <td><span class="pill ${stPill}">${stage}</span></td>
-      <td>${g.length}</td>
-      <td class="${parseFloat(sa)>=80?'text-green':parseFloat(sa)<60?'text-red':'text-amber'}">${sa}</td>
-      <td class="${parseFloat(pa)>=80?'text-green':parseFloat(pa)<60?'text-red':'text-amber'}">${pa}</td>
-      <td class="${sd>0?'text-red':''}">${sd}</td>
-      <td style="font-size:.75rem">${topProc?topProc[0]:'—'}</td>
-    </tr>`;
-  });
-  stageBreakHTML+='</tbody></table>';
-
-  // Per-surgeon summary
-  let surgeonHTML='<table class="data-table"><thead><tr><th>Surgeon</th><th>Cases</th><th>Stage Agree</th><th>Proc Agree</th><th>Comments Filed</th></tr></thead><tbody>';
-  state.surgeons.forEach(s=>{
-    const g=all.filter(c=>c.surgeonId===s.id);
-    if(!g.length) return;
-    const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length);
-    const pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length);
-    const comm=g.filter(c=>c.comments.trim().length>0).length;
-    surgeonHTML+=`<tr>
-      <td style="font-weight:600">${s.name}</td>
-      <td>${g.length}</td>
-      <td class="${parseFloat(sa)>=80?'text-green':parseFloat(sa)<60?'text-red':'text-amber'}">${sa}</td>
-      <td class="${parseFloat(pa)>=80?'text-green':parseFloat(pa)<60?'text-red':'text-amber'}">${pa}</td>
-      <td>${comm}</td>
-    </tr>`;
-  });
-  surgeonHTML+='</tbody></table>';
-
-  // All comments
-  const allComments=all.filter(c=>c.comments.trim()||c.reason.trim());
-
-  el.innerHTML=`
-    <div class="stats-grid">
-      <div class="stat-card accent-blue"><div class="sn">${total}</div><div class="sl">Total Cases</div><div class="sd">Across ${state.surgeons.filter(s=>all.some(c=>c.surgeonId===s.id)).length} surgeons</div></div>
-      <div class="stat-card accent-green"><div class="sn">${pct(stageAgreeAll,total)}</div><div class="sl">Stage Agreement Rate</div><div class="sd">All cases, all surgeons</div></div>
-      <div class="stat-card accent-amber"><div class="sn">${pct(procAgreeAll,total)}</div><div class="sl">Procedure Agreement</div><div class="sd">Recommended vs intended</div></div>
-      <div class="stat-card accent-red"><div class="sn">${all.filter(c=>c.stageAgreement==='Disagree'||c.procAgreement==='Disagree').length}</div><div class="sl">Flagged Cases</div><div class="sd">Any stage or proc disagreement</div></div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-      <div class="card">
-        <div class="card-header"><span class="card-title">Case Volume by Stage</span></div>
-        ${renderBars(stageCounts,total,{'Stage I':'#1a7a4a','Stage II':'#c47800','Stage III':'#c45c00','Stage 4A':'#0d7c8c','Stage 4B':'#b82020'})}
-      </div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">Tier Distribution</span></div>
-        ${renderBars(tierCounts,total,{'Tier A':'#1a7a4a','Tier B':'#c47800','Tier C':'#c45c00','Tier D':'#b82020'})}
-      </div>
-    </div>
-
-    <div class="card mb-2">
-      <div class="card-header"><span class="card-title">Agreement Rates by Stage</span><button class="btn btn-sm btn-ghost" onclick="exportCSV()">⬇ Export All CSV</button></div>
-      ${stageBreakHTML}
-    </div>
-
-    <div class="card mb-2">
-      <div class="card-header"><span class="card-title">Per-Surgeon Summary</span></div>
-      ${surgeonHTML}
-    </div>
-
-    ${allComments.length?`
-    <div class="card">
-      <div class="card-header"><span class="card-title">All Surgeon Comments & Concerns (${allComments.length})</span></div>
-      ${allComments.slice().reverse().map(c=>{
-        const s=state.surgeons.find(x=>x.id===c.surgeonId);
-        return `<div style="padding:.75rem;background:var(--slate-lighter);border-radius:7px;margin-bottom:.5rem;border-left:3px solid var(--blue)">
-          <div style="font-size:.72rem;font-weight:600;color:var(--text-mid);margin-bottom:.25rem">${c.caseRef} · ${c.date} · ${c.stage} · ${s?s.name:'Unknown'}</div>
-          ${c.reason?`<div style="font-size:.78rem;color:var(--text-mid);margin-bottom:.2rem"><strong>Reason:</strong> ${c.reason}</div>`:''}
-          ${c.comments?`<div style="font-size:.8rem;color:var(--text)">${c.comments}</div>`:''}
-        </div>`;
-      }).join('')}
-    </div>`:''}
-  `;
-}
-
-// ═══════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════
-function pct(n,d){ return d===0?'0%':Math.round(n/d*100)+'%'; }
-
-function renderBars(counts, total, colors){
-  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  return entries.map(([k,v])=>{
-    const p=Math.round(v/total*100);
-    const col=colors[k]||'var(--blue)';
-    return `<div class="bar-row">
-      <span class="bar-label">${k}</span>
-      <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"><span>${v}</span></div></div>
-      <span class="bar-pct">${p}%</span>
-    </div>`;
+function pct(n,d){return d===0?'0%':Math.round(n/d*100)+'%';}
+function renderBars(counts,total,colors){
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
+    const p=Math.round(v/total*100),col=colors[k]||'var(--blue)';
+    return`<div class="bar-row"><span class="bar-label">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"><span>${v}</span></div></div><span class="bar-pct">${p}%</span></div>`;
   }).join('');
 }
 
-function renderAgreementBreakdown(cases){
-  const labels=['Agree','Partial','Disagree','Not recorded'];
-  const colors={Agree:'#1a7a4a',Partial:'#c47800',Disagree:'#b82020','Not recorded':'#8292a8'};
-  const stageCounts={},procCounts={};
-  labels.forEach(l=>{stageCounts[l]=0;procCounts[l]=0;});
-  cases.forEach(c=>{
-    const sk=c.stageAgreement==='Partially'?'Partial':c.stageAgreement;
-    const pk=c.procAgreement==='Partially'?'Partial':c.procAgreement;
-    stageCounts[sk]=(stageCounts[sk]||0)+1;
-    procCounts[pk]=(procCounts[pk]||0)+1;
+function renderMyDash(){
+  const mine=state.cases.filter(c=>c.surgeonId===state.currentSurgeonId);
+  const el=document.getElementById('myDashContent');
+  if(!mine.length){el.innerHTML='<div class="empty-state"><div class="ei">📊</div><div class="et">No data yet</div></div>';return;}
+  const total=mine.length,sa=mine.filter(c=>c.stageAgreement==='Agree').length,pa=mine.filter(c=>c.procAgreement==='Agree').length,sd=mine.filter(c=>c.stageAgreement==='Disagree').length;
+  const stC={};mine.forEach(c=>stC[c.stage]=(stC[c.stage]||0)+1);
+  const agC={Agree:0,Partial:0,Disagree:0,'Not recorded':0};mine.forEach(c=>{agC[c.stageAgreement]=(agC[c.stageAgreement]||0)+1;});
+  const comms=mine.filter(c=>c.comments&&c.comments.trim());
+  el.innerHTML=`
+    <div class="stats-grid">
+      <div class="stat-card accent-blue"><div class="sn">${total}</div><div class="sl">Total Cases</div><div class="sd">Submitted by you</div></div>
+      <div class="stat-card accent-green"><div class="sn">${pct(sa,total)}</div><div class="sl">Stage Agreement</div><div class="sd">${sa}/${total} cases</div></div>
+      <div class="stat-card accent-amber"><div class="sn">${pct(pa,total)}</div><div class="sl">Proc Agreement</div><div class="sd">${pa}/${total} cases</div></div>
+      <div class="stat-card accent-red"><div class="sn">${sd}</div><div class="sl">Disagreements</div><div class="sd">${pct(sd,total)} of cases</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div class="card"><div class="card-header"><span class="card-title">Case Distribution by Stage</span></div>${renderBars(stC,total,{'Stage I':'#1a7a4a','Stage II':'#c47800','Stage III':'#c45c00','Stage 4A':'#0d7c8c','Stage 4B':'#b82020'})}</div>
+      <div class="card"><div class="card-header"><span class="card-title">Stage Agreement Breakdown</span></div>${renderBars(Object.fromEntries(Object.entries(agC).filter(([,v])=>v>0)),total,{Agree:'#1a7a4a',Partial:'#c47800',Disagree:'#b82020','Not recorded':'#8292a8'})}</div>
+    </div>
+    ${comms.length?`<div class="card mt-2"><div class="card-header"><span class="card-title">Your Comments</span></div>${comms.slice(-5).reverse().map(c=>`<div style="padding:.75rem;background:var(--slate-lighter);border-radius:7px;margin-bottom:.5rem;border-left:3px solid var(--blue)"><div style="font-size:.72rem;font-weight:600;color:var(--text-mid);margin-bottom:.25rem">${c.caseRef} · ${c.date} · ${c.stage}</div><div style="font-size:.8rem">${c.comments}</div></div>`).join('')}</div>`:''}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// AGGREGATE — reads from GitHub
+// ═══════════════════════════════════════════════════════════
+async function renderAggregate(){
+  const el=document.getElementById('aggContent');
+  let all=[];
+  const ghCfg=state.gh.owner&&state.gh.repo&&state.gh.token;
+  if(ghCfg){
+    el.innerHTML='<div class="empty-state"><div class="ei" style="animation:pulse 1s infinite">🔄</div><div class="et">Fetching from GitHub…</div></div>';
+    try{
+      const file=await ghGetFile();
+      all=file.content||[];
+      setSyncStatus('ok',`GitHub ✓ ${all.length} case(s)`);
+    }catch(e){
+      el.innerHTML=`<div class="alert alert-warn"><span class="alert-icon">⚠</span><span>Could not fetch from GitHub: ${e.message}. Showing local data only.</span></div>`;
+      all=state.cases;
+    }
+  }else{
+    all=state.cases;
+    el.innerHTML='<div class="alert alert-note" style="margin-bottom:1rem"><span class="alert-icon">📌</span><span>GitHub not configured — showing local data only. <a href="#" onclick="showView(\'settings\')" style="color:var(--amber)">Configure GitHub →</a></span></div>';
+  }
+  if(!all.length){
+    const existing=el.innerHTML;
+    el.innerHTML=existing+'<div class="empty-state"><div class="ei">🏥</div><div class="et">No cases yet</div></div>';
+    return;
+  }
+  const total=all.length;
+  const saAll=all.filter(c=>c.stageAgreement==='Agree').length;
+  const paAll=all.filter(c=>c.procAgreement==='Agree').length;
+  const flagged=all.filter(c=>c.stageAgreement==='Disagree'||c.procAgreement==='Disagree').length;
+  const stC={},tC={};
+  all.forEach(c=>{stC[c.stage]=(stC[c.stage]||0)+1;tC[c.tier]=(tC[c.tier]||0)+1;});
+  const stageOrder=['Stage I','Stage II','Stage III','Stage 4A','Stage 4B'];
+  let stHTML='<table class="data-table"><thead><tr><th>Stage</th><th>n</th><th>Stage Agree</th><th>Proc Agree</th><th>Disagree</th><th>Top Intended Proc</th></tr></thead><tbody>';
+  stageOrder.forEach(stage=>{
+    const g=all.filter(c=>c.stage===stage);if(!g.length)return;
+    const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length);
+    const pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length);
+    const sd=g.filter(c=>c.stageAgreement==='Disagree').length;
+    const pf={};g.forEach(c=>{if(c.intendedProc)pf[c.intendedProc]=(pf[c.intendedProc]||0)+1;});
+    const tp=Object.entries(pf).sort((a,b)=>b[1]-a[1])[0];
+    const sp=stage.includes('4')?'pill-teal':stage==='Stage III'?'pill-red':stage==='Stage II'?'pill-amber':'pill-green';
+    const saStyle=parseFloat(sa)>=80?'color:var(--green)':parseFloat(sa)<60?'color:var(--red)':'color:var(--amber)';
+    const paStyle=parseFloat(pa)>=80?'color:var(--green)':parseFloat(pa)<60?'color:var(--red)':'color:var(--amber)';
+    stHTML+=`<tr><td><span class="pill ${sp}">${stage}</span></td><td>${g.length}</td><td style="${saStyle};font-weight:600">${sa}</td><td style="${paStyle};font-weight:600">${pa}</td><td style="${sd>0?'color:var(--red)':''}">${sd}</td><td style="font-size:.75rem">${tp?tp[0]:'—'}</td></tr>`;
   });
-  const total=cases.length;
-  let html='<div style="font-size:.72rem;font-weight:600;color:var(--text-mid);margin-bottom:.5rem">Stage Agreement</div>';
-  html+=renderBars(Object.fromEntries(Object.entries(stageCounts).filter(([,v])=>v>0)),total,colors);
-  html+='<div style="font-size:.72rem;font-weight:600;color:var(--text-mid);margin:.85rem 0 .5rem">Procedure Agreement</div>';
-  html+=renderBars(Object.fromEntries(Object.entries(procCounts).filter(([,v])=>v>0)),total,colors);
-  return html;
+  stHTML+='</tbody></table>';
+  const surgeonIds=[...new Set(all.map(c=>c.surgeonId))];
+  let surgHTML='<table class="data-table"><thead><tr><th>Surgeon</th><th>Cases</th><th>Stage Agree</th><th>Proc Agree</th><th>Comments</th></tr></thead><tbody>';
+  surgeonIds.forEach(sid=>{
+    const g=all.filter(c=>c.surgeonId===sid);
+    const name=g[0]?.surgeonName||(state.surgeons.find(s=>s.id===sid)||{}).name||sid;
+    const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length);
+    const pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length);
+    const comm=g.filter(c=>c.comments&&c.comments.trim()).length;
+    const saStyle=parseFloat(sa)>=80?'color:var(--green)':parseFloat(sa)<60?'color:var(--red)':'color:var(--amber)';
+    surgHTML+=`<tr><td style="font-weight:600">${name}</td><td>${g.length}</td><td style="${saStyle};font-weight:600">${sa}</td><td style="${saStyle};font-weight:600">${pa}</td><td>${comm}</td></tr>`;
+  });
+  surgHTML+='</tbody></table>';
+  const allComments=all.filter(c=>c.comments?.trim()||c.reason?.trim());
+  const prevNote=el.innerHTML;
+  el.innerHTML=prevNote+`
+    <div class="stats-grid">
+      <div class="stat-card accent-blue"><div class="sn">${total}</div><div class="sl">Total Cases</div><div class="sd">Across ${surgeonIds.length} surgeon(s)</div></div>
+      <div class="stat-card accent-green"><div class="sn">${pct(saAll,total)}</div><div class="sl">Stage Agreement</div><div class="sd">All surgeons</div></div>
+      <div class="stat-card accent-amber"><div class="sn">${pct(paAll,total)}</div><div class="sl">Proc Agreement</div><div class="sd">All surgeons</div></div>
+      <div class="stat-card accent-red"><div class="sn">${flagged}</div><div class="sl">Flagged Cases</div><div class="sd">Any disagreement</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+      <div class="card"><div class="card-header"><span class="card-title">Volume by Stage</span></div>${renderBars(stC,total,{'Stage I':'#1a7a4a','Stage II':'#c47800','Stage III':'#c45c00','Stage 4A':'#0d7c8c','Stage 4B':'#b82020'})}</div>
+      <div class="card"><div class="card-header"><span class="card-title">TWL Tier Distribution</span></div>${renderBars(tC,total,{'Tier A':'#1a7a4a','Tier B':'#c47800','Tier C':'#c45c00','Tier D':'#b82020'})}</div>
+    </div>
+    <div class="card mb-2"><div class="card-header"><span class="card-title">Agreement by Stage</span><button class="btn btn-sm btn-ghost" onclick="exportCSV()">⬇ Export CSV</button></div>${stHTML}</div>
+    <div class="card mb-2"><div class="card-header"><span class="card-title">Per-Surgeon Summary</span></div>${surgHTML}</div>
+    ${allComments.length?`<div class="card"><div class="card-header"><span class="card-title">All Comments &amp; Concerns (${allComments.length})</span></div>${allComments.slice().reverse().map(c=>`<div style="padding:.75rem;background:var(--slate-lighter);border-radius:7px;margin-bottom:.5rem;border-left:3px solid var(--blue)"><div style="font-size:.72rem;font-weight:600;color:var(--text-mid);margin-bottom:.25rem">${c.caseRef} · ${c.date} · ${c.stage} · ${c.surgeonName||c.surgeonId}</div>${c.reason?`<div style="font-size:.78rem;color:var(--text-mid);margin-bottom:.2rem"><strong>Reason:</strong> ${c.reason}</div>`:''}<div style="font-size:.8rem">${c.comments||''}</div></div>`).join('')}</div>`:''}`;
 }
 
 // ═══════════════════════════════════════════════════════════
 // SURGEON MODAL
 // ═══════════════════════════════════════════════════════════
-function openSurgeonModal(){
-  renderSurgeonGrid();
-  document.getElementById('surgeonModal').classList.add('open');
-}
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-
+function openSurgeonModal(){renderSurgeonGrid();document.getElementById('surgeonModal').classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
 function renderSurgeonGrid(){
-  const grid=document.getElementById('surgeonGrid');
-  grid.innerHTML=state.surgeons.map(s=>`
+  document.getElementById('surgeonGrid').innerHTML=state.surgeons.map(s=>`
     <div class="surgeon-card ${s.id===state.currentSurgeonId?'selected':''}" onclick="selectSurgeon('${s.id}')">
-      <div class="sc-dot">${s.initials}</div>
-      <div class="sc-name">${s.name}</div>
-      <div class="sc-role">${s.role}</div>
+      <div class="sc-dot">${s.initials}</div><div class="sc-name">${s.name}</div><div class="sc-role">${s.role}</div>
     </div>`).join('');
 }
-
-function selectSurgeon(id){
-  state.currentSurgeonId=id;
-  saveState();
-  renderSurgeonGrid();
-  updateTopbar();
-  updateBadges();
-  closeModal('surgeonModal');
-}
-
+function selectSurgeon(id){state.currentSurgeonId=id;saveState();renderSurgeonGrid();updateTopbar();updateBadges();closeModal('surgeonModal');}
 function addSurgeon(){
   const name=document.getElementById('newSurgeonName').value.trim();
   const role=document.getElementById('newSurgeonRole').value.trim()||'Surgeon';
-  if(!name){ alert('Please enter a name.'); return; }
+  if(!name){alert('Please enter a name.');return;}
   const initials=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
   const s={id:'s_'+Date.now(),name,role,initials};
-  state.surgeons.push(s);
-  saveState();
-  selectSurgeon(s.id);
-  document.getElementById('newSurgeonName').value='';
-  document.getElementById('newSurgeonRole').value='';
+  state.surgeons.push(s);saveState();selectSurgeon(s.id);
+  document.getElementById('newSurgeonName').value='';document.getElementById('newSurgeonRole').value='';
 }
-
 function updateTopbar(){
   const s=state.surgeons.find(x=>x.id===state.currentSurgeonId);
   document.getElementById('topDot').textContent=s?s.initials:'?';
   document.getElementById('topName').textContent=s?s.name:'Select Surgeon';
+  if(state.gh.owner&&state.gh.repo&&state.gh.token)setSyncStatus('ok',`GitHub ✓ ${state.gh.owner}/${state.gh.repo}`);
 }
-
-function updateBadges(){
-  const mine=state.cases.filter(c=>c.surgeonId===state.currentSurgeonId).length;
-  document.getElementById('myCaseBadge').textContent=mine;
-}
+function updateBadges(){document.getElementById('myCaseBadge').textContent=state.cases.filter(c=>c.surgeonId===state.currentSurgeonId).length;}
 
 // ═══════════════════════════════════════════════════════════
 // CSV EXPORT
 // ═══════════════════════════════════════════════════════════
 function exportCSV(){
-  if(!state.cases.length){ alert('No cases to export yet.'); return; }
-  const headers=['id','caseRef','date','surgeonId','surgeonName','bmi','M','O','Si','stage','tier','tierTarget','recommended','stageAgreement','procAgreement','intendedProc','reason','comments'];
-  const rows=state.cases.map(c=>{
-    const s=state.surgeons.find(x=>x.id===c.surgeonId);
-    return headers.map(h=>{
-      if(h==='surgeonName') return s?s.name:'';
-      const v=c[h]??'';
-      return `"${String(v).replace(/"/g,'""')}"`;
-    }).join(',');
-  });
-  const csv=[headers.join(','),...rows].join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=`MOSI_Cases_${new Date().toISOString().slice(0,10)}.csv`; a.click();
-  URL.revokeObjectURL(url);
+  if(!state.cases.length){alert('No cases to export.');return;}
+  const headers=['id','caseRef','date','surgeonId','surgeonName','bmi','M','O','Si','stage','tier','tierTarget','recommended','stageAgreement','procAgreement','intendedProc','reason','comments','submittedAt'];
+  const rows=state.cases.map(c=>headers.map(h=>`"${String(c[h]??'').replace(/"/g,'""')}"`).join(','));
+  const blob=new Blob([[headers.join(','),...rows].join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`MOSI_Cases_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+}
+
+function clearForm(){
+  ['bmi','caseRef','reasonText','commentsText'].forEach(id=>document.getElementById(id).value='');
+  ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthropathy'].forEach(id=>document.getElementById(id).checked=false);
+  document.getElementById('si').value='';document.getElementById('intendedProc').value='';
+  document.getElementById('mDisplay').textContent='—';document.getElementById('oDisplay').textContent='0';
+  document.getElementById('btn-to-step2').disabled=true;
+  currentResult=null;agreements={stage:null,proc:null};goStep(1);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1268,9 +1095,8 @@ function exportCSV(){
 // ═══════════════════════════════════════════════════════════
 loadState();
 document.getElementById('caseDate').value=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-updateTopbar();
-updateBadges();
-if(!state.currentSurgeonId) setTimeout(openSurgeonModal, 600);
+updateTopbar();updateBadges();
+if(!state.currentSurgeonId)setTimeout(openSurgeonModal,600);
 </script>
 </body>
 </html>
