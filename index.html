@@ -418,15 +418,27 @@ select{cursor:pointer}
 
     <!-- O SCORE -->
     <div class="card mt2">
-      <div class="card-hdr"><span class="card-title">O Score — Metabolic Comorbidity Burden</span>
+      <div class="card-hdr" style="flex-wrap:nowrap"><span class="card-title" style="white-space:nowrap">O Score — Metabolic Comorbidity Burden</span>
         <span style="font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--amber)" id="oDisp">Score: 0</span>
       </div>
       <p style="font-size:.76rem;color:var(--text2);margin-bottom:.85rem">Tick all present pre-operatively. Each scores +1 point (max O=4).</p>
       <div class="fg3">
-        <label class="chk-row" id="lbl-htn"><input type="checkbox" id="htn" onchange="comp()"> Hypertension</label>
-        <label class="chk-row" id="lbl-dysgly"><input type="checkbox" id="dysgly" onchange="comp()"> Dysglycaemia (T2DM / IFG)</label>
-        <label class="chk-row" id="lbl-osa"><input type="checkbox" id="osa" onchange="comp()"> Obstructive Sleep Apnea</label>
-        <label class="chk-row" id="lbl-hld"><input type="checkbox" id="hld" onchange="comp()"> Hyperlipidemia</label>
+        <div id="lbl-htn" style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;transition:all .15s;cursor:pointer" onclick="document.getElementById('htn').click()">
+          <label style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="htn" onchange="comp();updateChkStyle('lbl-htn',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Hypertension</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">HTN — including essential and secondary hypertension</div>
+        </div>
+        <div id="lbl-dysgly" style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;transition:all .15s;cursor:pointer" onclick="document.getElementById('dysgly').click()">
+          <label style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="dysgly" onchange="comp();updateChkStyle('lbl-dysgly',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Dysglycaemia</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">T2DM (Type 2 Diabetes Mellitus) or IFG (Impaired Fasting Glucose)</div>
+        </div>
+        <div id="lbl-osa" style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;transition:all .15s;cursor:pointer" onclick="document.getElementById('osa').click()">
+          <label style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="osa" onchange="comp();updateChkStyle('lbl-osa',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Obstructive Sleep Apnea</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">OSA — diagnosed on polysomnography or clinical criteria</div>
+        </div>
+        <div id="lbl-hld" style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;transition:all .15s;cursor:pointer" onclick="document.getElementById('hld').click()">
+          <label style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="hld" onchange="comp();updateChkStyle('lbl-hld',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Hyperlipidemia</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">HLD — elevated LDL, total cholesterol, or triglycerides</div>
+        </div>
       </div>
     </div>
 
@@ -437,30 +449,30 @@ select{cursor:pointer}
       </div>
       <div class="si-grid" id="siGrid">
         <div class="si-card si-sev-0" onclick="selectSi('0')" data-si="0">
-          <div class="si-num">Si 0</div>
-          <div class="si-title">No Systemic Impairment</div>
+          <div class="si-title" style="font-size:.88rem;font-weight:700;color:var(--text)">No Systemic Impairment</div>
+          <div style="font-size:.62rem;font-family:'DM Mono',monospace;color:var(--text3);margin-top:.1rem;margin-bottom:.12rem">Si 0</div>
           <div class="si-desc">No end-organ involvement. Default level.</div>
         </div>
         <div class="si-card si-sev-1" onclick="selectSi('1')" data-si="1">
-          <div class="si-num">Si 1</div>
-          <div class="si-title">Microvascular End-Organ Damage</div>
+          <div class="si-title" style="font-size:.88rem;font-weight:700;color:var(--text)">Microvascular End-Organ Damage</div>
+          <div style="font-size:.62rem;font-family:'DM Mono',monospace;color:var(--text3);margin-top:.1rem;margin-bottom:.12rem">Si 1</div>
           <div class="si-desc">Diabetic retinopathy, peripheral neuropathy, or nephropathy in the context of T2DM.</div>
         </div>
         <div class="si-card si-sev-2" onclick="selectSi('2')" data-si="2">
-          <div class="si-num">Si 2</div>
-          <div class="si-title">Organ Dysfunction</div>
+          <div class="si-title" style="font-size:.88rem;font-weight:700;color:var(--text)">Organ Dysfunction</div>
+          <div style="font-size:.62rem;font-family:'DM Mono',monospace;color:var(--text3);margin-top:.1rem;margin-bottom:.12rem">Si 2</div>
           <div class="si-desc">CKD, cirrhosis/MASH, cardiac history (MACE risk), or prior stroke/TIA.</div>
         </div>
         <!-- Si3 spans full width, split internally into two equal cards -->
         <div style="grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
           <div class="si-card si-sev-3a" onclick="selectSi('3a')" data-si="3a">
-            <div class="si-num">Si 3A → Stage 4A</div>
-            <div class="si-title">Organ Failure: Transplant Recipient</div>
+            <div class="si-title" style="font-size:.84rem;font-weight:700;color:var(--text)">Organ Failure — Transplant Recipient</div>
+            <div style="font-size:.62rem;font-family:'DM Mono',monospace;color:var(--teal);margin-top:.1rem;margin-bottom:.12rem">Si 3A → Stage 4A</div>
             <div class="si-desc">Solid organ transplant recipient, NOT currently on dialysis (functioning graft).</div>
           </div>
           <div class="si-card si-sev-3b" onclick="selectSi('3b')" data-si="3b">
-            <div class="si-num">Si 3B → Stage 4B</div>
-            <div class="si-title">Organ Failure: Active Dialysis</div>
+            <div class="si-title" style="font-size:.84rem;font-weight:700;color:var(--text)">Organ Failure — Active Dialysis</div>
+            <div style="font-size:.62rem;font-family:'DM Mono',monospace;color:var(--red);margin-top:.1rem;margin-bottom:.12rem">Si 3B → Stage 4B</div>
             <div class="si-desc">Currently requiring active dialysis at time of surgery (with or without prior transplant history).</div>
           </div>
         </div>
@@ -471,17 +483,32 @@ select{cursor:pointer}
     <div class="card mt2">
       <div class="card-hdr"><span class="card-title">Additional Comorbidities</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem">
-        <label class="chk-row" id="lbl-cardiac"><input type="checkbox" id="cardiac" onchange="comp()"> Cardiac History (MACE)</label>
-        <label class="chk-row" id="lbl-stroke"><input type="checkbox" id="stroke" onchange="comp()"> Stroke / TIA</label>
-        <label class="chk-row" id="lbl-masld"><input type="checkbox" id="masld" onchange="comp()"> MASLD / Cirrhosis</label>
-        <label class="chk-row" id="lbl-microeo"><input type="checkbox" id="microeo" onchange="comp()"> Diabetic Microvascular Damage</label>
-        <label class="chk-row" id="lbl-arthro"><input type="checkbox" id="arthro" onchange="comp()"> Arthropathy / Arthroplasty</label>
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;cursor:pointer" onclick="document.getElementById('cardiac').click()">
+          <label id="lbl-cardiac" style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="cardiac" onchange="comp();updateChkStyle('lbl-cardiac',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Cardiac History</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">MACE risk — MI, heart failure, coronary artery disease</div>
+        </div>
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;cursor:pointer" onclick="document.getElementById('stroke').click()">
+          <label id="lbl-stroke" style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="stroke" onchange="comp();updateChkStyle('lbl-stroke',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Stroke / TIA</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">TIA — Transient Ischemic Attack; prior cerebrovascular event</div>
+        </div>
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;cursor:pointer" onclick="document.getElementById('masld').click()">
+          <label id="lbl-masld" style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="masld" onchange="comp();updateChkStyle('lbl-masld',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> MASLD / Cirrhosis</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">Metabolic-Associated Steatotic Liver Disease (formerly NAFLD/NASH)</div>
+        </div>
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;cursor:pointer" onclick="document.getElementById('microeo').click()">
+          <label id="lbl-microeo" style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="microeo" onchange="comp();updateChkStyle('lbl-microeo',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Diabetic Microvascular Damage</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">Retinopathy, peripheral neuropathy, or diabetic nephropathy</div>
+        </div>
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.55rem .8rem;cursor:pointer" onclick="document.getElementById('arthro').click()">
+          <label id="lbl-arthro" style="display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;color:var(--text)"><input type="checkbox" id="arthro" onchange="comp();updateChkStyle('lbl-arthro',this)" style="width:15px;height:15px;accent-color:var(--blue);flex-shrink:0"> Arthropathy / Arthroplasty</label>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:.12rem;padding-left:1.5rem">Obesity-related joint disease or prior joint replacement surgery</div>
+        </div>
         <!-- GERD moved here as procedural modifier -->
         <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);padding:.58rem .8rem;display:flex;flex-direction:column;gap:.18rem">
           <label class="chk-row" id="lbl-gerd" style="background:transparent;border:none;padding:0;gap:.45rem">
             <input type="checkbox" id="gerd" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)"> GERD
           </label>
-          <div style="font-size:.67rem;color:var(--text3);line-height:1.35;padding-left:1.5rem">Gastroesophageal Reflux Disease — procedural modifier only, not scored in O</div>
+          <div style="font-size:.67rem;color:var(--text3);line-height:1.35;padding-left:1.5rem">Gastroesophageal Reflux Disease</div>
         </div>
       </div>
     </div>
@@ -736,8 +763,8 @@ select{cursor:pointer}
         <a href="https://www.researchgate.net/profile/Reza-Shahriarirad" target="_blank" style="display:flex;align-items:center;gap:.45rem;font-size:.74rem;color:var(--teal);text-decoration:none;padding:.38rem .65rem;background:var(--teal-pale);border-radius:var(--radius-sm);border:1px solid rgba(20,184,166,.25)">
           🎓 Academic CV &amp; Publications
         </a>
-        <a href="mailto:shahriarirad.reza@mayo.edu" style="display:flex;align-items:center;gap:.45rem;font-size:.74rem;color:var(--text2);text-decoration:none;padding:.38rem .65rem;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border)">
-          ✉️ shahriarirad.reza@mayo.edu
+        <a href="/cdn-cgi/l/email-protection#81f2e9e0e9f3e8e0f3e8f3e0e5aff3e4fbe0c1ece0f8eeafe4e5f4" style="display:flex;align-items:center;gap:.45rem;font-size:.74rem;color:var(--text2);text-decoration:none;padding:.38rem .65rem;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border)">
+          ✉️ <span class="__cf_email__" data-cfemail="03706b626b716a62716a7162672d71667962436e627a6c2d666776">[email&#160;protected]</span>
         </a>
       </div>
     </div>
@@ -854,7 +881,7 @@ select{cursor:pointer}
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════════════════ STATE ═══════════════════════════════════ */
 const SK='mosi_v6';
 let S={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''},theme:'dark'};
@@ -951,6 +978,11 @@ function selectSi(val){
   comp();
 }
 
+function updateChkStyle(id,cb){
+  const el=G(id);if(!el)return;
+  el.style.borderColor=cb.checked?'var(--blue)':'';
+  el.style.background=cb.checked?'var(--blue-pale)':'';
+}
 function comp(){
   const bmi=V('bmi');
   const htn=CK('htn'),dy=CK('dysgly'),osa=CK('osa'),hld=CK('hld'),gerd=CK('gerd');
@@ -976,6 +1008,8 @@ function sc(s){return s==='Stage I'?'stg-1':s==='Stage II'?'stg-2':s==='Stage II
 
 function goStep(n){
   if(n===2&&!CR)return;
+  if(n===3&&!CR)return;
+  if(n===4&&!CR)return;
   [1,2,3,4].forEach(i=>{
     G(`p${i}`)?.classList.toggle('hidden',i!==n);
     const s=G(`stp${i}`);if(s)s.className='step'+(i<n?' done':i===n?' active':'');
@@ -1309,7 +1343,8 @@ async function submitCase(){
 function show(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  G('view-'+name).classList.add('active');
+  const vEl=G('view-'+name);
+  if(vEl)vEl.classList.add('active');
   G('nav-'+name)?.classList.add('active');
   if(name==='my-cases')renderMyCases();
   if(name==='my-dash')renderMyDash();
@@ -1559,7 +1594,7 @@ function clearForm(){
   setSurgDone(false);
   ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro','isAnon'].forEach(id=>G(id)&&(G(id).checked=false));
   ['lbl-htn','lbl-dysgly','lbl-osa','lbl-hld','lbl-gerd','lbl-cardiac','lbl-stroke','lbl-masld','lbl-microeo','lbl-arthro'].forEach(id=>G(id)?.classList.remove('checked'));
-  G('intProc').value='';G('mDisp').textContent='—';G('oDisp').textContent='O = 0';
+  G('intProc').value='';G('mDisp').textContent='—';G('oDisp').textContent='Score: 0';
   G('anonHint').style.display='none';
   G('btn-s2').disabled=true;selectedSi=null;
   document.querySelectorAll('.si-card').forEach(c=>c.classList.remove('selected'));
@@ -1594,6 +1629,13 @@ function useBMI(){
   // Close the details
   const det=G('bmi')?.closest('.card')?.querySelector('details');if(det)det.open=false;
 }
-/* ─── INIT ─────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════ INIT ════════════════════════════════════ */
 loadS();
-G('caseDate').value=new Date().toLocaleDateString('
+const _td=new Date();
+G('caseDate').value=_td.getFullYear()+'-'+(String(_td.getMonth()+1).padStart(2,'0'))+'-'+String(_td.getDate()).padStart(2,'0');
+updateTopbar();
+updateBadges();
+if(!S.currentSurgeonId)setTimeout(openSurgModal,500);
+</script>
+</body>
+</html>
