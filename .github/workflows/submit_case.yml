@@ -15,10 +15,12 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-      - name: Append case to data/cases.json
+      - name: Append or update case in data/cases.json
         env:
           NEW_CASE: ${{ github.event.inputs.case_payload }}
         run: |
@@ -27,12 +29,47 @@ jobs:
 
           node << 'JS'
           const fs = require('fs');
-          const existing = JSON.parse(fs.readFileSync('data/cases.json','utf8'));
-          const newCase  = JSON.parse(process.env.NEW_CASE);
-          const idx = existing.findIndex(c => c.id === newCase.id);
-          if (idx >= 0) { existing[idx] = newCase; } else { existing.push(newCase); }
+
+          let existing;
+          try {
+            existing = JSON.parse(fs.readFileSync('data/cases.json', 'utf8'));
+            if (!Array.isArray(existing)) existing = [];
+          } catch (e) {
+            existing = [];
+          }
+
+          let newCase;
+          try {
+            newCase = JSON.parse(process.env.NEW_CASE);
+          } catch (e) {
+            console.error('Failed to parse case payload:', e.message);
+            process.exit(1);
+          }
+
+          if (newCase._deleted) {
+            const idx = existing.findIndex(c => c.id === newCase.id);
+            if (idx >= 0) {
+              existing[idx]._deleted = true;
+              existing[idx].deletedAt = newCase.deletedAt || new Date().toISOString();
+              console.log('Case marked as deleted: ' + newCase.id);
+            } else {
+              console.log('Case not found for deletion: ' + newCase.id);
+            }
+          } else {
+            const idx = existing.findIndex(c => c.id === newCase.id);
+            if (idx >= 0) {
+              existing[idx] = newCase;
+              console.log('Updated existing case: ' + newCase.id);
+            } else {
+              existing.push(newCase);
+              console.log('Added new case: ' + newCase.id);
+            }
+          }
+
           fs.writeFileSync('data/cases.json', JSON.stringify(existing, null, 2));
-          console.log('Total cases stored: ' + existing.length);
+          const active = existing.filter(c => !c._deleted && !c.isTest).length;
+          const total  = existing.length;
+          console.log('Total records: ' + total + ' | Active (non-test, non-deleted): ' + active);
           JS
 
       - name: Commit and push
@@ -42,7 +79,7 @@ jobs:
           git config user.name  "MOSI Audit Bot"
           git config user.email "mosi-bot@users.noreply.github.com"
           git add data/cases.json
-          CREF=$(node -e "try{console.log(JSON.parse(process.env.NEW_CASE).caseRef||'unknown')}catch(e){console.log('unknown')}")
-          git diff --cached --quiet && echo "No new data" && exit 0
+          CREF=$(node -e "try{const c=JSON.parse(process.env.NEW_CASE);console.log(c.caseRef||c.id||'unknown')}catch(e){console.log('unknown')}")
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "audit: case ${CREF} [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git push
