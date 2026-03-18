@@ -267,15 +267,26 @@ textarea{resize:vertical;min-height:68px}
 <main class="content">
 
 <!-- ALL CASES -->
+
+<!-- ══════════════════════════════════════════════════
+     PANE: DASHBOARD (default/home — replaces All Cases as first page)
+══════════════════════════════════════════════════ -->
 <div class="pane active" id="pane-cases">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
-    <div><div class="page-title">All Cases</div><div class="page-sub" style="margin-bottom:0">Complete case registry from GitHub.</div></div>
-    <div class="btn-row" style="margin-top:0"><button class="btn btn-p btn-sm" onclick="loadAllCases()">🔄 Refresh</button><button class="btn btn-s btn-sm" onclick="exportAllCSV()">⬇ CSV</button></div>
+    <div><div class="page-title">Dashboard</div><div class="page-sub" style="margin-bottom:0">Live metrics across all collected cases — by stage, surgeon, and outcome.</div></div>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn btn-p btn-sm" onclick="loadAllCases()">🔄 Refresh</button>
+      <button class="btn btn-s btn-sm" onclick="exportAllCSV()">⬇ CSV</button>
+    </div>
   </div>
-  <div id="allCasesEl"><div class="empty"><div class="ei">🗂</div><div class="et">Click Refresh to load from GitHub</div></div></div>
+  <div id="allCasesEl">
+    <div class="empty"><div class="ei">📊</div><div class="et">Click Refresh to load from GitHub</div></div>
+  </div>
 </div>
 
-<!-- VALIDATION -->
+<!-- ══════════════════════════════════════════════════
+     PANE: VALIDATION SUMMARY
+══════════════════════════════════════════════════ -->
 <div class="pane" id="pane-validation">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
     <div><div class="page-title">Validation Summary</div><div class="page-sub" style="margin-bottom:0">Agreement rates, disagreement patterns, and feedback metrics.</div></div>
@@ -284,7 +295,9 @@ textarea{resize:vertical;min-height:68px}
   <div id="validationEl"><div class="empty"><div class="ei">✅</div><div class="et">Click Refresh</div></div></div>
 </div>
 
-<!-- OUTCOMES -->
+<!-- ══════════════════════════════════════════════════
+     PANE: OUTCOME DATA
+══════════════════════════════════════════════════ -->
 <div class="pane" id="pane-outcomes">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
     <div><div class="page-title">Outcome Data</div><div class="page-sub" style="margin-bottom:0">Cases with actual procedure and post-operative outcome entered.</div></div>
@@ -293,7 +306,9 @@ textarea{resize:vertical;min-height:68px}
   <div id="outcomesEl"><div class="empty"><div class="ei">📊</div><div class="et">Click Refresh</div></div></div>
 </div>
 
-<!-- COMMENTS -->
+<!-- ══════════════════════════════════════════════════
+     PANE: COMMENTS & FLAGS
+══════════════════════════════════════════════════ -->
 <div class="pane" id="pane-comments">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;flex-wrap:wrap;gap:.65rem">
     <div><div class="page-title">Comments &amp; Flags</div><div class="page-sub" style="margin-bottom:0">All surgeon feedback, flags, and free-text comments.</div></div>
@@ -302,48 +317,48 @@ textarea{resize:vertical;min-height:68px}
   <div id="commentsEl"><div class="empty"><div class="ei">💬</div><div class="et">Click Refresh</div></div></div>
 </div>
 
-<!-- SURGEONS -->
+<!-- ══════════════════════════════════════════════════
+     PANE: SURGEON ROSTER
+══════════════════════════════════════════════════ -->
 <div class="pane" id="pane-surgeons">
   <div class="page-title">Surgeon Roster</div>
   <div class="page-sub">Add, edit, or remove surgeons. Changes apply immediately in this browser.</div>
-  <div class="card mb2"><div class="card-hdr"><span class="card-title">👥 Current Surgeons</span><button class="btn btn-p btn-sm" onclick="openAddSurgeon()">+ Add</button></div>
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">👥 Current Surgeons</span><button class="btn btn-p btn-sm" onclick="openAddSurgeon()">+ Add</button></div>
     <table class="dt"><thead><tr><th>Name</th><th>Role</th><th>Initials</th><th>Cases</th><th></th></tr></thead><tbody id="surgTbl"></tbody></table>
   </div>
 </div>
 
-<!-- ABOUT EDITOR -->
+<!-- ══════════════════════════════════════════════════
+     PANE: ABOUT EDITOR
+══════════════════════════════════════════════════ -->
 <div class="pane" id="pane-about-editor">
   <div class="page-title">Edit About Page</div>
   <div class="page-sub">Edit team members, research labs, affiliated hospitals, and system description shown on the platform.</div>
   <div class="alert a-info mb2"><span class="ai">ℹ</span><span>Changes are saved to browser localStorage and applied immediately. They persist across sessions on this device but are not pushed to GitHub automatically.</span></div>
-
-  <!-- TEAM MEMBERS -->
   <div class="card mb2">
     <div class="card-hdr"><span class="card-title">👥 Team Members</span><button class="btn btn-p btn-sm" onclick="openAddMember()">+ Add Member</button></div>
     <div id="membersList"><div style="font-size:.78rem;color:var(--tx2);padding:.5rem 0">Loading…</div></div>
   </div>
-
-  <!-- RESEARCH LABS -->
   <div class="card mb2">
     <div class="card-hdr"><span class="card-title">🔬 Research Labs</span><button class="btn btn-p btn-sm" onclick="openAddLab()">+ Add Lab</button></div>
     <div id="labsList"><div style="font-size:.78rem;color:var(--tx2);padding:.5rem 0">Loading…</div></div>
   </div>
-
-  <!-- AFFILIATED HOSPITALS -->
   <div class="card mb2">
     <div class="card-hdr"><span class="card-title">🏥 Affiliated Hospitals</span><button class="btn btn-p btn-sm" onclick="openAddHospital()">+ Add Hospital</button></div>
     <div id="hospitalsList"><div style="font-size:.78rem;color:var(--tx2);padding:.5rem 0">Loading…</div></div>
   </div>
-
-  <!-- SYSTEM DESCRIPTION -->
-  <div class="card mb2"><div class="card-hdr"><span class="card-title">📋 System Description</span></div>
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">📋 System Description</span></div>
     <div class="fg"><label>MOSI System Description</label><textarea id="ae-desc" style="min-height:100px" placeholder="The Metabolic &amp; Obesity Staging Index (MOSI) is…"></textarea></div>
     <div class="fg mt1"><label>Institutional Affiliation</label><input type="text" id="ae-inst" placeholder="e.g. Mayo Clinic — Bariatric &amp; Metabolic Surgery"></div>
     <div class="btn-row"><button class="btn btn-p" onclick="saveAboutEdits()">✓ Save Description</button></div>
   </div>
 </div>
 
-<!-- EXPORT -->
+<!-- ══════════════════════════════════════════════════
+     PANE: EXPORT & SYNC
+══════════════════════════════════════════════════ -->
 <div class="pane" id="pane-export">
   <div class="page-title">Export &amp; Sync</div>
   <div class="page-sub">Data operations — export, synchronise, and manage collected case data.</div>
@@ -359,7 +374,7 @@ textarea{resize:vertical;min-height:68px}
 
   <div class="card mb2">
     <div class="card-hdr"><span class="card-title">🔄 Sync with GitHub</span></div>
-    <p style="font-size:.77rem;color:var(--tx2);line-height:1.6;margin-bottom:.85rem">Push or pull data between this device and the GitHub repository manually. Pull to bring remote changes into this browser. Push to send any local-only cases to GitHub.</p>
+    <p style="font-size:.77rem;color:var(--tx2);line-height:1.6;margin-bottom:.85rem">Push or pull data between this device and the GitHub repository manually.</p>
     <div class="btn-row" style="margin-top:0">
       <button class="btn btn-g" onclick="pullFromGH()">⬇ Pull from GitHub</button>
       <button class="btn btn-g" onclick="pushAllToGH()">⬆ Push All Local Cases</button>
@@ -371,63 +386,68 @@ textarea{resize:vertical;min-height:68px}
     <div class="code"><span class="c"># Load from GitHub</span><br>library(jsonlite); library(tidyverse)<br><br>url &lt;- <span class="c">"https://raw.githubusercontent.com/<span class="v">owner/mosi-system</span>/main/data/cases.json"</span><br>cases &lt;- fromJSON(url) |&gt; filter(!isTest)<br><br><span class="c"># Agreement rates by stage</span><br>cases |&gt; group_by(stage) |&gt; summarise(n=n(), proc_agree=mean(procAgreement=="Agree")*100)</div>
   </div>
 
-  <!-- DANGER ZONE -->
+  <!-- DANGER ZONE: case data reset only -->
   <div class="card" style="border:2px solid rgba(239,68,68,.35);background:linear-gradient(135deg,var(--surf),rgba(239,68,68,.04))">
     <div class="card-hdr" style="margin-bottom:.65rem">
-      <span class="card-title" style="color:var(--red)">⚠ Danger Zone — Data Reset</span>
+      <span class="card-title" style="color:var(--red)">⚠ Danger Zone — Reset Collected Case Data</span>
     </div>
     <p style="font-size:.77rem;color:var(--tx2);line-height:1.65;margin-bottom:1rem">
-      Permanently delete collected data from this device's localStorage. <strong style="color:var(--tx)">This cannot be undone.</strong> Always export a CSV backup before resetting. Data already committed to GitHub is unaffected — manage remote data directly in the GitHub repository.
+      Permanently delete collected case records from this device's localStorage. <strong style="color:var(--tx)">This cannot be undone.</strong> Export a CSV backup before resetting. Data already committed to GitHub is unaffected.
     </p>
-    <div style="display:flex;flex-direction:column;gap:.6rem">
-
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.85rem 1rem;background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr);flex-wrap:wrap">
-        <div style="flex:1;min-width:160px">
-          <div style="font-size:.82rem;font-weight:600;color:var(--tx)">Reset Local Case Data</div>
-          <div style="font-size:.72rem;color:var(--tx2);margin-top:.1rem">Clears all cases stored in this browser only. GitHub data is preserved.</div>
-        </div>
-        <button class="btn btn-d btn-sm" onclick="resetLocalCases()" style="flex-shrink:0">🗑 Clear Local Cases</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.9rem 1rem;background:rgba(239,68,68,.08);border-radius:var(--r);border:2px solid rgba(239,68,68,.3);flex-wrap:wrap">
+      <div style="flex:1;min-width:160px">
+        <div style="font-size:.84rem;font-weight:700;color:var(--red)">Clear All Local Cases</div>
+        <div style="font-size:.72rem;color:var(--tx2);margin-top:.1rem">Removes all case records from this browser. GitHub repository data is <strong>not</strong> affected.</div>
       </div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.85rem 1rem;background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr);flex-wrap:wrap">
-        <div style="flex:1;min-width:160px">
-          <div style="font-size:.82rem;font-weight:600;color:var(--tx)">Reset Surgeon Roster</div>
-          <div style="font-size:.72rem;color:var(--tx2);margin-top:.1rem">Restores the default 4 surgeons. Any added surgeons will be removed.</div>
-        </div>
-        <button class="btn btn-d btn-sm" onclick="resetSurgeons()" style="flex-shrink:0">↩ Reset Surgeons</button>
-      </div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.85rem 1rem;background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr);flex-wrap:wrap">
-        <div style="flex:1;min-width:160px">
-          <div style="font-size:.82rem;font-weight:600;color:var(--tx)">Reset About Page Edits</div>
-          <div style="font-size:.72rem;color:var(--tx2);margin-top:.1rem">Clears custom team members, labs, hospitals, and description edits.</div>
-        </div>
-        <button class="btn btn-d btn-sm" onclick="resetAboutEdits()" style="flex-shrink:0">↩ Reset About Page</button>
-      </div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.9rem 1rem;background:rgba(239,68,68,.08);border-radius:var(--r);border:2px solid rgba(239,68,68,.3);flex-wrap:wrap">
-        <div style="flex:1;min-width:160px">
-          <div style="font-size:.84rem;font-weight:700;color:var(--red)">Full Factory Reset</div>
-          <div style="font-size:.72rem;color:var(--tx2);margin-top:.12rem">Wipes <strong>all</strong> data — cases, config, surgeons, about edits, GitHub credentials, and theme. Restores factory defaults.</div>
-        </div>
-        <button class="btn btn-d" onclick="factoryReset()" style="flex-shrink:0;font-weight:700">💥 Full Reset</button>
-      </div>
-
+      <button class="btn btn-d" onclick="resetLocalCases()" style="flex-shrink:0;font-weight:700">🗑 Reset Case Data</button>
     </div>
   </div>
 </div>
 
-  <div class="alert a-warn mb2"><span class="ai">⚠</span><span><strong>Jekyll Build Error?</strong> Create a file named <strong>.nojekyll</strong> (empty file, exact name including the dot) in the root of your repository. This stops GitHub Pages from running Jekyll.</span></div>
-  <div class="alert a-info mb2"><span class="ai">ℹ</span><span><strong>Workflow File Location:</strong> The <code>submit_case.yml</code> file must be at <strong>.github/workflows/submit_case.yml</strong> (with the dot at the start) for GitHub Actions to recognize it.</span></div>
-  <div class="card mb2"><div class="card-hdr"><span class="card-title">🔄 Submission Flow</span></div>
+<!-- ══════════════════════════════════════════════════
+     PANE: HOW IT WORKS (all setup info lives here)
+══════════════════════════════════════════════════ -->
+<div class="pane" id="pane-howto">
+  <div class="page-title">How It Works</div>
+  <div class="page-sub">Architecture, setup guide, and repository structure for the MOSI platform.</div>
+
+  <!-- .nojekyll fix — prominently at top -->
+  <div class="alert a-warn mb2">
+    <span class="ai">⚠</span>
+    <span><strong>Jekyll Build Error?</strong> Create a file named <code>.nojekyll</code> (empty file, exact name with the leading dot) in the root of your repository. This prevents GitHub Pages from running Jekyll, which causes build failures on plain HTML sites.<br>
+    <span style="font-size:.7rem;margin-top:.3rem;display:block;opacity:.8">In GitHub: your repo → Add file → Create new file → name it exactly <strong>.nojekyll</strong> → leave blank → commit.</span></span>
+  </div>
+
+  <div class="alert a-info mb2">
+    <span class="ai">ℹ</span>
+    <span><strong>Workflow File Location:</strong> The <code>submit_case.yml</code> file must be at <strong>.github/workflows/submit_case.yml</strong> (with the dot at the start) for GitHub Actions to trigger automatically.</span>
+  </div>
+
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">🔄 Submission Flow</span></div>
     <div id="howtoSteps"></div>
   </div>
-  <div class="card"><div class="card-hdr"><span class="card-title">📂 Repository Structure</span></div>
-    <div class="code">mosi-system/<br>├── <span class="v">index.html</span>        ← Surgeon platform<br>├── <span class="k">admin.html</span>        ← This admin panel<br>├── .nojekyll             ← Prevents Jekyll build errors<br>└── .github/workflows/<br>&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="c">submit_case.yml</span>   ← GitHub Actions (must be here!)<br>└── data/<br>&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="v">cases.json</span>        ← All case records (auto-created)</div>
+
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">📂 Repository Structure</span></div>
+    <div class="code">mosi-system/<br>├── <span class="v">index.html</span>        ← Surgeon platform<br>├── <span class="k">admin.html</span>        ← This admin panel<br>├── <span class="c">.nojekyll</span>            ← Prevents Jekyll build errors (empty file!)<br>└── .github/workflows/<br>&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="c">submit_case.yml</span>   ← GitHub Actions (must be in .github/workflows/)<br>&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="v">deploy_pages.yml</span>  ← GitHub Pages deployment<br>└── data/<br>&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="v">cases.json</span>        ← All case records (auto-created by workflow)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">🔑 GitHub PAT Permissions Required</span></div>
+    <div style="font-size:.77rem;color:var(--tx2);line-height:1.7">When creating a Personal Access Token at <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--blue)">github.com/settings/tokens/new</a>, enable the following scopes:
+      <ul style="margin:.6rem 0 0 1.2rem;display:flex;flex-direction:column;gap:.28rem">
+        <li><code style="background:rgba(255,255,255,.07);padding:.05rem .35rem;border-radius:4px;font-size:.73rem">repo</code> — full repository access (read/write contents, dispatch workflows)</li>
+        <li><code style="background:rgba(255,255,255,.07);padding:.05rem .35rem;border-radius:4px;font-size:.73rem">workflow</code> — required to dispatch GitHub Actions workflow_dispatch events</li>
+      </ul>
+      <div style="margin-top:.65rem;font-size:.72rem;padding:.5rem .7rem;background:var(--ambP);border-radius:var(--rs);border:1px solid rgba(245,158,11,.3);color:var(--amb)">The PAT is stored only in browser localStorage — it is never sent anywhere except directly to api.github.com.</div>
+    </div>
   </div>
 </div>
 
-<!-- GITHUB CONNECTION — at the bottom of sidebar -->
+<!-- ══════════════════════════════════════════════════
+     PANE: GITHUB CONNECTION
+══════════════════════════════════════════════════ -->
 <div class="pane" id="pane-github">
   <div class="page-title">GitHub Connection</div>
   <div class="page-sub">One-time administrator setup. Configure here — all surgeons connect automatically via shared localStorage.</div>
@@ -627,53 +647,276 @@ async function dispatchWF(rec){
 }
 
 /* ══ CASES ══ */
+/* ══ CASES / DASHBOARD ══ */
+function pctF(n,d){return d?Math.round(n/d*100)+'%':'—';}
+function barH(k,v,total,col){const p=Math.round(v/(total||1)*100);return`<div class="bar-row"><span class="bar-lbl">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"><span>${v}</span></div></div><span class="bar-pct">${p}%</span></div>`;}
+
 async function loadAllCases(){
   const el=G('allCasesEl');if(!el)return;
-  el.innerHTML='<div class="empty"><div class="ei">🔄</div></div>';
+  el.innerHTML='<div class="empty"><div class="ei">🔄</div><div class="et">Loading…</div></div>';
   setGHStatus('busy','Loading…');
   const data=await fetchGHCases();
   if(!data){
-    el.innerHTML='<div class="alert a-err"><span class="ai">✗</span><span>Could not fetch. Check GitHub configuration in the GitHub Connection pane.</span></div>';
+    el.innerHTML='<div class="alert a-err"><span class="ai">✗</span><span>Could not fetch. Check GitHub Connection pane.</span></div>';
     setGHStatus('err','Fetch failed');return;
   }
   allCases=data;updateCBadge();
-  setGHStatus('ok',`Connected: <b>${cfg.owner}/${cfg.repo||cfg.owner}</b> — ${data.length} cases`);
-  if(!data.length){el.innerHTML='<div class="empty"><div class="ei">🗂</div><div class="et">No cases yet</div></div>';return;}
+  setGHStatus('ok',`Connected: <b>${cfg.owner}/${cfg.repo||cfg.owner}</b> — ${data.length} records`);
+  const live=data.filter(c=>!c._deleted&&!c.isTest);
+  if(!live.length&&!data.length){el.innerHTML='<div class="empty"><div class="ei">🗂</div><div class="et">No cases yet</div></div>';return;}
+
+  /* ── METRICS ── */
+  const n=live.length,test=data.filter(c=>c.isTest).length,del=data.filter(c=>c._deleted).length;
+  const pa=live.filter(c=>c.procAgreement==='Agree').length;
+  const pd=live.filter(c=>c.procAgreement==='Disagree').length;
+  const wo=live.filter(c=>c.actualProcedure||c.actualTWL12||c.intraActualProc||c.intraTWL12).length;
+  const fl=live.filter(c=>c.procAgreement==='Disagree').length;
+
+  /* Stage counts */
+  const stC={};live.forEach(c=>{if(c.stage)stC[c.stage]=(stC[c.stage]||0)+1;});
+  /* Tier counts */
+  const tC={};live.forEach(c=>{if(c.tier)tC[c.tier]=(tC[c.tier]||0)+1;});
+  /* Agreement counts */
+  const agC={Agree:0,Partial:0,Disagree:0,'Not recorded':0};
+  live.forEach(c=>{const k=c.procAgreement||'Not recorded';if(k in agC)agC[k]++;});
+  /* Proc counts (intended) */
+  const prC={};live.forEach(c=>{const p=c.intendedProc||c.intraActualProc||c.actualProcedure;if(p)prC[p]=(prC[p]||0)+1;});
+  /* Surgeon counts */
+  const sgC={};live.forEach(c=>{const s=c.surgeonName||c.surgeonId||'Unknown';sgC[s]=(sgC[s]||0)+1;});
+
+  /* ── SURGEON TABLE ── */
+  const surgNames=[...new Set(live.map(c=>c.surgeonName||c.surgeonId||'Unknown'))].sort();
+  let sgRows=surgNames.map(sn=>{
+    const sg=live.filter(c=>(c.surgeonName||c.surgeonId||'Unknown')===sn);
+    const sn2=sg.length,sa=sg.filter(c=>c.procAgreement==='Agree').length;
+    const sd=sg.filter(c=>c.procAgreement==='Disagree').length;
+    const so=sg.filter(c=>c.actualProcedure||c.actualTWL12||c.intraActualProc||c.intraTWL12).length;
+    const stgMap={};sg.forEach(c=>{if(c.stage)stgMap[c.stage]=(stgMap[c.stage]||0)+1;});
+    const topStg=Object.entries(stgMap).sort((a,b)=>b[1]-a[1])[0];
+    const agPct=pctF(sa,sn2);
+    const agCol=parseFloat(agPct)>=70?'color:#34d476':parseFloat(agPct)<50?'color:#f05252':'color:#f5a623';
+    const tsp=topStg?(topStg[0].includes('4')?'pt':topStg[0]==='Stage III'?'pr':topStg[0]==='Stage II'?'pa_':'pg'):'pgy';
+    return `<tr>
+      <td style="font-weight:600">${sn}</td>
+      <td style="font-family:monospace;font-weight:700">${sn2}</td>
+      <td style="font-weight:700;${agCol}">${agPct}</td>
+      <td style="${sd>0?'color:#f05252':''}">${sd}</td>
+      <td><span class="pill ${tsp}">${topStg?topStg[0]:'—'}</span></td>
+      <td>${so}/${sn2}</td>
+    </tr>`;
+  }).join('');
+
+  /* ── ALL CASES TABLE ── */
   const ac={Agree:'pg',Partial:'pa_',Disagree:'pr','Not recorded':'pgy'};
-  let h=`<table class="dt"><thead><tr><th>Case Ref</th><th>Surgeon</th><th>Date</th><th>Stage</th><th>Proc Agree</th><th>Outcomes</th><th></th></tr></thead><tbody>`;
-  [...data].sort((a,b)=>(b.submittedAt||'').localeCompare(a.submittedAt||'')).forEach(c=>{
+  let caseRows=[...live].sort((a,b)=>(b.submittedAt||'').localeCompare(a.submittedAt||'')).map(c=>{
     const sp=c.stage?.includes('4')?'pt':c.stage==='Stage III'?'pr':c.stage==='Stage II'?'pa_':'pg';
-    const ho=c.intraProc||c.actualProcedure||c.intraTWL12||c.actualTWL12;
-    h+=`<tr><td class="mono" style="font-weight:600">${c.caseRef||'—'}${c.isTest?'<span class="pill pgy" style="margin-left:.3rem">test</span>':''}</td><td style="font-size:.73rem">${c.surgeonName||c.surgeonId||'—'}</td><td style="font-size:.73rem">${c.date||'—'}</td><td><span class="pill ${sp}">${c.stage||'—'}</span></td><td><span class="pill ${ac[c.procAgreement]||'pgy'}">${c.procAgreement||'—'}</span></td><td><span class="pill ${ho?'pg':'pgy'}">${ho?'✓':'Pending'}</span></td><td style="display:flex;gap:.28rem"><button class="btn btn-xs btn-s" onclick="adminView('${c.id}')">View</button><button class="btn btn-xs btn-g" onclick="adminEdit('${c.id}')">Edit</button><button class="btn btn-xs btn-d" onclick="adminDel('${c.id}')">Del</button></td></tr>`;
-  });
-  el.innerHTML=h+'</tbody></table>';
-}
-function adminView(id){
-  const c=allCases.find(x=>x.id===id);if(!c)return;
-  G('adminModalBody').innerHTML=`<div class="modal-title">${c.caseRef||'—'}</div><div class="modal-sub">${c.date||''} · ${c.surgeonName||''}</div><table style="width:100%;border-collapse:collapse;font-size:.78rem">${[['Stage',c.stage],['Tier',c.tier],['Recommended',c.recommended],['Proc Agreement',c.procAgreement],['Intended',c.intendedProc||'—'],['Comments',c.comments||'—'],['Actual Proc',c.intraProc||c.actualProcedure||'—'],['TWL 12m',c.intraTWL12||c.actualTWL12||'—']].map(([k,v])=>`<tr><td style="padding:.38rem .45rem;border-bottom:1px solid var(--bdr);font-weight:600;color:var(--tx2);width:185px">${k}</td><td style="padding:.38rem .45rem;border-bottom:1px solid var(--bdr)">${v}</td></tr>`).join('')}</table>`;
-  G('adminModalBtns').innerHTML=`<button class="btn btn-g btn-sm" onclick="adminEdit('${c.id}')">Edit</button><button class="btn btn-d btn-sm" onclick="adminDel('${c.id}')">Delete</button><button class="btn btn-s" onclick="closeModal()">Close</button>`;
-  G('adminModal').classList.add('open');
-}
-function adminEdit(id){
-  const c=allCases.find(x=>x.id===id);if(!c)return;
-  G('adminModalBody').innerHTML=`<div class="modal-title">Edit: ${c.caseRef||id}</div><div class="fg2 mt1"><div class="fg"><label>Case Ref</label><input type="text" id="ae-ref" value="${c.caseRef||''}"></div><div class="fg"><label>Surgeon</label><input type="text" id="ae-surg" value="${c.surgeonName||''}"></div></div><div class="fg2 mt1"><div class="fg"><label>Proc Agreement</label><select id="ae-pag">${['Agree','Partial','Disagree','Not recorded'].map(o=>`<option ${c.procAgreement===o?'selected':''}>${o}</option>`).join('')}</select></div><div class="fg"><label>Intended Procedure</label><input type="text" id="ae-ip" value="${c.intendedProc||''}"></div></div><div class="fg mt1"><label>Reason</label><textarea id="ae-reason">${c.reason||''}</textarea></div><div class="fg mt1"><label>Comments</label><textarea id="ae-comments">${c.comments||''}</textarea></div><div class="divider"></div><div class="fg2"><div class="fg"><label>Actual Procedure</label><select id="ae-ap">${['','SG','RYGB','BPD/DS','SADI-S','Other'].map(o=>`<option ${(c.actualProcedure===o||c.intraProc===o)?'selected':''}>${o}</option>`).join('')}</select></div><div class="fg"><label>TWL 12m (%)</label><input type="number" id="ae-t12" value="${c.actualTWL12||c.intraTWL12||''}" step="0.1"></div></div>`;
-  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="adminSaveEdit('${id}')">✓ Save & Push</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
-  G('adminModal').classList.add('open');
-}
-async function adminSaveEdit(id){
-  const c=allCases.find(x=>x.id===id);if(!c)return;
-  c.caseRef=V('ae-ref');c.surgeonName=V('ae-surg');c.procAgreement=V('ae-pag');c.intendedProc=V('ae-ip');c.reason=V('ae-reason');c.comments=V('ae-comments');c.actualProcedure=V('ae-ap');c.actualTWL12=V('ae-t12');c.outcomeUpdatedAt=new Date().toISOString();
-  const ok=await dispatchWF(c);closeModal();loadAllCases();
-  alert(ok?'✓ Updated and dispatched to GitHub.':'Saved locally. Dispatch failed — check connection.');
-}
-async function adminDel(id){
-  if(!confirm('Delete this case?'))return;
-  const idx=allCases.findIndex(c=>c.id===id);if(idx>=0)allCases.splice(idx,1);
-  await dispatchWF({id,_deleted:true,deletedAt:new Date().toISOString()});
-  closeModal();loadAllCases();updateCBadge();
+    const ho=c.intraActualProc||c.actualProcedure||c.intraTWL12||c.actualTWL12;
+    return `<tr>
+      <td class="mono" style="font-weight:600">${c.caseRef||'—'}${c.isTest?'<span class="pill pgy" style="margin-left:.3rem;font-size:.55rem">test</span>':''}</td>
+      <td style="font-size:.72rem">${c.surgeonName||c.surgeonId||'—'}</td>
+      <td style="font-size:.72rem">${c.date||'—'}</td>
+      <td><span class="pill ${sp}">${c.stage||'—'}</span></td>
+      <td><span class="pill ${ac[c.procAgreement]||'pgy'}">${c.procAgreement||'—'}</span></td>
+      <td>${c.surgRating?`<span class="pill ${c.surgRating==='Priority'?'pg':c.surgRating==='Alternative'?'pa_':'pr'}" style="font-size:.58rem">${c.surgRating}</span>`:'—'}</td>
+      <td><span class="pill ${ho?'pg':'pgy'}">${ho?'✓':'—'}</span></td>
+      <td style="display:flex;gap:.25rem;flex-wrap:wrap">
+        <button class="btn btn-xs btn-s" onclick="adminView('${c.id}')">View</button>
+        <button class="btn btn-xs btn-g" onclick="adminEdit('${c.id}')">Edit</button>
+        <button class="btn btn-xs btn-d" onclick="adminDel('${c.id}')">Del</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML=`
+  <!-- SUMMARY STATS -->
+  <div class="stats-grid mb2">
+    <div class="stat-c abl"><div class="sn">${n}</div><div class="sl">Active Cases</div></div>
+    <div class="stat-c abg"><div class="sn">${pctF(pa,n)}</div><div class="sl">Proc Agreement</div></div>
+    <div class="stat-c aba"><div class="sn">${wo}</div><div class="sl">Outcomes Entered</div></div>
+    <div class="stat-c abr"><div class="sn">${pd}</div><div class="sl">Disagreements</div></div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="two-col mb2">
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">📊 Cases by Stage</span></div>
+      ${['Stage I','Stage II','Stage III','Stage 4A','Stage 4B'].filter(s=>stC[s]).map(s=>barH(s,stC[s],n,s==='Stage I'?'#34d476':s==='Stage II'?'#f5a623':s==='Stage III'?'#f97316':s==='Stage 4A'?'#14c9b8':'#f05252')).join('')}
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">🤝 Proc Agreement</span></div>
+      ${Object.entries(agC).filter(([,v])=>v).map(([k,v])=>barH(k,v,n,k==='Agree'?'#34d476':k==='Partial'?'#f5a623':k==='Disagree'?'#f05252':'#6b7280')).join('')}
+    </div>
+  </div>
+  <div class="two-col mb2">
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">🎯 TWL Target Tier Distribution</span></div>
+      ${Object.entries(tC).sort().map(([k,v])=>barH(k,v,n,k==='Tier A'||k==='Tier A'?'#34d476':k.includes('B')?'#f5a623':k.includes('C')?'#f97316':'#f05252')).join('')||'<div style="font-size:.76rem;color:var(--tx3)">No tier data</div>'}
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">🔪 Intended Procedures</span></div>
+      ${Object.entries(prC).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>barH(k,v,n,'#4f8ef7')).join('')||'<div style="font-size:.76rem;color:var(--tx3)">No procedure data</div>'}
+    </div>
+  </div>
+
+  <!-- BY SURGEON -->
+  <div class="card mb2">
+    <div class="card-hdr">
+      <span class="card-title">👥 Metrics by Surgeon</span>
+      <span style="font-size:.7rem;color:var(--tx3)">${surgNames.length} surgeon${surgNames.length!==1?'s':''} · ${n} active cases</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="dt">
+        <thead><tr><th>Surgeon</th><th>Cases</th><th>Agree %</th><th>Disagree</th><th>Top Stage</th><th>Outcomes</th></tr></thead>
+        <tbody>${sgRows||'<tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:1rem">No surgeon data</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RECORD FLAGS -->
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">📋 Record Summary</span></div>
+    <div style="display:flex;gap:.85rem;flex-wrap:wrap;font-size:.78rem">
+      <span>Total records: <strong>${data.length}</strong></span>
+      <span>Active: <strong>${n}</strong></span>
+      <span>Test/Anon: <strong>${test}</strong></span>
+      <span>Deleted: <strong>${del}</strong></span>
+      <span>With outcomes: <strong>${wo}</strong></span>
+    </div>
+  </div>
+
+  <!-- ALL CASES TABLE -->
+  <div class="card">
+    <div class="card-hdr">
+      <span class="card-title">🗂 All Cases</span>
+      <div style="display:flex;gap:.4rem">
+        <button class="btn btn-xs btn-s" onclick="exportAllCSV()">⬇ CSV</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="dt">
+        <thead><tr><th>Case Ref</th><th>Surgeon</th><th>Date</th><th>Stage</th><th>Proc Agree</th><th>Rating</th><th>Outcome</th><th></th></tr></thead>
+        <tbody>${caseRows}</tbody>
+      </table>
+    </div>
+  </div>`;
 }
 
-/* ══ VALIDATION ══ */
+function adminView(id){
+  const c=allCases.find(x=>x.id===id);if(!c)return;
+  const rows=[
+    ['Case Ref',c.caseRef||'—'],['Test/Anon',c.isTest?'Yes':'No'],['Date',c.date||'—'],
+    ['Surgeon',c.surgeonName||c.surgeonId||'—'],['BMI',c.bmi?c.bmi+' kg/m²':'—'],
+    ['M Score',c.M?'M'+c.M:'—'],['O Score',c.O??'—'],['Si Level',c.Si||'—'],['Stage',c.stage||'—'],
+    ['Tier',c.tier||'—'],['TWL Target',c.tierTarget||'—'],['Recommended',c.recommended||'—'],
+    ['Proc Agreement',c.procAgreement||'—'],['Proc Rating',c.surgRating||'—'],
+    ['Expected Tier Outcome',c.tierOutcome||'—'],['Intended Procedure',c.intendedProc||'—'],
+    ['Reason',c.reason||'—'],['Rating Reasoning',c.ratingReason||'—'],
+    ['Alternative Approaches',c.altApproachText||c.altApproach||'—'],
+    ['TWL Agreement',c.twlAgreement||'—'],['Comments',c.comments||'—'],
+    ['Actual Procedure',c.intraActualProc||c.actualProcedure||'—'],
+    ['Actual TWL 12m',c.intraTWL12||c.actualTWL12?((c.intraTWL12||c.actualTWL12)+'%'):'—'],
+    ['Submitted',c.submittedAt?new Date(c.submittedAt).toLocaleString():'—'],
+  ];
+  const ac={Agree:'color:var(--grn)',Partial:'color:var(--amb)',Disagree:'color:var(--red)',Priority:'color:var(--grn)',Alternative:'color:var(--amb)',Contraindicated:'color:var(--red)'};
+  G('adminModalBody').innerHTML=`<div class="modal-title">${c.caseRef||'Case'}</div><div class="modal-sub">${c.date||''} · ${c.surgeonName||''} · ${c.stage||''}</div>
+  <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.77rem">
+  ${rows.map(([k,v])=>`<tr><td style="padding:.38rem .45rem;border-bottom:1px solid var(--bdr);font-weight:600;color:var(--tx2);width:190px;white-space:nowrap">${k}</td><td style="padding:.38rem .45rem;border-bottom:1px solid var(--bdr);${ac[v]||''}">${v}</td></tr>`).join('')}
+  </table></div>`;
+  G('adminModalBtns').innerHTML=`<button class="btn btn-g btn-sm" onclick="adminEdit('${c.id}')">✏ Edit</button><button class="btn btn-d btn-sm" onclick="adminDel('${c.id}')">🗑 Delete</button><button class="btn btn-s" onclick="closeModal()">Close</button>`;
+  G('adminModal').classList.add('open');
+}
+
+function adminEdit(id){
+  const c=allCases.find(x=>x.id===id);if(!c)return;
+  const agOpts=['Agree','Partial','Disagree','Not recorded'];
+  const twlOpts=['Agree','Partial','Disagree','Not recorded'];
+  const procOpts=['','SG (Sleeve Gastrectomy)','RYGB (Roux-en-Y Gastric Bypass)','BPD/DS (Biliopancreatic Diversion with DS)','SADI-S','Other'];
+  const tierOpts=['','A — ≥7.5% TWL','B — ≥15% TWL','C — ≥25% TWL','D — ≥30% TWL','Below A — <7.5% TWL','Not recorded'];
+  G('adminModalBody').innerHTML=`
+  <div class="modal-title">Edit Case</div>
+  <div class="modal-sub" style="font-family:'DM Mono',monospace;font-size:.71rem;color:var(--tx3)">${id}</div>
+
+  <div style="background:var(--surf2);border-radius:var(--r);padding:.7rem .85rem;margin:.75rem 0;border:1px solid var(--bdr)">
+    <div style="font-size:.61rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:.45rem">MOSI Scores (read-only)</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem">
+      <div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.4rem"><div style="font-family:'DM Mono',monospace;font-size:1rem;font-weight:700;color:var(--blue)">M${c.M||'?'}</div><div style="font-size:.59rem;color:var(--tx3)">M Score</div></div>
+      <div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.4rem"><div style="font-family:'DM Mono',monospace;font-size:1rem;font-weight:700;color:var(--amb)">${c.O??'?'}</div><div style="font-size:.59rem;color:var(--tx3)">O Score</div></div>
+      <div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.4rem"><div style="font-family:'DM Mono',monospace;font-size:1rem;font-weight:700;color:var(--org)">Si${c.Si==='3a'||c.Si==='3b'?3:c.Si||'?'}</div><div style="font-size:.59rem;color:var(--tx3)">Si Level</div></div>
+      <div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.4rem"><div style="font-size:.8rem;font-weight:700;color:var(--tx)">${c.stage||'—'}</div><div style="font-size:.59rem;color:var(--tx3)">Stage</div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+    <div class="fg"><label>Case Reference / MRN</label><input type="text" id="ae-ref" value="${c.caseRef||''}"></div>
+    <div class="fg"><label>Date</label><input type="date" id="ae-date" value="${c.date||''}"></div>
+  </div>
+  <div class="fg mt1"><label>Surgeon Name</label><input type="text" id="ae-surg" value="${c.surgeonName||''}"></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.65rem">
+    <div class="fg"><label>Procedure Agreement</label><select id="ae-pag">${agOpts.map(o=>`<option ${c.procAgreement===o?'selected':''}>${o}</option>`).join('')}</select></div>
+    <div class="fg"><label>TWL Agreement</label><select id="ae-twlag">${twlOpts.map(o=>`<option ${c.twlAgreement===o?'selected':''}>${o}</option>`).join('')}</select></div>
+  </div>
+  <div class="fg mt1"><label>Intended Procedure</label><select id="ae-ip">${procOpts.map(o=>`<option ${c.intendedProc===o?'selected':''}>${o}</option>`).join('')}</select></div>
+  <div class="fg mt1"><label>Proc Placement Ratings</label><input type="text" id="ae-prating" value="${c.surgRating||''}" placeholder="e.g. RYGB: Priority; BPD/DS: Alternative"></div>
+  <div class="fg mt1"><label>Expected Tier Outcome</label><select id="ae-tierout">${tierOpts.map(o=>{const v=o.split(' ')[0];return`<option ${c.tierOutcome===v?'selected':''} value="${v}">${o}</option>`;}).join('')}</select></div>
+  <div class="fg mt1"><label>Reason (if differs from recommendation)</label><textarea id="ae-reason" style="min-height:58px">${c.reason||''}</textarea></div>
+  <div class="fg mt1"><label>Rating Reasoning</label><textarea id="ae-rating-reason" style="min-height:55px">${c.ratingReason||''}</textarea></div>
+  <div class="fg mt1"><label>Alternative Approaches</label><textarea id="ae-alt" style="min-height:55px">${c.altApproachText||''}</textarea></div>
+  <div class="fg mt1"><label>Comments</label><textarea id="ae-comments" style="min-height:62px">${c.comments||''}</textarea></div>
+
+  <div style="height:1px;background:var(--bdr);margin:.9rem 0"></div>
+  <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:.55rem">Actual Outcomes</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+    <div class="fg"><label>Actual Procedure</label><select id="ae-ap">${['','SG (Sleeve Gastrectomy)','RYGB (Roux-en-Y Gastric Bypass)','BPD/DS','SADI-S','Other'].map(o=>`<option ${(c.actualProcedure===o||c.intraActualProc===o)?'selected':''}>${o}</option>`).join('')}</select></div>
+    <div class="fg"><label>Actual TWL 12m (%)</label><input type="number" id="ae-t12" value="${c.actualTWL12||c.intraTWL12||''}" step="0.1"></div>
+    <div class="fg"><label>Actual TWL 60m (%)</label><input type="number" id="ae-t60" value="${c.actualTWL60||c.intraTWL60||''}" step="0.1"></div>
+  </div>
+  <div class="fg mt1"><label>Outcome Notes</label><textarea id="ae-onotes" style="min-height:55px">${c.outcomeNotes||c.intraOutcomeNotes||''}</textarea></div>`;
+
+  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="adminSaveEdit('${id}')">✓ Save &amp; Push</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
+  G('adminModal').classList.add('open');
+}
+
+async function adminSaveEdit(id){
+  const c=allCases.find(x=>x.id===id);if(!c)return;
+  c.caseRef=V('ae-ref');
+  c.date=V('ae-date');
+  c.surgeonName=V('ae-surg');
+  c.procAgreement=V('ae-pag');
+  c.twlAgreement=V('ae-twlag');
+  c.intendedProc=V('ae-ip');
+  c.surgRating=V('ae-prating');
+  c.tierOutcome=V('ae-tierout');
+  c.reason=V('ae-reason');
+  c.ratingReason=V('ae-rating-reason');
+  c.altApproachText=V('ae-alt');
+  c.comments=V('ae-comments');
+  c.actualProcedure=V('ae-ap');
+  c.actualTWL12=V('ae-t12');
+  c.actualTWL60=V('ae-t60');
+  c.outcomeNotes=V('ae-onotes');
+  c.adminEditedAt=new Date().toISOString();
+  const ok=await dispatchWF(c);
+  closeModal();loadAllCases();
+  alert(ok?'✓ Updated and dispatched to GitHub.':'Saved locally — dispatch failed, check connection.');
+}
+
+async function adminDel(id){
+  if(!confirm('Mark this case as deleted?\n\nThe case will be hidden from the dashboard and excluded from analysis. It remains in the GitHub data file but flagged as deleted.'))return;
+  // Remove from local allCases array first
+  const idx=allCases.findIndex(c=>c.id===id);
+  if(idx>=0){
+    allCases[idx]._deleted=true;
+    allCases[idx].deletedAt=new Date().toISOString();
+  }
+  // Dispatch deletion to GitHub
+  const ok=await dispatchWF({id,_deleted:true,deletedAt:new Date().toISOString()});
+  closeModal();
+  loadAllCases();
+  updateCBadge();
+  alert(ok?'✓ Case marked as deleted and pushed to GitHub.':'Marked deleted locally — GitHub dispatch failed, check connection.');
+}
+
 async function loadValidation(){
   const el=G('validationEl');if(!el)return;
   el.innerHTML='<div class="empty"><div class="ei">🔄</div></div>';
@@ -857,45 +1100,6 @@ function resetLocalCases(){
     log('Local cases cleared.','inf');
   }catch(e){alert('Error: '+e.message);}
 }
-function resetSurgeons(){
-  if(!confirm('Reset surgeon roster to the default 4 surgeons?\n\nAny custom surgeons will be removed. Case attribution to removed surgeons will still appear in exported data.'))return;
-  try{
-    const sk=localStorage.getItem(MKEY);
-    const st=sk?JSON.parse(sk):{};
-    st.surgeons=[
-      {id:'s1',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'OG'},
-      {id:'s2',name:'Dr. S. Laplante',role:'Consultant Bariatric Surgeon',initials:'SL'},
-      {id:'s3',name:'Dr. R. Shahriarirad',role:'Fellow',initials:'RS'},
-      {id:'s4',name:'Dr. A. Alomar',role:'Research Fellow',initials:'AA'},
-    ];
-    localStorage.setItem(MKEY,JSON.stringify(st));
-    renderSurgRoster();
-    alert('✓ Surgeon roster reset to defaults.');
-    log('Surgeon roster reset.','inf');
-  }catch(e){alert('Error: '+e.message);}
-}
-function resetAboutEdits(){
-  if(!confirm('Reset all About page customisations?\n\nThis clears custom team members, research labs, affiliated hospitals, and the system description you may have edited.'))return;
-  try{
-    ['mosi_about_team','mosi_about_labs','mosi_about_hospitals','mosi_about_edits'].forEach(k=>localStorage.removeItem(k));
-    alert('✓ About page edits cleared. Defaults restored.');
-    log('About page edits cleared.','inf');
-  }catch(e){alert('Error: '+e.message);}
-}
-function factoryReset(){
-  if(!confirm('⚠ FULL FACTORY RESET\n\nThis will permanently delete ALL platform data from this browser:\n• All submitted cases\n• GitHub credentials\n• Surgeon roster\n• About page edits\n• Admin config\n• Theme setting\n\nGitHub repository data is NOT affected.\n\nType RESET to confirm this action.'))return;
-  const confirm2=prompt('Type RESET (all caps) to confirm the full factory reset:');
-  if(confirm2!=='RESET'){alert('Reset cancelled — text did not match.');return;}
-  try{
-    const keysToRemove=[MKEY,AKEY,'mosi_about_team','mosi_about_labs','mosi_about_hospitals','mosi_about_edits','mosi_admin_theme'];
-    keysToRemove.forEach(k=>localStorage.removeItem(k));
-    allCases=[];cfg={owner:'',repo:'',token:''};
-    alert('✓ Full factory reset complete. The page will now reload.');
-    window.location.reload();
-  }catch(e){alert('Error: '+e.message);}
-}
-
-/* ══ HOW TO ══ */
 function renderHowTo(){
   const el=G('howtoSteps');if(!el)return;
   const steps=['Surgeon opens index.html — no login, no token, no setup required.',
