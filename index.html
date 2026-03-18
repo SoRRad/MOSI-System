@@ -1,196 +1,305 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOSI — Clinical Decision & Audit Platform</title>
+<title>MOSI — Clinical Audit Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#1a2f5a;--navy-dark:#0f1c38;
-  --blue:#2e6be6;--blue-light:#4d85f5;--blue-pale:#deeaf8;
-  --teal:#0d7c8c;--teal-pale:#d0eff3;
-  --green:#1a7a4a;--green-pale:#d4eddf;
-  --amber:#c47800;--amber-pale:#fef3d8;
-  --red:#b82020;--red-pale:#fde8e8;
-  --orange:#c45c00;--orange-pale:#feeada;
-  --slate:#8292a8;--slate-light:#e8edf5;--slate-lighter:#f4f7fc;
-  --text:#1a2030;--text-mid:#4a5568;--text-light:#718096;
-  --white:#ffffff;--border:#dde3ee;
-  --shadow:0 2px 12px rgba(26,47,90,.08);
-  --shadow-lg:0 8px 40px rgba(26,47,90,.14);
+/* ─── THEME VARIABLES ─────────────────────────────────────── */
+:root {
+  --radius:10px;--radius-sm:6px;--radius-lg:14px;
+  --trans:.18s ease;
 }
+[data-theme="dark"] {
+  --bg:#0e1117;--bg2:#151b27;--bg3:#1c2436;--bg4:#242e44;
+  --surface:#1a2235;--surface2:#202b42;--surface3:#28354f;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.13);
+  --text:#e8edf5;--text2:#9aa5be;--text3:#5f6f8f;
+  --navy:#1a2f5a;
+  --blue:#3d82f6;--blue-d:#2563eb;--blue-pale:rgba(61,130,246,.15);
+  --green:#22c55e;--green-pale:rgba(34,197,94,.15);
+  --amber:#f59e0b;--amber-pale:rgba(245,158,11,.15);
+  --red:#ef4444;--red-pale:rgba(239,68,68,.15);
+  --orange:#f97316;--orange-pale:rgba(249,115,22,.15);
+  --teal:#14b8a6;--teal-pale:rgba(20,184,166,.15);
+  --purple:#a78bfa;--purple-pale:rgba(167,139,250,.15);
+  --shadow:0 2px 16px rgba(0,0,0,.35);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.5);
+  --topbar:#0a0f1a;
+  --sidebar:#0d1220;
+}
+[data-theme="light"] {
+  --bg:#f0f4fa;--bg2:#e8eef8;--bg3:#dde5f5;--bg4:#d0daf0;
+  --surface:#ffffff;--surface2:#f5f8ff;--surface3:#eaf0ff;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);
+  --text:#1a2030;--text2:#4a5568;--text3:#8a96b0;
+  --navy:#1a2f5a;
+  --blue:#2563eb;--blue-d:#1d4ed8;--blue-pale:#dbeafe;
+  --green:#15803d;--green-pale:#dcfce7;
+  --amber:#b45309;--amber-pale:#fef3c7;
+  --red:#b91c1c;--red-pale:#fee2e2;
+  --orange:#c2410c;--orange-pale:#ffedd5;
+  --teal:#0f766e;--teal-pale:#ccfbf1;
+  --purple:#7c3aed;--purple-pale:#ede9fe;
+  --shadow:0 2px 12px rgba(26,47,90,.08);
+  --shadow-lg:0 8px 40px rgba(26,47,90,.15);
+  --topbar:#1a2f5a;
+  --sidebar:#1e3564;
+}
+
+/* ─── RESET ──────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;scroll-behavior:smooth}
-body{font-family:'Sora',sans-serif;background:var(--slate-lighter);color:var(--text);min-height:100vh}
-.app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
-/* TOPBAR */
-.topbar{background:var(--navy-dark);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background var(--trans),color var(--trans)}
+
+/* ─── APP SHELL ──────────────────────────────────────────── */
+.app{display:grid;grid-template-rows:56px 1fr;height:100vh;overflow:hidden}
+.topbar{background:var(--topbar);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;border-bottom:1px solid var(--border);z-index:50}
 .brand{display:flex;align-items:center;gap:.75rem}
-.brand .logo{font-family:'DM Serif Display',serif;font-size:1.4rem;color:#fff;letter-spacing:.04em}
-.brand .tag{font-size:.68rem;color:var(--slate);letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.1);border-radius:3px}
-.topbar-right{display:flex;align-items:center;gap:.75rem}
-.sync-pill{display:flex;align-items:center;gap:.4rem;font-size:.72rem;padding:.3rem .65rem;border-radius:5px;border:1px solid rgba(255,255,255,.12)}
-.sync-pill.ok{color:#6fcf97;border-color:rgba(111,207,151,.3)}
-.sync-pill.err{color:#f08080;border-color:rgba(240,128,128,.3)}
-.sync-pill.busy{color:#f5c842;border-color:rgba(245,200,66,.3)}
-.sync-pill.idle{color:var(--slate);border-color:rgba(130,146,168,.3)}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.brand-logo{font-family:'DM Serif Display',serif;font-size:1.5rem;color:#fff;letter-spacing:.04em}
+.brand-tag{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);font-weight:600;padding:.18rem .5rem;border:1px solid rgba(255,255,255,.1);border-radius:3px}
+.topbar-right{display:flex;align-items:center;gap:.6rem}
+
+/* sync pill */
+.sync-pill{display:flex;align-items:center;gap:.4rem;font-size:.7rem;padding:.28rem .65rem;border-radius:20px;border:1px solid var(--border2);color:var(--text2);background:var(--surface);cursor:default;white-space:nowrap}
+.sync-pill.ok{color:var(--green);border-color:rgba(34,197,94,.3);background:var(--green-pale)}
+.sync-pill.err{color:var(--red);border-color:rgba(239,68,68,.3);background:var(--red-pale)}
+.sync-pill.busy{color:var(--amber);border-color:rgba(245,158,11,.3);background:var(--amber-pale)}
+.sdot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.sync-pill.busy .sync-dot{animation:blink .9s infinite}
-.surgeon-btn{display:flex;align-items:center;gap:.5rem;padding:.3rem .7rem .3rem .4rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;cursor:pointer;transition:background .15s}
-.surgeon-btn:hover{background:rgba(255,255,255,.1)}
-.s-dot{width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff}
-.s-name{font-size:.8rem;color:#e2e8f4;font-weight:500}
-/* LAYOUT */
-.main{display:grid;grid-template-columns:214px 1fr;height:calc(100vh - 56px)}
-.sidebar{background:var(--navy);padding:1.25rem 0;overflow-y:auto;border-right:1px solid rgba(255,255,255,.05)}
-.sidebar-lbl{font-size:.61rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:600;padding:.5rem 1.35rem .35rem;margin-bottom:.2rem}
-.nav-item{display:flex;align-items:center;gap:.6rem;padding:.58rem 1.2rem;cursor:pointer;font-size:.81rem;color:rgba(255,255,255,.52);font-weight:500;transition:all .15s;margin:1px 0;border-left:3px solid transparent}
-.nav-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.82)}
-.nav-item.active{background:rgba(46,107,230,.22);color:#fff;border-left-color:var(--blue-light)}
-.nav-icon{font-size:.95rem;width:18px;text-align:center;flex-shrink:0}
-.nav-badge{margin-left:auto;background:var(--blue);color:#fff;font-size:.6rem;padding:.1rem .4rem;border-radius:10px;font-weight:600}
+.sync-pill.busy .sdot{animation:blink .85s infinite}
+
+/* theme toggle */
+.theme-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all var(--trans);color:var(--text2)}
+.theme-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--blue)}
+
+/* surgeon button */
+.surg-btn{display:flex;align-items:center;gap:.5rem;padding:.28rem .7rem .28rem .4rem;background:var(--surface);border:1px solid var(--border2);border-radius:8px;cursor:pointer;transition:all var(--trans)}
+.surg-btn:hover{border-color:var(--blue);background:var(--surface2)}
+.surg-av{width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:#fff;flex-shrink:0}
+.surg-nm{font-size:.78rem;color:var(--text);font-weight:500}
+
+/* ─── MAIN LAYOUT ─────────────────────────────────────────── */
+.main{display:grid;grid-template-columns:200px 1fr;overflow:hidden}
+
+/* ─── SIDEBAR ─────────────────────────────────────────────── */
+.sidebar{background:var(--sidebar);border-right:1px solid var(--border);overflow-y:auto;padding:1rem 0;display:flex;flex-direction:column;gap:.15rem}
+.sidebar-section{padding:.5rem 1rem .25rem;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);font-weight:600;margin-top:.35rem}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.54rem 1rem;cursor:pointer;font-size:.8rem;color:rgba(255,255,255,.45);font-weight:500;transition:all .15s;border-left:2px solid transparent;border-right:none;margin:1px 0;white-space:nowrap}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8)}
+.nav-item.active{background:rgba(61,130,246,.18);color:#fff;border-left-color:var(--blue)}
+.nav-icon{font-size:.9rem;width:17px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--blue);color:#fff;font-size:.58rem;padding:.08rem .38rem;border-radius:10px;font-weight:700;min-width:18px;text-align:center}
+
+/* ─── CONTENT ─────────────────────────────────────────────── */
 .content{overflow-y:auto;padding:1.75rem 2rem}
 .view{display:none}.view.active{display:block}
-/* TYPOGRAPHY */
-.page-title{font-family:'DM Serif Display',serif;font-size:1.65rem;color:var(--navy);line-height:1.2;margin-bottom:.3rem}
-.page-sub{font-size:.81rem;color:var(--text-light);margin-bottom:1.6rem;line-height:1.5}
-.section-lbl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--slate);margin-bottom:.8rem;padding-bottom:.38rem;border-bottom:1px solid var(--border)}
-/* CARDS */
-.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.4rem;box-shadow:var(--shadow)}
-.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
-.card-title{font-size:.92rem;font-weight:600;color:var(--navy)}
-/* FORMS */
-.fg{display:flex;flex-direction:column;gap:.38rem}
+.page-title{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--text);line-height:1.2;margin-bottom:.3rem}
+.page-sub{font-size:.8rem;color:var(--text2);margin-bottom:1.5rem;line-height:1.5}
+
+/* ─── CARDS ──────────────────────────────────────────────── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.35rem;box-shadow:var(--shadow);transition:background var(--trans),border-color var(--trans)}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.card-title{font-size:.88rem;font-weight:600;color:var(--text)}
+.card+.card,.mt2{margin-top:1rem}
+.mt1{margin-top:.5rem}.mb1{margin-bottom:.5rem}.mb2{margin-bottom:1rem}
+
+/* ─── FORMS ──────────────────────────────────────────────── */
+.fg{display:flex;flex-direction:column;gap:.35rem}
 .fg2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
 .fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
-label{font-size:.73rem;font-weight:600;color:var(--text-mid);letter-spacing:.03em}
+.fg-row{display:flex;align-items:center;gap:.6rem}
+label,.lbl{font-size:.72rem;font-weight:600;color:var(--text2);letter-spacing:.03em}
 label .req{color:var(--red)}
-input[type=text],input[type=number],select,textarea{border:1.5px solid var(--border);border-radius:7px;padding:.52rem .7rem;font-size:.84rem;font-family:'Sora',sans-serif;color:var(--text);background:#fff;transition:border-color .15s,box-shadow .15s;width:100%}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(46,107,230,.11)}
-textarea{resize:vertical;min-height:76px}
-.hint{font-size:.69rem;color:var(--text-light);margin-top:.18rem}
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.52rem 1.1rem;border-radius:7px;font-size:.81rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;transition:all .15s;border:none;letter-spacing:.02em}
-.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:var(--blue-light)}.btn-p:disabled{background:#aaa;cursor:not-allowed}
-.btn-s{background:var(--slate-light);color:var(--navy)}.btn-s:hover{background:#dde3ee}
+input[type=text],input[type=number],input[type=password],select,textarea{border:1.5px solid var(--border2);border-radius:var(--radius-sm);padding:.5rem .7rem;font-size:.83rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface2);transition:border-color var(--trans),box-shadow var(--trans),background var(--trans);width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-pale)}
+textarea{resize:vertical;min-height:72px}
+select{cursor:pointer}
+.hint{font-size:.68rem;color:var(--text3);margin-top:.18rem;line-height:1.4}
+.hint a{color:var(--blue);text-decoration:none}
+
+/* checkbox row */
+.chk-row{display:flex;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--surface2);padding:.58rem .8rem;border-radius:var(--radius-sm);border:1.5px solid var(--border);transition:all var(--trans);color:var(--text)}
+.chk-row:hover{border-color:var(--blue);background:var(--blue-pale)}
+.chk-row input[type=checkbox]{width:15px;height:15px;accent-color:var(--blue);cursor:pointer;flex-shrink:0}
+.chk-row.checked{border-color:var(--blue);background:var(--blue-pale)}
+
+/* ─── BUTTONS ─────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.05rem;border-radius:var(--radius-sm);font-size:.8rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;border:none;letter-spacing:.02em;white-space:nowrap}
+.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:var(--blue-d)}.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border2)}.btn-s:hover{background:var(--surface3);border-color:var(--border2)}
 .btn-g{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-g:hover{background:var(--blue);color:#fff}
-.btn-sm{padding:.33rem .75rem;font-size:.73rem}
-.btn-row{display:flex;gap:.55rem;margin-top:1.1rem;flex-wrap:wrap}
-/* SCORES */
-.score-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1.1rem}
-.sb{border-radius:8px;padding:.9rem;text-align:center;border:1.5px solid transparent}
-.sb .sl{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:.25rem}
-.sb .sv{font-family:'DM Mono',monospace;font-size:1.55rem;font-weight:500;line-height:1}
-.sb .ss{font-size:.65rem;margin-top:.25rem;opacity:.8}
-.sb.m{background:#eef3ff;border-color:#b4c8f7;color:var(--navy)}
-.sb.o{background:var(--amber-pale);border-color:#f0c96c;color:#7a4c00}
-.sb.si{background:var(--orange-pale);border-color:#f5b080;color:var(--orange)}
-.s1{background:var(--green-pale);border-color:#6fccaa;color:var(--green)}
-.s2{background:var(--amber-pale);border-color:#f0c96c;color:var(--amber)}
-.s3{background:var(--orange-pale);border-color:#f5a060;color:var(--orange)}
-.s4{background:var(--red-pale);border-color:#f08080;color:var(--red)}
-.tier-badge{display:inline-flex;align-items:center;gap:.38rem;padding:.28rem .7rem;border-radius:20px;font-size:.76rem;font-weight:600;border:1.5px solid}
-.tA{background:var(--green-pale);border-color:#6fccaa;color:var(--green)}
-.tB{background:var(--amber-pale);border-color:#f0c96c;color:var(--amber)}
-.tC{background:var(--orange-pale);border-color:#f5a060;color:var(--orange)}
-.tD{background:var(--red-pale);border-color:#f08080;color:var(--red)}
-/* REC BLOCKS */
-.rec-blk{border-radius:10px;padding:1.15rem 1.4rem;border:2px solid;margin-bottom:.8rem}
-.rec-blk .rt{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem}
-.rec-blk .rp{font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:.3rem}
-.rec-blk .rm{font-size:.77rem;opacity:.85;line-height:1.5}
-.rec-blk .rr{display:flex;gap:1.4rem;margin-top:.6rem;flex-wrap:wrap}
-.rec-blk .rr .rn{font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500}
-.rec-blk .rr .rl{font-size:.63rem;opacity:.75;text-transform:uppercase;letter-spacing:.06em}
-.pref{background:var(--green-pale);border-color:#6fccaa;color:var(--green)}
-.nblk{background:var(--amber-pale);border-color:#f0c96c;color:var(--amber)}
-.wblk{background:var(--red-pale);border-color:#f08080;color:var(--red)}
-.iblk{background:var(--blue-pale);border-color:#89bcf5;color:#1a4fa0}
-/* FEEDBACK */
-.fb-card{border:2px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:.9rem}
-.fb-hdr{background:var(--navy);padding:.9rem 1.4rem;color:#fff;font-size:.83rem;font-weight:600}
-.fb-body{padding:1.35rem;background:#fff}
-.ag-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:.9rem;padding:.9rem;background:var(--slate-lighter);border-radius:8px;margin-bottom:.7rem}
-.ag-lbl{font-size:.8rem;font-weight:500;color:var(--text-mid)}
-.ag-sub{font-size:.7rem;color:var(--text-light);margin-top:.18rem}
+.btn-d{background:var(--red-pale);color:var(--red);border:1px solid rgba(239,68,68,.3)}.btn-d:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-sm{padding:.3rem .72rem;font-size:.72rem}
+.btn-xs{padding:.2rem .5rem;font-size:.66rem}
+.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+
+/* ─── STEPS ──────────────────────────────────────────────── */
+.steps{display:flex;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:1.5rem}
+.step{flex:1;padding:.55rem .5rem;text-align:center;font-size:.68rem;font-weight:600;background:var(--surface);color:var(--text3);border-right:1px solid var(--border);transition:all .15s;cursor:default}
+.step:last-child{border-right:none}
+.step.done{background:var(--navy);color:rgba(255,255,255,.7)}
+.step.active{background:var(--blue);color:#fff}
+.step-n{display:block;font-family:'DM Mono',monospace;font-size:.75rem;margin-bottom:.06rem}
+
+/* ─── SCORE STRIP ─────────────────────────────────────────── */
+.score-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+.sb{border-radius:var(--radius);padding:.9rem 1rem;text-align:center;border:2px solid transparent;transition:all var(--trans)}
+.sb .sl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:.22rem}
+.sb .sv{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;line-height:1}
+.sb .ss{font-size:.63rem;margin-top:.22rem;opacity:.8;line-height:1.3}
+.sb.m{background:var(--blue-pale);border-color:rgba(61,130,246,.3);color:var(--blue)}
+.sb.o{background:var(--amber-pale);border-color:rgba(245,158,11,.3);color:var(--amber)}
+.sb.si-box{background:var(--orange-pale);border-color:rgba(249,115,22,.3);color:var(--orange)}
+.stg-1{background:var(--green-pale);border-color:rgba(34,197,94,.4);color:var(--green)}
+.stg-2{background:var(--amber-pale);border-color:rgba(245,158,11,.4);color:var(--amber)}
+.stg-3{background:var(--orange-pale);border-color:rgba(249,115,22,.4);color:var(--orange)}
+.stg-4{background:var(--red-pale);border-color:rgba(239,68,68,.4);color:var(--red)}
+.stg-4a{background:var(--teal-pale);border-color:rgba(20,184,166,.4);color:var(--teal)}
+
+/* ─── TIER BADGE ──────────────────────────────────────────── */
+.tier-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .65rem;border-radius:20px;font-size:.74rem;font-weight:600;border:1.5px solid}
+.tA{background:var(--green-pale);border-color:rgba(34,197,94,.4);color:var(--green)}
+.tB{background:var(--amber-pale);border-color:rgba(245,158,11,.4);color:var(--amber)}
+.tC{background:var(--orange-pale);border-color:rgba(249,115,22,.4);color:var(--orange)}
+.tD{background:var(--red-pale);border-color:rgba(239,68,68,.4);color:var(--red)}
+
+/* ─── REC BLOCKS ──────────────────────────────────────────── */
+.rec-blk{border-radius:var(--radius);padding:1.1rem 1.3rem;border:2px solid;margin-bottom:.8rem;position:relative;transition:all var(--trans)}
+.rec-blk .rt{font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;opacity:.75}
+.rec-blk .rp{font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:.28rem}
+.rec-blk .rm{font-size:.76rem;opacity:.82;line-height:1.55}
+.rec-blk .rr{display:flex;gap:1.2rem;margin-top:.6rem;flex-wrap:wrap;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.1)}
+.rec-blk .rr .stat-n{font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500}
+.rec-blk .rr .stat-l{font-size:.62rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em}
+.pref{background:var(--green-pale);border-color:rgba(34,197,94,.4);color:var(--green)}
+.nblk{background:var(--amber-pale);border-color:rgba(245,158,11,.4);color:var(--amber)}
+.wblk{background:var(--red-pale);border-color:rgba(239,68,68,.4);color:var(--red)}
+.iblk{background:var(--blue-pale);border-color:rgba(61,130,246,.4);color:var(--blue)}
+
+/* feedback buttons on rec block */
+.rec-fb{position:absolute;top:.85rem;right:.85rem;display:flex;gap:.35rem}
+.rec-fb-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border2);background:rgba(255,255,255,.06);font-size:.85rem;transition:all .15s}
+.rec-fb-btn:hover{background:rgba(255,255,255,.14);border-color:var(--border2)}
+.rec-fb-btn.active-like{background:var(--green-pale);border-color:var(--green);color:var(--green)}
+.rec-fb-btn.active-dislike{background:var(--red-pale);border-color:var(--red);color:var(--red)}
+.rec-fb-btn.active-flag{background:var(--amber-pale);border-color:var(--amber);color:var(--amber)}
+
+/* dislike reason */
+.dislike-panel{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.85rem;margin-top:.6rem;animation:slideDown .2s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── SI SELECTOR ─────────────────────────────────────────── */
+.si-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.si-card{border:2px solid var(--border);border-radius:var(--radius-sm);padding:.75rem .9rem;cursor:pointer;transition:all .15s;background:var(--surface2)}
+.si-card:hover{border-color:var(--blue);background:var(--blue-pale)}
+.si-card.selected{border-color:var(--blue);background:var(--blue-pale)}
+.si-card .si-num{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--blue);margin-bottom:.18rem}
+.si-card .si-title{font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:.12rem}
+.si-card .si-desc{font-size:.68rem;color:var(--text2);line-height:1.4}
+.si-card.si-sev-0{}.si-card.si-sev-1{}.si-card.si-sev-2{}
+.si-card.si-sev-3a.selected{border-color:var(--teal);background:var(--teal-pale)}
+.si-card.si-sev-3b.selected{border-color:var(--red);background:var(--red-pale)}
+.si-card.si-sev-3a .si-num{color:var(--teal)}
+.si-card.si-sev-3b .si-num{color:var(--red)}
+
+/* ─── AGREE SECTION ───────────────────────────────────────── */
+.ag-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.15rem 1.3rem;margin-bottom:.85rem}
+.ag-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.75rem}
+.ag-q{font-size:.83rem;font-weight:600;color:var(--text)}
+.ag-context{font-size:.72rem;color:var(--text2);margin-top:.2rem;line-height:1.5}
+.ag-context strong{color:var(--text)}
 .ag-opts{display:flex;gap:.38rem;flex-shrink:0}
-.ab{padding:.38rem .85rem;border-radius:6px;font-size:.73rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;font-family:'Sora',sans-serif;transition:all .15s;white-space:nowrap}
+.ab{padding:.38rem .82rem;border-radius:var(--radius-sm);font-size:.73rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);background:var(--surface);font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;color:var(--text2)}
 .ab:hover{border-color:var(--blue);color:var(--blue)}
 .ab.ag{background:var(--green);border-color:var(--green);color:#fff}
 .ab.pa{background:var(--amber);border-color:var(--amber);color:#fff}
 .ab.dg{background:var(--red);border-color:var(--red);color:#fff}
-/* TABLE */
+.stage-context{background:var(--surface3);border-radius:var(--radius-sm);padding:.75rem .9rem;margin-top:.75rem;font-size:.75rem;color:var(--text2);line-height:1.6;border-left:3px solid var(--blue)}
+.stage-context strong{color:var(--text)}
+
+/* ─── ALERTS ──────────────────────────────────────────────── */
+.alert{border-radius:var(--radius-sm);padding:.75rem .9rem;font-size:.78rem;line-height:1.5;display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.65rem;border:1px solid}
+.ai{font-size:.92rem;flex-shrink:0;margin-top:.05rem}
+.a-ok{background:var(--green-pale);border-color:rgba(34,197,94,.3);color:var(--green)}
+.a-warn{background:var(--red-pale);border-color:rgba(239,68,68,.3);color:var(--red)}
+.a-info{background:var(--blue-pale);border-color:rgba(61,130,246,.3);color:var(--blue)}
+.a-note{background:var(--amber-pale);border-color:rgba(245,158,11,.3);color:var(--amber)}
+
+/* ─── TABLE ──────────────────────────────────────────────── */
 .dt{width:100%;border-collapse:collapse;font-size:.78rem}
-.dt th{background:var(--navy);color:#fff;padding:.55rem .8rem;text-align:left;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
-.dt td{padding:.6rem .8rem;border-bottom:1px solid var(--border);vertical-align:middle}
-.dt tr:hover td{background:var(--slate-lighter)}
+.dt th{background:var(--surface2);color:var(--text2);padding:.5rem .75rem;text-align:left;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--border)}
+.dt td{padding:.58rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
+.dt tr:hover td{background:var(--surface2)}
 .dt tr:last-child td{border-bottom:none}
-.pill{display:inline-block;padding:.13rem .5rem;border-radius:20px;font-size:.66rem;font-weight:600}
+
+/* ─── PILLS ──────────────────────────────────────────────── */
+.pill{display:inline-block;padding:.12rem .48rem;border-radius:20px;font-size:.64rem;font-weight:600}
 .pg{background:var(--green-pale);color:var(--green)}
 .pa_{background:var(--amber-pale);color:var(--amber)}
 .pr{background:var(--red-pale);color:var(--red)}
-.pb{background:var(--blue-pale);color:#1a4fa0}
+.pb{background:var(--blue-pale);color:var(--blue)}
 .pt{background:var(--teal-pale);color:var(--teal)}
-.pgy{background:var(--slate-light);color:var(--text-mid)}
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.35rem}
-.stat-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:var(--shadow)}
-.stat-card .sn{font-family:'DM Mono',monospace;font-size:1.75rem;font-weight:500;color:var(--navy);line-height:1}
-.stat-card .sl{font-size:.7rem;color:var(--text-light);margin-top:.28rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
-.stat-card .sd{font-size:.76rem;color:var(--text-mid);margin-top:.45rem}
-.ab-blue{border-top:3px solid var(--blue)}.ab-green{border-top:3px solid var(--green)}
-.ab-amber{border-top:3px solid var(--amber)}.ab-red{border-top:3px solid var(--red)}
-/* BARS */
-.bar-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.55rem}
-.bar-lbl{width:120px;font-size:.73rem;color:var(--text-mid);flex-shrink:0;text-align:right}
-.bar-track{flex:1;background:var(--slate-light);border-radius:4px;height:19px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;transition:width .6s ease;display:flex;align-items:center;padding-left:.45rem}
-.bar-fill span{font-size:.65rem;font-weight:600;color:#fff;white-space:nowrap}
-.bar-pct{width:38px;font-size:.73rem;font-family:'DM Mono',monospace;color:var(--text-mid)}
-/* ALERTS */
-.alert{border-radius:8px;padding:.8rem .95rem;font-size:.78rem;line-height:1.5;display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.7rem}
-.ai{font-size:.95rem;flex-shrink:0}
-.a-ok{background:var(--green-pale);border:1px solid #6fccaa;color:var(--green)}
-.a-warn{background:var(--red-pale);border:1px solid #f08080;color:var(--red)}
-.a-info{background:var(--blue-pale);border:1px solid #89bcf5;color:#1a4fa0}
-.a-note{background:var(--amber-pale);border:1px solid #f0c96c;color:var(--amber)}
-/* MODAL */
-.overlay{display:none;position:fixed;inset:0;background:rgba(10,20,50,.55);z-index:200;align-items:center;justify-content:center}
+.pgy{background:var(--surface3);color:var(--text2)}
+.ppu{background:var(--purple-pale);color:var(--purple)}
+
+/* ─── STATS GRID ─────────────────────────────────────────── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.35rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;box-shadow:var(--shadow)}
+.stat-card .sn{font-family:'DM Mono',monospace;font-size:1.65rem;font-weight:500;color:var(--text);line-height:1}
+.stat-card .sl{font-size:.67rem;color:var(--text2);margin-top:.25rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.stat-card .sd{font-size:.74rem;color:var(--text2);margin-top:.4rem}
+.abl{border-top:3px solid var(--blue)}.abg{border-top:3px solid var(--green)}
+.aba{border-top:3px solid var(--amber)}.abr{border-top:3px solid var(--red)}
+
+/* ─── BARS ───────────────────────────────────────────────── */
+.bar-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.52rem}
+.bar-lbl{width:110px;font-size:.7rem;color:var(--text2);flex-shrink:0;text-align:right}
+.bar-track{flex:1;background:var(--surface3);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s ease;display:flex;align-items:center;padding-left:.42rem}
+.bar-fill span{font-size:.63rem;font-weight:600;color:#fff;white-space:nowrap}
+.bar-pct{width:35px;font-size:.7rem;font-family:'DM Mono',monospace;color:var(--text2)}
+
+/* ─── MODAL ──────────────────────────────────────────────── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
 .overlay.open{display:flex}
-.modal{background:#fff;border-radius:14px;padding:1.75rem;width:90%;max-width:520px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto}
-.modal-title{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy);margin-bottom:.3rem}
-.modal-sub{font-size:.76rem;color:var(--text-light);margin-bottom:1.35rem;line-height:1.6}
-.surg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:.9rem}
-.surg-card{padding:.8rem;border:2px solid var(--border);border-radius:8px;cursor:pointer;text-align:center;transition:all .15s}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.75rem;width:92%;max-width:540px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto;animation:slideUp .2s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.modal-title{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--text);margin-bottom:.3rem}
+.modal-sub{font-size:.76rem;color:var(--text2);margin-bottom:1.35rem;line-height:1.5}
+.modal-wide{max-width:740px}
+
+/* ─── SURGEON MODAL ──────────────────────────────────────── */
+.surg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.65rem;margin-bottom:.9rem}
+.surg-card{padding:.8rem;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;text-align:center;transition:all .15s;background:var(--surface2)}
 .surg-card:hover{border-color:var(--blue);background:var(--blue-pale)}
 .surg-card.sel{border-color:var(--blue);background:var(--blue);color:#fff}
-.surg-dot{width:34px;height:34px;border-radius:50%;margin:0 auto .45rem;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;background:var(--blue-pale);color:var(--blue)}
-.surg-card.sel .surg-dot{background:rgba(255,255,255,.22);color:#fff}
-.surg-nm{font-size:.76rem;font-weight:600}
-.surg-rl{font-size:.65rem;color:var(--text-light);margin-top:.12rem}
-.surg-card.sel .surg-rl{color:rgba(255,255,255,.72)}
-/* STEPS */
-.steps{display:flex;margin-bottom:1.6rem;overflow:hidden;border-radius:8px;border:1px solid var(--border)}
-.step{flex:1;padding:.58rem .5rem;text-align:center;font-size:.7rem;font-weight:600;background:#fff;color:var(--text-light);border-right:1px solid var(--border)}
-.step:last-child{border-right:none}
-.step.done{background:var(--navy);color:#fff}
-.step.active{background:var(--blue);color:#fff}
-.step-n{display:block;font-family:'DM Mono',monospace;font-size:.78rem;margin-bottom:.08rem}
-/* MISC */
-.divider{height:1px;background:var(--border);margin:1.1rem 0}
-.empty{text-align:center;padding:2.75rem 1.5rem;color:var(--text-light)}
-.empty .ei{font-size:2.4rem;margin-bottom:.7rem;opacity:.38}
-.empty .et{font-size:.88rem;font-weight:600;color:var(--text-mid);margin-bottom:.3rem}
-.empty .es{font-size:.78rem}
-.hidden{display:none}.mt1{margin-top:.6rem}.mt2{margin-top:1rem}.mb2{margin-bottom:1rem}
+.surg-av-lg{width:36px;height:36px;border-radius:50%;margin:0 auto .45rem;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;background:var(--blue-pale);color:var(--blue)}
+.surg-card.sel .surg-av-lg{background:rgba(255,255,255,.22);color:#fff}
+.surg-nm2{font-size:.77rem;font-weight:600}
+.surg-rl{font-size:.64rem;color:var(--text2);margin-top:.1rem}
+.surg-card.sel .surg-rl{color:rgba(255,255,255,.7)}
+
+/* ─── OUTCOME ENTRY ──────────────────────────────────────── */
+.outcome-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-top:.85rem}
+.outcome-section .ot{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.outcome-section .ot::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ─── DIVIDER ────────────────────────────────────────────── */
+.divider{height:1px;background:var(--border);margin:1rem 0}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--text2)}
+.empty .ei{font-size:2rem;margin-bottom:.6rem;opacity:.4}
+.empty .et{font-size:.86rem;font-weight:600;color:var(--text);margin-bottom:.28rem}
+.empty .es{font-size:.76rem}
+.hidden{display:none}
 .mono{font-family:'DM Mono',monospace}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-/* SCROLLBAR */
+.section-lbl{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--text3);margin-bottom:.75rem;padding-bottom:.35rem;border-bottom:1px solid var(--border)}
 ::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
 </style>
 </head>
 <body>
@@ -199,109 +308,167 @@ textarea{resize:vertical;min-height:76px}
 <!-- TOP BAR -->
 <header class="topbar">
   <div class="brand">
-    <span class="logo">MOSI</span>
-    <span class="tag">Clinical Audit Platform</span>
+    <span class="brand-logo">MOSI</span>
+    <span class="brand-tag">Clinical Audit</span>
   </div>
   <div class="topbar-right">
-    <div class="sync-pill idle" id="syncPill" title="GitHub sync status">
-      <div class="sync-dot"></div>
+    <div class="sync-pill" id="syncPill">
+      <div class="sdot"></div>
       <span id="syncLbl">Not synced</span>
     </div>
-    <div class="surgeon-btn" onclick="openSurgModal()">
-      <div class="s-dot" id="topDot">?</div>
-      <span class="s-name" id="topName">Select Surgeon</span>
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode" id="themeBtn">🌙</button>
+    <div class="surg-btn" onclick="openSurgModal()">
+      <div class="surg-av" id="topDot">?</div>
+      <span class="surg-nm" id="topName">Select Surgeon</span>
     </div>
   </div>
 </header>
 
 <div class="main">
+
 <!-- SIDEBAR -->
 <nav class="sidebar">
-  <div class="sidebar-lbl">Workflow</div>
-  <div class="nav-item active" onclick="show('case-entry')" id="nav-case-entry"><span class="nav-icon">📋</span>New Case</div>
+  <div class="sidebar-section">Workflow</div>
+  <div class="nav-item active" onclick="show('new-case')" id="nav-new-case"><span class="nav-icon">📋</span>New Case</div>
   <div class="nav-item" onclick="show('my-cases')" id="nav-my-cases"><span class="nav-icon">🗂</span>My Cases<span class="nav-badge" id="myBadge">0</span></div>
-  <div class="sidebar-lbl" style="margin-top:.75rem">Analytics</div>
+  <div class="sidebar-section">Analytics</div>
   <div class="nav-item" onclick="show('my-dash')" id="nav-my-dash"><span class="nav-icon">📊</span>My Dashboard</div>
   <div class="nav-item" onclick="show('aggregate')" id="nav-aggregate"><span class="nav-icon">🏥</span>Unit Aggregate</div>
-  <div class="sidebar-lbl" style="margin-top:.75rem">Data</div>
+  <div class="sidebar-section">Data</div>
   <div class="nav-item" onclick="exportCSV()"><span class="nav-icon">⬇️</span>Export CSV</div>
 </nav>
 
 <!-- CONTENT -->
 <main class="content">
 
-<!-- ══ NEW CASE ══════════════════════════════════════════ -->
-<div class="view active" id="view-case-entry">
+<!-- ══ NEW CASE ═══════════════════════════════════════════ -->
+<div class="view active" id="view-new-case">
   <div class="page-title">New Case Entry</div>
-  <div class="page-sub">MOSI scores compute in real time. On submission, the case is saved locally and pushed to GitHub automatically — no setup required.</div>
+  <div class="page-sub">MOSI scores compute in real time. Submit to save locally and push to GitHub automatically.</div>
+
   <div class="steps">
-    <div class="step active" id="stp1"><span class="step-n">01</span>Scoring</div>
+    <div class="step active" id="stp1"><span class="step-n">01</span>Patient & Scoring</div>
     <div class="step" id="stp2"><span class="step-n">02</span>Recommendation</div>
-    <div class="step" id="stp3"><span class="step-n">03</span>Feedback</div>
-    <div class="step" id="stp4"><span class="step-n">04</span>Confirm</div>
+    <div class="step" id="stp3"><span class="step-n">03</span>Clinical Judgement</div>
+    <div class="step" id="stp4"><span class="step-n">04</span>Review & Submit</div>
   </div>
 
-  <!-- PANE 1 -->
+  <!-- PANE 1: SCORING -->
   <div id="p1">
+    <!-- Patient ID -->
     <div class="card">
-      <div class="card-hdr"><span class="card-title">Patient Identifiers</span></div>
+      <div class="card-hdr"><span class="card-title">Patient Identifier</span></div>
       <div class="fg2">
-        <div class="fg"><label>Case Reference (Anonymised)<span class="req">*</span></label><input type="text" id="caseRef" placeholder="e.g. PT-2024-001" oninput="comp()"></div>
-        <div class="fg"><label>Date of Entry</label><input type="text" id="caseDate" readonly></div>
+        <div class="fg">
+          <label>MRN / Case Reference<span class="req">*</span></label>
+          <div class="fg-row">
+            <input type="text" id="caseRef" placeholder="e.g. 1234567" oninput="comp()" style="flex:1">
+            <label class="chk-row" style="flex-shrink:0;white-space:nowrap;padding:.5rem .75rem" title="Mark this as a test or anonymised entry">
+              <input type="checkbox" id="isAnon" onchange="handleAnon()"> Test / Anonymised
+            </label>
+          </div>
+          <div class="hint" id="anonHint" style="display:none;color:var(--amber)">⚠ Marked as test/anonymised — will be flagged in exports.</div>
+        </div>
+        <div class="fg">
+          <label>Date of Entry</label>
+          <input type="text" id="caseDate" readonly>
+        </div>
       </div>
     </div>
+
+    <!-- M SCORE -->
     <div class="card mt2">
       <div class="card-hdr"><span class="card-title">M Score — BMI Class</span></div>
       <div class="fg2">
-        <div class="fg"><label>Pre-operative BMI (kg/m²)<span class="req">*</span></label><input type="number" id="bmi" placeholder="e.g. 42.5" step="0.1" min="30" max="100" oninput="comp()"><div class="hint">Derivation cohort range: 31.7–94.5</div></div>
-        <div class="fg" style="justify-content:flex-end"><label>Computed M Score</label><div style="padding:.52rem .7rem;background:var(--slate-lighter);border:1.5px solid var(--border);border-radius:7px;font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500;color:var(--navy)" id="mDisp">—</div></div>
+        <div class="fg">
+          <label>Pre-operative BMI (kg/m²)<span class="req">*</span></label>
+          <input type="number" id="bmi" placeholder="e.g. 42.5" step="0.1" min="30" max="100" oninput="comp()">
+          <div class="hint">Derivation cohort: 31.7–94.5 kg/m²</div>
+        </div>
+        <div class="fg" style="justify-content:flex-end">
+          <label>Computed M Score</label>
+          <div style="padding:.5rem .7rem;background:var(--surface3);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:600;color:var(--blue)" id="mDisp">—</div>
+        </div>
       </div>
     </div>
+
+    <!-- O SCORE -->
     <div class="card mt2">
-      <div class="card-hdr"><span class="card-title">O Score — Metabolic Comorbidities (tick all present)</span></div>
+      <div class="card-hdr"><span class="card-title">O Score — Metabolic Comorbidity Burden</span>
+        <span style="font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--amber)" id="oDisp">O = 0</span>
+      </div>
+      <p style="font-size:.76rem;color:var(--text2);margin-bottom:.85rem">Tick all present pre-operatively. Each scores +1 (max O=4). GORD is a procedural modifier only — not included in the O score.</p>
       <div class="fg3">
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="htn" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Hypertension</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="dysgly" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Dysglycaemia (T2DM/IFG)</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="osa" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Obstructive Sleep Apnoea</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="hld" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Hyperlipidaemia</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border);grid-column:span 2"><input type="checkbox" id="gerd" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">GORD (procedural modifier — not in O score)</label>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--slate-lighter);padding:.7rem .95rem;border-radius:7px;border:1.5px solid var(--border);margin-top:.9rem">
-        <span style="font-size:.8rem;font-weight:600;color:var(--text-mid)">O Score Total</span>
-        <span style="font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--navy)" id="oDisp">0</span>
+        <label class="chk-row" id="lbl-htn"><input type="checkbox" id="htn" onchange="comp()"> Hypertension</label>
+        <label class="chk-row" id="lbl-dysgly"><input type="checkbox" id="dysgly" onchange="comp()"> Dysglycaemia (T2DM / IFG)</label>
+        <label class="chk-row" id="lbl-osa"><input type="checkbox" id="osa" onchange="comp()"> Obstructive Sleep Apnoea</label>
+        <label class="chk-row" id="lbl-hld"><input type="checkbox" id="hld" onchange="comp()"> Hyperlipidaemia</label>
+        <label class="chk-row" id="lbl-gerd" style="grid-column:span 2;border-style:dashed;opacity:.8">
+          <input type="checkbox" id="gerd" onchange="comp()">
+          GORD — Gastro-oesophageal Reflux Disease
+          <span style="font-size:.64rem;background:var(--blue-pale);color:var(--blue);padding:.1rem .4rem;border-radius:10px;margin-left:.3rem;font-weight:600">Procedural modifier</span>
+        </label>
       </div>
     </div>
+
+    <!-- SI LEVEL -->
     <div class="card mt2">
-      <div class="card-hdr"><span class="card-title">Si Level — Systemic Impairment (assign highest applicable)</span></div>
-      <select id="si" onchange="comp()">
-        <option value="">— Select Si level —</option>
-        <option value="0">Si0 — No systemic impairment</option>
-        <option value="1">Si1 — Microvascular end-organ damage (diabetic retinopathy / neuropathy / nephropathy)</option>
-        <option value="2">Si2 — Organ dysfunction (CKD, cirrhosis/MASH, cardiac history, stroke/TIA)</option>
-        <option value="3a">Si3A — Organ failure: Transplant recipient, NOT on dialysis → Stage 4A</option>
-        <option value="3b">Si3B — Organ failure: Active dialysis → Stage 4B</option>
-      </select>
+      <div class="card-hdr"><span class="card-title">Si Level — Systemic Impairment</span>
+        <span style="font-size:.72rem;color:var(--text2)">Assign the <strong>highest</strong> applicable level</span>
+      </div>
+      <div class="si-grid" id="siGrid">
+        <div class="si-card si-sev-0" onclick="selectSi('0')" data-si="0">
+          <div class="si-num">Si 0</div>
+          <div class="si-title">No Systemic Impairment</div>
+          <div class="si-desc">No end-organ involvement. Default level.</div>
+        </div>
+        <div class="si-card si-sev-1" onclick="selectSi('1')" data-si="1">
+          <div class="si-num">Si 1</div>
+          <div class="si-title">Microvascular End-Organ Damage</div>
+          <div class="si-desc">Diabetic retinopathy, peripheral neuropathy, or nephropathy in the context of T2DM.</div>
+        </div>
+        <div class="si-card si-sev-2" onclick="selectSi('2')" data-si="2">
+          <div class="si-num">Si 2</div>
+          <div class="si-title">Organ Dysfunction</div>
+          <div class="si-desc">CKD, cirrhosis/MASH, cardiac history (MACE risk), or prior stroke/TIA.</div>
+        </div>
+        <div class="fg2" style="grid-column:span 2;gap:.6rem">
+          <div class="si-card si-sev-3a" onclick="selectSi('3a')" data-si="3a">
+            <div class="si-num">Si 3A → Stage 4A</div>
+            <div class="si-title">Organ Failure: Transplant</div>
+            <div class="si-desc">Solid organ transplant recipient, NOT currently on dialysis (functioning graft).</div>
+          </div>
+          <div class="si-card si-sev-3b" onclick="selectSi('3b')" data-si="3b">
+            <div class="si-num">Si 3B → Stage 4B</div>
+            <div class="si-title">Organ Failure: Dialysis</div>
+            <div class="si-desc">Currently requiring active dialysis at time of surgery (with or without prior transplant).</div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- TIER COMORBIDITIES -->
     <div class="card mt2">
-      <div class="card-hdr"><span class="card-title">Additional Comorbidities — Tier Assignment</span></div>
+      <div class="card-hdr"><span class="card-title">Additional Comorbidities — TWL Tier Assignment</span></div>
       <div class="fg3">
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="cardiac" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Cardiac history (MACE)</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="stroke" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Stroke / TIA</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="masld" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">MASLD / Cirrhosis</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="microeo" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Diabetic microvascular damage</label>
-        <label style="flex-direction:row;align-items:center;gap:.45rem;font-size:.8rem;cursor:pointer;background:var(--slate-lighter);padding:.6rem .8rem;border-radius:7px;border:1.5px solid var(--border)"><input type="checkbox" id="arthro" onchange="comp()" style="width:15px;height:15px;accent-color:var(--blue)">Arthropathy / Arthroplasty</label>
+        <label class="chk-row" id="lbl-cardiac"><input type="checkbox" id="cardiac" onchange="comp()"> Cardiac History (MACE)</label>
+        <label class="chk-row" id="lbl-stroke"><input type="checkbox" id="stroke" onchange="comp()"> Stroke / TIA</label>
+        <label class="chk-row" id="lbl-masld"><input type="checkbox" id="masld" onchange="comp()"> MASLD / Cirrhosis</label>
+        <label class="chk-row" id="lbl-microeo"><input type="checkbox" id="microeo" onchange="comp()"> Diabetic Microvascular Damage</label>
+        <label class="chk-row" id="lbl-arthro"><input type="checkbox" id="arthro" onchange="comp()"> Arthropathy / Arthroplasty</label>
       </div>
     </div>
+
     <div class="btn-row">
       <button class="btn btn-p" onclick="goStep(2)" id="btn-s2" disabled>View Recommendation →</button>
       <button class="btn btn-s" onclick="clearForm()">Clear</button>
     </div>
   </div>
 
-  <!-- PANE 2 -->
+  <!-- PANE 2: RECOMMENDATION -->
   <div id="p2" class="hidden">
     <div id="scoreStrip" class="score-strip"></div>
-    <div id="tierRow" style="margin-bottom:.95rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap"></div>
+    <div id="tierRow" style="margin-bottom:1rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap"></div>
     <div id="recBlocks"></div>
     <div id="alertBlocks"></div>
     <div class="btn-row">
@@ -310,31 +477,47 @@ textarea{resize:vertical;min-height:76px}
     </div>
   </div>
 
-  <!-- PANE 3 -->
+  <!-- PANE 3: CLINICAL JUDGEMENT -->
   <div id="p3" class="hidden">
-    <div class="fb-card">
-      <div class="fb-hdr">⚖️ Clinical Judgement — Pre-operative Evaluation</div>
-      <div class="fb-body">
-        <div class="section-lbl">Agreement with MOSI Stage</div>
-        <div class="ag-row">
-          <div><div class="ag-lbl">Do you agree with the computed MOSI stage?</div><div class="ag-sub" id="fb-stg">—</div></div>
-          <div class="ag-opts">
-            <button class="ab" id="ab-stage-agree" onclick="setAg('stage','Agree')">Agree</button>
-            <button class="ab" id="ab-stage-partial" onclick="setAg('stage','Partial')">Partially</button>
-            <button class="ab" id="ab-stage-disagree" onclick="setAg('stage','Disagree')">Disagree</button>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">⚖️ Clinical Judgement — Pre-operative Evaluation</span></div>
+      <div id="judgeBody">
+        <!-- Stage agreement -->
+        <div class="ag-section" id="stageAg">
+          <div class="ag-top">
+            <div>
+              <div class="ag-q">Do you agree with the computed MOSI stage?</div>
+              <div class="ag-context" id="ag-stage-context">—</div>
+            </div>
+            <div class="ag-opts">
+              <button class="ab" id="ab-stage-agree" onclick="setAg('stage','Agree')">✓ Agree</button>
+              <button class="ab" id="ab-stage-partial" onclick="setAg('stage','Partial')">~ Partially</button>
+              <button class="ab" id="ab-stage-disagree" onclick="setAg('stage','Disagree')">✗ Disagree</button>
+            </div>
+          </div>
+          <div class="stage-context" id="stageContextBox">
+            <div id="stageContextText"></div>
           </div>
         </div>
-        <div class="section-lbl mt2">Agreement with Procedure Recommendation</div>
-        <div class="ag-row">
-          <div><div class="ag-lbl">Do you agree with the recommended procedure?</div><div class="ag-sub" id="fb-prc">—</div></div>
-          <div class="ag-opts">
-            <button class="ab" id="ab-proc-agree" onclick="setAg('proc','Agree')">Agree</button>
-            <button class="ab" id="ab-proc-partial" onclick="setAg('proc','Partial')">Partially</button>
-            <button class="ab" id="ab-proc-disagree" onclick="setAg('proc','Disagree')">Disagree</button>
+
+        <!-- Procedure agreement -->
+        <div class="ag-section" id="procAg">
+          <div class="ag-top">
+            <div>
+              <div class="ag-q">Do you agree with the recommended procedure?</div>
+              <div class="ag-context" id="ag-proc-context">—</div>
+            </div>
+            <div class="ag-opts">
+              <button class="ab" id="ab-proc-agree" onclick="setAg('proc','Agree')">✓ Agree</button>
+              <button class="ab" id="ab-proc-partial" onclick="setAg('proc','Partial')">~ Partially</button>
+              <button class="ab" id="ab-proc-disagree" onclick="setAg('proc','Disagree')">✗ Disagree</button>
+            </div>
           </div>
         </div>
+
         <div class="divider"></div>
-        <div class="fg"><label>Intended Procedure</label>
+        <div class="fg">
+          <label>Intended Procedure</label>
           <select id="intProc">
             <option value="">— Select —</option>
             <option>SG (Sleeve Gastrectomy)</option>
@@ -344,8 +527,14 @@ textarea{resize:vertical;min-height:76px}
             <option>Other / Not yet decided</option>
           </select>
         </div>
-        <div class="fg mt1"><label>Reason for deviation / clinical context (if disagreeing)</label><textarea id="reasonTxt" placeholder="e.g. Patient preference, GORD contraindication, prior abdominal surgery, anaesthetic risk, patient frailty..."></textarea></div>
-        <div class="fg mt1"><label>Additional comments, concerns or observations</label><textarea id="commentsTxt" placeholder="Any concerns about algorithm scoring, clinical nuances not captured, unusual patient profile..."></textarea></div>
+        <div class="fg mt1">
+          <label>Reason for deviation / clinical context <span style="font-weight:400;color:var(--text3)">(if disagreeing or deviating)</span></label>
+          <textarea id="reasonTxt" placeholder="e.g. Patient preference, GORD contraindication to SG, prior abdominal surgery, anaesthetic risk, frailty..."></textarea>
+        </div>
+        <div class="fg mt1">
+          <label>Additional comments, concerns or observations</label>
+          <textarea id="commentsTxt" placeholder="Any concerns about algorithm scoring, clinical nuances not captured by MOSI, unusual patient profile..."></textarea>
+        </div>
       </div>
     </div>
     <div class="btn-row">
@@ -354,12 +543,12 @@ textarea{resize:vertical;min-height:76px}
     </div>
   </div>
 
-  <!-- PANE 4 -->
+  <!-- PANE 4: REVIEW -->
   <div id="p4" class="hidden">
     <div class="card">
       <div class="card-hdr"><span class="card-title">Review Before Submitting</span></div>
       <div id="sumBlock"></div>
-      <div id="ghNote" style="margin-top:.9rem"></div>
+      <div id="ghNote" style="margin-top:.85rem"></div>
       <div class="btn-row">
         <button class="btn btn-p" onclick="submitCase()" id="submitBtn">✓ Submit Case</button>
         <button class="btn btn-s" onclick="goStep(3)">← Edit</button>
@@ -368,24 +557,37 @@ textarea{resize:vertical;min-height:76px}
   </div>
 </div>
 
-<!-- ══ MY CASES ══════════════════════════════════════════ -->
+<!-- ══ MY CASES ═══════════════════════════════════════════ -->
 <div class="view" id="view-my-cases">
-  <div class="page-title">My Cases</div>
-  <div class="page-sub">All cases you have submitted. Each is saved locally and pushed to GitHub on submission.</div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+    <div>
+      <div class="page-title">My Cases</div>
+      <div class="page-sub" style="margin-bottom:0">All cases you have submitted. Click a case to view, edit, or enter outcomes.</div>
+    </div>
+    <button class="btn btn-g btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+  </div>
   <div id="myCasesEl"></div>
 </div>
 
-<!-- ══ MY DASHBOARD ══════════════════════════════════════ -->
+<!-- ══ MY DASHBOARD ═══════════════════════════════════════ -->
 <div class="view" id="view-my-dash">
   <div class="page-title">My Dashboard</div>
   <div class="page-sub">Your personal agreement rates and case patterns.</div>
   <div id="myDashEl"><div class="empty"><div class="ei">📊</div><div class="et">No data yet</div><div class="es">Submit cases to see your analytics.</div></div></div>
 </div>
 
-<!-- ══ UNIT AGGREGATE ════════════════════════════════════ -->
+<!-- ══ UNIT AGGREGATE ══════════════════════════════════════ -->
 <div class="view" id="view-aggregate">
-  <div class="page-title">Unit Aggregate</div>
-  <div class="page-sub">Live data pulled from GitHub — all surgeons' submissions in real time.</div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+    <div>
+      <div class="page-title">Unit Aggregate</div>
+      <div class="page-sub" style="margin-bottom:0">Live data from GitHub — all surgeons' submissions in real time.</div>
+    </div>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn btn-g btn-sm" onclick="renderAgg()">🔄 Refresh</button>
+      <button class="btn btn-s btn-sm" onclick="exportCSV()">⬇ CSV</button>
+    </div>
+  </div>
   <div id="aggEl"><div class="empty"><div class="ei">🏥</div><div class="et">Loading from GitHub…</div></div></div>
 </div>
 
@@ -393,49 +595,82 @@ textarea{resize:vertical;min-height:76px}
 </div>
 </div>
 
-<!-- SURGEON MODAL -->
+<!-- ══ SURGEON MODAL ═══════════════════════════════════════ -->
 <div class="overlay" id="surgModal">
   <div class="modal">
     <div class="modal-title">Select Your Profile</div>
     <div class="modal-sub">Choose your name to tag submitted cases. No login required.</div>
     <div class="surg-grid" id="surgGrid"></div>
-    <div class="btn-row" style="margin-top:.5rem">
-      <button class="btn btn-s" onclick="closeModal('surgModal')">Cancel</button>
+    <div class="btn-row"><button class="btn btn-s" onclick="closeModal('surgModal')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ══ CASE DETAIL / EDIT MODAL ═══════════════════════════ -->
+<div class="overlay" id="caseModal">
+  <div class="modal modal-wide">
+    <div id="caseModalBody"></div>
+    <div class="btn-row" id="caseModalBtns">
+      <button class="btn btn-s" onclick="closeModal('caseModal')">Close</button>
     </div>
   </div>
 </div>
 
-<!-- CASE DETAIL MODAL -->
-<div class="overlay" id="caseModal">
-  <div class="modal" style="max-width:620px">
-    <div id="caseModalBody"></div>
-    <div class="btn-row"><button class="btn btn-s" onclick="closeModal('caseModal')">Close</button></div>
+<!-- ══ DISLIKE REASON MODAL ════════════════════════════════ -->
+<div class="overlay" id="dislikeModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-title">What's the concern?</div>
+    <div class="modal-sub">Tell us what you disagree with about this recommendation.</div>
+    <div id="dislikeOptions" style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem">
+      <label class="chk-row"><input type="radio" name="dlr" value="Wrong procedure"> Wrong procedure recommended</label>
+      <label class="chk-row"><input type="radio" name="dlr" value="Staging incorrect"> Staging seems incorrect</label>
+      <label class="chk-row"><input type="radio" name="dlr" value="Patient contraindication"> Patient contraindication not captured</label>
+      <label class="chk-row"><input type="radio" name="dlr" value="Outcome rates wrong"> Outcome rates don't match my experience</label>
+      <label class="chk-row"><input type="radio" name="dlr" value="Other"> Other</label>
+    </div>
+    <div class="fg"><label>Additional detail (optional)</label><textarea id="dislikeDetail" placeholder="Describe your concern..."></textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-p" onclick="submitDislike()">Submit Feedback</button>
+      <button class="btn btn-s" onclick="closeModal('dislikeModal')">Cancel</button>
+    </div>
   </div>
 </div>
 
 <script>
-// ═══════════════════════ STATE ═══════════════════════
-const SK='mosi_v5';
-let S={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''}};
+/* ═══════════════════════════════════ STATE ═══════════════════════════════════ */
+const SK='mosi_v6';
+let S={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''},theme:'dark'};
+let CR=null, AG={stage:null,proc:null}, recFeedback={}, currentDislikeTarget=null;
 
 function loadS(){
   try{const s=localStorage.getItem(SK);if(s)S=JSON.parse(s);}catch(e){}
+  const adminCfg=localStorage.getItem('mosi_admin_cfg');
+  if(adminCfg){try{const c=JSON.parse(adminCfg);if(c.owner&&c.repo&&c.token)S.gh=c;}catch(e){}}
   if(!S.surgeons?.length)S.surgeons=[
     {id:'s1',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'OG'},
     {id:'s2',name:'Dr. S. Laplante',role:'Consultant Bariatric Surgeon',initials:'SL'},
-    {id:'s3',name:'Dr. R. Shahriarirad',role:'Fellow',initials:'RS'}
+    {id:'s3',name:'Dr. R. Shahriarirad',role:'Fellow',initials:'RS'},
+    {id:'s4',name:'Dr. A. Alomar',role:'Research Fellow',initials:'AA'},
   ];
   if(!S.gh)S.gh={owner:'',repo:'',token:''};
-  // Pull admin config from admin page if stored separately
-  const adminCfg=localStorage.getItem('mosi_admin_cfg');
-  if(adminCfg){try{const c=JSON.parse(adminCfg);if(c.owner&&c.repo&&c.token)S.gh=c;}catch(e){}}
+  if(!S.theme)S.theme='dark';
+  applyTheme(S.theme);
 }
 function saveS(){localStorage.setItem(SK,JSON.stringify(S));}
 function G(id){return document.getElementById(id);}
 function V(id){return G(id)?.value||'';}
 function CK(id){return G(id)?.checked||false;}
 
-// ═══════════════════════ MOSI ═══════════════════════
+/* ═══════════════════════════════════ THEME ═══════════════════════════════════ */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  G('themeBtn').textContent=t==='dark'?'☀️':'🌙';
+}
+function toggleTheme(){
+  S.theme=S.theme==='dark'?'light':'dark';
+  applyTheme(S.theme);saveS();
+}
+
+/* ═══════════════════════════════════ MOSI ════════════════════════════════════ */
 const OC={
   'Stage I':{'SG':{s12:54.7,t12:25.9,s60:59.3},'RYGB':{s12:79.3,t12:32.3,s60:73.7}},
   'Stage II':{'SG':{s12:50.0,t12:25.0,s60:40.5},'RYGB':{s12:74.6,t12:32.3,s60:67.4},'BPD/DS':{s12:88.9,t12:37.4,s60:87.2}},
@@ -443,8 +678,16 @@ const OC={
   'Stage 4A':{'SG':{s12:65.3,t12:24.4,s60:null}},
   'Stage 4B':{'SG':{s12:43.8,t12:20.5,s60:null}},
 };
+const STAGE_CONTEXT={
+  'Stage I':{title:'Stage I — Low Severity',desc:'Si=0 (no systemic impairment), BMI class M1–M2 (30–39.9 kg/m²), and O score 0–1. The smallest group (6.2% of derivation cohort). Minimal comorbidity burden. Both RYGB and SG achieve acceptable results. Primary goal is metabolic benefit and quality of life improvement.',ci:'73.1% TWL success (95% CI 66.4–78.8%)',procs:'RYGB preferred (79.3%); SG acceptable (54.7%)'},
+  'Stage II':{title:'Stage II — Moderate Severity',desc:'All other Si=0 combinations, and Si=1 patients with M≤3 and O≤2. The largest group (50.1% of cohort). Includes patients with dysglycaemia, OSA, and moderate BMI without major organ impairment. RYGB is strongly preferred over SG.',ci:'68.9% TWL success (95% CI 66.6–71.2%)',procs:'RYGB standard (74.6%); SG borderline (50.0%); BPD/DS in selected cases'},
+  'Stage III':{title:'Stage III — High Severity',desc:'Si=2 (CKD, cirrhosis, cardiac history, or stroke/TIA — any M, any O) OR Si=1 AND (M≥4 OR O≥3). Second largest group (38.5%). Dominated by T2DM and microvascular damage. SG is contraindicated — success rate 40.7% is below any acceptable threshold.',ci:'63.3% TWL success (95% CI 60.5–66.0%)',procs:'BPD/DS preferred (89.6%); RYGB standard (68.8%); SG — AVOID'},
+  'Stage 4A':{title:'Stage 4A — Transplant Recipient (Off Dialysis)',desc:'Si=3: functioning solid organ transplant graft, currently NOT on dialysis. Immunosuppressant use 60.7%. Primary surgical goal is post-transplant metabolic management and graft protection. RYGB carries immunosuppressant absorption risk.',ci:'69.0% TWL success',procs:'SG standard (65.3%); RYGB only with MDT transplant team input'},
+  'Stage 4B':{title:'Stage 4B — Active Dialysis',desc:'Si=3: currently on dialysis at time of surgery (with or without prior transplant history). Immunosuppressant use 7.9%. Near-universal SG (96.1%). Primary goal is weight loss for transplant listing — TWL is a misspecified outcome here.',ci:'47.4% TWL success (true metric = transplant listing rate)',procs:'SG dominates — perioperative risk drives all decisions'},
+};
+
 function calcMOSI(bmi,htn,dy,osa,hld,gerd,si_raw,card,str,masld,mic,arth){
-  if(!bmi||si_raw==='')return null;
+  if(!bmi||!si_raw)return null;
   const b=parseFloat(bmi);if(isNaN(b)||b<28)return null;
   let M;if(b<35)M=1;else if(b<40)M=2;else if(b<45)M=3;else if(b<50)M=4;else M=5;
   const O=(htn?1:0)+(dy?1:0)+(osa?1:0)+(hld?1:0);
@@ -461,222 +704,513 @@ function calcMOSI(bmi,htn,dy,osa,hld,gerd,si_raw,card,str,masld,mic,arth){
   else if(dy||masld||mic)tier='C';
   else if(htn||osa||hld||gerd||arth)tier='B';
   else tier='A';
-  const tt={A:'≥7.5%',B:'≥15%',C:'≥25%',D:'≥30%'};
-  const tg={A:'Functional improvement, QoL',B:'OSA/HTN/HLD/GORD resolution',C:'T2DM remission, MASLD regression',D:'MACE risk reduction'};
+  const tt={A:'≥7.5% TWL',B:'≥15% TWL',C:'≥25% TWL',D:'≥30% TWL'};
+  const tg={A:'Functional improvement & QoL',B:'OSA/HTN/HLD/GORD resolution',C:'T2DM remission, MASLD regression',D:'MACE risk reduction, cardiovascular event prevention'};
   let rec,rp=[],al=[];
   if(stage==='Stage I'){rec='RYGB (preferred) or SG';rp=['RYGB','SG'];}
   else if(stage==='Stage II'){rec='RYGB (standard)';rp=['RYGB'];
-    if(tier==='C'||tier==='D')al.push({t:'warn',m:`Stage II + Tier ${tier}: SG achieves ≥${tier==='C'?25:30}% TWL in only ${tier==='C'?'38.3':'15.4'}% of patients. RYGB is required.`});
-    if(tier==='D')al.push({t:'note',m:'Stage II + Tier D: RYGB achieves ≥30% TWL in only 48.7%. Consider BPD/DS or counsel patient on expectations.'});}
-  else if(stage==='Stage III'){rec='BPD/DS (preferred if eligible) or RYGB';rp=['BPD/DS','RYGB'];
-    al.push({t:'warn',m:'SG is contraindicated at Stage III. 12m success 40.7%; pessimistic 5-year bound 14.9%.'});
+    if(tier==='C'||tier==='D')al.push({t:'warn',m:`Stage II + Tier ${tier}: SG achieves ≥${tier==='C'?25:30}% TWL target in only ${tier==='C'?'38.3':'15.4'}% of patients. RYGB is required for this patient's metabolic goals.`});
+    if(tier==='D')al.push({t:'note',m:'Stage II + Tier D (cardiac/stroke): RYGB achieves ≥30% TWL in only 48.7%. Consider BPD/DS or counsel patient on realistic expectations.'});}
+  else if(stage==='Stage III'){rec='BPD/DS (preferred) or RYGB';rp=['BPD/DS','RYGB'];
+    al.push({t:'warn',m:'SG is contraindicated at Stage III. 12m success 40.7% (95% CI 35.2–46.4%); pessimistic 5-year bound as low as 14.9%.'});
     if(tier==='D')al.push({t:'note',m:'Stage III + Tier D: RYGB achieves ≥30% TWL in only 36.2%. Prioritise BPD/DS where eligible.'});}
   else if(stage==='Stage 4A'){rec='SG (standard); RYGB in selected patients with MDT input';rp=['SG'];
-    al.push({t:'info',m:'Transplant recipient with functioning graft. RYGB requires transplant team MDT — immunosuppressant absorption implications.'});}
-  else if(stage==='Stage 4B'){rec='SG (perioperative risk dominates)';rp=['SG'];
-    al.push({t:'warn',m:'Active dialysis. Primary goal is transplant listing eligibility — TWL is a misspecified outcome here.'});}
-  if(gerd&&!['Stage 4A','Stage 4B'].includes(stage))al.push({t:'info',m:'GORD present: RYGB preferred at all stages. SG may worsen reflux.'});
+    al.push({t:'info',m:'Transplant recipient with functioning graft. RYGB requires multidisciplinary transplant team input — tacrolimus/ciclosporin absorption may be significantly altered.'});}
+  else if(stage==='Stage 4B'){rec='SG (perioperative risk dominates all decisions)';rp=['SG'];
+    al.push({t:'warn',m:'Active dialysis. TWL is a misspecified outcome — primary goal is achieving weight threshold for transplant listing eligibility. Standard success metrics do not apply.'});}
+  if(gerd&&!['Stage 4A','Stage 4B'].includes(stage))al.push({t:'info',m:'GORD present: RYGB preferred at all stages. SG may worsen reflux symptoms — relative contraindication to SG.'});
   return{M,O,Si:si_raw,stage,tier,tierTarget:tt[tier],tierGoal:tg[tier],rec,rp,al};
 }
-let CR=null;
+
+let selectedSi=null;
+function selectSi(val){
+  selectedSi=val;
+  document.querySelectorAll('.si-card').forEach(c=>{
+    c.classList.remove('selected');
+    if(c.dataset.si===val)c.classList.add('selected');
+  });
+  comp();
+}
+
 function comp(){
-  const bmi=V('bmi'),si=V('si');
+  const bmi=V('bmi');
   const htn=CK('htn'),dy=CK('dysgly'),osa=CK('osa'),hld=CK('hld'),gerd=CK('gerd');
   const card=CK('cardiac'),str=CK('stroke'),masld=CK('masld'),mic=CK('microeo'),arth=CK('arthro');
-  G('oDisp').textContent=(htn?1:0)+(dy?1:0)+(osa?1:0)+(hld?1:0);
+  const O=(htn?1:0)+(dy?1:0)+(osa?1:0)+(hld?1:0);
+  G('oDisp').textContent=`O = ${O}`;
+  // highlight checked
+  ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro'].forEach(id=>{
+    const lbl=G('lbl-'+id);if(lbl)lbl.classList.toggle('checked',CK(id));
+  });
   if(bmi&&parseFloat(bmi)>=28){const b=parseFloat(bmi);let m;if(b<35)m='M1';else if(b<40)m='M2';else if(b<45)m='M3';else if(b<50)m='M4';else m='M5';G('mDisp').textContent=m;}
   else G('mDisp').textContent='—';
-  G('btn-s2').disabled=!(bmi&&parseFloat(bmi)>=28&&si!=='');
-  CR=(bmi&&parseFloat(bmi)>=28&&si!=='')?calcMOSI(bmi,htn,dy,osa,hld,gerd,si,card,str,masld,mic,arth):null;
+  G('btn-s2').disabled=!(bmi&&parseFloat(bmi)>=28&&selectedSi!==null);
+  CR=(bmi&&parseFloat(bmi)>=28&&selectedSi!==null)?calcMOSI(bmi,htn,dy,osa,hld,gerd,selectedSi,card,str,masld,mic,arth):null;
 }
-// Steps
-function sc(s){return s==='Stage I'?'s1':s==='Stage II'?'s2':s==='Stage III'?'s3':'s4';}
+
+function handleAnon(){
+  G('anonHint').style.display=CK('isAnon')?'block':'none';
+}
+
+/* ═══════════════════════════════════ STEPS ════════════════════════════════════ */
+function sc(s){return s==='Stage I'?'stg-1':s==='Stage II'?'stg-2':s==='Stage III'?'stg-3':s==='Stage 4A'?'stg-4a':'stg-4';}
+
 function goStep(n){
   if(n===2&&!CR)return;
-  [1,2,3,4].forEach(i=>{G(`p${i}`).classList.toggle('hidden',i!==n);const s=G(`stp${i}`);s.className='step'+(i<n?' done':i===n?' active':'');});
-  if(n===2)renderRec();if(n===3){G('fb-stg').textContent=`Computed: ${CR.stage} (M${CR.M}, O${CR.O}, Si${CR.Si})`;G('fb-prc').textContent=`Recommended: ${CR.rec}`;}
-  if(n===4)renderSum();window.scrollTo(0,0);
+  [1,2,3,4].forEach(i=>{
+    G(`p${i}`)?.classList.toggle('hidden',i!==n);
+    const s=G(`stp${i}`);if(s)s.className='step'+(i<n?' done':i===n?' active':'');
+  });
+  if(n===2)renderRec();
+  if(n===3)renderJudge();
+  if(n===4)renderSum();
+  window.scrollTo(0,0);
 }
+
+/* ═══════════════════════════════════ RENDER REC ══════════════════════════════ */
 function renderRec(){
   const r=CR;
   const siL={'0':'None','1':'Microvascular damage','2':'Organ dysfunction','3a':'Organ failure (4A)','3b':'Organ failure (4B)'};
-  G('scoreStrip').innerHTML=`<div class="sb m"><div class="sl">M Score</div><div class="sv">M${r.M}</div><div class="ss">BMI class</div></div><div class="sb o"><div class="sl">O Score</div><div class="sv">${r.O}</div><div class="ss">of 4</div></div><div class="sb si"><div class="sl">Si Level</div><div class="sv">Si${r.Si==='3a'?3:r.Si==='3b'?3:r.Si}</div><div class="ss">${siL[r.Si]||''}</div></div><div class="sb ${sc(r.stage)}"><div class="sl">MOSI Stage</div><div class="sv" style="font-size:1.05rem;margin-top:.2rem">${r.stage}</div><div class="ss">${r.stage.includes('4')?'Critical':r.stage==='Stage III'?'High severity':r.stage==='Stage II'?'Moderate':'Low severity'}</div></div>`;
-  G('tierRow').innerHTML=`<span style="font-size:.76rem;font-weight:600;color:var(--text-mid)">TWL Target Tier</span><span class="tier-badge t${r.tier}">Tier ${r.tier} — ${r.tierTarget}</span><span style="font-size:.76rem;color:var(--text-light)">${r.tierGoal}</span>`;
+  G('scoreStrip').innerHTML=`
+    <div class="sb m"><div class="sl">M Score</div><div class="sv">M${r.M}</div><div class="ss">BMI class ${['','30–34.9','35–39.9','40–44.9','45–49.9','≥50'][r.M]} kg/m²</div></div>
+    <div class="sb o"><div class="sl">O Score</div><div class="sv">${r.O}</div><div class="ss">${r.O}/4 comorbidities</div></div>
+    <div class="sb si-box"><div class="sl">Si Level</div><div class="sv">Si${r.Si==='3a'?3:r.Si==='3b'?3:r.Si}</div><div class="ss">${siL[r.Si]||''}</div></div>
+    <div class="sb ${sc(r.stage)}"><div class="sl">MOSI Stage</div><div class="sv" style="font-size:1rem;line-height:1.2;margin-top:.15rem">${r.stage}</div><div class="ss">${r.stage.includes('4')?'Critical complexity':r.stage==='Stage III'?'High severity':r.stage==='Stage II'?'Moderate severity':'Low severity'}</div></div>`;
+  G('tierRow').innerHTML=`
+    <span class="lbl" style="color:var(--text2)">TWL Target Tier</span>
+    <span class="tier-badge t${r.tier}">Tier ${r.tier} — ${r.tierTarget}</span>
+    <span style="font-size:.75rem;color:var(--text2)">${r.tierGoal}</span>`;
+  recFeedback={};
   const so=OC[r.stage]||{};let rH='';
-  r.rp.forEach((proc,idx)=>{const o=so[proc],cls=idx===0?'pref':'nblk';const lbl=idx===0&&r.rp.length>1?`★ ${proc} — Preferred`:idx===0?`★ ${proc} — Recommended`:proc;const rates=o?`<div class="rr">${o.s12!=null?`<div><div class="rn">${o.s12}%</div><div class="rl">Success @12m</div></div>`:''}<div><div class="rn">${o.t12}%</div><div class="rl">Mean TWL 12m</div></div>${o.s60!=null?`<div><div class="rn">${o.s60}%</div><div class="rl">Success @60m†</div></div>`:''}</div>`:'';rH+=`<div class="rec-blk ${cls}"><div class="rt">${lbl}</div><div class="rp">${proc}</div><div class="rm">${r.rec}</div>${rates}</div>`;});
-  if(r.stage==='Stage III'){const sg=so['SG'];if(sg)rH+=`<div class="rec-blk wblk"><div class="rt">⚠ SG — Contraindicated at Stage III</div><div class="rp">Sleeve Gastrectomy</div><div class="rm">12m success 40.7%; pessimistic 5-year bound 14.9%. Below acceptable threshold.</div><div class="rr"><div><div class="rn">${sg.s12}%</div><div class="rl">Success @12m</div></div><div><div class="rn">${sg.t12}%</div><div class="rl">Mean TWL 12m</div></div></div></div>`;}
+  r.rp.forEach((proc,idx)=>{
+    const o=so[proc],cls=idx===0?'pref':'nblk';
+    const lbl=idx===0&&r.rp.length>1?`★ ${proc} — Preferred`:idx===0?`★ ${proc} — Recommended`:proc;
+    const rates=o?`<div class="rr">${o.s12!=null?`<div><div class="stat-n">${o.s12}%</div><div class="stat-l">Success @12m</div></div>`:''}<div><div class="stat-n">${o.t12}%</div><div class="stat-l">Mean TWL 12m</div></div>${o.s60!=null?`<div><div class="stat-n">${o.s60}%</div><div class="stat-l">Success @60m†</div></div>`:''}</div>`:'';
+    const pid=`rec_${idx}`;
+    rH+=`<div class="rec-blk ${cls}" id="${pid}">
+      <div class="rec-fb">
+        <div class="rec-fb-btn" id="fb-like-${idx}" title="This recommendation is appropriate" onclick="fbLike(${idx},'${proc}')">👍</div>
+        <div class="rec-fb-btn" id="fb-dislike-${idx}" title="I disagree with this recommendation" onclick="fbDislike(${idx},'${proc}')">👎</div>
+        <div class="rec-fb-btn" id="fb-flag-${idx}" title="Report an issue with this recommendation" onclick="fbFlag(${idx},'${proc}')">🚩</div>
+      </div>
+      <div class="rt">${lbl}</div>
+      <div class="rp">${proc}</div>
+      <div class="rm">${r.rec}</div>
+      ${rates}
+      <div id="fb-panel-${idx}"></div>
+    </div>`;
+  });
+  if(r.stage==='Stage III'){
+    const sg=so['SG'];if(sg)rH+=`<div class="rec-blk wblk" id="rec_sg_warn">
+      <div class="rec-fb">
+        <div class="rec-fb-btn" id="fb-like-sg" title="Appropriate warning" onclick="fbLike('sg','SG')">👍</div>
+        <div class="rec-fb-btn" id="fb-dislike-sg" title="I disagree" onclick="fbDislike('sg','SG')">👎</div>
+        <div class="rec-fb-btn" id="fb-flag-sg" title="Report issue" onclick="fbFlag('sg','SG')">🚩</div>
+      </div>
+      <div class="rt">⚠ SG — Contraindicated at Stage III</div>
+      <div class="rp">Sleeve Gastrectomy</div>
+      <div class="rm">12m success 40.7% (95% CI 35.2–46.4%). Pessimistic 5-year bound 14.9%. Below any acceptable threshold for metabolic efficacy at this stage.</div>
+      <div class="rr"><div><div class="stat-n">${sg.s12}%</div><div class="stat-l">Success @12m</div></div><div><div class="stat-n">${sg.t12}%</div><div class="stat-l">Mean TWL 12m</div></div></div>
+      <div id="fb-panel-sg"></div>
+    </div>`;
+  }
   G('recBlocks').innerHTML=rH;
-  let aH='<div style="font-size:.65rem;color:var(--text-light);margin-top:.2rem">† 60m rates are pessimistically biased (MNAR dropout). Procedure ranking BPD/DS > RYGB > SG is stable under all sensitivity bounds.</div>';
-  (r.al||[]).forEach(a=>{const m={warn:'a-warn ⚠',info:'a-info ℹ',note:'a-note 📌'};const[c,i]=(m[a.t]||'a-info ℹ').split(' ');aH+=`<div class="alert ${c}" style="margin-top:.45rem"><span class="ai">${i}</span><span>${a.m}</span></div>`;});
+  let aH='<div style="font-size:.64rem;color:var(--text3);margin-top:.2rem;margin-bottom:.75rem">† 60m rates are pessimistically biased (MNAR dropout confirmed). Procedure ranking BPD/DS > RYGB > SG is stable under all sensitivity scenarios.</div>';
+  (r.al||[]).forEach(a=>{const m={warn:'a-warn ⚠',info:'a-info ℹ',note:'a-note 📌'};const[c,i]=(m[a.t]||'a-info ℹ').split(' ');aH+=`<div class="alert ${c}"><span class="ai">${i}</span><span>${a.m}</span></div>`;});
   G('alertBlocks').innerHTML=aH;
 }
-let AG={stage:null,proc:null};
-function setAg(f,v){AG[f]=v;['agree','partial','disagree'].forEach(k=>{const el=G(`ab-${f}-${k}`);el.className='ab';if((k==='agree'&&v==='Agree')||(k==='partial'&&v==='Partial')||(k==='disagree'&&v==='Disagree'))el.classList.add({Agree:'ag',Partial:'pa',Disagree:'dg'}[v]);});}
+
+/* ═══════════════════════════════════ REC FEEDBACK ════════════════════════════ */
+function fbLike(idx,proc){
+  recFeedback[idx]={type:'like',proc};
+  G(`fb-like-${idx}`)?.classList.add('active-like');
+  G(`fb-dislike-${idx}`)?.classList.remove('active-dislike');
+  G(`fb-flag-${idx}`)?.classList.remove('active-flag');
+  if(G(`fb-panel-${idx}`))G(`fb-panel-${idx}`).innerHTML='<div style="font-size:.7rem;color:var(--green);margin-top:.45rem">✓ Feedback recorded — you agree with this recommendation.</div>';
+}
+function fbDislike(idx,proc){
+  currentDislikeTarget={idx,proc};
+  G('dislikeDetail').value='';
+  document.querySelectorAll('[name="dlr"]').forEach(r=>r.checked=false);
+  G('dislikeModal').classList.add('open');
+}
+function submitDislike(){
+  const reason=document.querySelector('[name="dlr"]:checked')?.value||'Not specified';
+  const detail=V('dislikeDetail');
+  const{idx,proc}=currentDislikeTarget||{};
+  if(idx!==undefined){
+    recFeedback[idx]={type:'dislike',proc,reason,detail};
+    G(`fb-dislike-${idx}`)?.classList.add('active-dislike');
+    G(`fb-like-${idx}`)?.classList.remove('active-like');
+    G(`fb-flag-${idx}`)?.classList.remove('active-flag');
+    if(G(`fb-panel-${idx}`))G(`fb-panel-${idx}`).innerHTML=`<div style="font-size:.7rem;color:var(--red);margin-top:.45rem">✗ Feedback: <strong>${reason}</strong>${detail?` — "${detail}"`:''}</div>`;
+  }
+  closeModal('dislikeModal');
+}
+function fbFlag(idx,proc){
+  recFeedback[idx]={...recFeedback[idx],type:'flag',proc};
+  G(`fb-flag-${idx}`)?.classList.toggle('active-flag');
+  const isActive=G(`fb-flag-${idx}`)?.classList.contains('active-flag');
+  if(G(`fb-panel-${idx}`))G(`fb-panel-${idx}`).innerHTML=isActive?`<div style="font-size:.7rem;color:var(--amber);margin-top:.45rem">🚩 Flagged for review — this recommendation will be reviewed by the research team.</div>`:'';
+}
+
+/* ═══════════════════════════════════ JUDGE ════════════════════════════════════ */
+function renderJudge(){
+  const r=CR,ctx=STAGE_CONTEXT[r.stage]||{};
+  G('ag-stage-context').textContent=`Computed: ${r.stage} (M${r.M}, O${r.O}, Si${r.Si})`;
+  G('ag-proc-context').textContent=`Recommended: ${r.rec}`;
+  G('stageContextText').innerHTML=`
+    <strong>${ctx.title||r.stage}</strong><br>
+    ${ctx.desc||''}<br>
+    <span style="color:var(--text3);font-size:.7rem;margin-top:.3rem;display:block">
+      Derivation cohort outcome: ${ctx.ci||''} &nbsp;|&nbsp; ${ctx.procs||''}
+    </span>`;
+}
+
+let AG_vals={stage:null,proc:null};
+function setAg(f,v){
+  AG_vals[f]=v;
+  ['agree','partial','disagree'].forEach(k=>{
+    const el=G(`ab-${f}-${k}`);if(!el)return;
+    el.className='ab';
+    if((k==='agree'&&v==='Agree')||(k==='partial'&&v==='Partial')||(k==='disagree'&&v==='Disagree'))
+      el.classList.add({Agree:'ag',Partial:'pa',Disagree:'dg'}[v]);
+  });
+}
+
 function renderSum(){
   const r=CR,sg=S.surgeons.find(s=>s.id===S.currentSurgeonId);
   const cfgOk=S.gh.owner&&S.gh.repo&&S.gh.token;
-  const rows=[['Case Ref',V('caseRef')||'—'],['Date',V('caseDate')],['Surgeon',sg?sg.name:'Not selected'],['BMI',V('bmi')+' kg/m²'],['MOSI Stage',r.stage],['Tier',`Tier ${r.tier} (${r.tierTarget})`],['Recommended',r.rec],['Stage Agreement',AG.stage||'Not recorded'],['Proc Agreement',AG.proc||'Not recorded'],['Intended Procedure',V('intProc')||'—'],['Reason',V('reasonTxt')||'—'],['Comments',V('commentsTxt')||'—']];
+  const fbSummary=Object.values(recFeedback).map(f=>`${f.proc}: ${f.type}${f.reason?` (${f.reason})`:''}`).join('; ')||'—';
+  const rows=[
+    ['Case Reference',V('caseRef')||(CK('isAnon')?'[TEST/ANON]':'—')],
+    ['Is Test/Anonymised',CK('isAnon')?'Yes':'No'],
+    ['Date',V('caseDate')],['Surgeon',sg?sg.name:'Not selected'],
+    ['BMI',V('bmi')+' kg/m²'],['MOSI Stage',r.stage],
+    ['Tier',`Tier ${r.tier} (${r.tierTarget})`],['Recommended',r.rec],
+    ['Stage Agreement',AG_vals.stage||'Not recorded'],
+    ['Proc Agreement',AG_vals.proc||'Not recorded'],
+    ['Intended Procedure',V('intProc')||'—'],
+    ['Recommendation Feedback',fbSummary],
+    ['Reason/Context',V('reasonTxt')||'—'],
+    ['Comments',V('commentsTxt')||'—'],
+  ];
   const ac={Agree:'color:var(--green)',Partial:'color:var(--amber)',Disagree:'color:var(--red)'};
-  let h='<table style="width:100%;border-collapse:collapse;font-size:.8rem">';
-  rows.forEach(([k,v])=>{const st=(k.includes('Agreement')&&ac[v])||'';h+=`<tr><td style="padding:.42rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid);width:175px">${k}</td><td style="padding:.42rem .5rem;border-bottom:1px solid var(--border);${st}">${v}</td></tr>`;});
+  let h='<table style="width:100%;border-collapse:collapse;font-size:.79rem">';
+  rows.forEach(([k,v])=>{const st=(k.includes('Agreement')&&ac[v])||'';h+=`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2);width:200px">${k}</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);${st}">${v}</td></tr>`;});
   h+='</table>';G('sumBlock').innerHTML=h;
   G('ghNote').innerHTML=cfgOk
-    ?`<div class="alert a-ok"><span class="ai">🔗</span><span>GitHub Actions configured. Case will be pushed to <strong>${S.gh.owner}/${S.gh.repo}</strong> automatically.</span></div>`
-    :`<div class="alert a-note"><span class="ai">⚠</span><span>GitHub not configured by administrator. Case will be saved locally only.</span></div>`;
+    ?`<div class="alert a-ok"><span class="ai">🔗</span><span>Configured: case will be pushed to <strong>${S.gh.owner}/${S.gh.repo}</strong> via GitHub Actions.</span></div>`
+    :`<div class="alert a-note"><span class="ai">⚠</span><span>GitHub Actions not configured. Case will be saved locally only.</span></div>`;
 }
 
-// ═══════════════════════ GITHUB ═══════════════════════
+/* ═══════════════════════════════════ GITHUB ══════════════════════════════════ */
 const GH='https://api.github.com';
 function ghH(){return{'Authorization':`Bearer ${S.gh.token}`,'Content-Type':'application/json','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};}
-function setSS(cls,lbl){const p=G('syncPill');['ok','err','busy','idle'].forEach(c=>p.classList.remove(c));p.classList.add(cls);G('syncLbl').textContent=lbl;}
+function setSP(cls,lbl){const p=G('syncPill');['ok','err','busy'].forEach(c=>p.classList.remove(c));if(cls)p.classList.add(cls);G('syncLbl').textContent=lbl;}
 async function dispatchWF(rec){
-  const{owner,repo,token}=S.gh;
-  if(!owner||!repo||!token)return false;
-  setSS('busy','Syncing…');
+  const{owner,repo,token}=S.gh;if(!owner||!repo||!token)return false;
+  setSP('busy','Syncing…');
   try{
     const res=await fetch(`${GH}/repos/${owner}/${repo}/actions/workflows/submit_case.yml/dispatches`,{method:'POST',headers:ghH(),body:JSON.stringify({ref:'main',inputs:{case_payload:JSON.stringify(rec)}})});
-    if(res.status===204){setSS('ok',`✓ Pushed`);return true;}
+    if(res.status===204){setSP('ok','✓ Synced');return true;}
     const e=await res.json().catch(()=>({}));throw new Error(e.message||`HTTP ${res.status}`);
-  }catch(e){setSS('err','Sync failed');console.error('GH sync:',e.message);return false;}
+  }catch(e){setSP('err','Sync failed');return false;}
 }
 async function fetchGHCases(){
   const{owner,repo}=S.gh;if(!owner||!repo)return null;
-  try{
-    const res=await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/data/cases.json?t=${Date.now()}`);
-    if(res.ok)return await res.json();
-  }catch(e){}
+  try{const res=await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/data/cases.json?t=${Date.now()}`);if(res.ok)return await res.json();}catch(e){}
   if(!S.gh.token)return null;
-  try{
-    const res=await fetch(`${GH}/repos/${owner}/${repo}/contents/data/cases.json`,{headers:ghH()});
-    if(res.status===404)return[];if(!res.ok)return null;
-    const d=await res.json();return JSON.parse(atob(d.content.replace(/\n/g,'')));
-  }catch(e){return null;}
+  try{const res=await fetch(`${GH}/repos/${owner}/${repo}/contents/data/cases.json`,{headers:ghH()});if(res.status===404)return[];if(!res.ok)return null;const d=await res.json();return JSON.parse(atob(d.content.replace(/\n/g,'')));}catch(e){return null;}
 }
 
-// ═══════════════════════ SUBMIT ═══════════════════════
+/* ═══════════════════════════════════ SUBMIT ═════════════════════════════════ */
 async function submitCase(){
   if(!S.currentSurgeonId){alert('Please select your surgeon profile first.');return;}
   const btn=G('submitBtn');btn.disabled=true;btn.textContent='Submitting…';
   const r=CR,sg=S.surgeons.find(s=>s.id===S.currentSurgeonId);
   const rec={
     id:'case_'+Date.now(),surgeonId:S.currentSurgeonId,surgeonName:sg?.name||'',
-    caseRef:V('caseRef')||'Unnamed',date:V('caseDate'),bmi:parseFloat(V('bmi')),
+    caseRef:V('caseRef')||(CK('isAnon')?'[ANON]':'Unnamed'),
+    isTest:CK('isAnon'),date:V('caseDate'),bmi:parseFloat(V('bmi')),
     M:r.M,O:r.O,Si:r.Si,stage:r.stage,tier:`Tier ${r.tier}`,tierTarget:r.tierTarget,
-    recommended:r.rec,stageAgreement:AG.stage||'Not recorded',
-    procAgreement:AG.proc||'Not recorded',intendedProc:V('intProc')||'',
+    recommended:r.rec,stageAgreement:AG_vals.stage||'Not recorded',
+    procAgreement:AG_vals.proc||'Not recorded',intendedProc:V('intProc')||'',
+    recFeedback:JSON.stringify(recFeedback),
     reason:V('reasonTxt')||'',comments:V('commentsTxt')||'',
     submittedAt:new Date().toISOString(),
+    // Post-op outcomes (filled later)
+    actualProcedure:'',actualTWL12:'',actualTWL60:'',
+    dm_resolved:'',htn_resolved:'',osa_resolved:'',hld_resolved:'',
+    outcomeNotes:'',outcomeUpdatedAt:'',
   };
   S.cases.push(rec);saveS();
   const ok=await dispatchWF(rec);
   btn.disabled=false;btn.textContent='✓ Submit Case';
-  AG={stage:null,proc:null};clearForm();goStep(1);updateBadges();show('my-cases');
-  alert(ok?`✓ Case submitted and pushed to GitHub (commits within ~30 seconds).`:'✓ Case saved locally. Ask the administrator to check GitHub configuration.');
+  AG_vals={stage:null,proc:null};recFeedback={};clearForm();goStep(1);updateBadges();show('my-cases');
+  alert(ok?`✓ Submitted and pushed to GitHub (commits within ~30 seconds).`:'✓ Saved locally. GitHub not configured — see admin panel.');
 }
 
-// ═══════════════════════ VIEWS ═══════════════════════
+/* ═══════════════════════════════════ VIEWS ══════════════════════════════════ */
 function show(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   G('view-'+name).classList.add('active');
-  const nav=G('nav-'+name);if(nav)nav.classList.add('active');
+  G('nav-'+name)?.classList.add('active');
   if(name==='my-cases')renderMyCases();
   if(name==='my-dash')renderMyDash();
   if(name==='aggregate')renderAgg();
 }
-// My Cases
+
+/* ═══════════════════════════════════ MY CASES ════════════════════════════════ */
 function renderMyCases(){
   const mine=S.cases.filter(c=>c.surgeonId===S.currentSurgeonId);
   const el=G('myCasesEl');
-  if(!mine.length){el.innerHTML='<div class="empty"><div class="ei">🗂</div><div class="et">No cases yet</div></div>';return;}
+  if(!mine.length){el.innerHTML='<div class="empty"><div class="ei">🗂</div><div class="et">No cases yet</div><div class="es">Submit your first case using New Case.</div></div>';return;}
   const ac={Agree:'pg',Partial:'pa_',Disagree:'pr','Not recorded':'pgy'};
-  let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem"><span style="font-size:.8rem;color:var(--text-light)">${mine.length} case${mine.length!==1?'s':''}</span><button class="btn btn-sm btn-g" onclick="exportCSV()">⬇ Export CSV</button></div>
-  <table class="dt"><thead><tr><th>Case Ref</th><th>Date</th><th>Stage</th><th>Tier</th><th>Stage Agree</th><th>Proc Agree</th><th>Intended</th><th></th></tr></thead><tbody>`;
-  [...mine].reverse().forEach(c=>{
+  let h=`<table class="dt"><thead><tr><th>Case Ref</th><th>Date</th><th>Surgeon</th><th>Stage</th><th>Tier</th><th>Stage Agree</th><th>Proc Agree</th><th>Intended</th><th>Outcome</th><th></th></tr></thead><tbody>`;
+  [...mine].sort((a,b)=>b.submittedAt?.localeCompare(a.submittedAt||'')||0).forEach(c=>{
     const sp=c.stage.includes('4')?'pt':c.stage==='Stage III'?'pr':c.stage==='Stage II'?'pa_':'pg';
-    h+=`<tr><td class="mono">${c.caseRef}</td><td>${c.date}</td><td><span class="pill ${sp}">${c.stage}</span></td><td><span class="pill pb">${c.tier}</span></td><td><span class="pill ${ac[c.stageAgreement]||'pgy'}">${c.stageAgreement}</span></td><td><span class="pill ${ac[c.procAgreement]||'pgy'}">${c.procAgreement}</span></td><td style="font-size:.74rem">${c.intendedProc||'—'}</td><td><button class="btn btn-sm btn-s" onclick="viewCase('${c.id}')">View</button></td></tr>`;
+    const hasOutcome=c.actualProcedure||c.actualTWL12;
+    h+=`<tr>
+      <td class="mono" style="font-weight:600">${c.caseRef}${c.isTest?'<span class="pill pgy" style="margin-left:.35rem">test</span>':''}</td>
+      <td>${c.date}</td>
+      <td style="font-size:.73rem">${c.surgeonName}</td>
+      <td><span class="pill ${sp}">${c.stage}</span></td>
+      <td><span class="pill pb">${c.tier}</span></td>
+      <td><span class="pill ${ac[c.stageAgreement]||'pgy'}">${c.stageAgreement}</span></td>
+      <td><span class="pill ${ac[c.procAgreement]||'pgy'}">${c.procAgreement}</span></td>
+      <td style="font-size:.73rem">${c.intendedProc||'—'}</td>
+      <td><span class="pill ${hasOutcome?'pg':'pgy'}">${hasOutcome?'✓ Entered':'Pending'}</span></td>
+      <td style="display:flex;gap:.35rem">
+        <button class="btn btn-sm btn-s" onclick="viewCase('${c.id}')">View</button>
+        <button class="btn btn-sm btn-g" onclick="openOutcomeEntry('${c.id}')" title="Enter actual procedure & outcomes">📊</button>
+        <button class="btn btn-sm btn-s" onclick="editCase('${c.id}')" title="Edit case">✏️</button>
+        <button class="btn btn-sm btn-d" onclick="deleteCase('${c.id}')" title="Delete case">🗑</button>
+      </td>
+    </tr>`;
   });h+='</tbody></table>';el.innerHTML=h;
 }
+
 function viewCase(id){
   const c=S.cases.find(x=>x.id===id);if(!c)return;
   const ac={Agree:'color:var(--green)',Partial:'color:var(--amber)',Disagree:'color:var(--red)'};
-  G('caseModalBody').innerHTML=`<div class="modal-title">${c.caseRef}</div><div class="modal-sub">${c.date} · ${c.surgeonName}</div><div class="score-strip" style="margin:1rem 0"><div class="sb m"><div class="sl">M</div><div class="sv">M${c.M}</div></div><div class="sb o"><div class="sl">O</div><div class="sv">${c.O}</div></div><div class="sb si"><div class="sl">Si</div><div class="sv">Si${c.Si==='3a'?3:c.Si==='3b'?3:c.Si}</div></div><div class="sb ${sc(c.stage)}"><div class="sl">Stage</div><div class="sv" style="font-size:.95rem">${c.stage}</div></div></div><table style="width:100%;border-collapse:collapse;font-size:.8rem">${[['Tier',c.tier+' ('+c.tierTarget+')'],['Recommended',c.recommended],['Stage Agreement',c.stageAgreement],['Proc Agreement',c.procAgreement],['Intended',c.intendedProc||'—'],['Reason',c.reason||'—'],['Comments',c.comments||'—']].map(([k,v])=>`<tr><td style="padding:.42rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text-mid);width:170px">${k}</td><td style="padding:.42rem .5rem;border-bottom:1px solid var(--border);${(k.includes('Agreement')&&ac[v])||''}">${v}</td></tr>`).join('')}</table>`;
+  let fbHtml='';
+  try{const fb=JSON.parse(c.recFeedback||'{}');const entries=Object.values(fb);if(entries.length)fbHtml=entries.map(f=>`<span class="pill ${f.type==='like'?'pg':f.type==='dislike'?'pr':'pa_'}">${f.proc}: ${f.type}${f.reason?` — ${f.reason}`:''}</span>`).join(' ');}catch(e){}
+  const outcomeRows=c.actualProcedure||c.actualTWL12?`
+    <tr><td colspan="2" style="padding:.5rem .5rem;font-weight:700;color:var(--text2);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--surface2)">POST-OPERATIVE OUTCOMES (GROUND TRUTH)</td></tr>
+    ${c.actualProcedure?`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2);width:200px">Actual Procedure</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border)">${c.actualProcedure}</td></tr>`:''}
+    ${c.actualTWL12?`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Actual TWL at 12m</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border)">${c.actualTWL12}%</td></tr>`:''}
+    ${c.actualTWL60?`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Actual TWL at 60m</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border)">${c.actualTWL60}%</td></tr>`:''}
+    ${c.dm_resolved?`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">DM Resolution</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border)">${c.dm_resolved}</td></tr>`:''}
+    ${c.htn_resolved?`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">HTN Resolution</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border)">${c.htn_resolved}</td></tr>`:''}
+    ${c.osa_resolved?`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">OSA Resolution</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border)">${c.osa_resolved}</td></tr>`:''}
+    ${c.outcomeNotes?`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Outcome Notes</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border)">${c.outcomeNotes}</td></tr>`:''}
+  `:'';
+  G('caseModalBody').innerHTML=`
+    <div class="modal-title">${c.caseRef}</div>
+    <div class="modal-sub">${c.date} · ${c.surgeonName}</div>
+    <div class="score-strip" style="margin:1rem 0">
+      <div class="sb m"><div class="sl">M</div><div class="sv">M${c.M}</div></div>
+      <div class="sb o"><div class="sl">O</div><div class="sv">${c.O}</div></div>
+      <div class="sb si-box"><div class="sl">Si</div><div class="sv">Si${c.Si==='3a'?3:c.Si==='3b'?3:c.Si}</div></div>
+      <div class="sb ${sc(c.stage)}"><div class="sl">Stage</div><div class="sv" style="font-size:.95rem">${c.stage}</div></div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:.79rem">
+      ${[['Tier',c.tier+' ('+c.tierTarget+')'],['Recommended',c.recommended],['Stage Agreement',c.stageAgreement],['Proc Agreement',c.procAgreement],['Intended',c.intendedProc||'—'],['Rec Feedback',fbHtml||'—'],['Reason',c.reason||'—'],['Comments',c.comments||'—']].map(([k,v])=>`<tr><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2);width:200px">${k}</td><td style="padding:.4rem .5rem;border-bottom:1px solid var(--border);${(k.includes('Agreement')&&ac[v])||''}">${v}</td></tr>`).join('')}
+      ${outcomeRows}
+    </table>`;
+  G('caseModalBtns').innerHTML=`
+    <button class="btn btn-g btn-sm" onclick="openOutcomeEntry('${c.id}');closeModal('caseModal')">📊 Enter Outcomes</button>
+    <button class="btn btn-s btn-sm" onclick="editCase('${c.id}');closeModal('caseModal')">✏️ Edit</button>
+    <button class="btn btn-d btn-sm" onclick="deleteCase('${c.id}');closeModal('caseModal')">🗑 Delete</button>
+    <button class="btn btn-s" onclick="closeModal('caseModal')">Close</button>`;
   G('caseModal').classList.add('open');
 }
-// Dashboard
+
+function openOutcomeEntry(id){
+  const c=S.cases.find(x=>x.id===id);if(!c)return;
+  const resOpts=['Yes — complete remission','Yes — partial improvement','No — unchanged','Worsened','N/A'];
+  G('caseModalBody').innerHTML=`
+    <div class="modal-title">Enter Actual Outcomes</div>
+    <div class="modal-sub">${c.caseRef} · ${c.stage} · Predicted: ${c.recommended}</div>
+    <div class="fg mt1">
+      <label>Actual Procedure Performed</label>
+      <select id="out-proc">
+        <option value="">— Select —</option>
+        <option ${c.actualProcedure==='SG'?'selected':''}>SG (Sleeve Gastrectomy)</option>
+        <option ${c.actualProcedure==='RYGB'?'selected':''}>RYGB (Roux-en-Y Gastric Bypass)</option>
+        <option ${c.actualProcedure==='BPD/DS'?'selected':''}>BPD/DS</option>
+        <option ${c.actualProcedure==='SADI-S'?'selected':''}>SADI-S</option>
+        <option ${c.actualProcedure==='Other'?'selected':''}>Other</option>
+      </select>
+    </div>
+    <div class="fg2 mt1">
+      <div class="fg"><label>Actual TWL at 12 months (%)</label><input type="number" id="out-twl12" value="${c.actualTWL12||''}" placeholder="e.g. 28.5" step="0.1" min="0" max="100"></div>
+      <div class="fg"><label>Actual TWL at 60 months (%) — if available</label><input type="number" id="out-twl60" value="${c.actualTWL60||''}" placeholder="e.g. 22.1" step="0.1" min="0" max="100"></div>
+    </div>
+    <div class="fg3 mt1">
+      ${['dm','htn','osa','hld'].map(cm=>`<div class="fg"><label>${{dm:'T2DM',htn:'Hypertension',osa:'OSA',hld:'Hyperlipidaemia'}[cm]} Resolution</label><select id="out-${cm}">${['',  ...resOpts].map(o=>`<option ${(c[cm+'_resolved']===o)?'selected':''}>${o}</option>`).join('')}</select></div>`).join('')}
+    </div>
+    <div class="fg mt1"><label>Outcome Notes</label><textarea id="out-notes" placeholder="Any observations about the outcome vs prediction...">${c.outcomeNotes||''}</textarea></div>`;
+  G('caseModalBtns').innerHTML=`
+    <button class="btn btn-p" onclick="saveOutcome('${c.id}')">✓ Save Outcomes</button>
+    <button class="btn btn-s" onclick="closeModal('caseModal')">Cancel</button>`;
+  G('caseModal').classList.add('open');
+}
+
+function saveOutcome(id){
+  const c=S.cases.find(x=>x.id===id);if(!c)return;
+  c.actualProcedure=V('out-proc');c.actualTWL12=V('out-twl12');c.actualTWL60=V('out-twl60');
+  c.dm_resolved=V('out-dm');c.htn_resolved=V('out-htn');c.osa_resolved=V('out-osa');c.hld_resolved=V('out-hld');
+  c.outcomeNotes=V('out-notes');c.outcomeUpdatedAt=new Date().toISOString();
+  saveS();dispatchWF(c);closeModal('caseModal');renderMyCases();
+  alert('✓ Outcomes saved and synced to GitHub.');
+}
+
+function editCase(id){
+  const c=S.cases.find(x=>x.id===id);if(!c)return;
+  G('caseModalBody').innerHTML=`
+    <div class="modal-title">Edit Case</div>
+    <div class="modal-sub">${c.id}</div>
+    <div class="fg2">
+      <div class="fg"><label>Case Reference / MRN</label><input type="text" id="ed-ref" value="${c.caseRef}"></div>
+      <div class="fg"><label>Date</label><input type="text" id="ed-date" value="${c.date}"></div>
+    </div>
+    <div class="fg mt1"><label>Stage Agreement</label><select id="ed-stag"><option ${c.stageAgreement==='Agree'?'selected':''}>Agree</option><option ${c.stageAgreement==='Partial'?'selected':''}>Partial</option><option ${c.stageAgreement==='Disagree'?'selected':''}>Disagree</option><option ${c.stageAgreement==='Not recorded'?'selected':''}>Not recorded</option></select></div>
+    <div class="fg mt1"><label>Procedure Agreement</label><select id="ed-pag"><option ${c.procAgreement==='Agree'?'selected':''}>Agree</option><option ${c.procAgreement==='Partial'?'selected':''}>Partial</option><option ${c.procAgreement==='Disagree'?'selected':''}>Disagree</option><option ${c.procAgreement==='Not recorded'?'selected':''}>Not recorded</option></select></div>
+    <div class="fg mt1"><label>Intended Procedure</label><input type="text" id="ed-intproc" value="${c.intendedProc}"></div>
+    <div class="fg mt1"><label>Reason / Context</label><textarea id="ed-reason">${c.reason}</textarea></div>
+    <div class="fg mt1"><label>Comments</label><textarea id="ed-comments">${c.comments}</textarea></div>`;
+  G('caseModalBtns').innerHTML=`
+    <button class="btn btn-p" onclick="saveEdit('${c.id}')">✓ Save Changes</button>
+    <button class="btn btn-s" onclick="closeModal('caseModal')">Cancel</button>`;
+  G('caseModal').classList.add('open');
+}
+
+function saveEdit(id){
+  const c=S.cases.find(x=>x.id===id);if(!c)return;
+  c.caseRef=V('ed-ref');c.date=V('ed-date');c.stageAgreement=V('ed-stag');
+  c.procAgreement=V('ed-pag');c.intendedProc=V('ed-intproc');
+  c.reason=V('ed-reason');c.comments=V('ed-comments');
+  saveS();dispatchWF(c);closeModal('caseModal');renderMyCases();
+  alert('✓ Case updated and synced to GitHub.');
+}
+
+function deleteCase(id){
+  if(!confirm('Delete this case? This cannot be undone from the local device. The case will remain in GitHub until the admin removes it.'))return;
+  S.cases=S.cases.filter(c=>c.id!==id);saveS();renderMyCases();updateBadges();
+  closeModal('caseModal');
+}
+
+/* ═══════════════════════════════════ DASHBOARD ════════════════════════════════ */
 function pct(n,d){return d===0?'0%':Math.round(n/d*100)+'%';}
 function bars(counts,total,colors){return Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{const p=Math.round(v/total*100),col=colors[k]||'var(--blue)';return`<div class="bar-row"><span class="bar-lbl">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"><span>${v}</span></div></div><span class="bar-pct">${p}%</span></div>`;}).join('');}
+
 function renderMyDash(){
-  const mine=S.cases.filter(c=>c.surgeonId===S.currentSurgeonId);
+  const mine=S.cases.filter(c=>c.surgeonId===S.currentSurgeonId&&!c.isTest);
   const el=G('myDashEl');
   if(!mine.length){el.innerHTML='<div class="empty"><div class="ei">📊</div><div class="et">No data yet</div></div>';return;}
   const n=mine.length,sa=mine.filter(c=>c.stageAgreement==='Agree').length,pa=mine.filter(c=>c.procAgreement==='Agree').length,sd=mine.filter(c=>c.stageAgreement==='Disagree').length;
+  const withOutcome=mine.filter(c=>c.actualProcedure||c.actualTWL12).length;
   const stC={};mine.forEach(c=>stC[c.stage]=(stC[c.stage]||0)+1);
   const agC={Agree:0,Partial:0,Disagree:0,'Not recorded':0};mine.forEach(c=>{agC[c.stageAgreement]=(agC[c.stageAgreement]||0)+1;});
   const comms=mine.filter(c=>c.comments?.trim());
-  el.innerHTML=`<div class="stats-grid"><div class="stat-card ab-blue"><div class="sn">${n}</div><div class="sl">Total Cases</div><div class="sd">Submitted by you</div></div><div class="stat-card ab-green"><div class="sn">${pct(sa,n)}</div><div class="sl">Stage Agreement</div><div class="sd">${sa}/${n} cases</div></div><div class="stat-card ab-amber"><div class="sn">${pct(pa,n)}</div><div class="sl">Proc Agreement</div><div class="sd">${pa}/${n} cases</div></div><div class="stat-card ab-red"><div class="sn">${sd}</div><div class="sl">Disagreements</div><div class="sd">${pct(sd,n)} of cases</div></div></div>
-  <div class="two-col"><div class="card"><div class="card-hdr"><span class="card-title">By Stage</span></div>${bars(stC,n,{'Stage I':'#1a7a4a','Stage II':'#c47800','Stage III':'#c45c00','Stage 4A':'#0d7c8c','Stage 4B':'#b82020'})}</div><div class="card"><div class="card-hdr"><span class="card-title">Stage Agreement Breakdown</span></div>${bars(Object.fromEntries(Object.entries(agC).filter(([,v])=>v>0)),n,{Agree:'#1a7a4a',Partial:'#c47800',Disagree:'#b82020','Not recorded':'#8292a8'})}</div></div>
-  ${comms.length?`<div class="card mt2"><div class="card-hdr"><span class="card-title">Your Recent Comments</span></div>${comms.slice(-5).reverse().map(c=>`<div style="padding:.7rem;background:var(--slate-lighter);border-radius:7px;margin-bottom:.45rem;border-left:3px solid var(--blue)"><div style="font-size:.7rem;font-weight:600;color:var(--text-mid);margin-bottom:.2rem">${c.caseRef} · ${c.date} · ${c.stage}</div><div style="font-size:.78rem">${c.comments}</div></div>`).join('')}</div>`:''}`;
+  el.innerHTML=`
+    <div class="stats-grid">
+      <div class="stat-card abl"><div class="sn">${n}</div><div class="sl">Cases</div><div class="sd">Submitted by you</div></div>
+      <div class="stat-card abg"><div class="sn">${pct(sa,n)}</div><div class="sl">Stage Agreement</div><div class="sd">${sa}/${n} cases</div></div>
+      <div class="stat-card aba"><div class="sn">${pct(pa,n)}</div><div class="sl">Proc Agreement</div><div class="sd">${pa}/${n} cases</div></div>
+      <div class="stat-card abr"><div class="sn">${withOutcome}</div><div class="sl">Outcomes Entered</div><div class="sd">${pct(withOutcome,n)} of cases</div></div>
+    </div>
+    <div class="two-col">
+      <div class="card"><div class="card-hdr"><span class="card-title">By Stage</span></div>${bars(stC,n,{'Stage I':'#22c55e','Stage II':'#f59e0b','Stage III':'#f97316','Stage 4A':'#14b8a6','Stage 4B':'#ef4444'})}</div>
+      <div class="card"><div class="card-hdr"><span class="card-title">Stage Agreement</span></div>${bars(Object.fromEntries(Object.entries(agC).filter(([,v])=>v>0)),n,{Agree:'#22c55e',Partial:'#f59e0b',Disagree:'#ef4444','Not recorded':'#8292a8'})}</div>
+    </div>
+    ${comms.length?`<div class="card mt2"><div class="card-hdr"><span class="card-title">Recent Comments</span></div>${comms.slice(-5).reverse().map(c=>`<div style="padding:.7rem;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:.45rem;border-left:3px solid var(--blue)"><div style="font-size:.68rem;font-weight:600;color:var(--text2);margin-bottom:.18rem">${c.caseRef} · ${c.date} · ${c.stage}</div><div style="font-size:.77rem">${c.comments}</div></div>`).join('')}</div>`:''}`;
 }
-// Aggregate
+
+/* ═══════════════════════════════════ AGGREGATE ════════════════════════════════ */
 async function renderAgg(){
   const el=G('aggEl');
-  el.innerHTML='<div class="empty"><div class="ei" style="animation:blink .9s infinite">🔄</div><div class="et">Fetching from GitHub…</div></div>';
+  el.innerHTML='<div class="empty"><div class="ei">🔄</div><div class="et">Fetching from GitHub…</div></div>';
   let all=[];const data=await fetchGHCases();
-  if(data){all=data;setSS('ok',`✓ ${all.length} cases`);}
-  else{all=S.cases;el.innerHTML='<div class="alert a-note mb2"><span class="ai">📌</span><span>Could not reach GitHub — showing local data only.</span></div>';}
+  if(data){all=data.filter(c=>!c.isTest);setSP('ok',`✓ ${all.length} cases`);}
+  else{all=S.cases.filter(c=>!c.isTest);el.innerHTML='<div class="alert a-note mb2"><span class="ai">📌</span><span>Could not reach GitHub — showing local data only.</span></div>';}
   if(!all.length){el.innerHTML+='<div class="empty"><div class="ei">🏥</div><div class="et">No cases yet</div></div>';return;}
   const n=all.length,saA=all.filter(c=>c.stageAgreement==='Agree').length,paA=all.filter(c=>c.procAgreement==='Agree').length,fl=all.filter(c=>c.stageAgreement==='Disagree'||c.procAgreement==='Disagree').length;
   const stC={},tC={};all.forEach(c=>{stC[c.stage]=(stC[c.stage]||0)+1;tC[c.tier]=(tC[c.tier]||0)+1;});
+  const stH=buildStageTable(all);const surH=buildSurgeonTable(all);
+  const allComm=all.filter(c=>c.comments?.trim()||c.reason?.trim());
+  const prev=el.innerHTML.includes('local')?el.innerHTML:'';
+  el.innerHTML=prev+`
+    <div class="stats-grid">
+      <div class="stat-card abl"><div class="sn">${n}</div><div class="sl">Total Cases</div></div>
+      <div class="stat-card abg"><div class="sn">${pct(saA,n)}</div><div class="sl">Stage Agreement</div></div>
+      <div class="stat-card aba"><div class="sn">${pct(paA,n)}</div><div class="sl">Proc Agreement</div></div>
+      <div class="stat-card abr"><div class="sn">${fl}</div><div class="sl">Flagged Cases</div></div>
+    </div>
+    <div class="two-col mb2">
+      <div class="card"><div class="card-hdr"><span class="card-title">Volume by Stage</span></div>${bars(stC,n,{'Stage I':'#22c55e','Stage II':'#f59e0b','Stage III':'#f97316','Stage 4A':'#14b8a6','Stage 4B':'#ef4444'})}</div>
+      <div class="card"><div class="card-hdr"><span class="card-title">Tier Distribution</span></div>${bars(tC,n,{'Tier A':'#22c55e','Tier B':'#f59e0b','Tier C':'#f97316','Tier D':'#ef4444'})}</div>
+    </div>
+    <div class="card mb2"><div class="card-hdr"><span class="card-title">Agreement by Stage</span></div>${stH}</div>
+    <div class="card mb2"><div class="card-hdr"><span class="card-title">Per-Surgeon Summary</span></div>${surH}</div>
+    ${allComm.length?`<div class="card"><div class="card-hdr"><span class="card-title">All Comments (${allComm.length})</span></div>${allComm.slice().reverse().map(c=>`<div style="padding:.65rem;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:.42rem;border-left:3px solid var(--blue)"><div style="font-size:.66rem;font-weight:600;color:var(--text2);margin-bottom:.18rem">${c.caseRef} · ${c.date} · ${c.stage} · ${c.surgeonName}</div>${c.reason?`<div style="font-size:.74rem;color:var(--text2);margin-bottom:.15rem"><strong>Reason:</strong> ${c.reason}</div>`:''}<div style="font-size:.76rem">${c.comments||''}</div></div>`).join('')}</div>`:''}`;
+}
+
+function buildStageTable(all){
   const stages=['Stage I','Stage II','Stage III','Stage 4A','Stage 4B'];
-  let stH='<table class="dt"><thead><tr><th>Stage</th><th>n</th><th>Stage Agree</th><th>Proc Agree</th><th>Disagree</th><th>Top Intended Proc</th></tr></thead><tbody>';
+  let h='<table class="dt"><thead><tr><th>Stage</th><th>n</th><th>Stage Agree</th><th>Proc Agree</th><th>Disagree</th><th>Outcomes Entered</th><th>Top Intended Proc</th></tr></thead><tbody>';
   stages.forEach(stage=>{
     const g=all.filter(c=>c.stage===stage);if(!g.length)return;
-    const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length),pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length),sd=g.filter(c=>c.stageAgreement==='Disagree').length;
+    const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length);
+    const pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length);
+    const sd=g.filter(c=>c.stageAgreement==='Disagree').length;
+    const oe=g.filter(c=>c.actualProcedure||c.actualTWL12).length;
     const pf={};g.forEach(c=>{if(c.intendedProc)pf[c.intendedProc]=(pf[c.intendedProc]||0)+1;});
     const tp=Object.entries(pf).sort((a,b)=>b[1]-a[1])[0];
     const sp=stage.includes('4')?'pt':stage==='Stage III'?'pr':stage==='Stage II'?'pa_':'pg';
     const ss=parseFloat(sa)>=80?'color:var(--green)':parseFloat(sa)<60?'color:var(--red)':'color:var(--amber)';
-    stH+=`<tr><td><span class="pill ${sp}">${stage}</span></td><td>${g.length}</td><td style="${ss};font-weight:600">${sa}</td><td style="${ss};font-weight:600">${pa}</td><td style="${sd>0?'color:var(--red)':''}">${sd}</td><td style="font-size:.73rem">${tp?tp[0]:'—'}</td></tr>`;
-  });stH+='</tbody></table>';
+    h+=`<tr><td><span class="pill ${sp}">${stage}</span></td><td>${g.length}</td><td style="${ss};font-weight:600">${sa}</td><td style="${ss};font-weight:600">${pa}</td><td style="${sd>0?'color:var(--red)':''}">${sd}</td><td>${oe}/${g.length}</td><td style="font-size:.72rem">${tp?tp[0]:'—'}</td></tr>`;
+  });return h+'</tbody></table>';
+}
+function buildSurgeonTable(all){
   const sids=[...new Set(all.map(c=>c.surgeonId))];
-  let surH='<table class="dt"><thead><tr><th>Surgeon</th><th>Cases</th><th>Stage Agree</th><th>Proc Agree</th><th>Comments</th></tr></thead><tbody>';
-  sids.forEach(sid=>{const g=all.filter(c=>c.surgeonId===sid);const nm=g[0]?.surgeonName||(S.surgeons.find(s=>s.id===sid)||{}).name||sid;const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length),pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length),cm=g.filter(c=>c.comments?.trim()).length;const ss=parseFloat(sa)>=80?'color:var(--green)':parseFloat(sa)<60?'color:var(--red)':'color:var(--amber)';surH+=`<tr><td style="font-weight:600">${nm}</td><td>${g.length}</td><td style="${ss};font-weight:600">${sa}</td><td style="${ss};font-weight:600">${pa}</td><td>${cm}</td></tr>`;});surH+='</tbody></table>';
-  const allComm=all.filter(c=>c.comments?.trim()||c.reason?.trim());
-  const prev=el.innerHTML;
-  el.innerHTML=prev+`<div class="stats-grid"><div class="stat-card ab-blue"><div class="sn">${n}</div><div class="sl">Total Cases</div><div class="sd">All surgeons</div></div><div class="stat-card ab-green"><div class="sn">${pct(saA,n)}</div><div class="sl">Stage Agreement</div></div><div class="stat-card ab-amber"><div class="sn">${pct(paA,n)}</div><div class="sl">Proc Agreement</div></div><div class="stat-card ab-red"><div class="sn">${fl}</div><div class="sl">Flagged Cases</div><div class="sd">Any disagreement</div></div></div>
-  <div class="two-col mb2"><div class="card"><div class="card-hdr"><span class="card-title">Volume by Stage</span></div>${bars(stC,n,{'Stage I':'#1a7a4a','Stage II':'#c47800','Stage III':'#c45c00','Stage 4A':'#0d7c8c','Stage 4B':'#b82020'})}</div><div class="card"><div class="card-hdr"><span class="card-title">Tier Distribution</span></div>${bars(tC,n,{'Tier A':'#1a7a4a','Tier B':'#c47800','Tier C':'#c45c00','Tier D':'#b82020'})}</div></div>
-  <div class="card mb2"><div class="card-hdr"><span class="card-title">Agreement by Stage</span><button class="btn btn-sm btn-g" onclick="exportCSV()">⬇ Export CSV</button></div>${stH}</div>
-  <div class="card mb2"><div class="card-hdr"><span class="card-title">Per-Surgeon Summary</span></div>${surH}</div>
-  ${allComm.length?`<div class="card"><div class="card-hdr"><span class="card-title">All Comments &amp; Concerns (${allComm.length})</span></div>${allComm.slice().reverse().map(c=>`<div style="padding:.7rem;background:var(--slate-lighter);border-radius:7px;margin-bottom:.45rem;border-left:3px solid var(--blue)"><div style="font-size:.7rem;font-weight:600;color:var(--text-mid);margin-bottom:.2rem">${c.caseRef} · ${c.date} · ${c.stage} · ${c.surgeonName}</div>${c.reason?`<div style="font-size:.76rem;color:var(--text-mid);margin-bottom:.18rem"><strong>Reason:</strong> ${c.reason}</div>`:''}<div style="font-size:.78rem">${c.comments||''}</div></div>`).join('')}</div>`:''}`;
+  let h='<table class="dt"><thead><tr><th>Surgeon</th><th>Cases</th><th>Stage Agree</th><th>Proc Agree</th><th>Outcomes</th><th>Comments</th></tr></thead><tbody>';
+  sids.forEach(sid=>{const g=all.filter(c=>c.surgeonId===sid);const nm=g[0]?.surgeonName||(S.surgeons.find(s=>s.id===sid)||{}).name||sid;const sa=pct(g.filter(c=>c.stageAgreement==='Agree').length,g.length),pa=pct(g.filter(c=>c.procAgreement==='Agree').length,g.length),oe=g.filter(c=>c.actualProcedure||c.actualTWL12).length,cm=g.filter(c=>c.comments?.trim()).length;const ss=parseFloat(sa)>=80?'color:var(--green)':parseFloat(sa)<60?'color:var(--red)':'color:var(--amber)';h+=`<tr><td style="font-weight:600">${nm}</td><td>${g.length}</td><td style="${ss};font-weight:600">${sa}</td><td style="${ss};font-weight:600">${pa}</td><td>${oe}</td><td>${cm}</td></tr>`;});
+  return h+'</tbody></table>';
 }
 
-// ═══════════════════════ SURGEON MODAL ═══════════════════════
+/* ═══════════════════════════════════ SURGEON MODAL ════════════════════════════ */
 function openSurgModal(){renderSurgGrid();G('surgModal').classList.add('open');}
-function closeModal(id){G(id).classList.remove('open');}
-function renderSurgGrid(){
-  G('surgGrid').innerHTML=S.surgeons.map(s=>`<div class="surg-card ${s.id===S.currentSurgeonId?'sel':''}" onclick="selSurg('${s.id}')"><div class="surg-dot">${s.initials}</div><div class="surg-nm">${s.name}</div><div class="surg-rl">${s.role}</div></div>`).join('');
-}
+function closeModal(id){G(id)?.classList.remove('open');}
+function renderSurgGrid(){G('surgGrid').innerHTML=S.surgeons.map(s=>`<div class="surg-card ${s.id===S.currentSurgeonId?'sel':''}" onclick="selSurg('${s.id}')"><div class="surg-av-lg">${s.initials}</div><div class="surg-nm2">${s.name}</div><div class="surg-rl">${s.role}</div></div>`).join('');}
 function selSurg(id){S.currentSurgeonId=id;saveS();renderSurgGrid();updateTopbar();updateBadges();closeModal('surgModal');}
-function updateTopbar(){const s=S.surgeons.find(x=>x.id===S.currentSurgeonId);G('topDot').textContent=s?s.initials:'?';G('topName').textContent=s?s.name:'Select Surgeon';if(S.gh.owner&&S.gh.repo&&S.gh.token)setSS('ok',`✓ ${S.gh.owner}/${S.gh.repo}`);}
+function updateTopbar(){const s=S.surgeons.find(x=>x.id===S.currentSurgeonId);G('topDot').textContent=s?s.initials:'?';G('topName').textContent=s?s.name:'Select Surgeon';if(S.gh.owner&&S.gh.repo&&S.gh.token)setSP('ok',`✓ ${S.gh.owner}/${S.gh.repo}`);}
 function updateBadges(){G('myBadge').textContent=S.cases.filter(c=>c.surgeonId===S.currentSurgeonId).length;}
 
-// ═══════════════════════ CSV ═══════════════════════
+/* ═══════════════════════════════════ CSV ════════════════════════════════════ */
 function exportCSV(){
   if(!S.cases.length){alert('No cases to export.');return;}
-  const hd=['id','caseRef','date','surgeonId','surgeonName','bmi','M','O','Si','stage','tier','tierTarget','recommended','stageAgreement','procAgreement','intendedProc','reason','comments','submittedAt'];
+  const hd=['id','caseRef','isTest','date','surgeonId','surgeonName','bmi','M','O','Si','stage','tier','tierTarget','recommended','stageAgreement','procAgreement','intendedProc','recFeedback','reason','comments','actualProcedure','actualTWL12','actualTWL60','dm_resolved','htn_resolved','osa_resolved','hld_resolved','outcomeNotes','submittedAt','outcomeUpdatedAt'];
   const rows=S.cases.map(c=>hd.map(h=>`"${String(c[h]??'').replace(/"/g,'""')}"`).join(','));
   const blob=new Blob([[hd.join(','),...rows].join('\n')],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`MOSI_Cases_${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
+
 function clearForm(){
   ['bmi','caseRef','reasonTxt','commentsTxt'].forEach(id=>G(id)&&(G(id).value=''));
-  ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro'].forEach(id=>G(id)&&(G(id).checked=false));
-  G('si').value='';G('intProc').value='';G('mDisp').textContent='—';G('oDisp').textContent='0';
-  G('btn-s2').disabled=true;CR=null;AG={stage:null,proc:null};goStep(1);
+  ['htn','dysgly','osa','hld','gerd','cardiac','stroke','masld','microeo','arthro','isAnon'].forEach(id=>G(id)&&(G(id).checked=false));
+  ['lbl-htn','lbl-dysgly','lbl-osa','lbl-hld','lbl-gerd','lbl-cardiac','lbl-stroke','lbl-masld','lbl-microeo','lbl-arthro'].forEach(id=>G(id)?.classList.remove('checked'));
+  G('intProc').value='';G('mDisp').textContent='—';G('oDisp').textContent='O = 0';
+  G('anonHint').style.display='none';
+  G('btn-s2').disabled=true;selectedSi=null;
+  document.querySelectorAll('.si-card').forEach(c=>c.classList.remove('selected'));
+  CR=null;AG_vals={stage:null,proc:null};recFeedback={};goStep(1);
 }
 
-// ═══════════════════════ INIT ═══════════════════════
+/* ═══════════════════════════════════ INIT ════════════════════════════════════ */
 loadS();
 G('caseDate').value=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
 updateTopbar();updateBadges();
