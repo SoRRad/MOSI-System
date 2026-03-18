@@ -28,21 +28,21 @@ html{font-size:15px;scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
 /* ── TOPBAR ────────────────────────────────────────────── */
-.topbar{background:#070c14;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;flex-shrink:0}
+.topbar{background:var(--bg);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;flex-shrink:0}
 .brand{display:flex;align-items:center;gap:.75rem}
-.brand-logo{font-family:'DM Serif Display',serif;font-size:1.45rem;color:#fff;letter-spacing:.04em}
-.brand-tag{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:600;padding:.18rem .5rem;border:1px solid rgba(255,255,255,.1);border-radius:3px;background:rgba(255,255,255,.03)}
+.brand-logo{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--text);letter-spacing:.04em}
+.brand-tag{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-weight:600;padding:.18rem .5rem;border:1px solid var(--border);border-radius:3px;background:var(--surface2)}
 .admin-badge{font-size:.68rem;font-weight:700;letter-spacing:.08em;color:var(--amber);background:var(--amber-pale);padding:.18rem .5rem;border-radius:3px;border:1px solid rgba(245,158,11,.3)}
 .back-link{display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--text2);text-decoration:none;padding:.3rem .7rem;border:1px solid var(--border2);border-radius:var(--radius-sm);transition:all var(--trans)}
 .back-link:hover{color:#fff;border-color:var(--blue);background:var(--blue-pale)}
 
 /* ── MAIN ──────────────────────────────────────────────── */
 .admin-body{display:grid;grid-template-columns:220px 1fr;flex:1;overflow:hidden;height:calc(100vh - 56px)}
-.aside{background:#0a0f1a;border-right:1px solid var(--border);padding:1rem 0;overflow-y:auto;display:flex;flex-direction:column;gap:.12rem}
-.aside-section{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);font-weight:600;padding:.5rem 1.25rem .3rem;margin-top:.35rem}
-.aside-item{display:flex;align-items:center;gap:.55rem;padding:.54rem 1.2rem;cursor:pointer;font-size:.79rem;color:rgba(255,255,255,.45);font-weight:500;transition:all .15s;border-left:2px solid transparent}
-.aside-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.8)}
-.aside-item.active{background:rgba(245,158,11,.12);color:#fff;border-left-color:var(--amber)}
+.aside{background:var(--bg2);border-right:1px solid var(--border);padding:1rem 0;overflow-y:auto;display:flex;flex-direction:column;gap:.12rem}
+.aside-section{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-weight:600;padding:.5rem 1.25rem .3rem;margin-top:.35rem}
+.aside-item{display:flex;align-items:center;gap:.55rem;padding:.54rem 1.2rem;cursor:pointer;font-size:.79rem;color:var(--text2);font-weight:500;transition:all .15s;border-left:2px solid transparent}
+.aside-item:hover{background:var(--surface2);color:var(--text)}
+.aside-item.active{background:rgba(245,158,11,.15);color:var(--text);border-left-color:var(--amber);font-weight:600}
 .aside-icon{font-size:.88rem;width:17px;text-align:center;flex-shrink:0}
 .content{overflow-y:auto;padding:1.75rem 2rem}
 .pane{display:none}.pane.active{display:block}
@@ -74,10 +74,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .fg2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
 .fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
 label,.lbl{font-size:.7rem;font-weight:600;color:var(--text2);letter-spacing:.04em}
-input[type=text],input[type=password],input[type=number],select,textarea{border:1.5px solid var(--border2);border-radius:var(--radius-sm);padding:.5rem .7rem;font-size:.82rem;font-family:'Inter',sans-serif;color:#fff;background:var(--surface2);transition:all var(--trans);width:100%}
+input[type=text],input[type=password],input[type=number],select,textarea{border:1.5px solid var(--border2);border-radius:var(--radius-sm);padding:.5rem .7rem;font-size:.82rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface2);transition:all var(--trans);width:100%}
 input::placeholder{color:var(--text3)}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-pale)}
-select option{background:var(--surface2);color:#fff}
+select option{background:var(--surface2);color:var(--text)}
 textarea{resize:vertical;min-height:72px}
 .hint{font-size:.67rem;color:var(--text3);margin-top:.18rem;line-height:1.45}
 .hint a{color:var(--blue);text-decoration:none}
@@ -180,6 +180,7 @@ textarea{resize:vertical;min-height:72px}
   </div>
   <div style="display:flex;align-items:center;gap:.65rem">
     <div style="font-size:.76rem;color:var(--text2)" id="st-lbl">Checking status…</div>
+    <button onclick="toggleAdminTheme()" id="adminThemeBtn" style="width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .15s;color:rgba(255,255,255,.5)" title="Toggle dark/light mode">🌙</button>
     <a class="back-link" href="index.html">← Surgeon Platform</a>
   </div>
 </header>
@@ -796,7 +797,24 @@ function updateStatusStrip(){
   updateCaseBadge();
 }
 
+/* ─── THEME ─────────────────────────────────────────── */
+function toggleAdminTheme(){
+  const current=document.documentElement.getAttribute('data-theme')||'dark';
+  const next=current==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  const btn=G('adminThemeBtn');
+  if(btn)btn.textContent=next==='dark'?'🌙':'☀️';
+  localStorage.setItem('mosi_admin_theme',next);
+}
+function loadAdminTheme(){
+  const saved=localStorage.getItem('mosi_admin_theme')||'dark';
+  document.documentElement.setAttribute('data-theme',saved);
+  const btn=G('adminThemeBtn');
+  if(btn)btn.textContent=saved==='dark'?'🌙':'☀️';
+}
+
 /* ─── INIT ─────────────────────────────────────────── */
+loadAdminTheme();
 loadCfg();
 </script>
 </body>
