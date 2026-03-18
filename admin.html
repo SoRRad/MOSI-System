@@ -7,6 +7,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+[data-theme="dark"]{
+  --bg:#0e1117;--bg2:#151b27;--bg3:#1c2436;
+  --surface:#1a2235;--surface2:#202b42;--surface3:#28354f;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.13);
+  --text:#e8edf5;--text2:#9aa5be;--text3:#5f6f8f;
+}
+[data-theme="light"]{
+  --bg:#f0f4fa;--bg2:#e8eef8;--bg3:#dde5f5;
+  --surface:#ffffff;--surface2:#f5f8ff;--surface3:#eaf0ff;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);
+  --text:#1a2030;--text2:#4a5568;--text3:#8a96b0;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0e1117;--bg2:#151b27;--bg3:#1c2436;
@@ -233,6 +245,7 @@ function checkPW(){
   <div class="aside-item" onclick="switchPane('comments')" id="a-comments"><span class="aside-icon">💬</span>Comments & Flags</div>
   <div class="aside-section">Export & Docs</div>
   <div class="aside-item" onclick="switchPane('export')" id="a-export"><span class="aside-icon">⬇️</span>Export & Sync</div>
+  <div class="aside-item" onclick="switchPane('about-editor')" id="a-about-editor"><span class="aside-icon">✏️</span>Edit About Page</div>
   <div class="aside-item" onclick="switchPane('howto')" id="a-howto"><span class="aside-icon">📖</span>How It Works</div>
 </nav>
 
@@ -380,6 +393,23 @@ function checkPW(){
       &nbsp;&nbsp;group_by(stage) |&gt;<br>
       &nbsp;&nbsp;summarise(calibration = <span class="k">cor</span>(predicted_success, actual_success))
     </div>
+  </div>
+</div>
+
+<!-- ── ABOUT EDITOR PANE ─────────────────────────────── -->
+<div class="pane" id="pane-about-editor">
+  <div class="page-title">Edit About Page</div>
+  <div class="page-sub">Edit team member details and system information shown on the surgeon platform's About & Team section. Changes save to localStorage and apply immediately.</div>
+  <div class="alert a-info mb2"><span class="ai">ℹ</span><span>Changes apply immediately in this browser session. To make them permanent across all devices, update and redeploy <code>index.html</code>.</span></div>
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">👥 Team Members</span><button class="btn btn-p btn-sm" onclick="addTeamMember()">+ Add Member</button></div>
+    <div id="teamMembersList"><div style="font-size:.78rem;color:var(--text2);padding:.5rem 0">Loading…</div></div>
+  </div>
+  <div class="card mb2">
+    <div class="card-hdr"><span class="card-title">📋 System Description</span></div>
+    <div class="fg"><label>MOSI System Description</label><textarea id="ae-sysdesc" style="min-height:100px" placeholder="The Metabolic & Obesity Staging Index (MOSI) is…"></textarea></div>
+    <div class="fg mt1"><label>Institutional Affiliation</label><input type="text" id="ae-institution" placeholder="e.g. Mayo Clinic — Bariatric & Metabolic Surgery"></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="saveAboutEdits()">✓ Save to Platform</button></div>
   </div>
 </div>
 
@@ -825,7 +855,7 @@ function exportOutcomesCsv(){
 }
 
 /* ─── TABS & MODAL ─────────────────────────────────── */
-const PANES=['github','surgeons','cases','validation','outcomes','comments','export','howto'];
+const PANES=['github','surgeons','cases','validation','outcomes','comments','export','about-editor','howto'];
 function switchPane(name){
   PANES.forEach(p=>{G('pane-'+p)?.classList.remove('active');G('a-'+p)?.classList.remove('active');});
   G('pane-'+name)?.classList.add('active');G('a-'+name)?.classList.add('active');
@@ -843,14 +873,77 @@ function toggleAdminTheme(){
   const next=current==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',next);
   const btn=G('adminThemeBtn');
-  if(btn)btn.textContent=next==='dark'?'🌙':'☀️';
+  if(btn){btn.textContent=next==='dark'?'🌙':'☀️';btn.style.color=next==='dark'?'rgba(255,255,255,.6)':'rgba(0,0,60,.6)';}
   localStorage.setItem('mosi_admin_theme',next);
 }
 function loadAdminTheme(){
   const saved=localStorage.getItem('mosi_admin_theme')||'dark';
   document.documentElement.setAttribute('data-theme',saved);
-  const btn=G('adminThemeBtn');
-  if(btn)btn.textContent=saved==='dark'?'🌙':'☀️';
+  setTimeout(()=>{
+    const btn=G('adminThemeBtn');
+    if(btn){btn.textContent=saved==='dark'?'🌙':'☀️';btn.style.color=saved==='dark'?'rgba(255,255,255,.6)':'rgba(0,0,60,.6)';}
+  },0);
+}
+
+/* ─── ABOUT EDITOR ──────────────────────────────────── */
+const DEFAULT_TEAM=[
+  {id:'sl',name:'Simon J. Laplante, M.D.',role:'Lead Clinician · Principal Conceptualist',org:'Surgery Innovation Team · Mayo Clinic',color:'var(--blue)',link:'https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20430965',linkLabel:'Mayo Clinic Profile'},
+  {id:'rs',name:'Reza Shahriarirad, M.D.',role:'Platform Development · Research Fellow',org:'Surgery Innovation Team · Mayo Clinic',color:'var(--teal)',link:'https://www.researchgate.net/profile/Reza-Shahriarirad',linkLabel:'Academic CV'},
+  {id:'aa',name:'Abdulrahman Alomar, M.D.',role:'Research Fellow',org:'Dept. of Gastroenterologic & General Surgery · Mayo Clinic',color:'var(--amber)',link:'https://www.researchgate.net/profile/Abdulrahman-Alomar',linkLabel:'Research Profile'},
+];
+function getTeam(){try{const s=localStorage.getItem('mosi_about_team');return s?JSON.parse(s):DEFAULT_TEAM;}catch(e){return DEFAULT_TEAM;}}
+function saveTeam(team){localStorage.setItem('mosi_about_team',JSON.stringify(team));}
+function renderTeamList(){
+  const team=getTeam();
+  const el=G('teamMembersList');if(!el)return;
+  if(!team.length){el.innerHTML='<div style="font-size:.78rem;color:var(--text2);padding:.75rem 0">No team members defined. Click + Add Member.</div>';return;}
+  el.innerHTML=team.map((m,i)=>`
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;padding:.85rem;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:.5rem;border:1px solid var(--border)">
+      <div>
+        <div style="font-weight:600;font-size:.82rem;color:var(--text)">${m.name}</div>
+        <div style="font-size:.72rem;color:var(--text2);margin-top:.1rem">${m.role} — ${m.org}</div>
+      </div>
+      <div style="display:flex;gap:.4rem">
+        <button class="btn btn-s btn-xs" onclick="editTeamMember(${i})">Edit</button>
+        <button class="btn btn-d btn-xs" onclick="removeTeamMember(${i})">Remove</button>
+      </div>
+    </div>`).join('');
+}
+function addTeamMember(){showTeamMemberModal(-1,{name:'',role:'',org:'',color:'var(--blue)',link:'',linkLabel:''});}
+function editTeamMember(idx){const team=getTeam();showTeamMemberModal(idx,team[idx]);}
+function removeTeamMember(idx){const team=getTeam();team.splice(idx,1);saveTeam(team);renderTeamList();}
+function showTeamMemberModal(idx,m){
+  G('adminModalBody').innerHTML=`
+    <div class="modal-title">${idx<0?'Add Team Member':'Edit Team Member'}</div>
+    <div class="fg mt1"><label>Full Name &amp; Credentials</label><input type="text" id="tm-name" value="${m.name}" placeholder="e.g. Reza Shahriarirad, M.D."></div>
+    <div class="fg mt1"><label>Role / Title</label><input type="text" id="tm-role" value="${m.role}" placeholder="e.g. Platform Development · Research Fellow"></div>
+    <div class="fg mt1"><label>Department / Institution</label><input type="text" id="tm-org" value="${m.org}" placeholder="e.g. Surgery Innovation Team · Mayo Clinic"></div>
+    <div class="fg mt1"><label>Profile Link URL</label><input type="text" id="tm-link" value="${m.link||''}" placeholder="https://..."></div>
+    <div class="fg mt1"><label>Link Label</label><input type="text" id="tm-linklabel" value="${m.linkLabel||''}" placeholder="e.g. Mayo Clinic Profile"></div>`;
+  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveTeamMember(${idx})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
+  G('adminModal').classList.add('open');
+}
+function saveTeamMember(idx){
+  const team=getTeam();
+  const member={name:V('tm-name'),role:V('tm-role'),org:V('tm-org'),link:V('tm-link'),linkLabel:V('tm-linklabel'),color:'var(--blue)'};
+  if(idx<0)team.push(member);else team[idx]=member;
+  saveTeam(team);renderTeamList();closeModal();
+}
+function saveAboutEdits(){
+  const desc=V('ae-sysdesc');const inst=V('ae-institution');
+  const edits={desc,inst,updatedAt:new Date().toISOString()};
+  localStorage.setItem('mosi_about_edits',JSON.stringify(edits));
+  alert('✓ About page content saved. Changes are live in this browser.');
+}
+function loadAboutEditorFields(){
+  renderTeamList();
+  try{const e=JSON.parse(localStorage.getItem('mosi_about_edits')||'{}');if(G('ae-sysdesc'))G('ae-sysdesc').value=e.desc||'';if(G('ae-institution'))G('ae-institution').value=e.inst||'';}catch(e){}
+}
+// Override switchPane to load about editor data
+const _origSwitchPane=switchPane;
+function switchPane(name){
+  _origSwitchPane(name);
+  if(name==='about-editor')loadAboutEditorFields();
 }
 
 /* ─── INIT ─────────────────────────────────────────── */
