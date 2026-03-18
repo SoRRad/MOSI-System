@@ -1021,22 +1021,59 @@ function removeSurgeon(id){const ss=getSurgeons(),s=ss.find(x=>x.id===id);if(!s|
 
 /* ══ ABOUT EDITOR ══ */
 const DEF_TEAM=[
-  {id:'sl',name:'Simon J. Laplante, M.D.',role:'Lead Clinician · Principal Conceptualist',org:'Surgery Innovation Team · Mayo Clinic',link:'https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20430965',linkLabel:'Mayo Clinic Profile'},
-  {id:'rs',name:'Reza Shahriarirad, M.D.',role:'Platform Development · Research Fellow',org:'Surgery Innovation Team · Mayo Clinic',link:'https://www.researchgate.net/profile/Reza-Shahriarirad',linkLabel:'Academic CV'},
-  {id:'aa',name:'Abdulrahman Alomar, M.D.',role:'Research Fellow',org:'Dept. of Gastroenterologic & General Surgery · Mayo Clinic',link:'https://www.researchgate.net/profile/Abdulrahman-Alomar',linkLabel:'Research Profile'},
+  {id:'sl',initials:'SL',name:'Simon J. Laplante, M.D.',role:'Lead Clinician · Principal Conceptualist',org:'Surgery Innovation Team · Mayo Clinic',bio:'Conceptualized and led the clinical development of the MOSI staging system. Provided clinical expertise, patient data oversight, and research direction for the derivation cohort (n=3,097).',color:'var(--blue)',avBg:'var(--bluG)',links:[{label:'🏥 Mayo Clinic Profile',url:'https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20573005',style:'color:var(--blue);border-color:rgba(79,142,247,.3);background:var(--bluP)'}]},
+  {id:'rs',initials:'RS',name:'Reza Shahriarirad, M.D.',role:'Platform Development · Research Fellow',org:'Surgery Innovation Team · Mayo Clinic',bio:'Designed and developed the MOSI Clinical Audit Platform — decision engine, data analysis, MOSI design, validation workflow, and GitHub integration.',color:'var(--tel)',avBg:'linear-gradient(135deg,var(--tel),#06b6d4)',links:[{label:'🎓 Academic Profile',url:'https://sorrad.github.io/RezaShahriarirad_CV',style:'color:var(--tel);border-color:rgba(20,201,184,.3);background:var(--telP)'},{label:'✉️ reza.shahriarirad@mayo.edu',url:'mailto:reza.shahriarirad@mayo.edu',style:'color:var(--tx2);border-color:var(--bdr);background:var(--surf2)'}]},
+  {id:'aa',initials:'AA',name:'Abdulrahman Alomar, M.D.',role:'Research Fellow',org:'Dept. of Metabolic and Abdominal Wall Reconstructive Surgery & General Surgery · Mayo Clinic',bio:'Contributing to MOSI clinical validation studies and manuscript preparation for the derivation and validation cohorts.',color:'var(--amb)',avBg:'linear-gradient(135deg,var(--amb),#fb923c)',links:[{label:'🔬 LinkedIn Profile',url:'https://www.linkedin.com/in/abdulrahman-alomar-aba47a233',style:'color:var(--amb);border-color:rgba(245,166,35,.3);background:var(--ambP)'}]},
 ];
 function getTeam(){try{const s=localStorage.getItem('mosi_about_team');return s?JSON.parse(s):DEF_TEAM;}catch(e){return DEF_TEAM;}}
 function saveTeam(t){localStorage.setItem('mosi_about_team',JSON.stringify(t));}
 function renderMembers(){
   const t=getTeam(),el=G('membersList');if(!el)return;
   if(!t.length){el.innerHTML='<div style="font-size:.77rem;color:var(--tx2);padding:.5rem 0">No members. Click + Add.</div>';return;}
-  el.innerHTML=t.map((m,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.78rem;background:var(--surf2);border-radius:var(--rs);margin-bottom:.42rem;border:1px solid var(--bdr)"><div><div style="font-weight:600;font-size:.81rem">${m.name}</div><div style="font-size:.7rem;color:var(--tx2);margin-top:.08rem">${m.role} — ${m.org}</div></div><div style="display:flex;gap:.3rem"><button class="btn btn-xs btn-s" onclick="editMember(${i})">Edit</button><button class="btn btn-xs btn-d" onclick="removeMember(${i})">Remove</button></div></div>`).join('');
+  el.innerHTML=t.map((m,i)=>{
+    const color=m.color||'var(--blue)';
+    const avBg=m.avBg||color;
+    const links=(m.links||[]).map(l=>`<a href="${l.url||'#'}" target="_blank" style="display:inline-flex;align-items:center;gap:.3rem;font-size:.71rem;text-decoration:none;padding:.28rem .55rem;border-radius:4px;border:1px solid;${l.style||''}">${l.label||'Link'}</a>`).join('');
+    return `<div style="background:var(--surf2);border:1px solid var(--bdr);border-top:3px solid ${color};border-radius:var(--r);padding:.85rem;margin-bottom:.6rem">
+      <div style="display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.65rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:${avBg};display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:#fff;flex-shrink:0">${m.initials||m.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:.84rem">${m.name}</div>
+          <div style="font-size:.72rem;font-weight:600;color:${color};margin-top:.07rem">${m.role||''}</div>
+          <div style="font-size:.69rem;color:var(--tx2);margin-top:.05rem">${m.org||''}</div>
+        </div>
+        <div style="display:flex;gap:.3rem;flex-shrink:0"><button class="btn btn-xs btn-s" onclick="editMember(${i})">Edit</button><button class="btn btn-xs btn-d" onclick="removeMember(${i})">Remove</button></div>
+      </div>
+      ${m.bio?`<div style="font-size:.74rem;color:var(--tx2);line-height:1.55;margin-bottom:.55rem">${m.bio}</div>`:''}
+      ${links?`<div style="display:flex;flex-wrap:wrap;gap:.35rem">${links}</div>`:''}
+    </div>`;
+  }).join('');
 }
-function openAddMember(){showMemberModal(-1,{name:'',role:'',org:'',link:'',linkLabel:''});}
+function openAddMember(){showMemberModal(-1,{initials:'',name:'',role:'',org:'',bio:'',color:'var(--blue)',avBg:'var(--bluG)',links:[{label:'',url:'',style:''}]});}
 function editMember(i){showMemberModal(i,getTeam()[i]);}
 function removeMember(i){const t=getTeam();t.splice(i,1);saveTeam(t);renderMembers();}
-function showMemberModal(i,m){G('adminModalBody').innerHTML=`<div class="modal-title">${i<0?'Add':'Edit'} Team Member</div><div class="fg mt1"><label>Name &amp; Credentials</label><input type="text" id="tm-nm" value="${m.name||''}" placeholder="e.g. Reza Shahriarirad, M.D."></div><div class="fg mt1"><label>Role / Title</label><input type="text" id="tm-rl" value="${m.role||''}"></div><div class="fg mt1"><label>Department / Institution</label><input type="text" id="tm-org" value="${m.org||''}"></div><div class="fg mt1"><label>Profile Link URL</label><input type="text" id="tm-lk" value="${m.link||''}" placeholder="https://…"></div><div class="fg mt1"><label>Link Label</label><input type="text" id="tm-ll" value="${m.linkLabel||''}"></div>`;G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveMember(${i})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;G('adminModal').classList.add('open');}
-function saveMember(i){const t=getTeam(),m={name:V('tm-nm'),role:V('tm-rl'),org:V('tm-org'),link:V('tm-lk'),linkLabel:V('tm-ll')};if(i<0)t.push(m);else t[i]=m;saveTeam(t);renderMembers();closeModal();}
+function showMemberModal(i,m){
+  const links=(m.links||[{label:'',url:''}]);
+  const linksHtml=links.map((l,li)=>`<div style="display:flex;gap:.4rem;margin-bottom:.35rem"><input type="text" id="tm-ll-${li}" value="${l.label||''}" placeholder="Label e.g. 🏥 Mayo Profile" style="flex:1"><input type="text" id="tm-lk-${li}" value="${l.url||''}" placeholder="https://…" style="flex:2"></div>`).join('');
+  G('adminModalBody').innerHTML=`<div class="modal-title">${i<0?'Add':'Edit'} Team Member</div>
+    <div style="display:flex;gap:.6rem"><div class="fg mt1" style="flex:1"><label>Initials</label><input type="text" id="tm-in" value="${m.initials||''}" placeholder="SL" maxlength="3"></div><div class="fg mt1" style="flex:3"><label>Name &amp; Credentials</label><input type="text" id="tm-nm" value="${m.name||''}" placeholder="e.g. Simon J. Laplante, M.D."></div></div>
+    <div class="fg mt1"><label>Role / Title</label><input type="text" id="tm-rl" value="${m.role||''}"></div>
+    <div class="fg mt1"><label>Department / Institution</label><input type="text" id="tm-org" value="${m.org||''}"></div>
+    <div class="fg mt1"><label>Short Bio</label><textarea id="tm-bio" rows="3">${m.bio||''}</textarea></div>
+    <div style="display:flex;gap:.6rem"><div class="fg mt1" style="flex:1"><label>Accent Color</label><input type="color" id="tm-col" value="${(m.color||'').replace('var(--blue)','#4f8ef7').replace('var(--tel)','#14c9b8').replace('var(--amb)','#f5a623')}" style="width:60px;height:36px;padding:2px;cursor:pointer"></div></div>
+    <div class="fg mt1"><label>Links <span style="font-size:.7rem;color:var(--tx2)">(label + URL per row)</span></label>${linksHtml}</div>`;
+  G('adminModalBtns').innerHTML=`<button class="btn btn-p" onclick="saveMember(${i})">✓ Save</button><button class="btn btn-s" onclick="closeModal()">Cancel</button>`;
+  G('adminModal').classList.add('open');
+}
+function saveMember(i){
+  const t=getTeam();
+  const links=[];
+  for(let li=0;li<5;li++){const lEl=G(`tm-ll-${li}`),uEl=G(`tm-lk-${li}`);if(lEl&&uEl&&(lEl.value.trim()||uEl.value.trim()))links.push({label:lEl.value.trim(),url:uEl.value.trim(),style:''});}
+  const col=G('tm-col')?G('tm-col').value:'#4f8ef7';
+  const m={initials:V('tm-in'),name:V('tm-nm'),role:V('tm-rl'),org:V('tm-org'),bio:V('tm-bio'),color:col,avBg:col,links};
+  if(i<0)t.push(m);else t[i]=m;
+  saveTeam(t);renderMembers();closeModal();
+}
 function saveAboutEdits(){const e={desc:V('ae-desc'),inst:V('ae-inst'),updatedAt:new Date().toISOString()};localStorage.setItem('mosi_about_edits',JSON.stringify(e));alert('✓ Description saved.');}
 function loadAboutEditor(){renderMembers();renderLabs();renderHospitals();try{const e=JSON.parse(localStorage.getItem('mosi_about_edits')||'{}');if(G('ae-desc'))G('ae-desc').value=e.desc||'';if(G('ae-inst'))G('ae-inst').value=e.inst||'';}catch(e){}}
 
