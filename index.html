@@ -508,9 +508,9 @@ function loadState(){
   try{const s=localStorage.getItem(STORE_KEY);if(s)state=JSON.parse(s);}catch(e){}
   if(!state.surgeons||state.surgeons.length===0){
     state.surgeons=[
-      {id:'s1',name:'Dr. A. Rahman',role:'Consultant Bariatric Surgeon',initials:'AR'},
-      {id:'s2',name:'Dr. S. Patel',role:'Associate Specialist',initials:'SP'},
-      {id:'s3',name:'Dr. L. Chen',role:'Fellow',initials:'LC'},
+      {id:'s1',name:'Dr. S. Laplante',role:'Consultant Bariatric Surgeon',initials:'SL'},
+      {id:'s2',name:'Dr. O. Ghanem',role:'Consultant Bariatric Surgeon',initials:'SP'},
+      {id:'s3',name:'Dr. R. ShahriariRad ',role:'Fellow',initials:'RS'},
     ];
   }
   if(!state.gh) state.gh={owner:'',repo:'',token:''};
