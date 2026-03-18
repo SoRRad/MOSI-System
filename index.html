@@ -739,19 +739,36 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
       </div>
     </div>
 
-    <!-- 2. Rate the recommendation -->
+    <!-- 2. Rate recommendation order + tier outcome -->
     <div class="ag-block">
-      <div class="ag-q">2. How would you rate this recommendation?</div>
-      <div class="ag-sub">Based on your clinical experience, how appropriate is the algorithm's recommendation for this patient?</div>
-      <div class="ag-opts">
-        <button class="agb" id="ab-rate-pref" onclick="setRating('Priority')">⭐ Priority — Correct first choice</button>
-        <button class="agb" id="ab-rate-alt" onclick="setRating('Alternative')">↔ Alternative — Acceptable but not first choice</button>
-        <button class="agb" id="ab-rate-contra" onclick="setRating('Contraindicated')">⛔ Contraindicated — Should not be performed</button>
+      <div class="ag-q">2. Rate the algorithm's recommendation order and expected outcome tier</div>
+      <div class="ag-sub">For each recommended procedure below, indicate whether you agree with its placement as <strong>Priority</strong>, <strong>Alternative</strong>, or consider it <strong>Contraindicated</strong>. Then rate whether the assigned TWL target tier reflects the patient's expected metabolic outcome.</div>
+
+      <!-- Proc order ranking — built dynamically by renderJudge() -->
+      <div id="procRankingSection" style="margin-top:.75rem">
+        <div style="font-size:.69rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:.5rem">Procedure Placement Rating</div>
+        <div id="procRankRows" style="display:flex;flex-direction:column;gap:.5rem">
+          <!-- populated by renderJudge() -->
+        </div>
       </div>
-      <div id="ratingReasonBox" class="reason-reveal hidden">
+
+      <div style="margin-top:.9rem">
+        <div style="font-size:.69rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:.5rem">Expected TWL Outcome Tier</div>
+        <div style="font-size:.71rem;color:var(--tx2);margin-bottom:.5rem">Based on this patient's profile and your intended procedure, which TWL tier do you expect them to realistically achieve?</div>
+        <div class="ag-opts" id="tierOutcomeOpts">
+          <button class="agb" id="ab-tierout-A" onclick="setTierOutcome('A')">Tier A &nbsp;≥7.5%</button>
+          <button class="agb" id="ab-tierout-B" onclick="setTierOutcome('B')">Tier B &nbsp;≥15%</button>
+          <button class="agb" id="ab-tierout-C" onclick="setTierOutcome('C')">Tier C &nbsp;≥25%</button>
+          <button class="agb" id="ab-tierout-D" onclick="setTierOutcome('D')">Tier D &nbsp;≥30%</button>
+          <button class="agb" id="ab-tierout-U" onclick="setTierOutcome('Below A')">Below Tier A &nbsp;&lt;7.5%</button>
+        </div>
+        <div id="tierOutcomeMismatchNote" class="hidden" style="margin-top:.55rem;font-size:.74rem;padding:.5rem .75rem;background:var(--ambP);border-radius:var(--r);border:1px solid rgba(245,166,35,.3);color:var(--amb)"></div>
+      </div>
+
+      <div id="ratingReasonBox" class="reason-reveal hidden" style="margin-top:.75rem">
         <div class="fg">
-          <div class="flbl">Reason for rating as Alternative or Contraindicated</div>
-          <textarea id="ratingReason" placeholder="Describe why you rate this recommendation as suboptimal or inappropriate for this patient..."></textarea>
+          <div class="flbl">Additional reasoning — procedure placement or tier outcome disagreement</div>
+          <textarea id="ratingReason" placeholder="e.g. RYGB should be listed before BPD/DS for this patient given their risk profile, or I expect only Tier B outcomes due to prior metabolic surgery..."></textarea>
         </div>
       </div>
     </div>
@@ -985,7 +1002,7 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
     </div>
     <div class="team-bio">Conceptualized and led the clinical development of the MOSI staging system. Provided clinical expertise, patient data oversight, and research direction for the derivation cohort (n=3,097).</div>
     <div class="team-links">
-      <a href="https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20430965" target="_blank" class="team-link" style="color:var(--blue);border-color:rgba(79,142,247,.3);background:var(--bluP)">🏥 Mayo Clinic Profile</a>
+      <a href="https://www.mayoclinic.org/biographies/laplante-simon-j-m-d/bio-20573005" target="_blank" class="team-link" style="color:var(--blue);border-color:rgba(79,142,247,.3);background:var(--bluP)">🏥 Mayo Clinic Profile</a>
     </div>
   </div>
   <div class="team-card" style="border-top:3px solid var(--tel)">
@@ -997,10 +1014,10 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
         <div class="team-org">Surgery Innovation Team · Mayo Clinic</div>
       </div>
     </div>
-    <div class="team-bio">Designed and developed the MOSI Clinical Audit Platform — decision engine, MOSI-T tier system, validation workflow, and GitHub integration.</div>
+    <div class="team-bio">Designed and developed the MOSI Clinical Audit Platform — decision engine, data analysis, MOSI design, validation workflow, and GitHub integration.</div>
     <div class="team-links">
-      <a href="https://www.researchgate.net/profile/Reza-Shahriarirad" target="_blank" class="team-link" style="color:var(--tel);border-color:rgba(20,201,184,.3);background:var(--telP)">🎓 Academic CV &amp; Publications</a>
-      <a href="mailto:shahriarirad.reza@mayo.edu" class="team-link" style="color:var(--tx2);border-color:var(--bdr);background:var(--surf2)">✉️ shahriarirad.reza@mayo.edu</a>
+      <a href="https://sorrad.github.io/RezaShahriarirad_CV" target="_blank" class="team-link" style="color:var(--tel);border-color:rgba(20,201,184,.3);background:var(--telP)">🎓 Academic Profile</a>
+      <a href="/cdn-cgi/l/email-protection#36455e575e445f57445f4457521844534c57765b574f5918535243" class="team-link" style="color:var(--tx2);border-color:var(--bdr);background:var(--surf2)">✉️ <span class="__cf_email__" data-cfemail="12617a737a607b73607b6073763c60776873527f736b7d3c777667">[email&#160;protected]</span></a>
     </div>
   </div>
   <div class="team-card" style="border-top:3px solid var(--amb)">
@@ -1009,12 +1026,12 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
       <div class="team-info">
         <div class="team-name">Abdulrahman Alomar, M.D.</div>
         <div class="team-role" style="color:var(--amb)">Research Fellow</div>
-        <div class="team-org">Dept. of Gastroenterologic &amp; General Surgery · Mayo Clinic</div>
+        <div class="team-org">Dept. of Metabolic and Abdominal Wall Reconstructive Surgery &amp; General Surgery · Mayo Clinic</div>
       </div>
     </div>
-    <div class="team-bio">Contributing to MOSI clinical validation studies, data analysis, and manuscript preparation for the derivation and validation cohorts.</div>
+    <div class="team-bio">Contributing to MOSI clinical validation studies and manuscript preparation for the derivation and validation cohorts.</div>
     <div class="team-links">
-      <a href="https://www.researchgate.net/profile/Abdulrahman-Alomar" target="_blank" class="team-link" style="color:var(--amb);border-color:rgba(245,166,35,.3);background:var(--ambP)">🔬 Research Profile</a>
+      <a href="https://www.linkedin.com/in/abdulrahman-alomar-aba47a233" target="_blank" class="team-link" style="color:var(--amb);border-color:rgba(245,166,35,.3);background:var(--ambP)">🔬 LinkedIn Profile</a>
     </div>
   </div>
 </div>
@@ -1029,7 +1046,7 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
     <div style="flex:1">
       <div style="font-size:.98rem;font-weight:700;color:var(--tx)">MStar Research Lab</div>
       <div style="font-size:.73rem;color:var(--pur);font-weight:600;margin-top:.1rem">MSTAR — Metabolic Surgery Team &amp; Research</div>
-      <div style="font-size:.78rem;color:var(--tx2);line-height:1.7;margin-top:.55rem">The MOSI system was developed under the academic support of the MStar Research Lab. The derivation cohort was curated and validated by the MStar team within the Division of Gastroenterologic and General Surgery at Mayo Clinic.</div>
+      <div style="font-size:.78rem;color:var(--tx2);line-height:1.7;margin-top:.55rem">The MOSI system was developed under the academic support of the MStar Research Lab. The derivation cohort was curated and validated by the MStar team within the Division of Metabolic and Abdominal Wall Reconstructive Surgery at Mayo Clinic.</div>
     </div>
   </div>
 </div>
@@ -1103,12 +1120,12 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
     </div>
   </div>
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ════════════════════════ STATE ════════════════════════ */
 var SK='mosi_v7';
 var S={surgeons:[],currentSurgeonId:null,cases:[],gh:{owner:'',repo:'',token:''},theme:'dark'};
 var CR=null,AG={proc:null,twl:null},recFB={},tierFB={},selectedSi=null,currentDislikeTgt=null;
-var surgRating=null,altApproach=null;
+var surgRating=null,altApproach=null,procRatings={},tierOutcome=null;
 
 function G(id){return document.getElementById(id);}
 function V(id){var el=G(id);return el?el.value:'';}
@@ -1473,6 +1490,38 @@ function renderJudge(){
   if(G('judgeRecProc'))G('judgeRecProc').textContent=r.rec;
   if(G('judgeTierLabel'))G('judgeTierLabel').textContent='Tier '+r.tier;
   if(G('judgeTierTarget'))G('judgeTierTarget').textContent=r.tierTarget;
+
+  /* Build per-procedure ranking rows */
+  var algoProcs=r.rp.slice(); // e.g. ['BPD/DS','RYGB'] or ['RYGB','SG']
+  if(r.stage==='Stage III')algoProcs.push('SG');
+  /* Derive algo label for each proc */
+  var algoLabel={};
+  r.rp.forEach(function(p,i){algoLabel[p]=i===0?(r.rp.length>1?'Priority':'Recommended'):'Alternative';});
+  if(r.stage==='Stage III')algoLabel['SG']='Contraindicated';
+
+  var labelColor={Priority:'var(--grn)',Recommended:'var(--grn)',Alternative:'var(--amb)',Contraindicated:'var(--red)'};
+
+  var rowsH=algoProcs.map(function(proc){
+    var algo=algoLabel[proc]||'—';
+    var ac=labelColor[algo]||'var(--tx3)';
+    return '<div style="display:flex;align-items:center;gap:.65rem;padding:.65rem .85rem;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);flex-wrap:wrap">'+
+      '<div style="flex:1;min-width:120px">'+
+        '<div style="font-size:.82rem;font-weight:700;color:var(--tx)">'+proc+'</div>'+
+        '<div style="font-size:.66rem;color:'+ac+';font-weight:600;margin-top:.08rem">Algorithm: '+algo+'</div>'+
+      '</div>'+
+      '<div style="font-size:.68rem;font-weight:600;color:var(--tx3);margin-right:.2rem">Your rating:</div>'+
+      '<div style="display:flex;gap:.32rem;flex-wrap:wrap">'+
+        '<button class="agb btn-xs" id="pr-pref-'+proc.replace(/\//g,'-')+'" onclick="setProcRating(\''+proc+'\',\'Priority\')">⭐ Priority</button>'+
+        '<button class="agb btn-xs" id="pr-alt-'+proc.replace(/\//g,'-')+'" onclick="setProcRating(\''+proc+'\',\'Alternative\')">↔ Alternative</button>'+
+        '<button class="agb btn-xs" id="pr-contra-'+proc.replace(/\//g,'-')+'" onclick="setProcRating(\''+proc+'\',\'Contraindicated\')">⛔ Contraindicated</button>'+
+        '<button class="agb btn-xs" id="pr-agree-'+proc.replace(/\//g,'-')+'" onclick="setProcRating(\''+proc+'\',\'Agree with algorithm\')">✓ Agree</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  var rowsEl=G('procRankRows');if(rowsEl)rowsEl.innerHTML=rowsH;
+
+  /* Reset tier outcome buttons to reflect algo tier */
+  setTierOutcome(null);
 }
 
 function setAg(f,v){
@@ -1487,13 +1536,46 @@ function setAg(f,v){
   if(f==='proc'){var b=G('procAgreeReasonBox');if(b)b.classList.toggle('hidden',v==='Agree');}
   if(f==='twl'){var tb=G('twlAgreeReasonBox');if(tb)tb.classList.toggle('hidden',v==='Agree');}
 }
-function setRating(v){
-  surgRating=v;
-  ['pref','alt','contra'].forEach(function(k){var el=G('ab-rate-'+k);if(el)el.className='agb';});
-  var map={Priority:'pref',Alternative:'alt',Contraindicated:'contra'};
-  var key=map[v];
-  if(key){var el=G('ab-rate-'+key);if(el)el.className='agb sel-'+key;}
-  var rb=G('ratingReasonBox');if(rb)rb.classList.toggle('hidden',v==='Priority');
+function setProcRating(proc,val){
+  procRatings[proc]=val;
+  /* Clear all buttons for this proc */
+  var slug=proc.replace(/\//g,'-');
+  ['pref','alt','contra','agree'].forEach(function(k){
+    var el=G('pr-'+k+'-'+slug);
+    if(el){el.className='agb btn-xs';if(k==='pref'&&val==='Priority')el.className='agb btn-xs sel-pref';if(k==='alt'&&val==='Alternative')el.className='agb btn-xs sel-alt';if(k==='contra'&&val==='Contraindicated')el.className='agb btn-xs sel-contra';if(k==='agree'&&val==='Agree with algorithm')el.className='agb btn-xs sel-ag';}
+  });
+  /* Show reason box if any proc rated non-agree */
+  var hasDisagreement=Object.values(procRatings).some(function(v){return v&&v!=='Agree with algorithm';});
+  var rb=G('ratingReasonBox');if(rb)rb.classList.toggle('hidden',!hasDisagreement);
+  surgRating=Object.entries(procRatings).map(function(e){return e[0]+':'+e[1];}).join('; ');
+}
+function setTierOutcome(tier){
+  tierOutcome=tier;
+  var r=CR;
+  ['A','B','C','D','U'].forEach(function(t){
+    var el=G('ab-tierout-'+(t==='U'?'U':t));
+    if(el){el.className='agb';if(t===(tier==='Below A'?'U':tier))el.className='agb sel-blue';}
+  });
+  /* Show mismatch note if selected tier differs from algo tier */
+  var note=G('tierOutcomeMismatchNote');if(!note)return;
+  if(tier&&r&&tier!==r.tier&&tier!=='Below A'){
+    var tierNums={A:'7.5',B:'15',C:'25',D:'30'};
+    var dir=(tier>'r.tier')?'higher':'lower';
+    var algoN=tierNums[r.tier]||'?';var yourN=tierNums[tier]||'?';
+    var mismatch=tier<r.tier;
+    if(mismatch){
+      note.innerHTML='⚠ You expect a '+tier+' outcome (≥'+yourN+'% TWL), which is <strong>lower</strong> than the algorithm\'s Tier '+r.tier+' target (≥'+algoN+'% TWL). This may indicate the planned procedure is unlikely to meet the metabolic goal — please record your reasoning below.';
+      note.classList.remove('hidden');
+      var rb=G('ratingReasonBox');if(rb)rb.classList.remove('hidden');
+    }else{
+      note.innerHTML='✓ You expect a Tier '+tier+' outcome, which meets or exceeds the Tier '+r.tier+' algorithm target.';
+      note.style.background='var(--grnP)';note.style.borderColor='rgba(52,212,118,.3)';note.style.color='var(--grn)';
+      note.classList.remove('hidden');
+    }
+  }else if(tier==='Below A'){
+    note.innerHTML='⚠ You expect <strong>below Tier A (&lt;7.5% TWL)</strong>. This suggests the planned procedure is unlikely to achieve a meaningful metabolic outcome. Please document the clinical reasoning below.';
+    note.classList.remove('hidden');var rb=G('ratingReasonBox');if(rb)rb.classList.remove('hidden');
+  }else{note.classList.add('hidden');}
 }
 function setAltApproach(v){
   altApproach=v;
@@ -1512,8 +1594,10 @@ function renderSum(){
     ['Case Ref',V('caseRef')||(CK('isAnon')?'[ANON]':'—')],['Test/Anon',CK('isAnon')?'Yes':'No'],
     ['Date',V('caseDate')],['Surgeon',sg?sg.name:'Not selected'],['BMI',V('bmi')+' kg/m²'],
     ['Stage',r.stage],['Tier','Tier '+r.tier+' ('+r.tierTarget+')'],['Recommended',r.rec],
-    ['Proc Agreement',AG.proc||'—'],['Rec Rating',surgRating||'—'],
-    ['Alternative Approaches',altApproach||'—'],
+    ['Proc Agreement',AG.proc||'—'],
+    ['Procedure Placement Ratings',Object.keys(procRatings).length?Object.entries(procRatings).map(function(e){return e[0]+': '+e[1];}).join(', '):'—'],
+    ['Expected Tier Outcome',tierOutcome||'—'],
+    ['Alternative Approaches',altApproach?altApproach+(V('altApproachText')?' — '+V('altApproachText'):''):'—'],
     ['TWL Agreement',AG.twl||'—'],['Intended Procedure',V('intProc')||'—'],
     ['Reason',V('procAgreeReason')||V('reasonTxt')||'—'],['Comments',V('commentsTxt')||'—'],
   ];
@@ -1580,7 +1664,9 @@ function submitCase(){
     date:V('caseDate'),bmi:parseFloat(V('bmi')),
     M:r.M,O:r.O,Si:r.Si,stage:r.stage,tier:'Tier '+r.tier,tierTarget:r.tierTarget,
     recommended:r.rec,procAgreement:AG.proc||'Not recorded',twlAgreement:AG.twl||'Not recorded',
-    surgRating:surgRating||'Not recorded',altApproach:altApproach||'Not recorded',
+    surgRating:Object.keys(procRatings).length?Object.entries(procRatings).map(function(e){return e[0]+': '+e[1];}).join('; '):'Not recorded',
+    procRatings:JSON.stringify(procRatings),
+    tierOutcome:tierOutcome||'Not recorded',
     altApproachText:V('altApproachText')||'',
     intendedProc:V('intProc')||'',recFeedback:JSON.stringify(recFB),tierFeedback:JSON.stringify(tierFB),
     reason:V('procAgreeReason')||V('reasonTxt')||'',ratingReason:V('ratingReason')||'',
@@ -1598,7 +1684,7 @@ function submitCase(){
   S.cases.push(rec);saveS();
   dispatchWF(rec,function(ok){
     if(btn){btn.disabled=false;btn.textContent='✓ Submit Case';}
-    AG={proc:null,twl:null};recFB={};tierFB={};surgRating=null;altApproach=null;
+    AG={proc:null,twl:null};recFB={};tierFB={};surgRating=null;altApproach=null;procRatings={};tierOutcome=null;
     clearForm();goStep(1);updateBadges();showV('my-cases');
     alert(ok?'✓ Submitted and pushed to GitHub (commits within ~30s).':'✓ Saved locally. GitHub not configured — see admin panel.');
   });
@@ -1688,20 +1774,86 @@ function saveOutcome(id){
 }
 function editCase(id){
   var c=S.cases.find(function(x){return x.id===id;});if(!c)return;
-  G('caseModalBody').innerHTML='<div class="modal-title">Edit Case</div><div class="modal-sub">'+id+'</div>'+
-    '<div class="fg2"><div class="fg"><div class="flbl">Case Reference</div><input type="text" id="ed-ref" value="'+(c.caseRef||'')+'"></div><div class="fg"><div class="flbl">Date</div><input type="text" id="ed-date" value="'+(c.date||'')+'"></div></div>'+
-    '<div class="fg mt1"><div class="flbl">Proc Agreement</div><select id="ed-pag">'+['Agree','Partial','Disagree','Not recorded'].map(function(o){return '<option '+(c.procAgreement===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select></div>'+
-    '<div class="fg mt1"><div class="flbl">Intended Procedure</div><input type="text" id="ed-ip" value="'+(c.intendedProc||'')+'"></div>'+
-    '<div class="fg mt1"><div class="flbl">Reason</div><textarea id="ed-reason">'+(c.reason||'')+'</textarea></div>'+
-    '<div class="fg mt1"><div class="flbl">Comments</div><textarea id="ed-comments">'+(c.comments||'')+'</textarea></div>';
-  G('caseModalBtns').innerHTML='<button class="btn btn-p" onclick="saveEdit(\''+id+'\')">✓ Save</button><button class="btn btn-s" onclick="closeModal(\'caseModal\')">Cancel</button>';
+  var procOpts=['','SG (Sleeve Gastrectomy)','RYGB (Roux-en-Y Gastric Bypass)','BPD/DS (Biliopancreatic Diversion with DS)','SADI-S','Other / Not yet decided'];
+  var agOpts=['Agree','Partial','Disagree','Not recorded'];
+  var twlOpts=['Agree','Partial','Disagree','Not recorded'];
+  G('caseModalBody').innerHTML=
+    '<div class="modal-title">Edit Case</div>'+
+    '<div class="modal-sub" style="font-family:\'DM Mono\',monospace;font-size:.72rem;color:var(--tx3)">ID: '+id+'</div>'+
+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem">'+
+      '<div class="fg"><div class="flbl">Case Reference / MRN</div><input type="text" id="ed-ref" value="'+(c.caseRef||'')+'"></div>'+
+      '<div class="fg"><div class="flbl">Date of Entry</div><input type="date" id="ed-date" value="'+(c.date||'')+'"></div>'+
+    '</div>'+
+
+    '<div style="margin-top:.85rem;padding:.75rem;background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr)">'+
+      '<div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:.55rem">MOSI Scores (read-only — resubmit to change)</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;font-size:.74rem">'+
+        '<div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.45rem"><div style="font-family:\'DM Mono\',monospace;font-size:1.05rem;font-weight:700;color:var(--blue)">M'+(c.M||'?')+'</div><div style="color:var(--tx3);font-size:.6rem;margin-top:.05rem">M Score</div></div>'+
+        '<div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.45rem"><div style="font-family:\'DM Mono\',monospace;font-size:1.05rem;font-weight:700;color:var(--amb)">'+(c.O||'0')+'</div><div style="color:var(--tx3);font-size:.6rem;margin-top:.05rem">O Score</div></div>'+
+        '<div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.45rem"><div style="font-family:\'DM Mono\',monospace;font-size:1.05rem;font-weight:700;color:var(--org)">Si'+(c.Si==='3a'||c.Si==='3b'?'3':c.Si||'?')+'</div><div style="color:var(--tx3);font-size:.6rem;margin-top:.05rem">Si Level</div></div>'+
+        '<div style="text-align:center;background:var(--surf3);border-radius:var(--r);padding:.45rem"><div style="font-size:.82rem;font-weight:700;color:var(--tx)">'+(c.stage||'—')+'</div><div style="color:var(--tx3);font-size:.6rem;margin-top:.05rem">Stage</div></div>'+
+      '</div>'+
+    '</div>'+
+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.75rem">'+
+      '<div class="fg"><div class="flbl">Procedure Agreement</div>'+
+        '<select id="ed-pag">'+agOpts.map(function(o){return '<option '+(c.procAgreement===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+
+      '</div>'+
+      '<div class="fg"><div class="flbl">TWL Target Agreement</div>'+
+        '<select id="ed-twlag">'+twlOpts.map(function(o){return '<option '+(c.twlAgreement===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="fg" style="margin-top:.7rem"><div class="flbl">Intended Procedure</div>'+
+      '<select id="ed-ip">'+procOpts.map(function(o){return '<option '+(c.intendedProc===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+
+    '</div>'+
+
+    '<div class="fg" style="margin-top:.7rem"><div class="flbl">Reason (if differs from recommendation)</div>'+
+      '<textarea id="ed-reason" style="min-height:60px">'+(c.reason||'')+'</textarea>'+
+    '</div>'+
+
+    '<div class="fg" style="margin-top:.7rem"><div class="flbl">Expected Tier Outcome</div>'+
+      '<select id="ed-tierout">'+
+        ['','A — ≥7.5% TWL','B — ≥15% TWL','C — ≥25% TWL','D — ≥30% TWL','Below A — <7.5% TWL','Not recorded'].map(function(o){
+          var v=o.split(' ')[0];return '<option '+(c.tierOutcome===v?'selected':'')+' value="'+v+'">'+o+'</option>';
+        }).join('')+
+      '</select>'+
+    '</div>'+
+
+    '<div class="fg" style="margin-top:.7rem"><div class="flbl">Procedure Placement Ratings</div>'+
+      '<input type="text" id="ed-prating" value="'+(c.surgRating||'')+'">'+
+      '<div class="hint">Format: Procedure: Rating; — e.g. RYGB: Priority; BPD/DS: Alternative</div>'+
+    '</div>'+
+
+    '<div class="fg" style="margin-top:.7rem"><div class="flbl">Alternative Approaches (not in recommendation)</div>'+
+      '<textarea id="ed-alt" style="min-height:55px">'+(c.altApproachText||'')+'</textarea>'+
+    '</div>'+
+
+    '<div class="fg" style="margin-top:.7rem"><div class="flbl">Additional Comments</div>'+
+      '<textarea id="ed-comments" style="min-height:65px">'+(c.comments||'')+'</textarea>'+
+    '</div>';
+
+  G('caseModalBtns').innerHTML=
+    '<button class="btn btn-p" onclick="saveEdit(\''+id+'\')">✓ Save Changes</button>'+
+    '<button class="btn btn-s" onclick="closeModal(\'caseModal\')">Cancel</button>';
   G('caseModal').classList.add('open');
 }
 function saveEdit(id){
   var c=S.cases.find(function(x){return x.id===id;});if(!c)return;
-  c.caseRef=V('ed-ref');c.date=V('ed-date');c.procAgreement=V('ed-pag');c.intendedProc=V('ed-ip');c.reason=V('ed-reason');c.comments=V('ed-comments');
+  c.caseRef=V('ed-ref');
+  c.date=V('ed-date');
+  c.procAgreement=V('ed-pag');
+  c.twlAgreement=V('ed-twlag');
+  c.intendedProc=V('ed-ip');
+  c.reason=V('ed-reason');
+  c.tierOutcome=V('ed-tierout');
+  c.surgRating=V('ed-prating');
+  c.altApproachText=V('ed-alt');
+  c.comments=V('ed-comments');
+  c.editedAt=new Date().toISOString();
   saveS();dispatchWF(c,null);closeModal('caseModal');renderMyCases();
-  alert('✓ Updated.');
+  alert('✓ Case updated successfully.');
 }
 function deleteCase(id){
   if(!confirm('Delete this case?'))return;
@@ -1791,10 +1943,84 @@ function updateBadges(){var b=G('myBadge');if(b)b.textContent=S.cases.filter(fun
 /* ════════════════════════ CSV ════════════════════════ */
 function exportCSV(){
   if(!S.cases.length){alert('No cases to export.');return;}
-  var hd=['id','caseRef','isTest','date','surgeonId','surgeonName','bmi','M','O','Si','stage','tier','tierTarget','recommended','procAgreement','surgRating','altApproach','altApproachText','twlAgreement','intendedProc','reason','ratingReason','comments','actualProcedure','actualTWL12','actualTWL60','submittedAt'];
-  var rows=S.cases.map(function(c){return hd.map(function(h){return '"'+String(c[h]!=null?c[h]:'').replace(/"/g,'""')+'"';}).join(',');});
-  var blob=new Blob([[hd.join(',')].concat(rows).join('\n')],{type:'text/csv'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='MOSI_Cases_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+
+  /* Column definitions: [csvHeader, dataKey, optional formatter] */
+  var cols=[
+    /* ── Case Identity ── */
+    ['Case ID',             'id',               null],
+    ['MRN / Case Reference','caseRef',           null],
+    ['Test / Anonymised',   'isTest',            function(v){return v?'Yes':'No';}],
+    ['Date of Entry',       'date',              null],
+    /* ── Surgeon ── */
+    ['Surgeon Name',        'surgeonName',       null],
+    ['Surgeon ID',          'surgeonId',         null],
+    /* ── MOSI Scores ── */
+    ['BMI (kg/m²)',         'bmi',               null],
+    ['M Score',             'M',                 function(v){return 'M'+v;}],
+    ['O Score (0–4)',        'O',                 null],
+    ['Si Level',            'Si',                function(v){return v==='3a'?'Si3A (Transplant)':v==='3b'?'Si3B (Dialysis)':'Si'+v;}],
+    ['MOSI Stage',          'stage',             null],
+    ['MOSI-T Tier',         'tier',              null],
+    ['TWL Target',          'tierTarget',        null],
+    /* ── Algorithm Recommendation ── */
+    ['Algorithm Recommendation',     'recommended',       null],
+    /* ── Surgeon Judgement ── */
+    ['Procedure Agreement',          'procAgreement',     null],
+    ['Proc Agreement Reason',        'reason',            null],
+    ['Procedure Placement Ratings',  'surgRating',        null],
+    ['Rating Reasoning',             'ratingReason',      null],
+    ['Expected Tier Outcome',        'tierOutcome',       null],
+    ['TWL Target Agreement',         'twlAgreement',      null],
+    ['TWL Disagreement Reason',      'twlDisagreeReason', null],
+    ['Intended Procedure',           'intendedProc',      null],
+    ['Procedure Factors',            'procFactors',       null],
+    ['TWL Factors',                  'twlFactors',        null],
+    ['Alternative Approaches Considered', 'altApproach',  function(v){return v==='Yes'?'Yes':'No';}],
+    ['Alternative Approach Details', 'altApproachText',   null],
+    ['Additional Comments',          'comments',          null],
+    /* ── Post-operative Outcomes ── */
+    ['Surgery Performed',            'surgeryPerformed',  function(v){return v?'Yes':'No';}],
+    ['Actual Procedure Performed',   'intraActualProc',   null],
+    ['Intraoperative Reason',        'intraProcReason',   null],
+    ['Actual TWL at 12 Months (%)',  'intraTWL12',        null],
+    ['Actual TWL at 60 Months (%)',  'intraTWL60',        null],
+    ['T2DM / Dysglycaemia Resolution',  'intraRes_dm',    null],
+    ['Hypertension Resolution',         'intraRes_htn',   null],
+    ['OSA Resolution',                  'intraRes_osa',   null],
+    ['Hyperlipidemia Resolution',       'intraRes_hld',   null],
+    ['Outcome Notes',                   'intraOutcomeNotes', null],
+    /* ── Follow-up Outcomes (entered post-submission) ── */
+    ['Follow-up: Actual Procedure',  'actualProcedure',   null],
+    ['Follow-up: TWL 12 Months (%)', 'actualTWL12',       null],
+    ['Follow-up: TWL 60 Months (%)', 'actualTWL60',       null],
+    ['Follow-up: T2DM Resolution',   'dm_resolved',       null],
+    ['Follow-up: HTN Resolution',    'htn_resolved',      null],
+    ['Follow-up: OSA Resolution',    'osa_resolved',      null],
+    ['Follow-up: HLD Resolution',    'hld_resolved',      null],
+    ['Follow-up: Outcome Notes',     'outcomeNotes',      null],
+    ['Outcome Last Updated',         'outcomeUpdatedAt',  null],
+    /* ── Metadata ── */
+    ['Submitted At',                 'submittedAt',       null],
+    ['Edited At',                    'editedAt',          null],
+  ];
+
+  function esc(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';}
+
+  var header=cols.map(function(c){return esc(c[0]);}).join(',');
+  var rows=S.cases.map(function(rec){
+    return cols.map(function(col){
+      var raw=rec[col[1]];
+      var val=col[2]?col[2](raw):raw;
+      return esc(val==null?'':val);
+    }).join(',');
+  });
+
+  var bom='\uFEFF'; // UTF-8 BOM for Excel compatibility
+  var blob=new Blob([bom+[header].concat(rows).join('\n')],{type:'text/csv;charset=utf-8;'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='MOSI_Cases_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
 }
 
 /* ════════════════════════ CLEAR ════════════════════════ */
@@ -1817,11 +2043,13 @@ function clearForm(){
   var ub=G('useBmiBtn');if(ub)ub.classList.add('hidden');
   selectedSi=null;window.CR=null;CR=null;
   document.querySelectorAll('.si-card').forEach(function(c){c.classList.remove('sel');});
-  AG={proc:null,twl:null};recFB={};tierFB={};surgRating=null;altApproach=null;
+  AG={proc:null,twl:null};recFB={};tierFB={};surgRating=null;altApproach=null;procRatings={};tierOutcome=null;
   setSurgDone(false);
   ['procAgreeReasonBox','twlAgreeReasonBox','ratingReasonBox','altApproachBox'].forEach(function(id){var el=G(id);if(el)el.classList.add('hidden');});
+  var ton=G('tierOutcomeMismatchNote');if(ton){ton.classList.add('hidden');ton.style.background='';ton.style.borderColor='';ton.style.color='';}
+  var prr=G('procRankRows');if(prr)prr.innerHTML='';
   ['ab-proc-agree','ab-proc-partial','ab-proc-disagree','ab-twl-agree','ab-twl-partial','ab-twl-disagree',
-   'ab-rate-pref','ab-rate-alt','ab-rate-contra','ab-alt-no','ab-alt-yes'].forEach(function(id){var el=G(id);if(el)el.className='agb';});
+   'ab-alt-no','ab-alt-yes'].forEach(function(id){var el=G(id);if(el)el.className='agb';});
   goStep(1);
 }
 
