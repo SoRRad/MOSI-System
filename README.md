@@ -6,7 +6,7 @@ The platform does not collect, save, sync, or submit patient-level data. It asks
 
 ## Research Use
 
-MOSI is a bariatric surgery staging and research decision-support framework. This repository is not a medical device and is not a substitute for clinician judgment, bariatric surgeon judgment, or local multidisciplinary review.
+MOSI is a bariatric surgery staging and research decision-support framework. This repository is not a medical device and is not a substitute for clinical judgment or local multidisciplinary review.
 
 MOSI-D values are retrospective research estimates. They may support discussion, but they do not determine treatment.
 
@@ -91,4 +91,4 @@ The static lookup uses the final available v5.1 probability values. Exact 60-mon
 
 ## Disclaimer
 
-This software is for research and clinical decision-support only. It is not a substitute for clinical decision-making and requires bariatric surgeon judgment.
+This software is for research decision-support only. It is not a substitute for clinical decision-making.

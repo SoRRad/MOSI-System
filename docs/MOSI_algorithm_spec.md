@@ -76,7 +76,7 @@ The active display includes 12-month and 60-month estimates for:
 - >=30% TWL
 - >=35% TWL
 
-The static lookup uses final available v5.1 probability values. Missing estimates remain `N/A` and are labeled as not available from current model output. MOSI-D output is a procedure-specific probability display that may support discussion and requires bariatric surgeon judgment.
+The static lookup uses final available v5.1 probability values. Missing estimates remain `N/A` and are labeled as not available from current model output. MOSI-D output is a procedure-specific research probability display.
 
 ### v5.1 12-Month Probabilities
 
