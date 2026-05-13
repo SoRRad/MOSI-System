@@ -629,6 +629,10 @@ button {
   margin-bottom: 10px;
 }
 
+.stage-badges {
+  margin-bottom: 12px;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -666,6 +670,26 @@ button {
 
 .tier-reason {
   margin-top: 6px;
+}
+
+.target-summary {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 10px;
+}
+
+.target-summary h3 {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.target-summary .badge {
+  justify-self: start;
+  font-size: 0.84rem;
 }
 
 .driver-list {
@@ -1017,17 +1041,87 @@ button {
 }
 
 .report-box {
-  min-height: 150px;
-  margin: 10px 0;
-  padding: 12px;
+  margin: 10px 0 12px;
+  padding: 14px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--panel-strong);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--teal) 7%, transparent), transparent 58%),
+    color-mix(in srgb, var(--panel-strong) 88%, var(--soft));
   color: var(--ink);
-  white-space: pre-wrap;
   font-family: var(--font-body);
-  font-size: 0.86rem;
-  line-height: 1.5;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.report-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-list li {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+}
+
+.report-list li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  margin-top: 0.58em;
+  border-radius: 999px;
+  background: var(--teal);
+}
+
+.report-label {
+  font-weight: 900;
+}
+
+.report-value {
+  font-weight: 720;
+}
+
+.report-code,
+.report-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  margin: 1px 3px 1px 0;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--panel-strong);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.report-code {
+  border: 1px solid color-mix(in srgb, var(--teal) 34%, var(--line));
+}
+
+.report-badge {
+  border: 1px solid color-mix(in srgb, var(--stage-color) 32%, var(--line));
+  background: color-mix(in srgb, var(--stage-color) 14%, var(--panel-strong));
+}
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.status-text {
+  min-height: 1.2em;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
 .method-block {
@@ -1289,8 +1383,17 @@ button {
 }
 
 @media (max-width: 900px) {
+  .main-space {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .calculator-grid {
+    display: contents;
+  }
+
   .header-inner,
-  .calculator-grid,
   .bmi-grid,
   .estimate-grid,
   .about-grid,
@@ -1308,6 +1411,25 @@ button {
     position: static;
     grid-column: auto;
     grid-row: auto;
+    order: 4;
+  }
+
+  #section-bmi {
+    order: 1;
+  }
+
+  #section-profile {
+    order: 2;
+  }
+
+  #estimates {
+    order: 3;
+    margin-top: 0;
+  }
+
+  #report {
+    order: 5;
+    margin-top: 0;
   }
 
   .target-ladder {
@@ -1334,10 +1456,43 @@ button {
     width: min(100% - 20px, 1220px);
   }
 
+  .main-space {
+    gap: 10px;
+    padding-top: 10px;
+  }
+
+  .site-header {
+    position: static;
+  }
+
   .section-head,
   .wide-head,
   .procedure-head {
     display: grid;
+    gap: 8px;
+  }
+
+  .section-head {
+    padding: 10px 11px 8px;
+  }
+
+  .section-head p,
+  .wide-copy,
+  .field-subtitle,
+  .passport-note,
+  .procedure-card p,
+  .component-row small {
+    font-size: 0.76rem;
+  }
+
+  .bmi-grid,
+  .bmi-card {
+    padding: 10px;
+  }
+
+  .field-row {
+    min-height: 48px;
+    padding: 7px 11px;
   }
 
   .section-tools {
@@ -1354,6 +1509,36 @@ button {
   .switch-face {
     width: 100%;
     min-width: 0;
+  }
+
+  .switch {
+    min-height: 40px;
+  }
+
+  .switch-face {
+    height: 40px;
+  }
+
+  .passport-top,
+  .report-box {
+    padding: 11px;
+  }
+
+  .mosi-code {
+    font-size: 2rem;
+  }
+
+  .report-list {
+    gap: 8px;
+  }
+
+  .report-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .report-actions .action-button {
+    width: 100%;
   }
 
   .target-ladder {
@@ -1724,15 +1909,17 @@ button {
     <aside class="results-aside print-focus" aria-label="Live MOSI result panel">
       <section class="passport" id="passport">
         <div class="passport-top">
-          <div class="passport-label">MOSI Summary <span class="live-dot">Live</span></div>
+          <div class="passport-label">MOSI stage <span class="live-dot">Live</span></div>
           <p class="mosi-code" id="mosiCode">Enter BMI</p>
-          <div class="badge-row">
+          <div class="badge-row stage-badges">
             <span class="badge stage" id="stageBadge">Stage pending</span>
             <span class="badge" id="substageBadge">No subgroup</span>
-            <span class="badge" id="tierBadge">Tier pending</span>
-            <span class="badge" id="targetBadge">Target pending</span>
           </div>
-          <p class="passport-note" id="stageExplanation">BMI is required. Clinical fields default to No.</p>
+          <div class="target-summary">
+            <h3>Required weight-loss target</h3>
+            <span class="badge" id="tierBadge">Tier pending</span>
+          </div>
+          <p class="passport-note" id="stageExplanation">BMI is required to assign MOSI stage.</p>
           <p class="passport-note tier-reason" id="tierExplanation">Weight-loss target appears after BMI is valid.</p>
           <ul class="driver-list" id="driverList"></ul>
         </div>
@@ -1749,11 +1936,11 @@ button {
           </button>
           <button class="component-row" type="button" data-jump="section-profile">
             <strong id="oScore">O-</strong>
-            <span>O: organ/metabolic components<small id="oDetail">Defaults to O0</small></span>
+            <span>O: organ/metabolic components<small id="oDetail">No O-score components selected</small></span>
           </button>
           <button class="component-row" type="button" data-jump="section-profile">
             <strong id="siScore">Si-</strong>
-            <span>Si: systemic impairment<small id="siDetail">Defaults to Si0</small></span>
+            <span>Si: systemic impairment<small id="siDetail">No systemic impairment selected</small></span>
           </button>
         </div>
         <details class="explain-box">
@@ -1763,12 +1950,6 @@ button {
             <div id="tierDetail">Tier explanation appears after BMI is entered.</div>
           </div>
         </details>
-        <div class="target-ladder" aria-label="Weight-loss target ladder">
-          <div class="ladder-step" data-tier="A"><strong>Tier A</strong><span>&ge;7.5%</span><small>baseline target</small></div>
-          <div class="ladder-step" data-tier="B"><strong>Tier B</strong><span>&ge;15%</span><small>target modifier</small></div>
-          <div class="ladder-step" data-tier="C"><strong>Tier C</strong><span>&ge;25%</span><small>glycemic/microvascular</small></div>
-          <div class="ladder-step" data-tier="D"><strong>Tier D</strong><span>&ge;30%</span><small>systemic disease</small></div>
-        </div>
       </section>
     </aside>
 
@@ -1777,7 +1958,6 @@ button {
         <div>
           <span class="section-kicker">Clinical profile</span>
           <h2 id="profile-title">Clinical profile</h2>
-          <p>All conditions default to No. Dysglycemia counts once when type 2 diabetes or impaired fasting glucose is selected.</p>
         </div>
         <div class="section-tools">
           <span class="count-pill" id="clinicalCount">0 selected</span>
@@ -1787,11 +1967,6 @@ button {
       <div class="field-list" id="clinicalFields"></div>
     </section>
 
-    <div class="toolbar no-print">
-      <span class="status-text" id="copyStatus" aria-live="polite"></span>
-      <button class="action-button" type="button" id="copyReportButton">Copy report</button>
-      <button class="action-button primary" type="button" id="printReportButton">Print report</button>
-    </div>
   </form>
 
   <section class="wide-panel print-focus" id="estimates" aria-labelledby="estimates-title">
@@ -1814,16 +1989,17 @@ button {
     <div class="wide-head">
       <div>
         <span class="section-kicker">Clinical report</span>
-        <h2 id="report-title">Concise report</h2>
+        <h2 id="report-title">Clinical report</h2>
         <p class="wide-copy">Generated from the current visible inputs only.</p>
-      </div>
-      <div class="toolbar no-print">
-        <button class="action-button" type="button" id="copyReportButton2">Copy report</button>
-        <button class="action-button primary" type="button" id="printReportButton2">Print report</button>
       </div>
     </div>
     <div class="report-box" id="reportText"></div>
-    <p class="report-help print-disclaimer" style="display:none">Research decision-support only. Procedure selection requires clinician judgment.</p>
+    <div class="report-actions no-print">
+      <span class="status-text" id="copyStatus" aria-live="polite"></span>
+      <button class="action-button" type="button" id="copyReportButton">Copy report</button>
+      <button class="action-button primary" type="button" id="printReportButton">Print report</button>
+    </div>
+    <p class="report-help print-disclaimer" style="display:none">Research decision-support only. Procedure selection requires bariatric surgeon judgment.</p>
   </section>
 
 </main>
@@ -2048,7 +2224,6 @@ button {
     stageBadge: document.getElementById("stageBadge"),
     substageBadge: document.getElementById("substageBadge"),
     tierBadge: document.getElementById("tierBadge"),
-    targetBadge: document.getElementById("targetBadge"),
     stageExplanation: document.getElementById("stageExplanation"),
     tierExplanation: document.getElementById("tierExplanation"),
     stageDetail: document.getElementById("stageDetail"),
@@ -2230,6 +2405,25 @@ button {
     return value.toFixed(1).replace(/\.0$/, "") + "%";
   }
 
+  function targetSummary(mosiT) {
+    if (!mosiT) return "Incomplete";
+    return "Tier " + mosiT.tier + " · ≥" + formatTarget(mosiT.target) + "% TWL";
+  }
+
+  function targetReason(mosiT) {
+    if (!mosiT) return "Weight-loss target appears after BMI is valid.";
+    if (mosiT.tier === "A") return "Assigned because no qualifying metabolic or organ comorbidity is present.";
+    if (mosiT.tier === "B") return "Assigned because OSA, hypertension, hyperlipidemia, GERD, arthropathy, or prior arthroplasty is present.";
+    if (mosiT.tier === "C") return "Assigned because type 2 diabetes, impaired fasting glucose, or diabetic microvascular disease is present.";
+    if (mosiT.tier === "D") return "Assigned because cardiac history, stroke/TIA, Si2, or Si3 systemic disease is present.";
+    return displayText(mosiT.reason);
+  }
+
+  function stageDriverSummary(mosiS) {
+    if (!mosiS || !mosiS.complete) return "BMI required";
+    return "BMI class " + mosiS.mScore.label + "; O score " + mosiS.oScore.score + "; " + mosiS.siLevel.label + " " + displayText(mosiS.siLevel.reason);
+  }
+
   function probabilityBar(value) {
     if (!Number.isFinite(value)) {
       return '<div class="probability"><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="--bar-width:0%"></div></div><strong>N/A</strong></div>';
@@ -2319,44 +2513,57 @@ button {
     els.substageBadge.textContent = "No subgroup";
     els.tierBadge.className = "badge";
     els.tierBadge.textContent = "Tier pending";
-    els.targetBadge.className = "badge";
-    els.targetBadge.textContent = "Target pending";
-    els.stageExplanation.textContent = warning ? mosiS.warning : "BMI is required. Clinical fields default to No.";
+    els.stageExplanation.textContent = warning ? mosiS.warning : "BMI is required to assign MOSI stage.";
     els.tierExplanation.textContent = "Weight-loss target appears after BMI is valid.";
     els.stageDetail.textContent = displayText(mosiS.reason || "BMI is required to assign MOSI stage.");
     els.tierDetail.textContent = "Weight-loss target appears after BMI is valid.";
     els.mScore.textContent = "M-";
     els.mDetail.textContent = warning ? "BMI below MOSI range" : "BMI class pending";
     els.oScore.textContent = "O-";
-    els.oDetail.textContent = "Defaults to O0";
+    els.oDetail.textContent = "No O-score components selected";
     els.siScore.textContent = "Si-";
-    els.siDetail.textContent = "Defaults to Si0";
+    els.siDetail.textContent = "No systemic impairment selected";
     renderDriverList([]);
     updateRail(0);
     updateLadder("");
     renderEstimates("", null);
-    els.reportText.textContent = "MOSI stage: Incomplete.\nWeight-loss target: Incomplete.\nKey drivers: none selected.\nProcedure-specific estimates: SG and RYGB research estimates shown after BMI is valid.\nInterpretation: Research decision-support only; procedure selection requires clinician judgment.";
+    renderReportCard(null, null, []);
     renderPrintReport(readInput(), mosiS, null);
   }
 
-  function buildReport(mosiS, mosiT, drivers) {
-    var data = core.getMosiDEstimates(mosiS.stageDisplay, mosiT.tier);
-    var targetText = "";
-    if (data.highlightThreshold) {
-      targetText = "At the weight-loss target threshold, estimated 12-month probability:\n" +
-        data.procedures.map(function (procedure) {
-          return procedure.shortName + ": " + fmtPercent(procedure.estimates[data.highlightThreshold].month12);
-        }).join("\n");
-    } else {
-      targetText = "The target lies between displayed thresholds; see highlighted rows.";
+  function buildPlainReport(mosiS, mosiT) {
+    if (!mosiS || !mosiS.complete || !mosiT) {
+      return "MOSI Clinical Report\n" +
+        "- MOSI stage: Incomplete\n" +
+        "- Required weight-loss target: Incomplete\n" +
+        "- Key drivers: BMI required.\n" +
+        "- Procedure-specific estimates: SG and RYGB estimates displayed in calculator after BMI is valid.\n" +
+        "- Interpretation: Research decision-support only; procedure selection requires bariatric surgeon judgment.";
     }
+    return "MOSI Clinical Report\n" +
+      "- MOSI stage: " + formatMosiCode(mosiS.summary) + " → " + mosiS.stageDisplay + "\n" +
+      "- Required weight-loss target: " + targetSummary(mosiT) + "\n" +
+      "- Key drivers: " + stageDriverSummary(mosiS) + ".\n" +
+      "- Procedure-specific estimates: SG and RYGB estimates displayed in calculator.\n" +
+      "- Interpretation: Research decision-support only; procedure selection requires bariatric surgeon judgment.";
+  }
 
-    return "MOSI stage: " + formatMosiCode(mosiS.summary) + " → " + mosiS.stageDisplay + ".\n" +
-      "Weight-loss target: Tier " + mosiT.tier + ", target ≥" + formatTarget(mosiT.target) + "% TWL.\n" +
-      "Key drivers: " + (drivers.length ? drivers.join(", ") : "No selected clinical drivers") + ".\n" +
-      "Procedure-specific estimates: SG and RYGB estimates shown for 12 and 60 months.\n" +
-      targetText + "\n" +
-      "Interpretation: Research decision-support only; procedure selection requires clinician judgment.";
+  function renderReportCard(mosiS, mosiT) {
+    var complete = Boolean(mosiS && mosiS.complete && mosiT);
+    var mosiStage = complete ? formatMosiCode(mosiS.summary) + " → " + mosiS.stageDisplay : "Incomplete";
+    var target = complete ? targetSummary(mosiT) : "Incomplete";
+    var drivers = complete ? stageDriverSummary(mosiS) : "BMI required";
+    var stageClassName = complete ? stageClass(mosiS.stageDisplay) : "";
+    els.reportText.className = "report-box " + stageClassName;
+    els.reportText.dataset.copyText = buildPlainReport(mosiS, mosiT);
+    els.reportText.innerHTML =
+      '<ul class="report-list">' +
+        '<li><span><span class="report-label">MOSI stage:</span> <span class="report-code">' + escapeHtml(mosiStage) + "</span></span></li>" +
+        '<li><span><span class="report-label">Required weight-loss target:</span> <span class="report-badge">' + escapeHtml(target) + "</span></span></li>" +
+        '<li><span><span class="report-label">Key stage drivers:</span> <span class="report-value">' + escapeHtml(drivers) + ".</span></span></li>" +
+        '<li><span><span class="report-label">Procedure-specific estimates:</span> SG and RYGB research estimates are displayed above.</span></li>' +
+        '<li><span><span class="report-label">Interpretation:</span> Research decision-support only; procedure selection requires bariatric surgeon judgment.</span></li>' +
+      "</ul>";
   }
 
   function selectedNames(groupName) {
@@ -2423,7 +2630,7 @@ button {
       return '<div class="print-driver-group"><strong>' + escapeHtml(group.title) + '</strong><span>' +
         escapeHtml(driverGroupText(group.items)) + "</span></div>";
     }).join("");
-    var target = "Tier " + mosiT.tier + " · target ≥" + formatTarget(mosiT.target) + "% TWL";
+    var target = targetSummary(mosiT);
 
     els.printReport.innerHTML = renderPrintHeader() +
       '<section class="print-summary-grid print-section">' +
@@ -2433,7 +2640,7 @@ button {
           '<div class="print-badge-row">' +
             '<span class="print-badge">' + escapeHtml(mosiS.stage) + "</span>" +
             (mosiS.subtype ? '<span class="print-badge">' + escapeHtml(mosiS.subtype) + "</span>" : "") +
-            '<span class="print-badge">Weight-loss target: ' + escapeHtml(target) + "</span>" +
+            '<span class="print-badge">Required target: ' + escapeHtml(target) + "</span>" +
           "</div>" +
         "</div>" +
         '<div class="print-mini-grid">' +
@@ -2448,7 +2655,7 @@ button {
       '<section class="print-two-col">' +
         '<div class="print-section"><h3>Stage and target explanation</h3>' +
           '<p>' + escapeHtml(displayText(mosiS.explanation)) + "</p>" +
-          '<p>' + escapeHtml(displayText(mosiT.reason)) + "</p></div>" +
+          '<p>' + escapeHtml(targetReason(mosiT)) + "</p></div>" +
         '<div class="print-section print-drivers"><h3>Key drivers</h3>' + driverMarkup + "</div>" +
       "</section>" +
       '<section class="print-section print-estimates"><h3>Procedure-specific research estimates</h3>' +
@@ -2473,7 +2680,6 @@ button {
     var drivers = selectedDrivers(mosiS, mosiT);
     var stageDisplay = mosiS.stageDisplay;
     var stageClassName = stageClass(stageDisplay);
-    var targetLabel = "≥" + formatTarget(mosiT.target) + "% TWL";
 
     els.bmiWarning.classList.remove("visible");
     els.passport.className = "passport " + stageClassName;
@@ -2483,13 +2689,11 @@ button {
     els.substageBadge.className = "badge";
     els.substageBadge.textContent = mosiS.subtype || "No subgroup";
     els.tierBadge.className = "badge tier-" + mosiT.tier;
-    els.tierBadge.textContent = "Weight-loss target: Tier " + mosiT.tier;
-    els.targetBadge.className = "badge tier-" + mosiT.tier;
-    els.targetBadge.textContent = targetLabel;
+    els.tierBadge.textContent = targetSummary(mosiT);
     els.stageExplanation.textContent = displayText(mosiS.explanation);
-    els.tierExplanation.textContent = displayText(mosiT.reason);
+    els.tierExplanation.textContent = targetReason(mosiT);
     els.stageDetail.textContent = displayText(mosiS.explanation);
-    els.tierDetail.textContent = displayText(mosiT.reason);
+    els.tierDetail.textContent = targetReason(mosiT);
     els.mScore.textContent = mosiS.mScore.label;
     els.mDetail.textContent = "BMI " + displayText(mosiS.mScore.range);
     els.oScore.textContent = mosiS.oScore.label;
@@ -2500,7 +2704,7 @@ button {
     updateRail(stageRank(stageDisplay));
     updateLadder(mosiT.tier);
     renderEstimates(stageDisplay, mosiT);
-    els.reportText.textContent = buildReport(mosiS, mosiT, drivers);
+    renderReportCard(mosiS, mosiT, drivers);
     renderPrintReport(input, mosiS, mosiT);
   }
 
@@ -2541,7 +2745,7 @@ button {
   }
 
   function copyReport() {
-    var text = els.reportText.textContent;
+    var text = els.reportText.dataset.copyText || els.reportText.textContent;
     function done(message) {
       els.copyStatus.textContent = message;
       window.setTimeout(function () { els.copyStatus.textContent = ""; }, 1800);
@@ -2653,9 +2857,7 @@ button {
     if (event.target === els.aboutModal) closeAbout();
   });
   document.getElementById("copyReportButton").addEventListener("click", copyReport);
-  document.getElementById("copyReportButton2").addEventListener("click", copyReport);
   document.getElementById("printReportButton").addEventListener("click", printReport);
-  document.getElementById("printReportButton2").addEventListener("click", printReport);
   els.month12Button.addEventListener("click", function () { setTimepoint("month12"); });
   els.month60Button.addEventListener("click", function () { setTimepoint("month60"); });
   els.calculator.addEventListener("submit", function (event) { event.preventDefault(); });
