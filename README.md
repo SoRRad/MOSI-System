@@ -63,7 +63,7 @@ MOSI-T uses highest-tier-wins logic.
 
 MOSI-D displays procedure-specific probability estimates for SG and RYGB at 12 and 60 months across TWL thresholds of >=5%, >=10%, >=20%, >=25%, >=30%, and >=35%.
 
-Only values already documented in the prior repository outcome table are displayed. Missing threshold/procedure/time cells are shown as `N/A` with no interpolation or invented model output.
+The static lookup uses the final available v5.1 probability values. Exact 60-month values for >=5%, >=10%, and >=25% TWL are not available in the current model output, so those cells display `N/A`. No values are interpolated.
 
 ## Final Manuscript-Aligned Findings
 
@@ -83,8 +83,9 @@ Only values already documented in the prior repository outcome table are display
 | Path | Purpose |
 |---|---|
 | `index.html` | Static one-page MOSI calculator |
+| `src/mosi-core.js` | Shared MOSI-S, MOSI-T, and MOSI-D calculation logic |
 | `docs/MOSI_algorithm_spec.md` | Algorithm and research-results specification |
-| `tests/mosi_examples.js` | Basic example checks for the MOSI-S and MOSI-T logic |
+| `tests/mosi_examples.js` | Example checks using the same shared logic as the app |
 | `.github/workflows/deploy_pages.yml` | GitHub Pages deployment workflow |
 | `.nojekyll` | Prevents Jekyll processing on GitHub Pages |
 

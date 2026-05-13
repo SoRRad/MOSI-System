@@ -76,7 +76,35 @@ The active display includes 12-month and 60-month estimates for:
 - >=30% TWL
 - >=35% TWL
 
-Only documented static values from the current repository history are displayed. Missing estimates remain `N/A` and are labeled as not available from current model output. MOSI-D output is a procedure-specific probability display that may support discussion and requires bariatric surgeon judgment.
+The static lookup uses final available v5.1 probability values. Missing estimates remain `N/A` and are labeled as not available from current model output. MOSI-D output is a procedure-specific probability display that may support discussion and requires bariatric surgeon judgment.
+
+### v5.1 12-Month Probabilities
+
+| Stage | Procedure | >=5% | >=10% | >=20% | >=25% | >=30% | >=35% |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Stage I | SG | 98.0% | 96.0% | 82.0% | 60.0% | 26.0% | 10.0% |
+| Stage I | RYGB | 100.0% | 100.0% | 95.5% | 81.8% | 64.4% | 34.8% |
+| Stage II | SG | 98.6% | 95.9% | 68.3% | 51.2% | 29.5% | 14.6% |
+| Stage II | RYGB | 99.7% | 99.5% | 93.2% | 82.5% | 61.7% | 38.5% |
+| Stage III | SG | 95.7% | 86.2% | 52.5% | 30.5% | 16.3% | 7.8% |
+| Stage III | RYGB | 99.7% | 99.2% | 88.9% | 70.8% | 47.9% | 24.5% |
+| Stage IV | SG | 99.3% | 90.3% | 54.9% | 40.3% | 22.2% | 9.7% |
+| Stage IV | RYGB | 100.0% | 100.0% | 92.9% | 78.6% | 57.1% | 50.0% |
+
+### v5.1 60-Month Probabilities
+
+Exact 60-month values for >=5%, >=10%, and >=25% TWL are unavailable in the current model output and display as `N/A`.
+
+| Stage | Procedure | >=20% | >=30% | >=35% |
+|---|---|---:|---:|---:|
+| Stage I | SG | 59.3% | 22.2% | 7.4% |
+| Stage I | RYGB | 73.7% | 25.0% | 11.8% |
+| Stage II | SG | 40.5% | 16.7% | 11.9% |
+| Stage II | RYGB | 67.4% | 31.7% | 19.1% |
+| Stage III | SG | 36.7% | 13.3% | 7.5% |
+| Stage III | RYGB | 62.5% | 27.7% | 16.6% |
+| Stage IV | SG | 41.2% | 17.6% | 14.7% |
+| Stage IV | RYGB | 91.7% | 58.3% | 25.0% |
 
 ## Final Research Results
 

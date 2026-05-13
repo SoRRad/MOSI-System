@@ -7,27 +7,32 @@
 <style>
 :root {
   color-scheme: light;
-  --ink: #132238;
-  --muted: #52657d;
-  --soft: #7588a1;
-  --line: #d8e0ea;
-  --line-strong: #bdc9d8;
+  --ink: #102338;
+  --muted: #536a82;
+  --soft: #7a8fa6;
+  --line: #d8e2ec;
+  --line-strong: #b9c8d8;
   --page: #f4f7fb;
   --panel: #ffffff;
   --panel-soft: #f8fbfe;
   --blue: #0057a8;
-  --blue-dark: #003f7c;
-  --blue-soft: #e8f2fb;
+  --blue-dark: #003d73;
+  --blue-soft: #e6f1fb;
   --teal: #0f766e;
-  --teal-soft: #e6f6f3;
-  --gold: #946200;
-  --gold-soft: #fff4d7;
+  --teal-soft: #e5f6f3;
+  --gold: #976600;
+  --gold-soft: #fff4d8;
+  --orange: #c75100;
+  --orange-soft: #fff0e6;
   --red: #b42318;
   --red-soft: #fde7e4;
   --green: #237a3b;
   --green-soft: #e7f6eb;
+  --violet: #5b5fc7;
+  --violet-soft: #ededff;
   --radius: 8px;
-  --shadow: 0 18px 48px rgba(24, 44, 70, 0.11);
+  --shadow: 0 18px 46px rgba(26, 46, 74, 0.11);
+  --shadow-soft: 0 8px 24px rgba(26, 46, 74, 0.08);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -35,9 +40,15 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  background: var(--page);
+  background:
+    linear-gradient(120deg, rgba(0, 87, 168, 0.06), rgba(15, 118, 110, 0.04) 40%, transparent 70%),
+    var(--page);
   color: var(--ink);
   line-height: 1.5;
 }
@@ -48,71 +59,83 @@ input {
 }
 
 .site-header {
-  background: linear-gradient(180deg, #ffffff 0%, #edf4fb 100%);
   border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, #ffffff 0%, #eef5fb 100%);
 }
 
 .header-inner,
 .page,
 .site-footer {
-  width: min(1180px, calc(100% - 32px));
+  width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
 }
 
 .header-inner {
-  padding: 34px 0 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  padding: 36px 0 30px;
 }
 
 .eyebrow {
   margin: 0 0 10px;
   color: var(--blue);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 800;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 h1 {
-  max-width: 940px;
+  max-width: 980px;
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3.45rem);
+  font-size: clamp(2rem, 4vw, 3.35rem);
   line-height: 1.04;
   letter-spacing: 0;
 }
 
 .subtitle {
-  max-width: 850px;
+  max-width: 760px;
   margin: 14px 0 0;
   color: var(--muted);
-  font-size: 1.08rem;
+  font-size: 1.06rem;
+}
+
+.header-actions {
+  display: grid;
+  gap: 10px;
+  justify-items: end;
 }
 
 .disclaimer {
-  display: inline-flex;
-  margin-top: 18px;
-  padding: 10px 14px;
-  background: var(--blue-soft);
+  max-width: 340px;
   color: var(--blue-dark);
-  border: 1px solid #c8dff2;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.anchor-button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 14px;
+  border: 1px solid var(--blue);
   border-radius: var(--radius);
-  font-weight: 700;
+  background: var(--blue);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  text-decoration: none;
 }
 
-.privacy-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 18px;
-}
-
-.privacy-strip span {
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--muted);
-  font-size: 0.84rem;
-  font-weight: 700;
+.button.secondary,
+.anchor-button.secondary {
+  background: #fff;
+  color: var(--blue-dark);
 }
 
 .page {
@@ -121,24 +144,20 @@ h1 {
 
 .calculator-grid {
   display: grid;
-  grid-template-columns: minmax(290px, 395px) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 410px) minmax(0, 1fr);
   gap: 18px;
   align-items: start;
 }
 
 .card {
-  background: var(--panel);
+  background: rgba(255, 255, 255, 0.96);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 
-.card-body {
-  padding: 20px;
-}
-
 .card-header {
-  padding: 18px 20px;
+  padding: 17px 18px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -151,7 +170,11 @@ h1 {
 .card-header p {
   margin: 5px 0 0;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
+}
+
+.card-body {
+  padding: 18px;
 }
 
 .input-panel {
@@ -159,32 +182,46 @@ h1 {
   top: 16px;
 }
 
-.field {
+.bmi-field {
   display: grid;
-  gap: 7px;
-  margin-bottom: 16px;
+  gap: 8px;
 }
 
-.field label,
-.group-title {
+.bmi-field label {
   color: var(--ink);
-  font-size: 0.9rem;
   font-weight: 800;
 }
 
-.field input[type="number"] {
+.bmi-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.bmi-field input[type="number"] {
   width: 100%;
-  min-height: 44px;
-  padding: 9px 11px;
+  min-height: 46px;
+  padding: 10px 12px;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   background: #fff;
   color: var(--ink);
 }
 
-.field input[type="number"]:focus {
-  outline: 3px solid rgba(0, 87, 168, 0.18);
+.bmi-field input[type="number"]:focus {
+  outline: 3px solid rgba(0, 87, 168, 0.17);
   border-color: var(--blue);
+}
+
+.reset-button {
+  min-height: 46px;
+  padding: 9px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--blue-dark);
+  cursor: pointer;
+  font-weight: 800;
 }
 
 .hint {
@@ -192,96 +229,167 @@ h1 {
   font-size: 0.82rem;
 }
 
-.input-group {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
+.input-section {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-soft);
+  overflow: hidden;
+}
+
+.input-section summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 14px;
+  cursor: pointer;
+  font-weight: 800;
+  list-style: none;
+}
+
+.input-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.input-section summary::after {
+  content: "+";
+  color: var(--blue);
+  font-weight: 900;
+}
+
+.input-section[open] summary::after {
+  content: "-";
+}
+
+.input-section p {
+  margin: -5px 14px 12px;
+  color: var(--muted);
+  font-size: 0.84rem;
 }
 
 .toggle-list {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin-top: 10px;
+  padding: 0 12px 12px;
 }
 
-.toggle {
+.toggle-chip {
   position: relative;
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 10px;
-  align-items: center;
-  min-height: 48px;
-  padding: 10px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--panel-soft);
+  background: #fff;
+  color: var(--ink);
   cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
 }
 
-.toggle:hover {
-  border-color: var(--line-strong);
+.toggle-chip:hover {
+  border-color: var(--blue);
 }
 
-.toggle input {
+.toggle-chip input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-.toggle-ui {
-  width: 40px;
-  height: 24px;
-  border-radius: 999px;
+.chip-content {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  min-height: 44px;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.chip-dot {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
   border: 1px solid var(--line-strong);
-  background: #dfe7ef;
-  position: relative;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.toggle-ui::after {
-  content: "";
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  top: 2px;
-  left: 2px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
-  transition: transform 0.15s ease;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 900;
 }
 
-.toggle input:checked + .toggle-ui {
+.toggle-chip input:checked + .chip-content {
+  background: var(--blue-soft);
+  color: var(--blue-dark);
+}
+
+.toggle-chip input:checked + .chip-content .chip-dot {
   background: var(--blue);
   border-color: var(--blue);
 }
 
-.toggle input:checked + .toggle-ui::after {
-  transform: translateX(16px);
+.toggle-chip input:checked + .chip-content .chip-dot::before {
+  content: "Y";
 }
 
-.toggle input:focus-visible + .toggle-ui {
-  outline: 3px solid rgba(0, 87, 168, 0.24);
+.toggle-chip input:focus-visible + .chip-content {
+  outline: 3px solid rgba(0, 87, 168, 0.22);
   outline-offset: 2px;
-}
-
-.toggle strong {
-  display: block;
-  line-height: 1.2;
-  font-size: 0.92rem;
-}
-
-.toggle small {
-  display: block;
-  margin-top: 2px;
-  color: var(--soft);
-  font-size: 0.78rem;
 }
 
 .results-column {
   display: grid;
   gap: 18px;
 }
+
+.summary-ribbon {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid #c5daee;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(0, 87, 168, 0.12), rgba(15, 118, 110, 0.09)),
+    #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+.summary-label {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.summary-value {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.stage-badge,
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 54px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-weight: 900;
+  text-align: center;
+}
+
+.stage-I { background: var(--green-soft); color: var(--green); border: 1px solid #bfe4ca; }
+.stage-II { background: var(--blue-soft); color: var(--blue-dark); border: 1px solid #c3daf1; }
+.stage-III { background: var(--gold-soft); color: var(--gold); border: 1px solid #ead49d; }
+.stage-IV { background: var(--red-soft); color: var(--red); border: 1px solid #f2bab3; }
+.stage-incomplete { background: #eef2f6; color: var(--muted); border: 1px solid var(--line); }
 
 .warning {
   display: none;
@@ -304,7 +412,7 @@ h1 {
 }
 
 .metric {
-  padding: 12px;
+  padding: 13px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-soft);
@@ -313,21 +421,16 @@ h1 {
 .metric span {
   display: block;
   color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .metric strong {
   display: block;
   margin-top: 5px;
-  font-size: 1.32rem;
-}
-
-.metric .small-value {
-  font-size: 1rem;
-  line-height: 1.2;
+  font-size: 1.28rem;
 }
 
 .explain {
@@ -336,91 +439,114 @@ h1 {
   border-radius: var(--radius);
   background: var(--blue-soft);
   color: #17385c;
+  font-weight: 700;
 }
 
 .tier-card {
-  border-left: 5px solid var(--blue);
-}
-
-.tier-A {
-  border-left-color: var(--green);
-}
-
-.tier-B {
-  border-left-color: var(--gold);
-}
-
-.tier-C {
-  border-left-color: #c2410c;
-}
-
-.tier-D {
-  border-left-color: var(--red);
-}
-
-.tier-summary {
   display: grid;
-  grid-template-columns: minmax(120px, 0.35fr) 1fr;
+  grid-template-columns: 150px minmax(0, 1fr);
   gap: 12px;
   align-items: stretch;
 }
 
 .tier-badge {
+  min-height: 100%;
+  min-width: 0;
   display: grid;
+  gap: 7px;
   place-items: center;
-  min-height: 112px;
-  padding: 16px;
-  border-radius: var(--radius);
   background: var(--blue-soft);
   color: var(--blue-dark);
-  text-align: center;
+  border: 1px solid #c3daf1;
 }
 
 .tier-badge strong {
-  font-size: 2.2rem;
+  display: block;
+  font-size: 2.35rem;
   line-height: 1;
 }
 
-.tier-badge span {
-  display: block;
-  margin-top: 7px;
-  font-weight: 800;
-}
+.tier-A { background: var(--green-soft); color: var(--green); border-color: #bfe4ca; }
+.tier-B { background: var(--gold-soft); color: var(--gold); border-color: #ead49d; }
+.tier-C { background: var(--orange-soft); color: var(--orange); border-color: #f3c5a6; }
+.tier-D { background: var(--red-soft); color: var(--red); border-color: #f2bab3; }
 
-.detail-list {
-  display: grid;
+.target-line {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.target-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--violet-soft);
+  color: var(--violet);
+  font-weight: 900;
+}
+
+.detail-text {
   margin: 0;
-}
-
-.detail-list div {
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--panel-soft);
-}
-
-.detail-list dt {
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
-.detail-list dd {
-  margin: 4px 0 0;
-  font-weight: 700;
+.detail-text + .detail-text {
+  margin-top: 8px;
 }
 
 .wide-section {
   margin-top: 18px;
 }
 
+.mosid-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.segment {
+  display: inline-grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-soft);
+}
+
+.segment button {
+  min-width: 92px;
+  min-height: 36px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.segment button.active {
+  background: var(--blue);
+  color: #fff;
+}
+
+.mosid-caption {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
 .estimate-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+  margin-top: 14px;
 }
 
 .procedure-card {
@@ -428,24 +554,25 @@ h1 {
   border-radius: var(--radius);
   overflow: hidden;
   background: #fff;
+  box-shadow: var(--shadow-soft);
 }
 
 .procedure-title {
-  padding: 13px 14px;
+  padding: 14px;
   border-bottom: 1px solid var(--line);
-  background: var(--panel-soft);
+  background: linear-gradient(180deg, #fff, var(--panel-soft));
 }
 
 .procedure-title strong {
   display: block;
-  font-size: 1rem;
+  font-size: 1.03rem;
 }
 
 .procedure-title span {
   display: block;
-  color: var(--muted);
   margin-top: 2px;
-  font-size: 0.84rem;
+  color: var(--muted);
+  font-size: 0.86rem;
 }
 
 .estimate-table,
@@ -461,35 +588,71 @@ h1 {
   padding: 10px 11px;
   border-bottom: 1px solid var(--line);
   text-align: left;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .estimate-table th,
 .method-table th {
   color: var(--muted);
   background: #fbfdff;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.estimate-table tr.highlight {
+  background: #f7fbff;
+  box-shadow: inset 4px 0 0 var(--blue);
+}
+
+.threshold-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+}
+
+.target-marker {
+  display: none;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.estimate-table td {
-  font-weight: 800;
+tr.highlight .target-marker {
+  display: inline-flex;
 }
 
-.not-available {
+.prob-chip {
+  display: inline-flex;
+  min-width: 64px;
+  justify-content: center;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--teal-soft);
+  color: var(--teal);
+  font-weight: 900;
+}
+
+.prob-chip.na {
+  background: #eef2f6;
   color: var(--soft);
-  font-weight: 700;
 }
 
-.note {
-  margin-top: 12px;
-  color: var(--muted);
+.limitations {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid #ead49d;
+  border-radius: var(--radius);
+  background: var(--gold-soft);
+  color: #5d4304;
   font-size: 0.92rem;
-}
-
-.note strong {
-  color: var(--ink);
+  font-weight: 700;
 }
 
 .report-card pre {
@@ -509,22 +672,6 @@ h1 {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 14px;
-}
-
-.button {
-  min-height: 40px;
-  padding: 9px 14px;
-  border: 1px solid var(--blue);
-  border-radius: var(--radius);
-  background: var(--blue);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.button.secondary {
-  background: #fff;
-  color: var(--blue-dark);
 }
 
 .copy-status {
@@ -573,16 +720,32 @@ h1 {
   font-size: 0.9rem;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 980px) {
+  .header-inner,
   .calculator-grid,
   .estimate-grid,
-  .method-grid,
-  .tier-summary {
+  .method-grid {
     grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    justify-items: start;
+  }
+
+  .disclaimer {
+    text-align: left;
+    max-width: none;
   }
 
   .input-panel {
     position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .summary-ribbon,
+  .tier-card {
+    grid-template-columns: 1fr;
   }
 
   .output-grid {
@@ -594,20 +757,26 @@ h1 {
   .header-inner,
   .page,
   .site-footer {
-    width: min(100% - 20px, 1180px);
+    width: min(100% - 20px, 1200px);
   }
 
   .card-body,
   .card-header {
-    padding: 16px;
+    padding: 15px;
   }
 
-  .output-grid {
+  .toggle-list,
+  .output-grid,
+  .bmi-row {
     grid-template-columns: 1fr;
   }
 
-  .toggle {
-    grid-template-columns: 40px 1fr;
+  .segment {
+    width: 100%;
+  }
+
+  .segment button {
+    min-width: 0;
   }
 }
 
@@ -632,8 +801,7 @@ h1 {
 
   .calculator-grid,
   .results-column,
-  .estimate-grid,
-  .tier-summary {
+  .estimate-grid {
     display: block;
   }
 
@@ -658,111 +826,118 @@ h1 {
 <body>
 <header class="site-header no-print">
   <div class="header-inner">
-    <p class="eyebrow">MOSI research calculator</p>
-    <h1>MOSI System: Obesity Severity and Bariatric Decision-Support Calculator</h1>
-    <p class="subtitle">Research calculator for MOSI-S severity, MOSI-T therapeutic target, and MOSI-D procedure-specific probability estimates.</p>
-    <div class="disclaimer">For research and clinical decision-support only. Not a substitute for clinician judgment.</div>
-    <div class="privacy-strip" aria-label="Privacy characteristics">
-      <span>No names or identifiers</span>
-      <span>No dates entered</span>
-      <span>No saved records</span>
-      <span>No network submission</span>
+    <div>
+      <p class="eyebrow">MOSI research calculator</p>
+      <h1>MOSI System: Obesity Severity and Bariatric Decision-Support Calculator</h1>
+      <p class="subtitle">Interactive research calculator for MOSI-S severity, MOSI-T therapeutic target, and MOSI-D procedure-specific probability estimates.</p>
+    </div>
+    <div class="header-actions">
+      <div class="disclaimer">For research and clinical decision-support only. Not a substitute for clinician judgment.</div>
+      <a class="anchor-button secondary" href="#calculator">Start calculator</a>
     </div>
   </div>
 </header>
 
-<main class="page">
+<main class="page" id="calculator">
   <section class="calculator-grid">
     <aside class="card input-panel no-print" aria-labelledby="input-title">
       <div class="card-header">
-        <h2 id="input-title">Input Panel</h2>
-        <p>Enter BMI and yes/no clinical features. No identifiable information is requested.</p>
+        <h2 id="input-title">Calculator Inputs</h2>
+        <p>BMI and yes/no clinical features only. No identifiers or dates are requested.</p>
       </div>
       <div class="card-body">
-        <div class="field">
+        <div class="bmi-field">
           <label for="bmi">BMI</label>
-          <input id="bmi" type="number" min="0" max="120" step="0.1" inputmode="decimal" placeholder="Example: 42.0">
+          <div class="bmi-row">
+            <input id="bmi" type="number" min="0" max="120" step="0.1" inputmode="decimal" placeholder="Example: 42.0">
+            <button class="reset-button" id="resetButton" type="button">Reset</button>
+          </div>
           <div class="hint">MOSI calculations begin at BMI 30.0 kg/m2.</div>
         </div>
 
-        <div class="input-group">
-          <div class="group-title">O Score Comorbidities</div>
+        <details class="input-section" open>
+          <summary>Metabolic/O-score conditions</summary>
+          <p>Each selected O-score condition adds one point. GERD is not included here.</p>
           <div class="toggle-list">
-            <label class="toggle"><input type="checkbox" id="hypertension"><span class="toggle-ui"></span><span><strong>Hypertension</strong><small>O score point and MOSI-T Tier B feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="type2Diabetes"><span class="toggle-ui"></span><span><strong>Type 2 diabetes</strong><small>Dysglycemia and MOSI-T Tier C feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="impairedFastingGlucose"><span class="toggle-ui"></span><span><strong>Impaired fasting glucose</strong><small>Dysglycemia and MOSI-T Tier C feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="hyperlipidemia"><span class="toggle-ui"></span><span><strong>Hyperlipidemia</strong><small>O score point and MOSI-T Tier B feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="sleepApnea"><span class="toggle-ui"></span><span><strong>Obstructive sleep apnea</strong><small>O score point and MOSI-T Tier B feature</small></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="hypertension"><span class="chip-content"><span class="chip-dot"></span><span>Hypertension</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="type2Diabetes"><span class="chip-content"><span class="chip-dot"></span><span>Type 2 diabetes</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="impairedFastingGlucose"><span class="chip-content"><span class="chip-dot"></span><span>Impaired fasting glucose</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="hyperlipidemia"><span class="chip-content"><span class="chip-dot"></span><span>Hyperlipidemia</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="sleepApnea"><span class="chip-content"><span class="chip-dot"></span><span>Obstructive sleep apnea</span></span></label>
           </div>
-        </div>
+        </details>
 
-        <div class="input-group">
-          <div class="group-title">Additional MOSI-T Features</div>
+        <details class="input-section" open>
+          <summary>Target-tier conditions</summary>
+          <p>These features can raise MOSI-T without changing O score.</p>
           <div class="toggle-list">
-            <label class="toggle"><input type="checkbox" id="gerd"><span class="toggle-ui"></span><span><strong>GERD</strong><small>MOSI-T Tier B feature; not part of O score</small></span></label>
-            <label class="toggle"><input type="checkbox" id="arthropathy"><span class="toggle-ui"></span><span><strong>Arthropathy</strong><small>MOSI-T Tier B feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="arthroplasty"><span class="toggle-ui"></span><span><strong>Prior arthroplasty</strong><small>MOSI-T Tier B feature</small></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="gerd"><span class="chip-content"><span class="chip-dot"></span><span>GERD</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="arthropathy"><span class="chip-content"><span class="chip-dot"></span><span>Arthropathy</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="arthroplasty"><span class="chip-content"><span class="chip-dot"></span><span>Prior arthroplasty</span></span></label>
           </div>
-        </div>
+        </details>
 
-        <div class="input-group">
-          <div class="group-title">Si1 Diabetic End-Organ Involvement</div>
+        <details class="input-section" open>
+          <summary>End-organ/systemic disease</summary>
+          <p>Dialysis overrides transplant for Stage IV subgroup display.</p>
           <div class="toggle-list">
-            <label class="toggle"><input type="checkbox" id="retinopathy"><span class="toggle-ui"></span><span><strong>Retinopathy</strong><small>Si1 feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="neuropathy"><span class="toggle-ui"></span><span><strong>Neuropathy</strong><small>Si1 feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="nephropathy"><span class="toggle-ui"></span><span><strong>Nephropathy</strong><small>Si1 feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="diabeticVasculopathy"><span class="toggle-ui"></span><span><strong>Diabetic vasculopathy</strong><small>Si1 feature</small></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="retinopathy"><span class="chip-content"><span class="chip-dot"></span><span>Retinopathy</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="neuropathy"><span class="chip-content"><span class="chip-dot"></span><span>Neuropathy</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="nephropathy"><span class="chip-content"><span class="chip-dot"></span><span>Nephropathy</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="diabeticVasculopathy"><span class="chip-content"><span class="chip-dot"></span><span>Diabetic vasculopathy</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="ckd"><span class="chip-content"><span class="chip-dot"></span><span>CKD without dialysis</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="cirrhosis"><span class="chip-content"><span class="chip-dot"></span><span>Cirrhosis</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="cardiac"><span class="chip-content"><span class="chip-dot"></span><span>Cardiac/MACE history</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="stroke"><span class="chip-content"><span class="chip-dot"></span><span>Stroke/TIA</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="dialysis"><span class="chip-content"><span class="chip-dot"></span><span>Dialysis</span></span></label>
+            <label class="toggle-chip"><input type="checkbox" id="transplant"><span class="chip-content"><span class="chip-dot"></span><span>Solid organ transplant</span></span></label>
           </div>
-        </div>
-
-        <div class="input-group">
-          <div class="group-title">Si2 or Si3 Systemic Disease</div>
-          <div class="toggle-list">
-            <label class="toggle"><input type="checkbox" id="ckd"><span class="toggle-ui"></span><span><strong>CKD without dialysis</strong><small>Si2 feature unless dialysis is present</small></span></label>
-            <label class="toggle"><input type="checkbox" id="cirrhosis"><span class="toggle-ui"></span><span><strong>Cirrhosis</strong><small>Si2 feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="cardiac"><span class="toggle-ui"></span><span><strong>Cardiac history / MACE-risk history</strong><small>Si2 and MOSI-T Tier D feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="stroke"><span class="toggle-ui"></span><span><strong>Stroke/TIA</strong><small>Si2 and MOSI-T Tier D feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="dialysis"><span class="toggle-ui"></span><span><strong>Dialysis</strong><small>Si3 and Stage IV-B feature</small></span></label>
-            <label class="toggle"><input type="checkbox" id="transplant"><span class="toggle-ui"></span><span><strong>Solid organ transplant</strong><small>Si3 and Stage IV-A when dialysis is absent</small></span></label>
-          </div>
-        </div>
+        </details>
       </div>
     </aside>
 
     <section class="results-column" aria-live="polite">
       <div id="bmiWarning" class="warning">MOSI is intended for patients with obesity and bariatric surgery candidates.</div>
 
+      <section class="summary-ribbon print-focus" aria-label="MOSI summary">
+        <div>
+          <p class="summary-label">MOSI summary</p>
+          <p class="summary-value" id="summaryValue">Incomplete</p>
+        </div>
+        <div id="stageBadge" class="stage-badge stage-incomplete">Incomplete</div>
+      </section>
+
       <article class="card print-focus" aria-labelledby="mosis-title">
         <div class="card-header">
           <h2 id="mosis-title">MOSI-S Severity Stage</h2>
-          <p>MOSI-S summarizes BMI class, metabolic comorbidity burden, and end-organ involvement.</p>
+          <p>MOSI-S summarizes BMI class, metabolic burden, and end-organ involvement.</p>
         </div>
         <div class="card-body">
           <div class="output-grid">
             <div class="metric"><span>M score</span><strong id="mScore">Incomplete</strong></div>
             <div class="metric"><span>O score</span><strong id="oScore">Incomplete</strong></div>
             <div class="metric"><span>Si level</span><strong id="siLevel">Incomplete</strong></div>
-            <div class="metric"><span>MOSI-S stage</span><strong id="stageDisplay" class="small-value">Incomplete</strong></div>
+            <div class="metric"><span>Stage subgroup</span><strong id="stageSubtype">Not applicable</strong></div>
           </div>
-          <dl class="detail-list" style="margin-top:12px">
-            <div><dt>Stage IV subtype</dt><dd id="stageSubtype">Not applicable</dd></div>
-          </dl>
           <div id="stageExplanation" class="explain">Enter BMI to calculate MOSI-S.</div>
         </div>
       </article>
 
-      <article id="tierCard" class="card tier-card print-focus" aria-labelledby="mosit-title">
+      <article class="card print-focus" aria-labelledby="mosit-title">
         <div class="card-header">
           <h2 id="mosit-title">MOSI-T Therapeutic Target</h2>
-          <p>MOSI-T is shown separately from severity stage.</p>
+          <p>Highest-tier-wins target framework, shown separately from severity stage.</p>
         </div>
         <div class="card-body">
-          <div class="tier-summary">
+          <div class="tier-card">
             <div class="tier-badge" id="tierBadge"><div><strong id="tierValue">-</strong><span id="tierTarget">Incomplete</span></div></div>
-            <dl class="detail-list">
-              <div><dt>Reason tier was assigned</dt><dd id="tierReason">Enter BMI to calculate MOSI-T.</dd></div>
-              <div><dt>Clinical benefit interpretation</dt><dd id="tierBenefit">Incomplete.</dd></div>
-            </dl>
+            <div>
+              <div class="target-line">
+                <span class="target-pill" id="targetPill">Target pending</span>
+              </div>
+              <p class="detail-text" id="tierReason">Enter BMI to calculate MOSI-T.</p>
+              <p class="detail-text" id="tierBenefit">Incomplete.</p>
+            </div>
           </div>
         </div>
       </article>
@@ -771,19 +946,27 @@ h1 {
 
   <section class="card wide-section print-focus" aria-labelledby="mosid-title">
     <div class="card-header">
-      <h2 id="mosid-title">MOSI-D Research Estimate Panel</h2>
-      <p>Procedure-specific probability estimates for SG and RYGB are displayed as research estimates.</p>
+      <div class="mosid-toolbar">
+        <div>
+          <h2 id="mosid-title">MOSI-D Research Estimate Panel</h2>
+          <p class="mosid-caption">Procedure-specific probability estimates for SG and RYGB. Discuss with bariatric surgeon.</p>
+        </div>
+        <div class="segment" role="tablist" aria-label="MOSI-D timepoint">
+          <button type="button" id="tab12" class="active" role="tab" aria-selected="true">12 months</button>
+          <button type="button" id="tab60" role="tab" aria-selected="false">60 months</button>
+        </div>
+      </div>
     </div>
     <div class="card-body">
       <div id="estimateGrid" class="estimate-grid"></div>
-      <p class="note"><strong>These are retrospective research estimates and should be interpreted with surgeon judgment.</strong> N/A means "Not available from current model output." Static cells use values already documented in the previous repo outcome table; undocumented thresholds are not interpolated.</p>
+      <div class="limitations">Estimates are derived from retrospective single-center data. Procedure comparisons are observational and may reflect selection bias. Stage IV and higher-intensity procedure subgroups were smaller, and 60-month estimates are affected by attrition.</div>
     </div>
   </section>
 
   <section class="card wide-section report-card print-focus" aria-labelledby="report-title">
     <div class="card-header">
       <h2 id="report-title">Plain-Language Report</h2>
-      <p>A concise summary for discussion and printing.</p>
+      <p>Concise, identifier-free summary for discussion and printing.</p>
     </div>
     <div class="card-body">
       <pre id="reportText">MOSI-S: Incomplete.
@@ -805,39 +988,37 @@ MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.</pre>
       </div>
       <div class="card-body method-grid">
         <div class="method-card">
-          <h3>MOSI-S Definition</h3>
+          <h3>MOSI-S</h3>
           <ul>
-            <li>M score: M1 BMI 30.0-34.9; M2 35.0-39.9; M3 40.0-44.9; M4 45.0-49.9; M5 BMI &ge;50.0.</li>
-            <li>O score adds one point each for hypertension, dysglycemia, obstructive sleep apnea, and hyperlipidemia. GERD is not part of O score.</li>
-            <li>Si0 has no end-organ involvement. Si1 includes diabetic microvascular or end-organ disease. Si2 includes major organ dysfunction. Si3 includes dialysis-dependent renal failure or solid-organ transplant recipient status.</li>
-            <li>Stage IV is assigned for Si3. Stage III is assigned for Si2, or for Si1 with M &ge;4 or O &ge;3. Stage I requires Si0 with M &le;2 and O &le;1. All remaining combinations are Stage II.</li>
+            <li>M1 BMI 30.0-34.9; M2 35.0-39.9; M3 40.0-44.9; M4 45.0-49.9; M5 BMI &ge;50.0.</li>
+            <li>O score adds one point each for hypertension, dysglycemia, obstructive sleep apnea, and hyperlipidemia.</li>
+            <li>Si3 maps to Stage IV. Si2 maps to Stage III. Si1 maps to Stage III only with M &ge;4 or O &ge;3.</li>
           </ul>
         </div>
         <div class="method-card">
-          <h3>MOSI-T Definition</h3>
+          <h3>MOSI-T</h3>
           <ul>
-            <li>Tier A: target &ge;7.5% TWL when no qualifying metabolic or organ comorbidity is present.</li>
-            <li>Tier B: target &ge;15% TWL for obstructive sleep apnea, hypertension, hyperlipidemia, GERD, arthropathy, or prior arthroplasty.</li>
-            <li>Tier C: target &ge;25% TWL for type 2 diabetes, impaired fasting glucose, or diabetic microvascular/end-organ disease.</li>
-            <li>Tier D: target &ge;30% TWL for cardiac history, stroke/TIA, Si2, or Si3 systemic disease. Highest tier wins.</li>
+            <li>Tier A target &ge;7.5% TWL.</li>
+            <li>Tier B target &ge;15% TWL.</li>
+            <li>Tier C target &ge;25% TWL.</li>
+            <li>Tier D target &ge;30% TWL.</li>
           </ul>
         </div>
         <div class="method-card">
-          <h3>MOSI-D Display</h3>
+          <h3>MOSI-D</h3>
           <ul>
-            <li>MOSI-D displays decision-support estimates for sleeve gastrectomy (SG) and Roux-en-Y gastric bypass (RYGB).</li>
-            <li>Thresholds shown: &ge;5%, &ge;10%, &ge;20%, &ge;25%, &ge;30%, and &ge;35% TWL at 12 and 60 months.</li>
-            <li>Only available documented values are displayed. Missing threshold cells remain N/A.</li>
-            <li>Procedure-specific probability estimates may support discussion and require bariatric surgeon judgment.</li>
+            <li>Displays research decision-support estimates for SG and RYGB.</li>
+            <li>Shows available v5.1 values at 12 and 60 months.</li>
+            <li>Unavailable exact threshold values display as N/A.</li>
           </ul>
         </div>
         <div class="method-card">
-          <h3>Final Study Numbers</h3>
+          <h3>Study Numbers</h3>
           <ul>
             <li>Staged cohort: n = 3,192.</li>
             <li>Primary 12-month analytic cohort: n = 2,939.</li>
             <li>Primary endpoint: TWL &ge;20% at 12 months.</li>
-            <li>MOSI-T distribution: Tier A 248; Tier B 654; Tier C 1,549; Tier D 488.</li>
+            <li>MOSI-T distribution: A 248; B 654; C 1,549; D 488.</li>
           </ul>
         </div>
       </div>
@@ -867,63 +1048,13 @@ MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.</pre>
   <p>MOSI System is a static research decision-support calculator. It is not a medical device and is not a substitute for clinical decision-making.</p>
 </footer>
 
+<script src="src/mosi-core.js"></script>
 <script>
 (function () {
   "use strict";
 
-  var THRESHOLDS = [5, 10, 20, 25, 30, 35];
-  var PROCEDURES = [
-    { key: "SG", label: "Sleeve gastrectomy", abbreviation: "SG" },
-    { key: "RYGB", label: "Roux-en-Y gastric bypass", abbreviation: "RYGB" }
-  ];
-
-  var MOSID_ESTIMATES = {
-    "Stage I": {
-      SG: { 20: { month12: 54.7, month60: 59.3 } },
-      RYGB: { 20: { month12: 79.3, month60: 73.7 } }
-    },
-    "Stage II": {
-      SG: { 20: { month12: 50.0, month60: 40.5 } },
-      RYGB: { 20: { month12: 74.6, month60: 67.4 } }
-    },
-    "Stage III": {
-      SG: { 20: { month12: 40.7, month60: 36.7 } },
-      RYGB: { 20: { month12: 68.8, month60: 62.5 } }
-    },
-    "Stage IV-A": {
-      SG: { 20: { month12: 65.3, month60: null } },
-      RYGB: {}
-    },
-    "Stage IV-B": {
-      SG: { 20: { month12: 43.8, month60: null } },
-      RYGB: {}
-    }
-  };
-
-  var TIER_TARGETS = { A: "7.5", B: "15", C: "25", D: "30" };
-
-  var els = {
-    bmi: document.getElementById("bmi"),
-    bmiWarning: document.getElementById("bmiWarning"),
-    mScore: document.getElementById("mScore"),
-    oScore: document.getElementById("oScore"),
-    siLevel: document.getElementById("siLevel"),
-    stageDisplay: document.getElementById("stageDisplay"),
-    stageSubtype: document.getElementById("stageSubtype"),
-    stageExplanation: document.getElementById("stageExplanation"),
-    tierCard: document.getElementById("tierCard"),
-    tierBadge: document.getElementById("tierBadge"),
-    tierValue: document.getElementById("tierValue"),
-    tierTarget: document.getElementById("tierTarget"),
-    tierReason: document.getElementById("tierReason"),
-    tierBenefit: document.getElementById("tierBenefit"),
-    estimateGrid: document.getElementById("estimateGrid"),
-    reportText: document.getElementById("reportText"),
-    copyButton: document.getElementById("copyButton"),
-    printButton: document.getElementById("printButton"),
-    copyStatus: document.getElementById("copyStatus")
-  };
-
+  var core = window.MOSICore;
+  var currentTimepoint = "month12";
   var inputIds = [
     "bmi",
     "hypertension",
@@ -946,14 +1077,40 @@ MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.</pre>
     "transplant"
   ];
 
+  var els = {
+    bmi: document.getElementById("bmi"),
+    bmiWarning: document.getElementById("bmiWarning"),
+    summaryValue: document.getElementById("summaryValue"),
+    stageBadge: document.getElementById("stageBadge"),
+    mScore: document.getElementById("mScore"),
+    oScore: document.getElementById("oScore"),
+    siLevel: document.getElementById("siLevel"),
+    stageSubtype: document.getElementById("stageSubtype"),
+    stageExplanation: document.getElementById("stageExplanation"),
+    tierBadge: document.getElementById("tierBadge"),
+    tierValue: document.getElementById("tierValue"),
+    tierTarget: document.getElementById("tierTarget"),
+    targetPill: document.getElementById("targetPill"),
+    tierReason: document.getElementById("tierReason"),
+    tierBenefit: document.getElementById("tierBenefit"),
+    estimateGrid: document.getElementById("estimateGrid"),
+    reportText: document.getElementById("reportText"),
+    copyButton: document.getElementById("copyButton"),
+    printButton: document.getElementById("printButton"),
+    copyStatus: document.getElementById("copyStatus"),
+    resetButton: document.getElementById("resetButton"),
+    tab12: document.getElementById("tab12"),
+    tab60: document.getElementById("tab60")
+  };
+
   function checked(id) {
     var el = document.getElementById(id);
     return Boolean(el && el.checked);
   }
 
-  function inputState() {
+  function readInput() {
     return {
-      bmi: parseFloat(els.bmi.value),
+      bmi: els.bmi.value,
       hypertension: checked("hypertension"),
       type2Diabetes: checked("type2Diabetes"),
       impairedFastingGlucose: checked("impairedFastingGlucose"),
@@ -975,182 +1132,104 @@ MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.</pre>
     };
   }
 
-  function calculateMosi(s) {
-    if (!Number.isFinite(s.bmi)) {
-      return { complete: false, warning: "", reason: "Enter BMI to calculate MOSI-S." };
-    }
-
-    if (s.bmi < 30) {
-      return {
-        complete: false,
-        warning: "MOSI is intended for patients with obesity and bariatric surgery candidates.",
-        reason: "BMI is below the MOSI input range."
-      };
-    }
-
-    var M = s.bmi < 35 ? 1 : s.bmi < 40 ? 2 : s.bmi < 45 ? 3 : s.bmi < 50 ? 4 : 5;
-    var dysglycemia = s.type2Diabetes || s.impairedFastingGlucose;
-    var O = (s.hypertension ? 1 : 0) + (dysglycemia ? 1 : 0) + (s.sleepApnea ? 1 : 0) + (s.hyperlipidemia ? 1 : 0);
-    var microvascular = s.retinopathy || s.neuropathy || s.nephropathy || s.diabeticVasculopathy;
-    var siRank = 0;
-    var siLabel = "Si0";
-    var siReason = "no end-organ involvement";
-    var subtype = "";
-
-    if (s.dialysis) {
-      siRank = 3;
-      siLabel = "Si3";
-      subtype = "Stage IV-B";
-      siReason = "dialysis-dependent renal failure";
-    } else if (s.transplant) {
-      siRank = 3;
-      siLabel = "Si3";
-      subtype = "Stage IV-A";
-      siReason = "solid organ transplant recipient status without dialysis";
-    } else if (s.ckd || s.cirrhosis || s.cardiac || s.stroke) {
-      siRank = 2;
-      siLabel = "Si2";
-      siReason = "major organ dysfunction";
-    } else if (microvascular) {
-      siRank = 1;
-      siLabel = "Si1";
-      siReason = "diabetic microvascular or end-organ disease";
-    }
-
-    var stage = "Stage II";
-    var stageExplanation = "";
-
-    if (siRank === 3) {
-      stage = "Stage IV";
-      stageExplanation = siReason + " is present, so Si3 maps to Stage IV. " + subtype + " is a descriptive subgroup label.";
-    } else if (siRank === 2) {
-      stage = "Stage III";
-      stageExplanation = "Si2 major organ dysfunction maps to Stage III unless Si3 is present.";
-    } else if (siRank === 1 && (M >= 4 || O >= 3)) {
-      stage = "Stage III";
-      stageExplanation = "Si1 with M >= 4 or O >= 3 maps to Stage III.";
-    } else if (siRank === 0 && M <= 2 && O <= 1) {
-      stage = "Stage I";
-      stageExplanation = "Si0 with M <= 2 and O <= 1 meets Stage I criteria.";
-    } else if (siRank === 1) {
-      stageExplanation = "Si1 without M >= 4 or O >= 3 falls into Stage II.";
-    } else {
-      stageExplanation = "This combination does not meet Stage I, Stage III, or Stage IV criteria, so it maps to Stage II.";
-    }
-
-    var tier = "A";
-    var tierReason = "No qualifying metabolic or organ comorbidity is present.";
-    var tierBenefit = "Tier A may support discussion of functional improvement, quality of life, and mechanical offloading.";
-
-    if (s.sleepApnea || s.hypertension || s.hyperlipidemia || s.gerd || s.arthropathy || s.arthroplasty) {
-      tier = "B";
-      tierReason = "At least one Tier B feature is present: OSA, hypertension, hyperlipidemia, GERD, arthropathy, or prior arthroplasty.";
-      tierBenefit = "Tier B targets weight loss associated with improvement in cardiometabolic, reflux, sleep, or joint-related burden.";
-    }
-
-    if (s.type2Diabetes || s.impairedFastingGlucose || microvascular) {
-      tier = "C";
-      tierReason = "Type 2 diabetes, impaired fasting glucose, or diabetic microvascular/end-organ disease is present.";
-      tierBenefit = "Tier C reflects metabolic disease targets and may support discussion of glycemic and microvascular benefit.";
-    }
-
-    if (s.cardiac || s.stroke || siRank >= 2) {
-      tier = "D";
-      tierReason = "Cardiac history, stroke/TIA, Si2, or Si3 systemic disease is present.";
-      tierBenefit = "Tier D reflects systemic or cardiovascular disease contexts where deeper sustained TWL may be clinically meaningful and requires bariatric surgeon judgment.";
-    }
-
-    return {
-      complete: true,
-      warning: "",
-      M: M,
-      mLabel: "M" + M,
-      O: O,
-      oLabel: "O" + O,
-      siRank: siRank,
-      siLabel: siLabel,
-      stage: stage,
-      subtype: subtype,
-      stageDisplay: subtype || stage,
-      stageExplanation: stageExplanation,
-      tier: tier,
-      tierTarget: TIER_TARGETS[tier],
-      tierReason: tierReason,
-      tierBenefit: tierBenefit
-    };
+  function stageClass(stage) {
+    if (stage === "Stage I") return "stage-I";
+    if (stage === "Stage II") return "stage-II";
+    if (stage === "Stage III") return "stage-III";
+    if (stage === "Stage IV" || stage === "Stage IV-A" || stage === "Stage IV-B") return "stage-IV";
+    return "stage-incomplete";
   }
 
-  function pct(value) {
+  function fmtPercent(value) {
     return Number.isFinite(value) ? value.toFixed(1) + "%" : "N/A";
   }
 
-  function estimateCell(value) {
-    if (!Number.isFinite(value)) {
-      return '<span class="not-available" title="Not available from current model output.">N/A</span>';
-    }
-    return pct(value);
+  function probabilityChip(value) {
+    var cls = Number.isFinite(value) ? "prob-chip" : "prob-chip na";
+    return '<span class="' + cls + '">' + fmtPercent(value) + "</span>";
   }
 
-  function renderEstimatePanel(result) {
-    var key = result && result.complete ? result.stageDisplay : "";
-    var data = MOSID_ESTIMATES[key] || {};
-    var html = PROCEDURES.map(function (procedure) {
-      var procedureData = data[procedure.key] || {};
-      var rows = THRESHOLDS.map(function (threshold) {
-        var estimate = procedureData[threshold] || {};
-        return "<tr><td>&ge;" + threshold + "% TWL</td><td>" + estimateCell(estimate.month12) + "</td><td>" + estimateCell(estimate.month60) + "</td></tr>";
+  function setTimepoint(timepoint) {
+    currentTimepoint = timepoint;
+    var is12 = timepoint === "month12";
+    els.tab12.classList.toggle("active", is12);
+    els.tab60.classList.toggle("active", !is12);
+    els.tab12.setAttribute("aria-selected", is12 ? "true" : "false");
+    els.tab60.setAttribute("aria-selected", !is12 ? "true" : "false");
+    render();
+  }
+
+  function renderEstimates(stageDisplay, tier) {
+    var data = core.getMosiDEstimates(stageDisplay, tier);
+    var timeLabel = currentTimepoint === "month12" ? "12-month" : "60-month";
+    els.estimateGrid.innerHTML = data.procedures.map(function (procedure) {
+      var rows = data.thresholds.map(function (threshold) {
+        var estimate = procedure.estimates[threshold] || {};
+        var value = estimate[currentTimepoint];
+        var highlight = data.highlightThreshold === threshold ? " class=\"highlight\"" : "";
+        return "<tr" + highlight + ">" +
+          '<td><span class="threshold-cell">&ge;' + threshold + '% TWL <span class="target-marker">Target</span></span></td>' +
+          "<td>" + probabilityChip(value) + "</td>" +
+          "</tr>";
       }).join("");
 
-      return '<div class="procedure-card">' +
-        '<div class="procedure-title"><strong>' + procedure.label + '</strong><span>' + procedure.abbreviation + ' decision-support estimate</span></div>' +
-        '<table class="estimate-table"><thead><tr><th>Threshold</th><th>12-month</th><th>60-month</th></tr></thead><tbody>' + rows + '</tbody></table>' +
-        '</div>';
+      return '<article class="procedure-card">' +
+        '<div class="procedure-title"><strong>' + procedure.name + '</strong><span>' + procedure.shortName + " " + timeLabel + " research estimate</span></div>" +
+        '<table class="estimate-table"><thead><tr><th>Threshold</th><th>Procedure-specific probability</th></tr></thead><tbody>' + rows + "</tbody></table>" +
+        "</article>";
     }).join("");
-
-    els.estimateGrid.innerHTML = html;
   }
 
   function setIncomplete(message, warning) {
     els.bmiWarning.classList.toggle("visible", Boolean(warning));
+    els.summaryValue.textContent = "Incomplete";
+    els.stageBadge.className = "stage-badge stage-incomplete";
+    els.stageBadge.textContent = "Incomplete";
     els.mScore.textContent = "Incomplete";
     els.oScore.textContent = "Incomplete";
     els.siLevel.textContent = "Incomplete";
-    els.stageDisplay.textContent = "Incomplete";
     els.stageSubtype.textContent = "Not applicable";
     els.stageExplanation.textContent = message || "Enter BMI to calculate MOSI-S.";
-    els.tierCard.className = "card tier-card print-focus";
+    els.tierBadge.className = "tier-badge";
     els.tierValue.textContent = "-";
     els.tierTarget.textContent = "Incomplete";
+    els.targetPill.textContent = "Target pending";
     els.tierReason.textContent = "Enter BMI to calculate MOSI-T.";
     els.tierBenefit.textContent = "Incomplete.";
     els.reportText.textContent = "MOSI-S: Incomplete.\nMOSI-T: Incomplete.\nMOSI-D: Procedure-specific research estimates are shown for SG and RYGB.";
-    renderEstimatePanel(null);
+    renderEstimates("", "");
   }
 
   function render() {
-    var result = calculateMosi(inputState());
+    var input = readInput();
+    var mosiS = core.calculateMosiS(input);
 
-    if (!result.complete) {
-      setIncomplete(result.reason, result.warning);
+    if (!mosiS.complete) {
+      setIncomplete(mosiS.reason, mosiS.warning);
       return;
     }
 
+    var mosiT = core.calculateMosiT(input, mosiS.siLevel);
+    var summary = mosiS.summary + " \u2192 " + mosiS.stageDisplay;
     els.bmiWarning.classList.remove("visible");
-    els.mScore.textContent = result.mLabel;
-    els.oScore.textContent = result.oLabel;
-    els.siLevel.textContent = result.siLabel;
-    els.stageDisplay.textContent = result.stage;
-    els.stageSubtype.textContent = result.subtype || "Not applicable";
-    els.stageExplanation.textContent = result.stageExplanation;
-    els.tierCard.className = "card tier-card tier-" + result.tier + " print-focus";
-    els.tierValue.textContent = result.tier;
-    els.tierTarget.textContent = "Target \u2265" + result.tierTarget + "% TWL";
-    els.tierReason.textContent = result.tierReason;
-    els.tierBenefit.textContent = result.tierBenefit;
-    els.reportText.textContent = "MOSI-S: " + result.mLabel + "-" + result.oLabel + "-" + result.siLabel + " \u2192 " + result.stageDisplay + ".\n" +
-      "MOSI-T: Tier " + result.tier + ", target \u2265" + result.tierTarget + "% TWL.\n" +
+    els.summaryValue.textContent = summary;
+    els.stageBadge.className = "stage-badge " + stageClass(mosiS.stageDisplay);
+    els.stageBadge.textContent = mosiS.stageDisplay;
+    els.mScore.textContent = mosiS.mScore.label;
+    els.oScore.textContent = mosiS.oScore.label;
+    els.siLevel.textContent = mosiS.siLevel.label;
+    els.stageSubtype.textContent = mosiS.subtype || "Not applicable";
+    els.stageExplanation.textContent = mosiS.explanation;
+    els.tierBadge.className = "tier-badge tier-" + mosiT.tier;
+    els.tierValue.textContent = mosiT.tier;
+    els.tierTarget.textContent = "Target \u2265" + mosiT.target + "% TWL";
+    els.targetPill.textContent = "MOSI-T Tier " + mosiT.tier + ": target \u2265" + mosiT.target + "% TWL";
+    els.tierReason.textContent = mosiT.reason;
+    els.tierBenefit.textContent = mosiT.benefit;
+    els.reportText.textContent = "MOSI-S: " + summary + ".\n" +
+      "MOSI-T: Tier " + mosiT.tier + ", target \u2265" + mosiT.target + "% TWL.\n" +
       "MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.";
-    renderEstimatePanel(result);
+    renderEstimates(mosiS.stageDisplay, mosiT.tier);
   }
 
   function copyReport() {
@@ -1159,13 +1238,6 @@ MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.</pre>
       els.copyStatus.textContent = "Copied.";
       window.setTimeout(function () { els.copyStatus.textContent = ""; }, 1800);
     }
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
-    } else {
-      fallbackCopy();
-    }
-
     function fallbackCopy() {
       var area = document.createElement("textarea");
       area.value = text;
@@ -1182,6 +1254,22 @@ MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.</pre>
       }
       document.body.removeChild(area);
     }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  }
+
+  function resetCalculator() {
+    inputIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (el.type === "checkbox") el.checked = false;
+      else el.value = "";
+    });
+    render();
+    els.bmi.focus();
   }
 
   inputIds.forEach(function (id) {
@@ -1192,8 +1280,11 @@ MOSI-D: Procedure-specific research estimates are shown for SG and RYGB.</pre>
     }
   });
 
+  els.resetButton.addEventListener("click", resetCalculator);
   els.copyButton.addEventListener("click", copyReport);
   els.printButton.addEventListener("click", function () { window.print(); });
+  els.tab12.addEventListener("click", function () { setTimepoint("month12"); });
+  els.tab60.addEventListener("click", function () { setTimepoint("month60"); });
   render();
 }());
 </script>
