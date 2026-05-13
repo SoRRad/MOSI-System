@@ -9,7 +9,7 @@
   color-scheme: light;
   --font-display: "Aptos Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  --font-mono: "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+  --font-mono: "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, monospace;
   --font-sans: var(--font-body);
   --bg: #f7faf8;
   --bg-2: #eef4f3;
@@ -157,32 +157,32 @@ button {
 .header-inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
+  gap: 14px;
   align-items: center;
-  min-height: 76px;
-  padding: 12px 0;
+  min-height: 64px;
+  padding: 8px 0;
 }
 
 .brand-block h1 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4vw, 2.55rem);
+  font-size: clamp(1.55rem, 3.2vw, 2.18rem);
   line-height: 1.04;
   letter-spacing: 0;
   font-weight: 760;
 }
 
 .brand-block p {
-  margin: 5px 0 0;
+  margin: 3px 0 0;
   color: var(--muted);
-  font-size: 0.94rem;
+  font-size: 0.88rem;
   font-weight: 650;
 }
 
 .disclaimer {
-  margin-top: 5px;
+  margin-top: 3px;
   color: var(--amber);
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 800;
 }
 
@@ -196,7 +196,7 @@ button {
 .icon-button,
 .action-button,
 .small-button {
-  min-height: 38px;
+  min-height: 34px;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   background: var(--panel-strong);
@@ -206,14 +206,14 @@ button {
 }
 
 .icon-button {
-  width: 42px;
+  width: 38px;
   padding: 0;
   font-size: 1.1rem;
 }
 
 .action-button,
 .small-button {
-  padding: 8px 12px;
+  padding: 7px 11px;
 }
 
 .action-button.primary {
@@ -229,20 +229,19 @@ button {
 }
 
 .main-space {
-  padding: 22px 0 32px;
+  padding: 16px 0 26px;
 }
 
 .calculator-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.52fr);
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.46fr);
+  gap: 14px;
   align-items: start;
 }
 
 .clinical-section,
 .passport,
-.wide-panel,
-.methods {
+.wide-panel {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel);
@@ -250,7 +249,7 @@ button {
 }
 
 .clinical-section {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 82px;
   overflow: clip;
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
@@ -263,27 +262,26 @@ button {
 
 .section-head {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   align-items: start;
   justify-content: space-between;
-  padding: 16px 16px 13px;
+  padding: 12px 14px 10px;
   border-bottom: 1px solid var(--line);
   background: color-mix(in srgb, var(--panel-strong) 72%, transparent);
 }
 
 .section-kicker {
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   color: var(--teal);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 950;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .section-head h2,
-.wide-panel h2,
-.methods summary {
+.wide-panel h2 {
   margin: 0;
   color: var(--ink);
   font-size: 1.08rem;
@@ -302,9 +300,9 @@ button {
 }
 
 .section-head p {
-  margin: 4px 0 0;
+  margin: 3px 0 0;
   max-width: 680px;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
 }
 
 .section-tools {
@@ -316,12 +314,12 @@ button {
 
 .count-pill {
   min-width: 84px;
-  padding: 6px 8px;
+  padding: 5px 8px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--soft);
   color: var(--ink);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 850;
   text-align: center;
 }
@@ -329,29 +327,29 @@ button {
 .bmi-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 14px;
-  padding: 16px;
+  gap: 12px;
+  padding: 12px;
 }
 
 .bmi-card {
   min-width: 0;
-  padding: 16px;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
 }
 
 .bmi-card h3 {
-  margin: 0 0 10px;
-  font-size: 0.95rem;
+  margin: 0 0 8px;
+  font-size: 0.9rem;
 }
 
 .input-line {
   display: grid;
   grid-template-columns: minmax(128px, 0.7fr) minmax(0, 1fr);
-  gap: 12px;
+  gap: 10px;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .input-line label {
@@ -362,7 +360,7 @@ button {
 
 .number-input {
   width: 100%;
-  height: 42px;
+  height: 38px;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   background: color-mix(in srgb, var(--panel-strong) 86%, var(--soft));
@@ -376,7 +374,7 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -384,7 +382,7 @@ button {
 }
 
 .metric-toggle button {
-  min-height: 36px;
+  min-height: 32px;
   border: 0;
   border-radius: 6px;
   background: transparent;
@@ -404,8 +402,8 @@ button {
   gap: 8px;
   align-items: center;
   justify-content: space-between;
-  margin-top: 14px;
-  padding-top: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-top: 1px solid var(--line);
 }
 
@@ -417,14 +415,14 @@ button {
 
 .readout-value {
   font-family: var(--font-mono);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 950;
 }
 
 .warning {
   display: none;
-  margin: 0 16px 16px;
-  padding: 10px 12px;
+  margin: 0 12px 12px;
+  padding: 8px 10px;
   border: 1px solid color-mix(in srgb, var(--amber) 55%, var(--line));
   border-radius: var(--radius);
   background: var(--amber-soft);
@@ -450,7 +448,7 @@ button {
 }
 
 .profile-subhead {
-  padding: 12px 16px 8px;
+  padding: 9px 14px 6px;
   background: color-mix(in srgb, var(--soft) 58%, transparent);
   color: var(--muted);
   font-size: 0.74rem;
@@ -462,11 +460,16 @@ button {
 .field-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
-  min-height: 62px;
-  padding: 10px 16px;
+  min-height: 54px;
+  padding: 8px 14px;
   border-bottom: 1px solid var(--line);
+}
+
+.field-row.condition-dialysis {
+  border-left: 3px solid color-mix(in srgb, var(--rose) 74%, transparent);
+  background: color-mix(in srgb, var(--rose) 6%, transparent);
 }
 
 .profile-group .field-row:last-child {
@@ -476,21 +479,21 @@ button {
 .field-name {
   display: block;
   color: var(--ink);
-  font-weight: 850;
+  font-weight: 760;
 }
 
 .field-subtitle {
   display: block;
-  margin-top: 2px;
-  font-size: 0.82rem;
+  margin-top: 1px;
+  font-size: 0.76rem;
 }
 
 .switch {
   position: relative;
   display: inline-flex;
   align-items: center;
-  min-width: 124px;
-  min-height: 38px;
+  min-width: 108px;
+  min-height: 34px;
 }
 
 .switch input {
@@ -503,14 +506,14 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  width: 124px;
-  height: 38px;
+  width: 108px;
+  height: 34px;
   padding: 3px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   background: var(--soft);
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 950;
   text-align: center;
   transition: border-color 160ms ease, background 160ms ease;
@@ -560,7 +563,7 @@ button {
 
 .results-aside {
   position: sticky;
-  top: 96px;
+  top: 82px;
   grid-column: 2;
   grid-row: 1 / span 6;
   align-self: start;
@@ -575,7 +578,7 @@ button {
 }
 
 .passport-top {
-  padding: 18px;
+  padding: 14px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -584,7 +587,7 @@ button {
   gap: 10px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 950;
@@ -611,10 +614,10 @@ button {
 }
 
 .mosi-code {
-  margin: 0 0 12px;
+  margin: 0 0 9px;
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: clamp(2.3rem, 8vw, 4rem);
+  font-size: clamp(2rem, 6vw, 3.2rem);
   line-height: 0.98;
   font-weight: 780;
 }
@@ -622,20 +625,20 @@ button {
 .badge-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 13px;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  padding: 7px 10px;
+  min-height: 30px;
+  padding: 5px 9px;
   border-radius: 999px;
   background: var(--soft);
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 0.83rem;
+  font-size: 0.76rem;
   font-weight: 950;
 }
 
@@ -658,7 +661,7 @@ button {
 
 .passport-note {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 .tier-reason {
@@ -669,13 +672,13 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin: 13px 0 0;
+  margin: 10px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .driver-list li {
-  padding: 5px 8px;
+  padding: 4px 7px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--panel-strong);
@@ -688,11 +691,11 @@ button {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
-  padding: 0 18px 18px;
+  padding: 0 14px 12px;
 }
 
 .rail-step {
-  height: 9px;
+  height: 7px;
   border-radius: 999px;
   background: var(--line);
 }
@@ -703,19 +706,19 @@ button {
 
 .component-stack {
   display: grid;
-  gap: 8px;
-  padding: 14px;
+  gap: 6px;
+  padding: 10px;
   border-top: 1px solid var(--line);
 }
 
 .component-row {
   display: grid;
-  grid-template-columns: 62px minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 8px;
   align-items: center;
   width: 100%;
-  min-height: 62px;
-  padding: 10px;
+  min-height: 52px;
+  padding: 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
@@ -726,12 +729,12 @@ button {
 .component-row strong {
   display: grid;
   place-items: center;
-  min-height: 42px;
+  min-height: 36px;
   border-radius: 6px;
   background: color-mix(in srgb, var(--stage-color) 15%, var(--soft));
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 1.05rem;
+  font-size: 0.94rem;
 }
 
 .component-row span {
@@ -742,41 +745,41 @@ button {
 .component-row small {
   display: block;
   margin-top: 2px;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
 }
 
 .explain-box {
-  margin: 0 14px 14px;
+  margin: 0 10px 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
 }
 
 .explain-box summary {
-  padding: 11px 12px;
+  padding: 9px 10px;
   font-weight: 900;
   cursor: pointer;
 }
 
 .explain-content {
   display: grid;
-  gap: 8px;
-  padding: 0 12px 12px;
+  gap: 6px;
+  padding: 0 10px 10px;
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: 0.8rem;
 }
 
 .target-ladder {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 14px;
+  gap: 6px;
+  padding: 10px;
   border-top: 1px solid var(--line);
 }
 
 .ladder-step {
-  min-height: 72px;
-  padding: 10px;
+  min-height: 58px;
+  padding: 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
@@ -789,20 +792,20 @@ button {
 }
 
 .ladder-step strong {
-  font-size: 0.82rem;
+  font-size: 0.76rem;
 }
 
 .ladder-step span {
   margin-top: 2px;
   font-family: var(--font-mono);
-  font-size: 1.05rem;
+  font-size: 0.92rem;
   font-weight: 950;
 }
 
 .ladder-step small {
   margin-top: 2px;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.66rem;
 }
 
 .ladder-step.active {
@@ -824,30 +827,29 @@ button {
   font-weight: 800;
 }
 
-.wide-panel,
-.methods {
-  margin-top: 18px;
-  padding: 16px;
+.wide-panel {
+  margin-top: 14px;
+  padding: 14px;
 }
 
 .wide-head {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   align-items: start;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .wide-copy {
-  margin: 5px 0 0;
-  font-size: 0.9rem;
+  margin: 3px 0 0;
+  font-size: 0.82rem;
 }
 
 .segmented {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
-  min-width: 220px;
+  min-width: 190px;
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -855,7 +857,7 @@ button {
 }
 
 .segmented button {
-  min-height: 36px;
+  min-height: 32px;
   border: 0;
   border-radius: 6px;
   background: transparent;
@@ -872,7 +874,7 @@ button {
 .estimate-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .procedure-card {
@@ -884,27 +886,27 @@ button {
 
 .procedure-head {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: start;
   justify-content: space-between;
-  padding: 13px;
+  padding: 10px;
   border-bottom: 1px solid var(--line);
 }
 
 .procedure-head h3 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.05rem;
 }
 
 .procedure-head p {
-  margin: 3px 0 0;
-  font-size: 0.82rem;
+  margin: 2px 0 0;
+  font-size: 0.76rem;
 }
 
 .target-probability {
-  min-width: 86px;
-  padding: 8px;
+  min-width: 78px;
+  padding: 6px;
   border-radius: var(--radius);
   background: var(--soft);
   text-align: right;
@@ -922,7 +924,7 @@ button {
   display: block;
   margin-top: 2px;
   font-family: var(--font-mono);
-  font-size: 1.12rem;
+  font-size: 0.98rem;
 }
 
 .estimate-table {
@@ -932,7 +934,7 @@ button {
 
 .estimate-table th,
 .estimate-table td {
-  padding: 10px 13px;
+  padding: 7px 10px;
   border-bottom: 1px solid var(--line);
   text-align: left;
   vertical-align: middle;
@@ -940,7 +942,7 @@ button {
 
 .estimate-table th {
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 950;
   text-transform: uppercase;
 }
@@ -950,7 +952,8 @@ button {
 }
 
 .estimate-table tr.highlight {
-  background: color-mix(in srgb, var(--amber) 17%, transparent);
+  background: color-mix(in srgb, var(--amber) 12%, transparent);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--amber) 70%, transparent);
 }
 
 .threshold-cell {
@@ -963,23 +966,23 @@ button {
 }
 
 .mini-tag {
-  padding: 3px 6px;
+  padding: 2px 5px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--amber) 25%, var(--panel-strong));
   color: var(--ink);
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 950;
 }
 
 .probability {
   display: grid;
-  grid-template-columns: minmax(80px, 1fr) 56px;
-  gap: 10px;
+  grid-template-columns: minmax(70px, 1fr) auto;
+  gap: 8px;
   align-items: center;
 }
 
 .bar-track {
-  height: 10px;
+  height: 8px;
   overflow: hidden;
   border-radius: 999px;
   background: var(--soft);
@@ -994,49 +997,37 @@ button {
 }
 
 .probability strong {
+  min-width: 50px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--soft) 74%, transparent);
   font-family: var(--font-mono);
+  font-size: 0.78rem;
   text-align: right;
 }
 
 .target-note {
-  margin: 12px 0 0;
-  padding: 10px 12px;
+  margin: 10px 0 0;
+  padding: 8px 10px;
   border: 1px solid color-mix(in srgb, var(--amber) 38%, var(--line));
   border-radius: var(--radius);
   background: var(--amber-soft);
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   font-weight: 800;
 }
 
 .report-box {
-  min-height: 180px;
-  margin: 12px 0;
-  padding: 14px;
+  min-height: 150px;
+  margin: 10px 0;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
   color: var(--ink);
   white-space: pre-wrap;
   font-family: var(--font-body);
-  font-size: 0.92rem;
-  line-height: 1.55;
-}
-
-.methods {
-  color: var(--muted);
-}
-
-.methods summary {
-  color: var(--ink);
-  font-weight: 950;
-  cursor: pointer;
-}
-
-.methods-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 14px;
+  font-size: 0.86rem;
+  line-height: 1.5;
 }
 
 .method-block {
@@ -1063,7 +1054,7 @@ button {
 }
 
 .footer {
-  padding: 18px 0 32px;
+  padding: 14px 0 28px;
   color: var(--muted);
   font-size: 0.84rem;
 }
@@ -1071,11 +1062,11 @@ button {
 .footer-inner {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid var(--line);
-  padding-top: 16px;
+  padding-top: 14px;
 }
 
 .footer-brand {
@@ -1102,13 +1093,15 @@ button {
 }
 
 .modal {
-  width: min(680px, calc(100% - 28px));
+  width: min(940px, calc(100% - 28px));
+  max-height: min(88vh, 900px);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
   color: var(--ink);
   box-shadow: var(--shadow);
   padding: 0;
+  overflow: hidden;
 }
 
 .modal::backdrop {
@@ -1121,20 +1114,26 @@ button {
   gap: 12px;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 18px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--panel-strong);
+  padding: 16px 18px 12px;
   border-bottom: 1px solid var(--line);
 }
 
 .modal-head h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   line-height: 1.2;
 }
 
 .modal-body {
   display: grid;
-  gap: 12px;
+  gap: 14px;
+  max-height: calc(88vh - 70px);
+  overflow: auto;
   padding: 16px 18px 18px;
 }
 
@@ -1142,7 +1141,78 @@ button {
   margin: 0;
 }
 
-.modal-body .method-note {
+.about-section {
+  display: grid;
+  gap: 10px;
+}
+
+.about-section h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+
+.about-section p,
+.about-section li {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.about-section ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.method-block.compact {
+  padding: 10px;
+}
+
+.method-block.compact p,
+.method-block.compact li {
+  font-size: 0.8rem;
+}
+
+.method-block.compact ul {
+  margin: 0;
+  padding-left: 17px;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.data-card {
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--panel-strong) 82%, var(--soft));
+}
+
+.data-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.data-card strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.94rem;
+}
+
+.method-note {
   border-left: 3px solid var(--teal);
   padding-left: 12px;
   color: var(--muted);
@@ -1151,9 +1221,7 @@ button {
 .compact .field-subtitle,
 .compact .wide-copy,
 .compact .passport-note,
-.compact .ladder-step small,
-.compact .method-block p,
-.compact .method-block ul {
+.compact .ladder-step small {
   display: none;
 }
 
@@ -1170,7 +1238,8 @@ button {
   .calculator-grid,
   .bmi-grid,
   .estimate-grid,
-  .methods-grid {
+  .about-grid,
+  .data-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1253,7 +1322,7 @@ button {
   .site-header,
   .clinical-section,
   .toolbar,
-  .methods,
+  .modal:not([open]),
   .footer {
     display: none !important;
   }
@@ -1285,7 +1354,8 @@ button {
 
   .target-ladder,
   .explain-box,
-  .component-stack {
+  .component-stack,
+  .modal .icon-button {
     display: none;
   }
 
@@ -1315,6 +1385,7 @@ button {
     </div>
     <div class="header-actions">
       <button class="icon-button" type="button" id="themeToggle" aria-label="Toggle dark and light mode" title="Toggle dark/light mode">◐</button>
+      <button class="action-button" type="button" id="aboutTopButton">About &amp; Methods</button>
       <button class="action-button" type="button" id="compactToggle" aria-pressed="false">Compact</button>
       <button class="action-button" type="button" id="resetButton">Reset all</button>
     </div>
@@ -1484,31 +1555,6 @@ button {
     <p class="report-help print-disclaimer" style="display:none">Research decision-support only. Procedure selection requires clinician judgment.</p>
   </section>
 
-  <details class="methods no-print" id="methods">
-    <summary>Methods / details</summary>
-    <div class="methods-grid">
-      <div class="method-block">
-        <h3>M score</h3>
-        <p>M1: BMI 30.0–34.9; M2: 35.0–39.9; M3: 40.0–44.9; M4: 45.0–49.9; M5: BMI ≥50.0.</p>
-      </div>
-      <div class="method-block">
-        <h3>O score</h3>
-        <p>One point each for hypertension, dysglycemia, obstructive sleep apnea, and hyperlipidemia. GERD is not part of O score.</p>
-      </div>
-      <div class="method-block">
-        <h3>Si level</h3>
-        <p>Si1 is diabetic microvascular/end-organ disease. Si2 is major organ dysfunction. Si3 is dialysis-dependent renal failure or solid-organ transplant recipient status.</p>
-      </div>
-      <div class="method-block">
-        <h3>Stage and tier</h3>
-        <ul>
-          <li>Si3 maps to Stage IV, with IV-A for transplant without dialysis and IV-B for dialysis.</li>
-          <li>Si2 maps to Stage III; Si1 with M ≥4 or O ≥3 maps to Stage III.</li>
-          <li>Therapeutic target tier uses the highest qualifying tier target.</li>
-        </ul>
-      </div>
-    </div>
-  </details>
 </main>
 
 <footer class="footer no-print">
@@ -1520,22 +1566,113 @@ button {
         <span>Research decision-support calculator</span>
       </div>
     </div>
-    <button class="action-button" type="button" id="aboutButton">About this platform</button>
+    <button class="action-button" type="button" id="aboutButton">About &amp; Methods</button>
     <p class="footer-note">This static calculator does not store or submit entered values.</p>
   </div>
 </footer>
 
 <dialog class="modal" id="aboutModal" aria-labelledby="aboutTitle">
   <div class="modal-head">
-    <h2 id="aboutTitle">About the MOSI System</h2>
+    <h2 id="aboutTitle">About &amp; Methods</h2>
     <button class="icon-button" type="button" id="aboutClose" aria-label="Close about dialog">×</button>
   </div>
   <div class="modal-body">
-    <p>The MOSI System is a research decision-support calculator for obesity severity staging, therapeutic weight-loss target estimation, and procedure-specific bariatric outcome estimates.</p>
-    <p>Developed by the Artificial Intelligence in Surgical Technologies (AIST) Lab, Mayo Clinic.</p>
-    <p>Developed as a research platform to support bariatric surgery phenotyping and prospective validation.</p>
-    <p class="method-note">In methodology documentation, MOSI-S refers to severity stage, MOSI-T to therapeutic target, and MOSI-D to decision-support estimates.</p>
-    <p>Not a medical device. Not a substitute for clinician judgment. Estimates are derived from retrospective single-center data and should be interpreted in context.</p>
+    <section class="about-section">
+      <h3>Overview</h3>
+      <p>The MOSI System is a research decision-support calculator for obesity severity staging, therapeutic weight-loss target estimation, and procedure-specific bariatric outcome estimates.</p>
+    </section>
+
+    <section class="about-section">
+      <h3>Development and affiliation</h3>
+      <p>Developed by the Artificial Intelligence in Surgical Technologies (AIST) Lab, Mayo Clinic.</p>
+      <p>The platform was developed as a research tool to support bariatric surgery phenotyping, clinical communication, and prospective validation.</p>
+    </section>
+
+    <section class="about-section">
+      <h3>How the calculator works</h3>
+      <ul>
+        <li>BMI determines the M class.</li>
+        <li>Selected metabolic and organ conditions determine the O score.</li>
+        <li>End-organ or systemic disease determines the Si level.</li>
+        <li>M class, O score, and Si level combine to generate the MOSI stage.</li>
+        <li>The comorbidity profile also determines a weight-loss target tier.</li>
+        <li>Procedure-specific estimates compare SG and RYGB using retrospective research estimates.</li>
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h3>Algorithm definitions</h3>
+      <div class="about-grid">
+        <div class="method-block compact">
+          <h3>M class</h3>
+          <p>M1: BMI 30.0–34.9; M2: 35.0–39.9; M3: 40.0–44.9; M4: 45.0–49.9; M5: BMI ≥50.0.</p>
+        </div>
+        <div class="method-block compact">
+          <h3>O score</h3>
+          <p>One point each for hypertension, dysglycemia, obstructive sleep apnea, and hyperlipidemia. GERD is not part of O score.</p>
+        </div>
+        <div class="method-block compact">
+          <h3>Si level</h3>
+          <p>Si0: no end-organ involvement. Si1: diabetic microvascular/end-organ disease. Si2: major organ dysfunction. Si3: dialysis-dependent renal failure or solid-organ transplant recipient status.</p>
+        </div>
+        <div class="method-block compact">
+          <h3>MOSI stage</h3>
+          <ul>
+            <li>Stage IV: Si3.</li>
+            <li>Stage IV-A: transplant without dialysis.</li>
+            <li>Stage IV-B: dialysis, with or without transplant.</li>
+            <li>Stage III: Si2, or Si1 with M ≥4 or O ≥3.</li>
+            <li>Stage I: Si0 with M ≤2 and O ≤1.</li>
+            <li>Stage II: all remaining combinations.</li>
+          </ul>
+        </div>
+        <div class="method-block compact">
+          <h3>Weight-loss target tiers</h3>
+          <p>Tier A: ≥7.5% TWL. Tier B: ≥15% TWL. Tier C: ≥25% TWL. Tier D: ≥30% TWL. Highest qualifying tier wins.</p>
+        </div>
+        <div class="method-block compact">
+          <h3>Procedure-specific research estimates</h3>
+          <p>SG and RYGB probabilities are shown at 12 and 60 months for TWL thresholds of ≥5%, ≥10%, ≥20%, ≥25%, ≥30%, and ≥35%.</p>
+        </div>
+      </div>
+      <p class="method-note">In methodology documentation, MOSI-S refers to severity stage, MOSI-T to therapeutic target, and MOSI-D to decision-support estimates.</p>
+    </section>
+
+    <section class="about-section">
+      <h3>Study data summary</h3>
+      <div class="data-grid">
+        <div class="data-card"><span>Staged cohort</span><strong>n = 3,192</strong></div>
+        <div class="data-card"><span>12-month cohort</span><strong>n = 2,939</strong></div>
+        <div class="data-card"><span>Primary endpoint</span><strong>TWL ≥20%</strong></div>
+        <div class="data-card"><span>Stage I</span><strong>191 · 91.6%</strong></div>
+        <div class="data-card"><span>Stage II</span><strong>1,542 · 87.4%</strong></div>
+        <div class="data-card"><span>Stage III</span><strong>1,297 · 80.3%</strong></div>
+        <div class="data-card"><span>Stage IV</span><strong>162 · 58.5%</strong></div>
+        <div class="data-card"><span>Stage IV-A</span><strong>86</strong></div>
+        <div class="data-card"><span>Stage IV-B</span><strong>76</strong></div>
+        <div class="data-card"><span>AUC</span><strong>0.761</strong></div>
+        <div class="data-card"><span>AUC + age + sex</span><strong>0.789</strong></div>
+        <div class="data-card"><span>DeLong</span><strong>p = 0.049 / 0.49</strong></div>
+        <div class="data-card"><span>Tier A</span><strong>248</strong></div>
+        <div class="data-card"><span>Tier B</span><strong>654</strong></div>
+        <div class="data-card"><span>Tier C</span><strong>1,549</strong></div>
+        <div class="data-card"><span>Tier D</span><strong>488</strong></div>
+      </div>
+      <p>Stage distribution: Stage I 191; Stage II 1,542; Stage III 1,297; Stage IV 162; Stage IV-A 86; Stage IV-B 76. 12-month TWL ≥20% success: Stage I 91.6%; Stage II 87.4%; Stage III 80.3%; Stage IV 58.5%.</p>
+      <p>MOSI + Procedure AUC: 0.761. MOSI + Procedure + Age + Sex AUC: 0.789. DeLong comparisons: MOSI+Procedure vs BMI+Procedure p = 0.049; MOSI+Procedure vs EOSS-proxy+Procedure p = 0.49. Target-tier distribution: Tier A 248; Tier B 654; Tier C 1,549; Tier D 488.</p>
+    </section>
+
+    <section class="about-section">
+      <h3>Limitations</h3>
+      <ul>
+        <li>Retrospective single-center derivation.</li>
+        <li>Observational procedure comparisons and possible procedure-selection bias.</li>
+        <li>Smaller Stage IV and BPD-DS/SADI-S subgroups.</li>
+        <li>60-month attrition.</li>
+        <li>Research decision-support only; not a medical device and not a substitute for clinician judgment.</li>
+      </ul>
+      <p class="method-note">This static calculator runs in the browser and does not store or submit entered values.</p>
+    </section>
   </div>
 </dialog>
 
@@ -1569,10 +1706,10 @@ button {
     ],
     major: [
       { id: "ckd", name: "CKD without dialysis", subtitle: "Si2 major organ dysfunction." },
+      { id: "transplant", name: "Solid organ transplant", subtitle: "Si3; Stage IV-A when dialysis is absent." },
       { id: "cirrhosis", name: "Cirrhosis", subtitle: "Si2 major organ dysfunction." },
       { id: "cardiac", name: "Cardiac history / MACE-risk history", subtitle: "Si2 systemic disease and Tier D feature." },
       { id: "stroke", name: "Stroke/TIA", subtitle: "Si2 systemic disease and Tier D feature." },
-      { id: "transplant", name: "Solid organ transplant", subtitle: "Si3; Stage IV-A when dialysis is absent." },
       { id: "dialysis", name: "Dialysis", subtitle: "Si3; Stage IV-B with or without transplant." }
     ]
   };
@@ -1634,6 +1771,7 @@ button {
     compactToggle: document.getElementById("compactToggle"),
     resetButton: document.getElementById("resetButton"),
     copyStatus: document.getElementById("copyStatus"),
+    aboutTopButton: document.getElementById("aboutTopButton"),
     aboutButton: document.getElementById("aboutButton"),
     aboutModal: document.getElementById("aboutModal"),
     aboutClose: document.getElementById("aboutClose")
@@ -1647,9 +1785,9 @@ button {
 
   function displayText(value) {
     return String(value)
-      .replace(/>=/g, "≥")
-      .replace(/<=/g, "≤")
-      .replace(/->/g, "→")
+      .replace(new RegExp(">" + "=", "g"), "≥")
+      .replace(new RegExp("<" + "=", "g"), "≤")
+      .replace(new RegExp("-" + ">", "g"), "→")
       .replace(/(\d)-(\d)/g, "$1–$2");
   }
 
@@ -1658,7 +1796,7 @@ button {
   }
 
   function fieldRow(field, groupName) {
-    return '<label class="field-row" for="' + field.id + '">' +
+    return '<label class="field-row condition-' + field.id + '" for="' + field.id + '">' +
       '<span><span class="field-name">' + escapeHtml(field.name) + '</span><span class="field-subtitle">' + escapeHtml(field.subtitle) + '</span></span>' +
       '<span class="switch"><input type="checkbox" id="' + field.id + '" data-group="' + groupName + '">' +
       '<span class="switch-face" aria-hidden="true"><span class="no">No</span><span class="yes">Yes</span></span></span>' +
@@ -2107,6 +2245,7 @@ button {
   els.themeToggle.addEventListener("click", toggleTheme);
   els.compactToggle.addEventListener("click", toggleCompact);
   els.resetButton.addEventListener("click", resetAll);
+  els.aboutTopButton.addEventListener("click", openAbout);
   els.aboutButton.addEventListener("click", openAbout);
   els.aboutClose.addEventListener("click", closeAbout);
   els.aboutModal.addEventListener("click", function (event) {
