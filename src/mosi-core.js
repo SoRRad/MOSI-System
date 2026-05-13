@@ -112,7 +112,7 @@
     if (parsed < 40) return { score: 2, label: "M2", bmi: parsed, range: "35.0-39.9" };
     if (parsed < 45) return { score: 3, label: "M3", bmi: parsed, range: "40.0-44.9" };
     if (parsed < 50) return { score: 4, label: "M4", bmi: parsed, range: "45.0-49.9" };
-    return { score: 5, label: "M5", bmi: parsed, range: ">=50.0" };
+    return { score: 5, label: "M5", bmi: parsed, range: "≥50.0" };
   }
 
   function calculateOScore(input) {
@@ -220,12 +220,12 @@
       explanation = "Stage assigned because Si2 major organ dysfunction is present.";
     } else if (si.rank === 1 && (m.score >= 4 || o.score >= 3)) {
       stage = "Stage III";
-      explanation = "Stage assigned because Si1 is present with M >=4 or O >=3.";
+      explanation = "Stage assigned because Si1 is present with M ≥4 or O ≥3.";
     } else if (si.rank === 0 && m.score <= 2 && o.score <= 1) {
       stage = "Stage I";
-      explanation = "Stage assigned because Si0 is present with M <=2 and O <=1.";
+      explanation = "Stage assigned because Si0 is present with M ≤2 and O ≤1.";
     } else if (si.rank === 1) {
-      explanation = "Stage assigned because Si1 is present without M >=4 or O >=3.";
+      explanation = "Stage assigned because Si1 is present without M ≥4 or O ≥3.";
     } else {
       explanation = "Stage assigned because the profile does not meet Stage I, Stage III, or Stage IV criteria.";
     }
@@ -277,7 +277,7 @@
       tier: tier,
       label: "Tier " + tier,
       target: target,
-      targetLabel: ">=" + target + "% TWL",
+      targetLabel: "≥" + target + "% TWL",
       reason: reason,
       benefit: benefit
     };
