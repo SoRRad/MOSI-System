@@ -1169,6 +1169,57 @@ button {
   gap: 10px;
 }
 
+.affiliation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.affiliation-card {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  min-height: 118px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--panel-strong) 88%, var(--soft));
+  box-shadow: var(--shadow-soft);
+}
+
+.logo-plate {
+  display: grid;
+  place-items: center;
+  min-height: 82px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 10px;
+}
+
+.affiliation-logo {
+  display: block;
+  max-width: 100%;
+  max-height: 66px;
+  object-fit: contain;
+}
+
+.affiliation-title {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.affiliation-copy {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
 .method-block.compact {
   padding: 10px;
 }
@@ -1218,6 +1269,10 @@ button {
   color: var(--muted);
 }
 
+.print-only {
+  display: none;
+}
+
 .compact .field-subtitle,
 .compact .wide-copy,
 .compact .passport-note,
@@ -1257,6 +1312,20 @@ button {
 
   .target-ladder {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .affiliation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .affiliation-card {
+    grid-template-columns: 1fr;
+  }
+
+  .logo-plate {
+    min-height: 74px;
   }
 }
 
@@ -1301,76 +1370,278 @@ button {
 }
 
 @media print {
-  :root {
-    --bg: #ffffff;
-    --bg-2: #ffffff;
-    --panel: #ffffff;
-    --panel-strong: #ffffff;
-    --ink: #111827;
-    --muted: #374151;
-    --line: #d1d5db;
-    --line-strong: #9ca3af;
-    --shadow: none;
-    --shadow-soft: none;
+  @page {
+    size: letter portrait;
+    margin: 0.4in;
   }
 
+  html,
   body {
-    background: #ffffff;
+    width: 100%;
+    margin: 0 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 9.2pt !important;
+    line-height: 1.22 !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #printReport,
+  #printReport * {
+    visibility: visible !important;
+  }
+
+  #printReport {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    font-family: var(--font-body);
   }
 
   .no-print,
   .site-header,
-  .clinical-section,
-  .toolbar,
-  .modal:not([open]),
-  .footer {
+  .main-space,
+  .footer,
+  button,
+  dialog {
     display: none !important;
   }
 
-  .shell {
-    width: 100%;
+  .print-sheet {
+    page-break-before: avoid;
+    page-break-after: avoid;
   }
 
-  .main-space {
-    padding: 0;
-  }
-
-  .calculator-grid,
-  .estimate-grid {
-    display: block;
-  }
-
-  .results-aside {
-    position: static;
-  }
-
-  .passport,
-  .wide-panel,
-  .procedure-card {
+  .print-card,
+  .print-table,
+  .print-section {
     break-inside: avoid;
-    box-shadow: none;
-    margin: 0 0 14px;
+    page-break-inside: avoid;
   }
 
-  .target-ladder,
-  .explain-box,
-  .component-stack,
-  .modal .icon-button {
-    display: none;
+  .print-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.16in;
+    align-items: start;
+    padding-bottom: 0.08in;
+    border-bottom: 1px solid #cbd5e1;
   }
 
-  .wide-panel {
-    padding: 12px;
+  .print-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 17pt;
+    line-height: 1;
   }
 
-  .report-box {
-    min-height: 0;
+  .print-subtitle,
+  .print-disclaimer,
+  .print-footer,
+  .print-muted {
+    color: #4b5563 !important;
+  }
+
+  .print-subtitle {
+    margin: 0.03in 0 0;
+    font-size: 8.5pt;
   }
 
   .print-disclaimer {
-    display: block !important;
-    margin-top: 10px;
-    font-size: 10pt;
+    margin: 0.03in 0 0;
+    font-size: 7.7pt;
+    font-weight: 700;
+  }
+
+  .print-affiliation {
+    font-size: 8pt;
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .print-summary-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 0.1in;
+    margin-top: 0.1in;
+  }
+
+  .print-card,
+  .print-mini-card,
+  .print-section {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+  }
+
+  .print-card {
+    padding: 0.1in;
+  }
+
+  .print-primary-result {
+    display: grid;
+    gap: 0.06in;
+  }
+
+  .print-code {
+    font-family: var(--font-mono);
+    font-size: 18pt;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .print-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.05in;
+  }
+
+  .print-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 0.21in;
+    padding: 0.02in 0.06in;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: #f8fafc;
+    font-family: var(--font-mono);
+    font-size: 7.8pt;
+    font-weight: 800;
+  }
+
+  .print-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.06in;
+  }
+
+  .print-mini-card {
+    padding: 0.06in;
+  }
+
+  .print-label {
+    display: block;
+    color: #6b7280;
+    font-size: 6.7pt;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .print-value {
+    display: block;
+    margin-top: 0.02in;
+    font-family: var(--font-mono);
+    font-size: 9pt;
+    font-weight: 800;
+  }
+
+  .print-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.1in;
+    margin-top: 0.1in;
+  }
+
+  .print-section {
+    padding: 0.08in;
+  }
+
+  .print-section h3 {
+    margin: 0 0 0.04in;
+    font-size: 8.4pt;
+    line-height: 1.1;
+  }
+
+  .print-section p {
+    margin: 0.02in 0;
+  }
+
+  .print-drivers {
+    display: grid;
+    gap: 0.05in;
+  }
+
+  .print-driver-group strong {
+    display: block;
+    font-size: 7.2pt;
+  }
+
+  .print-driver-group span {
+    display: block;
+    color: #374151;
+    font-size: 7.6pt;
+  }
+
+  .print-estimates {
+    margin-top: 0.1in;
+  }
+
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.7pt;
+  }
+
+  .print-table th,
+  .print-table td {
+    padding: 0.035in 0.045in;
+    border: 1px solid #d1d5db;
+    text-align: right;
+  }
+
+  .print-table th:first-child,
+  .print-table td:first-child {
+    text-align: left;
+  }
+
+  .print-table th {
+    background: #f3f4f6;
+    color: #374151;
+    font-weight: 800;
+  }
+
+  .print-table tr.is-target td {
+    background: #fff7ed;
+    box-shadow: inset 3px 0 0 #f59e0b;
+    font-weight: 800;
+  }
+
+  .print-interpretation {
+    margin-top: 0.08in;
+    padding: 0.07in 0.08in;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #f8fafc;
+    font-size: 7.8pt;
+  }
+
+  .print-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.08in;
+    margin-top: 0.1in;
+    padding-top: 0.06in;
+    border-top: 1px solid #cbd5e1;
+    font-size: 7pt;
+  }
+
+  .print-incomplete {
+    margin-top: 0.16in;
+    padding: 0.12in;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-weight: 800;
   }
 }
 </style>
@@ -1571,9 +1842,11 @@ button {
   </div>
 </footer>
 
+<section id="printReport" class="print-sheet print-only" aria-label="Printable MOSI report"></section>
+
 <dialog class="modal" id="aboutModal" aria-labelledby="aboutTitle">
   <div class="modal-head">
-    <h2 id="aboutTitle">About &amp; Methods</h2>
+    <h2 id="aboutTitle">About the MOSI System</h2>
     <button class="icon-button" type="button" id="aboutClose" aria-label="Close about dialog">×</button>
   </div>
   <div class="modal-body">
@@ -1583,9 +1856,34 @@ button {
     </section>
 
     <section class="about-section">
+      <h3>Affiliated Centers</h3>
+      <div class="affiliation-grid">
+        <article class="affiliation-card">
+          <div class="logo-plate">
+            <img class="affiliation-logo" src="assets/logos/aist-logo.png" alt="Artificial Intelligence in Surgical Technologies Lab logo">
+          </div>
+          <div>
+            <h4 class="affiliation-title">Artificial Intelligence in Surgical Technologies (AIST) Lab</h4>
+            <p class="affiliation-copy">Surgical innovation, artificial intelligence, and clinical decision-support research.</p>
+          </div>
+        </article>
+        <article class="affiliation-card">
+          <div class="logo-plate">
+            <img class="affiliation-logo" src="assets/logos/mayo-clinic-logo.png" alt="Mayo Clinic logo">
+          </div>
+          <div>
+            <h4 class="affiliation-title">Mayo Clinic</h4>
+            <p class="affiliation-copy">Academic medical center and clinical research environment supporting bariatric surgery innovation.</p>
+          </div>
+        </article>
+      </div>
+      <p class="method-note">The MOSI System was developed as a research decision-support platform affiliated with the Artificial Intelligence in Surgical Technologies (AIST) Lab and Mayo Clinic.</p>
+    </section>
+
+    <section class="about-section">
       <h3>Development and affiliation</h3>
       <p>Developed by the Artificial Intelligence in Surgical Technologies (AIST) Lab, Mayo Clinic.</p>
-      <p>The platform was developed as a research tool to support bariatric surgery phenotyping, clinical communication, and prospective validation.</p>
+      <p>The platform was developed as a research platform to support bariatric surgery phenotyping, clinical communication, and prospective validation.</p>
     </section>
 
     <section class="about-section">
@@ -1767,6 +2065,7 @@ button {
     month12Button: document.getElementById("month12Button"),
     month60Button: document.getElementById("month60Button"),
     reportText: document.getElementById("reportText"),
+    printReport: document.getElementById("printReport"),
     themeToggle: document.getElementById("themeToggle"),
     compactToggle: document.getElementById("compactToggle"),
     resetButton: document.getElementById("resetButton"),
@@ -2037,6 +2336,7 @@ button {
     updateLadder("");
     renderEstimates("", null);
     els.reportText.textContent = "MOSI stage: Incomplete.\nWeight-loss target: Incomplete.\nKey drivers: none selected.\nProcedure-specific estimates: SG and RYGB research estimates shown after BMI is valid.\nInterpretation: Research decision-support only; procedure selection requires clinician judgment.";
+    renderPrintReport(readInput(), mosiS, null);
   }
 
   function buildReport(mosiS, mosiT, drivers) {
@@ -2057,6 +2357,105 @@ button {
       "Procedure-specific estimates: SG and RYGB estimates shown for 12 and 60 months.\n" +
       targetText + "\n" +
       "Interpretation: Research decision-support only; procedure selection requires clinician judgment.";
+  }
+
+  function selectedNames(groupName) {
+    return selectedInGroup(groupName).map(function (field) { return field.name; });
+  }
+
+  function driverGroupText(items) {
+    return items.length ? items.join(", ") : "None selected";
+  }
+
+  function printDriverGroups() {
+    return [
+      { title: "Organ/metabolic drivers", items: selectedNames("organ") },
+      { title: "Systemic/end-organ drivers", items: selectedNames("micro").concat(selectedNames("major")) },
+      { title: "Target modifiers", items: selectedNames("target") }
+    ];
+  }
+
+  function renderPrintHeader() {
+    return '<header class="print-header">' +
+      '<div><h1 class="print-title">MOSI System</h1>' +
+      '<p class="print-subtitle">Obesity severity staging and bariatric research decision-support calculator</p>' +
+      '<p class="print-disclaimer">Research decision-support only. Not a substitute for clinical judgment.</p></div>' +
+      '<div class="print-affiliation">AIST Lab · Mayo Clinic</div>' +
+      "</header>";
+  }
+
+  function renderPrintFooter() {
+    return '<footer class="print-footer">' +
+      '<span>Static calculator; entered values are not stored or submitted.</span>' +
+      '<span>Developed by the Artificial Intelligence in Surgical Technologies (AIST) Lab, Mayo Clinic.</span>' +
+      "</footer>";
+  }
+
+  function renderPrintReport(input, mosiS, mosiT) {
+    if (!els.printReport) return;
+    if (!mosiS || !mosiS.complete || !mosiT) {
+      var incomplete = !Number.isFinite(input && input.bmi)
+        ? "MOSI report incomplete: BMI is required."
+        : "MOSI report incomplete: " + displayText((mosiS && (mosiS.warning || mosiS.reason)) || "BMI is required.");
+      els.printReport.innerHTML = renderPrintHeader() +
+        '<div class="print-incomplete">' + escapeHtml(incomplete) + "</div>" +
+        renderPrintFooter();
+      return;
+    }
+
+    var data = core.getMosiDEstimates(mosiS.stageDisplay, mosiT.tier);
+    var byKey = {};
+    data.procedures.forEach(function (procedure) { byKey[procedure.key] = procedure; });
+    var highlights = targetHighlights(mosiT.tier);
+    var rows = data.thresholds.map(function (threshold) {
+      var sg = byKey.SG && byKey.SG.estimates[threshold] ? byKey.SG.estimates[threshold] : {};
+      var rygb = byKey.RYGB && byKey.RYGB.estimates[threshold] ? byKey.RYGB.estimates[threshold] : {};
+      var marked = highlights.indexOf(threshold) >= 0;
+      return '<tr' + (marked ? ' class="is-target"' : "") + ">" +
+        '<td>≥' + threshold + "%" + (marked ? ' <span class="print-muted">target</span>' : "") + "</td>" +
+        "<td>" + fmtPercent(sg.month12) + "</td>" +
+        "<td>" + fmtPercent(rygb.month12) + "</td>" +
+        "<td>" + fmtPercent(sg.month60) + "</td>" +
+        "<td>" + fmtPercent(rygb.month60) + "</td>" +
+        "</tr>";
+    }).join("");
+    var driverMarkup = printDriverGroups().map(function (group) {
+      return '<div class="print-driver-group"><strong>' + escapeHtml(group.title) + '</strong><span>' +
+        escapeHtml(driverGroupText(group.items)) + "</span></div>";
+    }).join("");
+    var target = "Tier " + mosiT.tier + " · target ≥" + formatTarget(mosiT.target) + "% TWL";
+
+    els.printReport.innerHTML = renderPrintHeader() +
+      '<section class="print-summary-grid print-section">' +
+        '<div class="print-card print-primary-result">' +
+          '<span class="print-label">MOSI code</span>' +
+          '<div class="print-code">' + escapeHtml(formatMosiCode(mosiS.summary)) + "</div>" +
+          '<div class="print-badge-row">' +
+            '<span class="print-badge">' + escapeHtml(mosiS.stage) + "</span>" +
+            (mosiS.subtype ? '<span class="print-badge">' + escapeHtml(mosiS.subtype) + "</span>" : "") +
+            '<span class="print-badge">Weight-loss target: ' + escapeHtml(target) + "</span>" +
+          "</div>" +
+        "</div>" +
+        '<div class="print-mini-grid">' +
+          '<div class="print-mini-card"><span class="print-label">BMI</span><span class="print-value">' + escapeHtml(formatNumber(input.bmi, 1)) + "</span></div>" +
+          '<div class="print-mini-card"><span class="print-label">M class</span><span class="print-value">' + escapeHtml(mosiS.mScore.label) + "</span></div>" +
+          '<div class="print-mini-card"><span class="print-label">O score</span><span class="print-value">' + escapeHtml(mosiS.oScore.label) + "</span></div>" +
+          '<div class="print-mini-card"><span class="print-label">Si level</span><span class="print-value">' + escapeHtml(mosiS.siLevel.label) + "</span></div>" +
+          '<div class="print-mini-card"><span class="print-label">Stage</span><span class="print-value">' + escapeHtml(mosiS.stageDisplay) + "</span></div>" +
+          '<div class="print-mini-card"><span class="print-label">Target</span><span class="print-value">Tier ' + escapeHtml(mosiT.tier) + "</span></div>" +
+        "</div>" +
+      "</section>" +
+      '<section class="print-two-col">' +
+        '<div class="print-section"><h3>Stage and target explanation</h3>' +
+          '<p>' + escapeHtml(displayText(mosiS.explanation)) + "</p>" +
+          '<p>' + escapeHtml(displayText(mosiT.reason)) + "</p></div>" +
+        '<div class="print-section print-drivers"><h3>Key drivers</h3>' + driverMarkup + "</div>" +
+      "</section>" +
+      '<section class="print-section print-estimates"><h3>Procedure-specific research estimates</h3>' +
+        '<table class="print-table"><thead><tr><th>Threshold</th><th>SG 12m</th><th>RYGB 12m</th><th>SG 60m</th><th>RYGB 60m</th></tr></thead><tbody>' + rows + "</tbody></table>" +
+      "</section>" +
+      '<p class="print-interpretation">Procedure-specific estimates are retrospective research estimates and should be interpreted with bariatric surgeon judgment.</p>' +
+      renderPrintFooter();
   }
 
   function render() {
@@ -2102,6 +2501,7 @@ button {
     updateLadder(mosiT.tier);
     renderEstimates(stageDisplay, mosiT);
     els.reportText.textContent = buildReport(mosiS, mosiT, drivers);
+    renderPrintReport(input, mosiS, mosiT);
   }
 
   function setUnit(unit) {
@@ -2170,6 +2570,7 @@ button {
   }
 
   function printReport() {
+    render();
     window.print();
   }
 
