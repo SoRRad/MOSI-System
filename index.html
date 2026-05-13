@@ -7,18 +7,20 @@
 <style>
 :root {
   color-scheme: light;
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  --font-display: ui-serif, Georgia, Cambria, "Times New Roman", serif;
-  --bg: #fff8ea;
-  --bg-2: #f6efe1;
-  --panel: rgba(255, 255, 255, 0.82);
+  --font-display: "Aptos Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+  --font-sans: var(--font-body);
+  --bg: #f7faf8;
+  --bg-2: #eef4f3;
+  --panel: rgba(255, 255, 255, 0.88);
   --panel-strong: #ffffff;
-  --ink: #10243a;
-  --muted: #64748b;
-  --soft: #edf5f2;
-  --line: rgba(16, 36, 58, 0.13);
-  --line-strong: rgba(16, 36, 58, 0.22);
-  --teal: #0f9f91;
+  --ink: #13202b;
+  --muted: #5f6f7d;
+  --soft: #eef5f4;
+  --line: rgba(19, 32, 43, 0.12);
+  --line-strong: rgba(19, 32, 43, 0.22);
+  --teal: #0f8f84;
   --teal-2: #14b8a6;
   --cyan: #0ea5e9;
   --blue: #2563eb;
@@ -59,16 +61,16 @@
 
 html[data-theme="light"] {
   color-scheme: light;
-  --bg: #fff8ea;
-  --bg-2: #f6efe1;
-  --panel: rgba(255, 255, 255, 0.82);
+  --bg: #f7faf8;
+  --bg-2: #eef4f3;
+  --panel: rgba(255, 255, 255, 0.88);
   --panel-strong: #ffffff;
-  --ink: #10243a;
-  --muted: #64748b;
-  --soft: #edf5f2;
-  --line: rgba(16, 36, 58, 0.13);
-  --line-strong: rgba(16, 36, 58, 0.22);
-  --teal: #0f9f91;
+  --ink: #13202b;
+  --muted: #5f6f7d;
+  --soft: #eef5f4;
+  --line: rgba(19, 32, 43, 0.12);
+  --line-strong: rgba(19, 32, 43, 0.22);
+  --teal: #0f8f84;
   --teal-2: #14b8a6;
   --cyan: #0ea5e9;
   --blue: #2563eb;
@@ -115,13 +117,13 @@ body {
   min-width: 320px;
   margin: 0;
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--line) 35%, transparent) 1px, transparent 1px),
-    linear-gradient(0deg, color-mix(in srgb, var(--line) 28%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--line) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(0deg, color-mix(in srgb, var(--line) 18%, transparent) 1px, transparent 1px),
     linear-gradient(180deg, var(--bg), var(--bg-2));
-  background-size: 34px 34px, 34px 34px, auto;
+  background-size: 38px 38px, 38px 38px, auto;
   color: var(--ink);
   font-family: var(--font-sans);
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 button,
@@ -165,8 +167,9 @@ button {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 4vw, 2.55rem);
-  line-height: 1;
+  line-height: 1.04;
   letter-spacing: 0;
+  font-weight: 760;
 }
 
 .brand-block p {
@@ -283,8 +286,9 @@ button {
 .methods summary {
   margin: 0;
   color: var(--ink);
-  font-size: 1.04rem;
+  font-size: 1.08rem;
   letter-spacing: 0;
+  line-height: 1.18;
 }
 
 .section-head p,
@@ -331,7 +335,7 @@ button {
 
 .bmi-card {
   min-width: 0;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
@@ -364,6 +368,7 @@ button {
   background: color-mix(in srgb, var(--panel-strong) 86%, var(--soft));
   color: var(--ink);
   padding: 8px 10px;
+  font-family: var(--font-mono);
   font-weight: 800;
 }
 
@@ -411,6 +416,7 @@ button {
 }
 
 .readout-value {
+  font-family: var(--font-mono);
   font-size: 1.15rem;
   font-weight: 950;
 }
@@ -435,17 +441,35 @@ button {
   display: grid;
 }
 
+.profile-group {
+  border-bottom: 1px solid var(--line);
+}
+
+.profile-group:last-child {
+  border-bottom: 0;
+}
+
+.profile-subhead {
+  padding: 12px 16px 8px;
+  background: color-mix(in srgb, var(--soft) 58%, transparent);
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .field-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 16px;
   align-items: center;
-  min-height: 68px;
-  padding: 12px 16px;
+  min-height: 62px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--line);
 }
 
-.field-row:last-child {
+.profile-group .field-row:last-child {
   border-bottom: 0;
 }
 
@@ -591,7 +615,8 @@ button {
   color: var(--ink);
   font-family: var(--font-display);
   font-size: clamp(2.3rem, 8vw, 4rem);
-  line-height: 0.95;
+  line-height: 0.98;
+  font-weight: 780;
 }
 
 .badge-row {
@@ -609,6 +634,7 @@ button {
   border-radius: 999px;
   background: var(--soft);
   color: var(--ink);
+  font-family: var(--font-mono);
   font-size: 0.83rem;
   font-weight: 950;
 }
@@ -704,6 +730,7 @@ button {
   border-radius: 6px;
   background: color-mix(in srgb, var(--stage-color) 15%, var(--soft));
   color: var(--ink);
+  font-family: var(--font-mono);
   font-size: 1.05rem;
 }
 
@@ -767,6 +794,7 @@ button {
 
 .ladder-step span {
   margin-top: 2px;
+  font-family: var(--font-mono);
   font-size: 1.05rem;
   font-weight: 950;
 }
@@ -865,6 +893,7 @@ button {
 
 .procedure-head h3 {
   margin: 0;
+  font-family: var(--font-display);
   font-size: 1.2rem;
 }
 
@@ -892,6 +921,7 @@ button {
 .target-probability strong {
   display: block;
   margin-top: 2px;
+  font-family: var(--font-mono);
   font-size: 1.12rem;
 }
 
@@ -928,6 +958,7 @@ button {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+  font-family: var(--font-mono);
   font-weight: 900;
 }
 
@@ -963,6 +994,7 @@ button {
 }
 
 .probability strong {
+  font-family: var(--font-mono);
   text-align: right;
 }
 
@@ -985,8 +1017,9 @@ button {
   background: var(--panel-strong);
   color: var(--ink);
   white-space: pre-wrap;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 .methods {
@@ -1030,10 +1063,89 @@ button {
 }
 
 .footer {
-  padding: 20px 0 32px;
+  padding: 18px 0 32px;
   color: var(--muted);
   font-size: 0.84rem;
-  text-align: center;
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.footer-brand {
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.footer-meta span:not(:last-child)::after {
+  content: "·";
+  margin-left: 8px;
+  color: var(--muted);
+}
+
+.footer-note {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.modal {
+  width: min(680px, calc(100% - 28px));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-strong);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  padding: 0;
+}
+
+.modal::backdrop {
+  background: rgba(6, 13, 22, 0.52);
+  backdrop-filter: blur(4px);
+}
+
+.modal-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.modal-body {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px 18px;
+}
+
+.modal-body p {
+  margin: 0;
+}
+
+.modal-body .method-note {
+  border-left: 3px solid var(--teal);
+  padding-left: 12px;
+  color: var(--muted);
 }
 
 .compact .field-subtitle,
@@ -1224,9 +1336,9 @@ button {
       </div>
       <div class="bmi-grid">
         <div class="bmi-card">
-          <h3>Direct BMI entry</h3>
+          <h3>BMI</h3>
           <div class="input-line">
-            <label for="bmi">Numeric BMI</label>
+            <label for="bmi">BMI</label>
             <input class="number-input" id="bmi" name="bmi" type="number" min="0" max="120" step="0.1" inputmode="decimal" placeholder="42.0" autocomplete="off">
           </div>
           <div class="bmi-readout">
@@ -1235,14 +1347,14 @@ button {
               <strong class="readout-value" id="activeBmi">Pending</strong>
             </span>
             <span>
-              <span class="readout-label">Live M class</span><br>
+              <span class="readout-label">M class</span><br>
               <strong class="readout-value" id="liveMClass">Pending</strong>
             </span>
           </div>
         </div>
 
         <div class="bmi-card">
-          <h3>Auto BMI calculator</h3>
+          <h3>Height/weight calculator</h3>
           <div class="metric-toggle" aria-label="BMI unit toggle">
             <button type="button" id="metricButton" class="active" aria-pressed="true">Metric</button>
             <button type="button" id="usButton" aria-pressed="false">US</button>
@@ -1270,7 +1382,7 @@ button {
     <aside class="results-aside print-focus" aria-label="Live MOSI result panel">
       <section class="passport" id="passport">
         <div class="passport-top">
-          <div class="passport-label">MOSI Passport <span class="live-dot">Live</span></div>
+          <div class="passport-label">MOSI Summary <span class="live-dot">Live</span></div>
           <p class="mosi-code" id="mosiCode">Enter BMI</p>
           <div class="badge-row">
             <span class="badge stage" id="stageBadge">Stage pending</span>
@@ -1279,7 +1391,7 @@ button {
             <span class="badge" id="targetBadge">Target pending</span>
           </div>
           <p class="passport-note" id="stageExplanation">BMI is required. Clinical fields default to No.</p>
-          <p class="passport-note tier-reason" id="tierExplanation">MOSI-T appears after BMI is valid.</p>
+          <p class="passport-note tier-reason" id="tierExplanation">Weight-loss target appears after BMI is valid.</p>
           <ul class="driver-list" id="driverList"></ul>
         </div>
         <div class="severity-rail" aria-label="MOSI severity rail">
@@ -1293,11 +1405,11 @@ button {
             <strong id="mScore">M-</strong>
             <span>M: BMI class<small id="mDetail">BMI class pending</small></span>
           </button>
-          <button class="component-row" type="button" data-jump="section-organ">
+          <button class="component-row" type="button" data-jump="section-profile">
             <strong id="oScore">O-</strong>
             <span>O: organ/metabolic components<small id="oDetail">Defaults to O0</small></span>
           </button>
-          <button class="component-row" type="button" data-jump="section-major">
+          <button class="component-row" type="button" data-jump="section-profile">
             <strong id="siScore">Si-</strong>
             <span>Si: systemic impairment<small id="siDetail">Defaults to Si0</small></span>
           </button>
@@ -1309,7 +1421,7 @@ button {
             <div id="tierDetail">Tier explanation appears after BMI is entered.</div>
           </div>
         </details>
-        <div class="target-ladder" aria-label="MOSI-T target ladder">
+        <div class="target-ladder" aria-label="Weight-loss target ladder">
           <div class="ladder-step" data-tier="A"><strong>Tier A</strong><span>&ge;7.5%</span><small>baseline target</small></div>
           <div class="ladder-step" data-tier="B"><strong>Tier B</strong><span>&ge;15%</span><small>target modifier</small></div>
           <div class="ladder-step" data-tier="C"><strong>Tier C</strong><span>&ge;25%</span><small>glycemic/microvascular</small></div>
@@ -1318,64 +1430,19 @@ button {
       </section>
     </aside>
 
-    <section class="clinical-section" id="section-organ" aria-labelledby="organ-title">
+    <section class="clinical-section" id="section-profile" aria-labelledby="profile-title">
       <div class="section-head">
         <div>
-          <span class="section-kicker">O score</span>
-          <h2 id="organ-title">Organ / metabolic burden</h2>
-          <p>Dysglycemia counts once when type 2 diabetes or impaired fasting glucose is selected.</p>
+          <span class="section-kicker">Clinical profile</span>
+          <h2 id="profile-title">Clinical profile</h2>
+          <p>All conditions default to No. Dysglycemia counts once when type 2 diabetes or impaired fasting glucose is selected.</p>
         </div>
         <div class="section-tools">
-          <span class="count-pill" id="organCount">0 selected</span>
-          <button class="small-button" type="button" data-clear="organ">Clear section</button>
+          <span class="count-pill" id="clinicalCount">0 selected</span>
+          <button class="small-button" type="button" data-clear="clinical">Clear section</button>
         </div>
       </div>
-      <div class="field-list" id="organFields"></div>
-    </section>
-
-    <section class="clinical-section" id="section-target" aria-labelledby="target-title">
-      <div class="section-head">
-        <div>
-          <span class="section-kicker">MOSI-T</span>
-          <h2 id="target-title">Target modifiers</h2>
-          <p>These features can change MOSI-T while preserving the O-score definition.</p>
-        </div>
-        <div class="section-tools">
-          <span class="count-pill" id="targetCount">0 selected</span>
-          <button class="small-button" type="button" data-clear="target">Clear section</button>
-        </div>
-      </div>
-      <div class="field-list" id="targetFields"></div>
-    </section>
-
-    <section class="clinical-section" id="section-micro" aria-labelledby="micro-title">
-      <div class="section-head">
-        <div>
-          <span class="section-kicker">Si1</span>
-          <h2 id="micro-title">Diabetic microvascular/end-organ disease</h2>
-          <p>Any selected line contributes to Si1 unless higher systemic impairment is present.</p>
-        </div>
-        <div class="section-tools">
-          <span class="count-pill" id="microCount">0 selected</span>
-          <button class="small-button" type="button" data-clear="micro">Clear section</button>
-        </div>
-      </div>
-      <div class="field-list" id="microFields"></div>
-    </section>
-
-    <section class="clinical-section" id="section-major" aria-labelledby="major-title">
-      <div class="section-head">
-        <div>
-          <span class="section-kicker">Si2 / Si3</span>
-          <h2 id="major-title">Major organ dysfunction / systemic disease</h2>
-          <p>Dialysis takes precedence over transplant for Stage IV subgroup display.</p>
-        </div>
-        <div class="section-tools">
-          <span class="count-pill" id="majorCount">0 selected</span>
-          <button class="small-button" type="button" data-clear="major">Clear section</button>
-        </div>
-      </div>
-      <div class="field-list" id="majorFields"></div>
+      <div class="field-list" id="clinicalFields"></div>
     </section>
 
     <div class="toolbar no-print">
@@ -1388,17 +1455,17 @@ button {
   <section class="wide-panel print-focus" id="estimates" aria-labelledby="estimates-title">
     <div class="wide-head">
       <div>
-        <span class="section-kicker">MOSI-D</span>
-        <h2 id="estimates-title">Research estimates</h2>
-        <p class="wide-copy">Procedure-specific probability estimates may support discussion and require bariatric surgeon judgment.</p>
+        <span class="section-kicker">Research estimate</span>
+        <h2 id="estimates-title">Procedure-specific research estimates</h2>
+        <p class="wide-copy">Procedure-specific probability estimates support discussion and require bariatric surgeon judgment.</p>
       </div>
-      <div class="segmented no-print" role="tablist" aria-label="MOSI-D timepoint">
-        <button type="button" class="active" id="month12Button" role="tab" aria-selected="true">12 months</button>
-        <button type="button" id="month60Button" role="tab" aria-selected="false">60 months</button>
+      <div class="segmented no-print" role="group" aria-label="Procedure estimate timepoint">
+        <button type="button" class="active" id="month12Button" aria-pressed="true">12 months</button>
+        <button type="button" id="month60Button" aria-pressed="false">60 months</button>
       </div>
     </div>
     <div class="estimate-grid" id="estimateGrid"></div>
-    <div class="target-note" id="targetNote">Enter BMI to show MOSI-D research estimates.</div>
+    <div class="target-note" id="targetNote">Enter BMI to show procedure-specific research estimates.</div>
   </section>
 
   <section class="wide-panel print-focus" id="report" aria-labelledby="report-title">
@@ -1414,7 +1481,7 @@ button {
       </div>
     </div>
     <div class="report-box" id="reportText"></div>
-    <p class="report-help print-disclaimer" style="display:none">Research decision-support only. Procedure selection requires bariatric surgeon judgment.</p>
+    <p class="report-help print-disclaimer" style="display:none">Research decision-support only. Procedure selection requires clinician judgment.</p>
   </section>
 
   <details class="methods no-print" id="methods">
@@ -1422,7 +1489,7 @@ button {
     <div class="methods-grid">
       <div class="method-block">
         <h3>M score</h3>
-        <p>M1: BMI 30.0-34.9; M2: 35.0-39.9; M3: 40.0-44.9; M4: 45.0-49.9; M5: BMI >=50.0.</p>
+        <p>M1: BMI 30.0–34.9; M2: 35.0–39.9; M3: 40.0–44.9; M4: 45.0–49.9; M5: BMI ≥50.0.</p>
       </div>
       <div class="method-block">
         <h3>O score</h3>
@@ -1436,8 +1503,8 @@ button {
         <h3>Stage and tier</h3>
         <ul>
           <li>Si3 maps to Stage IV, with IV-A for transplant without dialysis and IV-B for dialysis.</li>
-          <li>Si2 maps to Stage III; Si1 with M >=4 or O >=3 maps to Stage III.</li>
-          <li>MOSI-T uses the highest qualifying tier target.</li>
+          <li>Si2 maps to Stage III; Si1 with M ≥4 or O ≥3 maps to Stage III.</li>
+          <li>Therapeutic target tier uses the highest qualifying tier target.</li>
         </ul>
       </div>
     </div>
@@ -1445,8 +1512,32 @@ button {
 </main>
 
 <footer class="footer no-print">
-  <div class="shell">This static calculator does not store or submit entered values.</div>
+  <div class="shell footer-inner">
+    <div>
+      <div class="footer-brand">MOSI System</div>
+      <div class="footer-meta">
+        <span>AIST Lab · Mayo Clinic</span>
+        <span>Research decision-support calculator</span>
+      </div>
+    </div>
+    <button class="action-button" type="button" id="aboutButton">About this platform</button>
+    <p class="footer-note">This static calculator does not store or submit entered values.</p>
+  </div>
 </footer>
+
+<dialog class="modal" id="aboutModal" aria-labelledby="aboutTitle">
+  <div class="modal-head">
+    <h2 id="aboutTitle">About the MOSI System</h2>
+    <button class="icon-button" type="button" id="aboutClose" aria-label="Close about dialog">×</button>
+  </div>
+  <div class="modal-body">
+    <p>The MOSI System is a research decision-support calculator for obesity severity staging, therapeutic weight-loss target estimation, and procedure-specific bariatric outcome estimates.</p>
+    <p>Developed by the Artificial Intelligence in Surgical Technologies (AIST) Lab, Mayo Clinic.</p>
+    <p>Developed as a research platform to support bariatric surgery phenotyping and prospective validation.</p>
+    <p class="method-note">In methodology documentation, MOSI-S refers to severity stage, MOSI-T to therapeutic target, and MOSI-D to decision-support estimates.</p>
+    <p>Not a medical device. Not a substitute for clinician judgment. Estimates are derived from retrospective single-center data and should be interpreted in context.</p>
+  </div>
+</dialog>
 
 <script src="src/mosi-core.js"></script>
 <script>
@@ -1460,10 +1551,10 @@ button {
   var groups = {
     organ: [
       { id: "hypertension", name: "Hypertension", subtitle: "O-score component and Tier B feature." },
-      { id: "type2Diabetes", name: "Type 2 diabetes", subtitle: "Dysglycemia component; qualifies Tier C." },
-      { id: "impairedFastingGlucose", name: "Impaired fasting glucose", subtitle: "Dysglycemia component; qualifies Tier C." },
       { id: "hyperlipidemia", name: "Hyperlipidemia", subtitle: "O-score component and Tier B feature." },
-      { id: "sleepApnea", name: "Obstructive sleep apnea", subtitle: "O-score component and Tier B feature." }
+      { id: "sleepApnea", name: "Obstructive sleep apnea", subtitle: "O-score component and Tier B feature." },
+      { id: "impairedFastingGlucose", name: "Impaired fasting glucose", subtitle: "Dysglycemia component; qualifies Tier C." },
+      { id: "type2Diabetes", name: "Type 2 diabetes", subtitle: "Dysglycemia component; qualifies Tier C." }
     ],
     target: [
       { id: "gerd", name: "GERD", subtitle: "Target modifier; not part of O score." },
@@ -1484,6 +1575,13 @@ button {
       { id: "transplant", name: "Solid organ transplant", subtitle: "Si3; Stage IV-A when dialysis is absent." },
       { id: "dialysis", name: "Dialysis", subtitle: "Si3; Stage IV-B with or without transplant." }
     ]
+  };
+
+  var groupTitles = {
+    organ: "Metabolic and sleep",
+    target: "Gastrointestinal and musculoskeletal",
+    micro: "Diabetes-related complications",
+    major: "Advanced systemic disease"
   };
 
   var labels = {};
@@ -1535,7 +1633,10 @@ button {
     themeToggle: document.getElementById("themeToggle"),
     compactToggle: document.getElementById("compactToggle"),
     resetButton: document.getElementById("resetButton"),
-    copyStatus: document.getElementById("copyStatus")
+    copyStatus: document.getElementById("copyStatus"),
+    aboutButton: document.getElementById("aboutButton"),
+    aboutModal: document.getElementById("aboutModal"),
+    aboutClose: document.getElementById("aboutClose")
   };
 
   function escapeHtml(value) {
@@ -1544,17 +1645,34 @@ button {
     });
   }
 
+  function displayText(value) {
+    return String(value)
+      .replace(/>=/g, "≥")
+      .replace(/<=/g, "≤")
+      .replace(/->/g, "→")
+      .replace(/(\d)-(\d)/g, "$1–$2");
+  }
+
+  function formatMosiCode(value) {
+    return displayText(value).replace(/-/g, "–");
+  }
+
+  function fieldRow(field, groupName) {
+    return '<label class="field-row" for="' + field.id + '">' +
+      '<span><span class="field-name">' + escapeHtml(field.name) + '</span><span class="field-subtitle">' + escapeHtml(field.subtitle) + '</span></span>' +
+      '<span class="switch"><input type="checkbox" id="' + field.id + '" data-group="' + groupName + '">' +
+      '<span class="switch-face" aria-hidden="true"><span class="no">No</span><span class="yes">Yes</span></span></span>' +
+      "</label>";
+  }
+
   function renderFieldLists() {
-    Object.keys(groups).forEach(function (groupName) {
-      var container = document.getElementById(groupName + "Fields");
-      container.innerHTML = groups[groupName].map(function (field) {
-        return '<label class="field-row" for="' + field.id + '">' +
-          '<span><span class="field-name">' + escapeHtml(field.name) + '</span><span class="field-subtitle">' + escapeHtml(field.subtitle) + '</span></span>' +
-          '<span class="switch"><input type="checkbox" id="' + field.id + '" data-group="' + groupName + '">' +
-          '<span class="switch-face" aria-hidden="true"><span class="no">No</span><span class="yes">Yes</span></span></span>' +
-          "</label>";
-      }).join("");
-    });
+    var container = document.getElementById("clinicalFields");
+    container.innerHTML = Object.keys(groups).map(function (groupName) {
+      return '<div class="profile-group">' +
+        '<div class="profile-subhead">' + escapeHtml(groupTitles[groupName]) + '</div>' +
+        groups[groupName].map(function (field) { return fieldRow(field, groupName); }).join("") +
+        "</div>";
+    }).join("");
   }
 
   function numericValue(el) {
@@ -1605,11 +1723,12 @@ button {
   }
 
   function updateCounts() {
+    var total = 0;
     Object.keys(groups).forEach(function (groupName) {
-      var count = selectedInGroup(groupName).length;
-      var el = document.getElementById(groupName + "Count");
-      if (el) el.textContent = count + " selected";
+      total += selectedInGroup(groupName).length;
     });
+    var el = document.getElementById("clinicalCount");
+    if (el) el.textContent = total + " selected";
   }
 
   function componentText(items, fallback) {
@@ -1662,11 +1781,11 @@ button {
   }
 
   function targetNote(tier) {
-    if (tier === "A") return "Tier A target >=7.5% lies between displayed thresholds >=5% and >=10%.";
-    if (tier === "B") return "Tier B target >=15% lies between displayed thresholds >=10% and >=20%.";
-    if (tier === "C") return "Tier C target >=25% is highlighted.";
-    if (tier === "D") return "Tier D target >=30% is highlighted.";
-    return "Enter BMI to show MOSI-D research estimates.";
+    if (tier === "A") return "Tier A target ≥7.5% lies between displayed thresholds ≥5% and ≥10%.";
+    if (tier === "B") return "Tier B target ≥15% lies between displayed thresholds ≥10% and ≥20%.";
+    if (tier === "C") return "Tier C target ≥25% is highlighted.";
+    if (tier === "D") return "Tier D target ≥30% is highlighted.";
+    return "Enter BMI to show procedure-specific research estimates.";
   }
 
   function fmtPercent(value) {
@@ -1766,9 +1885,9 @@ button {
     els.targetBadge.className = "badge";
     els.targetBadge.textContent = "Target pending";
     els.stageExplanation.textContent = warning ? mosiS.warning : "BMI is required. Clinical fields default to No.";
-    els.tierExplanation.textContent = "MOSI-T appears after BMI is valid.";
-    els.stageDetail.textContent = mosiS.reason || "BMI is required to assign MOSI-S.";
-    els.tierDetail.textContent = "MOSI-T appears after BMI is valid.";
+    els.tierExplanation.textContent = "Weight-loss target appears after BMI is valid.";
+    els.stageDetail.textContent = displayText(mosiS.reason || "BMI is required to assign MOSI stage.");
+    els.tierDetail.textContent = "Weight-loss target appears after BMI is valid.";
     els.mScore.textContent = "M-";
     els.mDetail.textContent = warning ? "BMI below MOSI range" : "BMI class pending";
     els.oScore.textContent = "O-";
@@ -1779,14 +1898,14 @@ button {
     updateRail(0);
     updateLadder("");
     renderEstimates("", null);
-    els.reportText.textContent = "MOSI-S: Incomplete.\nMOSI-T: Incomplete.\nKey drivers: none selected.\nMOSI-D: SG and RYGB research estimates shown after BMI is valid.\nInterpretation: Research decision-support only; procedure selection requires bariatric surgeon judgment.";
+    els.reportText.textContent = "MOSI stage: Incomplete.\nWeight-loss target: Incomplete.\nKey drivers: none selected.\nProcedure-specific estimates: SG and RYGB research estimates shown after BMI is valid.\nInterpretation: Research decision-support only; procedure selection requires clinician judgment.";
   }
 
   function buildReport(mosiS, mosiT, drivers) {
     var data = core.getMosiDEstimates(mosiS.stageDisplay, mosiT.tier);
     var targetText = "";
     if (data.highlightThreshold) {
-      targetText = "At the MOSI-T target threshold, estimated 12-month probability:\n" +
+      targetText = "At the weight-loss target threshold, estimated 12-month probability:\n" +
         data.procedures.map(function (procedure) {
           return procedure.shortName + ": " + fmtPercent(procedure.estimates[data.highlightThreshold].month12);
         }).join("\n");
@@ -1794,12 +1913,12 @@ button {
       targetText = "The target lies between displayed thresholds; see highlighted rows.";
     }
 
-    return "MOSI-S: " + mosiS.summary + " -> " + mosiS.stageDisplay + ".\n" +
-      "MOSI-T: Tier " + mosiT.tier + ", target >=" + formatTarget(mosiT.target) + "% TWL.\n" +
+    return "MOSI stage: " + formatMosiCode(mosiS.summary) + " → " + mosiS.stageDisplay + ".\n" +
+      "Weight-loss target: Tier " + mosiT.tier + ", target ≥" + formatTarget(mosiT.target) + "% TWL.\n" +
       "Key drivers: " + (drivers.length ? drivers.join(", ") : "No selected clinical drivers") + ".\n" +
-      "MOSI-D: SG and RYGB research estimates shown for 12 and 60 months.\n" +
+      "Procedure-specific estimates: SG and RYGB estimates shown for 12 and 60 months.\n" +
       targetText + "\n" +
-      "Interpretation: Research decision-support only; procedure selection requires bariatric surgeon judgment.";
+      "Interpretation: Research decision-support only; procedure selection requires clinician judgment.";
   }
 
   function render() {
@@ -1817,25 +1936,25 @@ button {
     var drivers = selectedDrivers(mosiS, mosiT);
     var stageDisplay = mosiS.stageDisplay;
     var stageClassName = stageClass(stageDisplay);
-    var targetLabel = "Target >=" + formatTarget(mosiT.target) + "% TWL";
+    var targetLabel = "≥" + formatTarget(mosiT.target) + "% TWL";
 
     els.bmiWarning.classList.remove("visible");
     els.passport.className = "passport " + stageClassName;
-    els.mosiCode.textContent = mosiS.summary;
+    els.mosiCode.textContent = formatMosiCode(mosiS.summary);
     els.stageBadge.className = "badge stage";
     els.stageBadge.textContent = mosiS.stage;
     els.substageBadge.className = "badge";
     els.substageBadge.textContent = mosiS.subtype || "No subgroup";
     els.tierBadge.className = "badge tier-" + mosiT.tier;
-    els.tierBadge.textContent = "MOSI-T Tier " + mosiT.tier;
+    els.tierBadge.textContent = "Weight-loss target: Tier " + mosiT.tier;
     els.targetBadge.className = "badge tier-" + mosiT.tier;
     els.targetBadge.textContent = targetLabel;
-    els.stageExplanation.textContent = mosiS.explanation;
-    els.tierExplanation.textContent = mosiT.reason;
-    els.stageDetail.textContent = mosiS.explanation;
-    els.tierDetail.textContent = mosiT.reason;
+    els.stageExplanation.textContent = displayText(mosiS.explanation);
+    els.tierExplanation.textContent = displayText(mosiT.reason);
+    els.stageDetail.textContent = displayText(mosiS.explanation);
+    els.tierDetail.textContent = displayText(mosiT.reason);
     els.mScore.textContent = mosiS.mScore.label;
-    els.mDetail.textContent = "BMI " + mosiS.mScore.range;
+    els.mDetail.textContent = "BMI " + displayText(mosiS.mScore.range);
     els.oScore.textContent = mosiS.oScore.label;
     els.oDetail.textContent = componentText(mosiS.oScore.components, "No O-score components");
     els.siScore.textContent = mosiS.siLevel.label;
@@ -1860,6 +1979,10 @@ button {
   }
 
   function clearSection(groupName) {
+    if (groupName === "clinical") {
+      Object.keys(groups).forEach(clearSection);
+      return;
+    }
     groups[groupName].forEach(function (field) {
       var el = document.getElementById(field.id);
       if (el) el.checked = false;
@@ -1917,8 +2040,8 @@ button {
     var is12 = timepoint === "month12";
     els.month12Button.classList.toggle("active", is12);
     els.month60Button.classList.toggle("active", !is12);
-    els.month12Button.setAttribute("aria-selected", is12 ? "true" : "false");
-    els.month60Button.setAttribute("aria-selected", !is12 ? "true" : "false");
+    els.month12Button.setAttribute("aria-pressed", is12 ? "true" : "false");
+    els.month60Button.setAttribute("aria-pressed", !is12 ? "true" : "false");
     render();
   }
 
@@ -1937,6 +2060,18 @@ button {
   function toggleCompact() {
     var active = els.body.classList.toggle("compact");
     els.compactToggle.setAttribute("aria-pressed", active ? "true" : "false");
+  }
+
+  function openAbout() {
+    if (els.aboutModal && typeof els.aboutModal.showModal === "function") {
+      els.aboutModal.showModal();
+    }
+  }
+
+  function closeAbout() {
+    if (els.aboutModal && els.aboutModal.open) {
+      els.aboutModal.close();
+    }
   }
 
   function highlightSection(id) {
@@ -1972,6 +2107,11 @@ button {
   els.themeToggle.addEventListener("click", toggleTheme);
   els.compactToggle.addEventListener("click", toggleCompact);
   els.resetButton.addEventListener("click", resetAll);
+  els.aboutButton.addEventListener("click", openAbout);
+  els.aboutClose.addEventListener("click", closeAbout);
+  els.aboutModal.addEventListener("click", function (event) {
+    if (event.target === els.aboutModal) closeAbout();
+  });
   document.getElementById("copyReportButton").addEventListener("click", copyReport);
   document.getElementById("copyReportButton2").addEventListener("click", copyReport);
   document.getElementById("printReportButton").addEventListener("click", printReport);
