@@ -27,7 +27,8 @@
         25: { month12: 81.8, month60: null },
         30: { month12: 64.4, month60: 25.0 },
         35: { month12: 34.8, month60: 11.8 }
-      }
+      },
+      BPD_DS_SADI_S: {}
     },
     "Stage II": {
       SG: {
@@ -45,6 +46,9 @@
         25: { month12: 82.5, month60: null },
         30: { month12: 61.7, month60: 31.7 },
         35: { month12: 38.5, month60: 19.1 }
+      },
+      BPD_DS_SADI_S: {
+        20: { month12: 97.0, month60: null }
       }
     },
     "Stage III": {
@@ -63,6 +67,9 @@
         25: { month12: 70.8, month60: null },
         30: { month12: 47.9, month60: 27.7 },
         35: { month12: 24.5, month60: 16.6 }
+      },
+      BPD_DS_SADI_S: {
+        20: { month12: 94.9, month60: null }
       }
     },
     "Stage IV": {
@@ -81,13 +88,24 @@
         25: { month12: 78.6, month60: null },
         30: { month12: 57.1, month60: 58.3 },
         35: { month12: 50.0, month60: 25.0 }
+      },
+      BPD_DS_SADI_S: {
+        20: { month12: 100.0, month60: null }
       }
     }
   };
 
   var PROCEDURES = [
     { key: "SG", name: "Sleeve gastrectomy", shortName: "SG" },
-    { key: "RYGB", name: "Roux-en-Y gastric bypass", shortName: "RYGB" }
+    { key: "RYGB", name: "Roux-en-Y gastric bypass", shortName: "RYGB" },
+    {
+      key: "BPD_DS_SADI_S",
+      name: "BPD-DS / SADI-S",
+      shortName: "BPD-DS/SADI-S",
+      exploratory: true,
+      warning: "Exploratory estimate; smaller subgroup size and likely procedure-selection bias.",
+      note: "Exploratory; limited subgroup size. Missing cells indicate no exact model estimate available."
+    }
   ];
 
   function asNumber(value) {
@@ -311,6 +329,9 @@
         key: procedure.key,
         name: procedure.name,
         shortName: procedure.shortName,
+        exploratory: Boolean(procedure.exploratory),
+        warning: procedure.warning || "",
+        note: procedure.note || "",
         estimates: estimates
       };
     });

@@ -82,4 +82,11 @@ assert.strictEqual(stageFourTierD.stageKey, "Stage IV");
 assert.strictEqual(stageFourTierD.highlightThreshold, 30);
 assert.strictEqual(stageFourTierD.procedures[1].estimates[30].month60, 58.3);
 
+const stageTwoTierC = getMosiDEstimates("Stage II", "C");
+const bpddsStageTwo = stageTwoTierC.procedures.find((procedure) => procedure.key === "BPD_DS_SADI_S");
+assert.ok(bpddsStageTwo, "Stage II Tier C estimates include BPD-DS/SADI-S");
+assert.strictEqual(bpddsStageTwo.estimates[20].month12, 97.0);
+assert.strictEqual(bpddsStageTwo.estimates[25].month12, null);
+assert.strictEqual(bpddsStageTwo.estimates[25].month60, null);
+
 console.log(`All ${examples.length} MOSI examples passed.`);

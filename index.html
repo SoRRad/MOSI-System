@@ -595,24 +595,6 @@ button {
   text-transform: uppercase;
 }
 
-.live-dot {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  color: var(--teal);
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.live-dot::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--teal);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--teal) 18%, transparent);
-}
-
 .mosi-code {
   margin: 0 0 9px;
   color: var(--ink);
@@ -897,7 +879,7 @@ button {
 
 .estimate-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 12px;
 }
 
@@ -906,6 +888,10 @@ button {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-strong);
+}
+
+.procedure-card.exploratory {
+  border-color: color-mix(in srgb, var(--amber) 42%, var(--line));
 }
 
 .procedure-head {
@@ -926,6 +912,24 @@ button {
 .procedure-head p {
   margin: 2px 0 0;
   font-size: 0.76rem;
+}
+
+.procedure-warning,
+.procedure-note {
+  margin: 0;
+  padding: 8px 10px;
+  border-top: 1px solid var(--line);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.procedure-warning {
+  background: var(--amber-soft);
+  color: var(--ink);
+}
+
+.procedure-note {
+  color: var(--muted);
 }
 
 .target-probability {
@@ -1054,22 +1058,91 @@ button {
   line-height: 1.45;
 }
 
-.report-list {
+.report-stage-label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.report-stage-result {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 5px 12px;
+  border: 1px solid color-mix(in srgb, var(--stage-color) 35%, var(--line));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--stage-color) 18%, var(--panel-strong));
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.55rem);
+  font-weight: 780;
+  line-height: 1;
+}
+
+.report-code-line {
+  margin: 8px 0 12px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 950;
+}
+
+.report-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.report-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-strong);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.report-section {
   display: grid;
-  gap: 9px;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.report-section h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.84rem;
+}
+
+.report-section p {
+  margin: 0;
+}
+
+.report-bullets,
+.report-estimate-list {
+  display: grid;
+  gap: 4px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.report-list li {
+.report-bullets li,
+.report-estimate-list li {
   display: grid;
   grid-template-columns: 10px minmax(0, 1fr);
-  gap: 9px;
+  gap: 8px;
   align-items: start;
 }
 
-.report-list li::before {
+.report-bullets li::before,
+.report-estimate-list li::before {
   content: "";
   width: 5px;
   height: 5px;
@@ -1078,35 +1151,9 @@ button {
   background: var(--teal);
 }
 
-.report-label {
-  font-weight: 900;
-}
-
-.report-value {
-  font-weight: 720;
-}
-
-.report-code,
-.report-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  margin: 1px 3px 1px 0;
-  padding: 2px 7px;
-  border-radius: 999px;
-  background: var(--panel-strong);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 950;
-}
-
-.report-code {
-  border: 1px solid color-mix(in srgb, var(--teal) 34%, var(--line));
-}
-
-.report-badge {
-  border: 1px solid color-mix(in srgb, var(--stage-color) 32%, var(--line));
-  background: color-mix(in srgb, var(--stage-color) 14%, var(--panel-strong));
+.report-note {
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
 .report-actions {
@@ -1906,14 +1953,14 @@ button {
       <div class="warning" id="bmiWarning">MOSI is intended for patients with obesity and bariatric surgery candidates.</div>
     </section>
 
-    <aside class="results-aside print-focus" aria-label="Live MOSI result panel">
+    <aside class="results-aside print-focus" aria-label="MOSI result panel">
       <section class="passport" id="passport">
         <div class="passport-top">
-          <div class="passport-label">MOSI stage <span class="live-dot">Live</span></div>
+          <div class="passport-label">MOSI summary</div>
           <p class="mosi-code" id="mosiCode">Enter BMI</p>
           <div class="badge-row stage-badges">
-            <span class="badge stage" id="stageBadge">Stage pending</span>
-            <span class="badge" id="substageBadge">No subgroup</span>
+            <span class="badge stage" id="stageBadge" aria-label="MOSI stage: pending">Stage pending</span>
+            <span class="badge" id="substageBadge" aria-label="MOSI subgroup: none">No subgroup</span>
           </div>
           <div class="target-summary">
             <h3>Required weight-loss target</h3>
@@ -1923,11 +1970,11 @@ button {
           <p class="passport-note tier-reason" id="tierExplanation">Weight-loss target appears after BMI is valid.</p>
           <ul class="driver-list" id="driverList"></ul>
         </div>
-        <div class="severity-rail" aria-label="MOSI severity rail">
-          <span class="rail-step" data-rail="1"></span>
-          <span class="rail-step" data-rail="2"></span>
-          <span class="rail-step" data-rail="3"></span>
-          <span class="rail-step" data-rail="4"></span>
+        <div class="severity-rail" id="severityRail" role="img" aria-label="MOSI severity rail: stage pending">
+          <span class="rail-step" data-rail="1" aria-hidden="true"></span>
+          <span class="rail-step" data-rail="2" aria-hidden="true"></span>
+          <span class="rail-step" data-rail="3" aria-hidden="true"></span>
+          <span class="rail-step" data-rail="4" aria-hidden="true"></span>
         </div>
         <div class="component-stack" aria-label="MOSI component breakdown">
           <button class="component-row" type="button" data-jump="section-bmi">
@@ -1973,8 +2020,8 @@ button {
     <div class="wide-head">
       <div>
         <span class="section-kicker">Research estimate</span>
-        <h2 id="estimates-title">Procedure-specific research estimates</h2>
-        <p class="wide-copy">Procedure-specific probability estimates support discussion and require bariatric surgeon judgment.</p>
+        <h2 id="estimates-title">Bariatric procedure outcome estimates</h2>
+        <p class="wide-copy">Retrospective procedure-specific outcome estimates to support bariatric surgery discussion. These estimates are not treatment recommendations.</p>
       </div>
       <div class="segmented no-print" role="group" aria-label="Procedure estimate timepoint">
         <button type="button" class="active" id="month12Button" aria-pressed="true">12 months</button>
@@ -1982,7 +2029,7 @@ button {
       </div>
     </div>
     <div class="estimate-grid" id="estimateGrid"></div>
-    <div class="target-note" id="targetNote">Enter BMI to show procedure-specific research estimates.</div>
+    <div class="target-note" id="targetNote">Enter BMI to show procedure outcome estimates.</div>
   </section>
 
   <section class="wide-panel print-focus" id="report" aria-labelledby="report-title">
@@ -2070,7 +2117,7 @@ button {
         <li>End-organ or systemic disease determines the Si level.</li>
         <li>M class, O score, and Si level combine to generate the MOSI stage.</li>
         <li>The comorbidity profile also determines a weight-loss target tier.</li>
-        <li>Procedure-specific estimates compare SG and RYGB using retrospective research estimates.</li>
+        <li>Procedure outcome estimates display SG, RYGB, and exploratory BPD-DS/SADI-S values when exact estimates are available.</li>
       </ul>
     </section>
 
@@ -2105,8 +2152,8 @@ button {
           <p>Tier A: ≥7.5% TWL. Tier B: ≥15% TWL. Tier C: ≥25% TWL. Tier D: ≥30% TWL. Highest qualifying tier wins.</p>
         </div>
         <div class="method-block compact">
-          <h3>Procedure-specific research estimates</h3>
-          <p>SG and RYGB probabilities are shown at 12 and 60 months for TWL thresholds of ≥5%, ≥10%, ≥20%, ≥25%, ≥30%, and ≥35%.</p>
+          <h3>Bariatric procedure outcome estimates</h3>
+          <p>SG, RYGB, and exploratory BPD-DS/SADI-S probabilities are shown at 12 and 60 months when exact values are available. Missing cells remain N/A.</p>
         </div>
       </div>
       <p class="method-note">In methodology documentation, MOSI-S refers to severity stage, MOSI-T to therapeutic target, and MOSI-D to decision-support estimates.</p>
@@ -2145,6 +2192,7 @@ button {
         <li>60-month attrition.</li>
         <li>Research decision-support only; not a medical device and not a substitute for clinician judgment.</li>
       </ul>
+      <p class="method-note">Although age and sex were included in a fully adjusted performance model, the active calculator displays stage- and procedure-based retrospective estimates rather than individualized coefficient-based predictions. The active estimate display focuses on 12-month and 60-month horizons. Entered features are interpreted as present when selected; unselected features are treated as absent for this calculator.</p>
       <p class="method-note">This static calculator runs in the browser and does not store or submit entered values.</p>
     </section>
   </div>
@@ -2168,7 +2216,7 @@ button {
       { id: "type2Diabetes", name: "Type 2 diabetes", subtitle: "Dysglycemia component; qualifies Tier C." }
     ],
     target: [
-      { id: "gerd", name: "GERD", subtitle: "Target modifier; not part of O score." },
+      { id: "gerd", name: "GERD", subtitle: "Tier B qualifier; not part of O score." },
       { id: "arthropathy", name: "Arthropathy", subtitle: "Mechanical target modifier." },
       { id: "arthroplasty", name: "Prior arthroplasty", subtitle: "Mechanical target modifier." }
     ],
@@ -2229,6 +2277,7 @@ button {
     stageDetail: document.getElementById("stageDetail"),
     tierDetail: document.getElementById("tierDetail"),
     driverList: document.getElementById("driverList"),
+    severityRail: document.getElementById("severityRail"),
     mScore: document.getElementById("mScore"),
     mDetail: document.getElementById("mDetail"),
     oScore: document.getElementById("oScore"),
@@ -2397,7 +2446,7 @@ button {
     if (tier === "B") return "Tier B target ≥15% lies between displayed thresholds ≥10% and ≥20%.";
     if (tier === "C") return "Tier C target ≥25% is highlighted.";
     if (tier === "D") return "Tier D target ≥30% is highlighted.";
-    return "Enter BMI to show procedure-specific research estimates.";
+    return "Enter BMI to show procedure outcome estimates.";
   }
 
   function fmtPercent(value) {
@@ -2424,12 +2473,65 @@ button {
     return "BMI class " + mosiS.mScore.label + "; O score " + mosiS.oScore.score + "; " + mosiS.siLevel.label + " " + displayText(mosiS.siLevel.reason);
   }
 
-  function probabilityBar(value) {
+  function thresholdLabel(threshold) {
+    return "≥" + threshold + "% TWL";
+  }
+
+  function timepointLabel(timepoint) {
+    return timepoint === "month60" ? "60 months" : "12 months";
+  }
+
+  function isStageIvSubgroup(stageDisplay) {
+    return stageDisplay === "Stage IV-A" || stageDisplay === "Stage IV-B";
+  }
+
+  function stageIvEstimateNote(stageDisplay, stageKey) {
+    if (isStageIvSubgroup(stageDisplay) && stageKey === "Stage IV") {
+      return "Stage IV-A/IV-B use pooled Stage IV procedure estimates in this display. Stage IV subgroups may differ clinically; subgroup-specific estimates are descriptive and limited by sample size.";
+    }
+    return "";
+  }
+
+  function buildEstimateSummary(stageDisplay, mosiT, timepoint) {
+    if (!stageDisplay || !mosiT) {
+      return { rows: [], procedures: [], note: "", stageKey: "" };
+    }
+    var data = core.getMosiDEstimates(stageDisplay, mosiT.tier);
+    var thresholds = targetHighlights(mosiT.tier);
+    var rows = thresholds.map(function (threshold) {
+      return {
+        threshold: threshold,
+        procedures: data.procedures.map(function (procedure) {
+          var estimate = procedure.estimates[threshold] || {};
+          return {
+            key: procedure.key,
+            shortName: procedure.shortName,
+            value: estimate[timepoint]
+          };
+        })
+      };
+    });
+    return {
+      rows: rows,
+      procedures: data.procedures,
+      note: stageIvEstimateNote(stageDisplay, data.stageKey),
+      stageKey: data.stageKey
+    };
+  }
+
+  function estimateRowText(row, timepoint) {
+    return thresholdLabel(row.threshold) + " at " + timepointLabel(timepoint) + ": " + row.procedures.map(function (procedure) {
+      return procedure.shortName + " " + fmtPercent(procedure.value);
+    }).join("; ");
+  }
+
+  function probabilityBar(value, label) {
+    var ariaValue = Number.isFinite(value) ? fmtPercent(value) : "not available";
     if (!Number.isFinite(value)) {
-      return '<div class="probability"><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="--bar-width:0%"></div></div><strong>N/A</strong></div>';
+      return '<div class="probability" role="img" aria-label="' + escapeHtml(label + " " + ariaValue) + '"><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="--bar-width:0%"></div></div><strong>N/A</strong></div>';
     }
     var width = Math.max(0, Math.min(100, value));
-    return '<div class="probability"><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="--bar-width:' + width + '%"></div></div><strong>' + fmtPercent(value) + "</strong></div>";
+    return '<div class="probability" role="img" aria-label="' + escapeHtml(label + " " + ariaValue) + '"><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="--bar-width:' + width + '%"></div></div><strong>' + fmtPercent(value) + "</strong></div>";
   }
 
   function targetEstimate(procedure, highlightThreshold) {
@@ -2440,7 +2542,8 @@ button {
   function renderEstimates(stageDisplay, mosiT) {
     if (!mosiT || !stageDisplay) {
       els.estimateGrid.innerHTML = '<article class="procedure-card"><div class="procedure-head"><div><h3>SG</h3><p>Research estimate pending.</p></div></div></article>' +
-        '<article class="procedure-card"><div class="procedure-head"><div><h3>RYGB</h3><p>Research estimate pending.</p></div></div></article>';
+        '<article class="procedure-card"><div class="procedure-head"><div><h3>RYGB</h3><p>Research estimate pending.</p></div></div></article>' +
+        '<article class="procedure-card exploratory"><div class="procedure-head"><div><h3>BPD-DS/SADI-S</h3><p>Exploratory estimate pending.</p></div></div></article>';
       els.targetNote.textContent = targetNote("");
       return;
     }
@@ -2449,22 +2552,28 @@ button {
     var highlights = targetHighlights(mosiT.tier);
     els.estimateGrid.innerHTML = data.procedures.map(function (procedure) {
       var exactValue = targetEstimate(procedure, data.highlightThreshold);
+      var targetLabel = data.highlightThreshold ? "At target" : "Target zone";
+      var targetValue = data.highlightThreshold ? fmtPercent(exactValue) : "See rows";
       var rows = data.thresholds.map(function (threshold) {
         var estimate = procedure.estimates[threshold] || {};
         var value = estimate[currentTimepoint];
         var highlight = highlights.indexOf(threshold) >= 0;
+        var label = procedure.shortName + " probability of achieving " + thresholdLabel(threshold) + " at " + timepointLabel(currentTimepoint) + ":";
         return '<tr' + (highlight ? ' class="highlight"' : "") + ">" +
           '<td><span class="threshold-cell">&ge;' + threshold + "% " + (highlight ? '<span class="mini-tag">target zone</span>' : "") + "</span></td>" +
-          "<td>" + probabilityBar(value) + "</td>" +
+          "<td>" + probabilityBar(value, label) + "</td>" +
           "</tr>";
       }).join("");
-      return '<article class="procedure-card">' +
-        '<div class="procedure-head"><div><h3>' + escapeHtml(procedure.shortName) + '</h3><p>' + escapeHtml(procedure.name) + " procedure-specific probability, " + (currentTimepoint === "month12" ? "12 months" : "60 months") + ".</p></div>" +
-        '<div class="target-probability"><span>At target</span><strong>' + fmtPercent(exactValue) + "</strong></div></div>" +
-        '<table class="estimate-table"><thead><tr><th>Threshold</th><th>Research estimate</th></tr></thead><tbody>' + rows + "</tbody></table>" +
+      return '<article class="procedure-card' + (procedure.exploratory ? " exploratory" : "") + '" aria-label="' + escapeHtml(procedure.shortName + " procedure outcome estimate card") + '">' +
+        '<div class="procedure-head"><div><h3>' + escapeHtml(procedure.shortName) + '</h3><p>' + escapeHtml(procedure.name) + ". Retrospective estimate, " + timepointLabel(currentTimepoint) + ". Supports discussion; requires bariatric surgeon judgment.</p></div>" +
+        '<div class="target-probability" aria-label="' + escapeHtml(procedure.shortName + " target-related estimate: " + targetValue) + '"><span>' + escapeHtml(targetLabel) + "</span><strong>" + escapeHtml(targetValue) + "</strong></div></div>" +
+        (procedure.warning ? '<p class="procedure-warning">' + escapeHtml(procedure.warning) + "</p>" : "") +
+        '<table class="estimate-table"><thead><tr><th>Threshold</th><th>Retrospective estimate</th></tr></thead><tbody>' + rows + "</tbody></table>" +
+        (procedure.note ? '<p class="procedure-note">' + escapeHtml(procedure.note) + "</p>" : "") +
         "</article>";
     }).join("");
-    els.targetNote.textContent = targetNote(mosiT.tier) + " May support discussion; requires bariatric surgeon judgment.";
+    els.targetNote.textContent = targetNote(mosiT.tier) + " Supports discussion; requires bariatric surgeon judgment." +
+      (stageIvEstimateNote(stageDisplay, data.stageKey) ? " " + stageIvEstimateNote(stageDisplay, data.stageKey) : "");
   }
 
   function renderDriverList(drivers) {
@@ -2482,11 +2591,16 @@ button {
       var value = Number(step.getAttribute("data-rail"));
       step.classList.toggle("active", value <= rank);
     });
+    if (els.severityRail) {
+      els.severityRail.setAttribute("aria-label", rank ? "MOSI severity rail: stage " + rank + " of 4" : "MOSI severity rail: stage pending");
+    }
   }
 
   function updateLadder(tier) {
     document.querySelectorAll("[data-tier]").forEach(function (step) {
-      step.classList.toggle("active", step.getAttribute("data-tier") === tier);
+      var active = step.getAttribute("data-tier") === tier;
+      step.classList.toggle("active", active);
+      step.setAttribute("aria-current", active ? "true" : "false");
     });
   }
 
@@ -2509,8 +2623,10 @@ button {
     els.mosiCode.textContent = warning ? "BMI below range" : "Enter BMI";
     els.stageBadge.className = "badge stage";
     els.stageBadge.textContent = "Stage pending";
+    els.stageBadge.setAttribute("aria-label", "MOSI stage: pending");
     els.substageBadge.className = "badge";
     els.substageBadge.textContent = "No subgroup";
+    els.substageBadge.setAttribute("aria-label", "MOSI subgroup: none");
     els.tierBadge.className = "badge";
     els.tierBadge.textContent = "Tier pending";
     els.stageExplanation.textContent = warning ? mosiS.warning : "BMI is required to assign MOSI stage.";
@@ -2537,33 +2653,68 @@ button {
         "- MOSI stage: Incomplete\n" +
         "- Required weight-loss target: Incomplete\n" +
         "- Key drivers: BMI required.\n" +
-        "- Procedure-specific estimates: SG and RYGB estimates displayed in calculator after BMI is valid.\n" +
+        "- Procedure outcome estimates: incomplete until BMI is valid.\n" +
         "- Interpretation: Research decision-support only; procedure selection requires bariatric surgeon judgment.";
     }
+    var summary = buildEstimateSummary(mosiS.stageDisplay, mosiT, "month12");
+    var estimateLines = summary.rows.length
+      ? summary.rows.map(function (row) { return "  - " + estimateRowText(row, "month12"); }).join("\n")
+      : "  - N/A";
     return "MOSI Clinical Report\n" +
-      "- MOSI stage: " + formatMosiCode(mosiS.summary) + " → " + mosiS.stageDisplay + "\n" +
+      "- Stage: " + mosiS.stageDisplay + "\n" +
+      "- MOSI code: " + formatMosiCode(mosiS.summary) + "\n" +
       "- Required weight-loss target: " + targetSummary(mosiT) + "\n" +
       "- Key drivers: " + stageDriverSummary(mosiS) + ".\n" +
-      "- Procedure-specific estimates: SG and RYGB estimates displayed in calculator.\n" +
-      "- Interpretation: Research decision-support only; procedure selection requires bariatric surgeon judgment.";
+      "- Procedure outcome estimates:\n" + estimateLines + "\n" +
+      (summary.note ? "- Estimate note: " + summary.note + "\n" : "") +
+      "- Interpretation: Retrospective research decision-support only; procedure selection requires bariatric surgeon judgment.";
   }
 
   function renderReportCard(mosiS, mosiT) {
     var complete = Boolean(mosiS && mosiS.complete && mosiT);
-    var mosiStage = complete ? formatMosiCode(mosiS.summary) + " → " + mosiS.stageDisplay : "Incomplete";
-    var target = complete ? targetSummary(mosiT) : "Incomplete";
-    var drivers = complete ? stageDriverSummary(mosiS) : "BMI required";
     var stageClassName = complete ? stageClass(mosiS.stageDisplay) : "";
     els.reportText.className = "report-box " + stageClassName;
     els.reportText.dataset.copyText = buildPlainReport(mosiS, mosiT);
+    if (!complete) {
+      els.reportText.innerHTML =
+        '<div class="report-stage-label">Current result</div>' +
+        '<div class="report-stage-result" aria-label="MOSI stage: incomplete">Incomplete</div>' +
+        '<div class="report-code-line">MOSI code pending</div>' +
+        '<div class="report-section"><h3>Required weight-loss target</h3><p>Incomplete</p></div>' +
+        '<div class="report-section"><h3>Key drivers</h3><p>BMI required.</p></div>' +
+        '<div class="report-section"><h3>Procedure outcome estimates</h3><p>Enter BMI to show retrospective estimates.</p></div>' +
+        '<div class="report-section"><h3>Interpretation</h3><p>Retrospective research decision-support only; procedure selection requires bariatric surgeon judgment.</p></div>';
+      return;
+    }
+    var summary = buildEstimateSummary(mosiS.stageDisplay, mosiT, "month12");
+    var estimateItems = summary.rows.map(function (row) {
+      return "<li><span><strong>" + escapeHtml(thresholdLabel(row.threshold)) + ":</strong> " +
+        escapeHtml(row.procedures.map(function (procedure) {
+          return procedure.shortName + " " + fmtPercent(procedure.value);
+        }).join("; ")) + " at 12 months</span></li>";
+    }).join("");
+    var drivers = [
+      "M: BMI class " + mosiS.mScore.label,
+      "O: " + componentText(mosiS.oScore.components, "No O-score components"),
+      "Si: " + componentText(mosiS.siLevel.components, displayText(mosiS.siLevel.reason))
+    ];
     els.reportText.innerHTML =
-      '<ul class="report-list">' +
-        '<li><span><span class="report-label">MOSI stage:</span> <span class="report-code">' + escapeHtml(mosiStage) + "</span></span></li>" +
-        '<li><span><span class="report-label">Required weight-loss target:</span> <span class="report-badge">' + escapeHtml(target) + "</span></span></li>" +
-        '<li><span><span class="report-label">Key stage drivers:</span> <span class="report-value">' + escapeHtml(drivers) + ".</span></span></li>" +
-        '<li><span><span class="report-label">Procedure-specific estimates:</span> SG and RYGB research estimates are displayed above.</span></li>' +
-        '<li><span><span class="report-label">Interpretation:</span> Research decision-support only; procedure selection requires bariatric surgeon judgment.</span></li>' +
-      "</ul>";
+      '<div class="report-stage-label">Current result</div>' +
+      '<div class="report-stage-result" aria-label="' + escapeHtml("MOSI stage: " + mosiS.stageDisplay) + '">' + escapeHtml(mosiS.stageDisplay) + "</div>" +
+      '<div class="report-code-line">' + escapeHtml(formatMosiCode(mosiS.summary)) + "</div>" +
+      '<div class="report-chip-grid">' +
+        '<span class="report-chip">' + escapeHtml(mosiS.mScore.label) + "</span>" +
+        '<span class="report-chip">' + escapeHtml(mosiS.oScore.label) + "</span>" +
+        '<span class="report-chip">' + escapeHtml(mosiS.siLevel.label) + "</span>" +
+      "</div>" +
+      '<div class="report-section"><h3>Required weight-loss target</h3><p><strong>' + escapeHtml(targetSummary(mosiT)) + "</strong></p></div>" +
+      '<div class="report-section"><h3>Key drivers</h3><ul class="report-bullets">' +
+        drivers.map(function (driver) { return "<li><span>" + escapeHtml(driver) + "</span></li>"; }).join("") +
+      "</ul></div>" +
+      '<div class="report-section"><h3>Procedure outcome estimates</h3><ul class="report-estimate-list">' + estimateItems + "</ul>" +
+        (summary.note ? '<p class="report-note">' + escapeHtml(summary.note) + "</p>" : "") +
+      "</div>" +
+      '<div class="report-section"><h3>Interpretation</h3><p>Retrospective research decision-support only; procedure selection requires bariatric surgeon judgment.</p></div>';
   }
 
   function selectedNames(groupName) {
@@ -2578,7 +2729,7 @@ button {
     return [
       { title: "Organ/metabolic drivers", items: selectedNames("organ") },
       { title: "Systemic/end-organ drivers", items: selectedNames("micro").concat(selectedNames("major")) },
-      { title: "Target modifiers", items: selectedNames("target") }
+      { title: "Target qualifiers", items: selectedNames("target") }
     ];
   }
 
@@ -2611,19 +2762,19 @@ button {
     }
 
     var data = core.getMosiDEstimates(mosiS.stageDisplay, mosiT.tier);
-    var byKey = {};
-    data.procedures.forEach(function (procedure) { byKey[procedure.key] = procedure; });
     var highlights = targetHighlights(mosiT.tier);
+    var procedureHeaders = data.procedures.map(function (procedure) {
+      return "<th>" + escapeHtml(procedure.shortName) + " 12m</th><th>" + escapeHtml(procedure.shortName) + " 60m</th>";
+    }).join("");
     var rows = data.thresholds.map(function (threshold) {
-      var sg = byKey.SG && byKey.SG.estimates[threshold] ? byKey.SG.estimates[threshold] : {};
-      var rygb = byKey.RYGB && byKey.RYGB.estimates[threshold] ? byKey.RYGB.estimates[threshold] : {};
       var marked = highlights.indexOf(threshold) >= 0;
+      var cells = data.procedures.map(function (procedure) {
+        var estimate = procedure.estimates[threshold] || {};
+        return "<td>" + fmtPercent(estimate.month12) + "</td><td>" + fmtPercent(estimate.month60) + "</td>";
+      }).join("");
       return '<tr' + (marked ? ' class="is-target"' : "") + ">" +
         '<td>≥' + threshold + "%" + (marked ? ' <span class="print-muted">target</span>' : "") + "</td>" +
-        "<td>" + fmtPercent(sg.month12) + "</td>" +
-        "<td>" + fmtPercent(rygb.month12) + "</td>" +
-        "<td>" + fmtPercent(sg.month60) + "</td>" +
-        "<td>" + fmtPercent(rygb.month60) + "</td>" +
+        cells +
         "</tr>";
     }).join("");
     var driverMarkup = printDriverGroups().map(function (group) {
@@ -2631,15 +2782,15 @@ button {
         escapeHtml(driverGroupText(group.items)) + "</span></div>";
     }).join("");
     var target = targetSummary(mosiT);
+    var note = stageIvEstimateNote(mosiS.stageDisplay, data.stageKey);
 
     els.printReport.innerHTML = renderPrintHeader() +
       '<section class="print-summary-grid print-section">' +
         '<div class="print-card print-primary-result">' +
-          '<span class="print-label">MOSI code</span>' +
-          '<div class="print-code">' + escapeHtml(formatMosiCode(mosiS.summary)) + "</div>" +
+          '<span class="print-label">Stage</span>' +
+          '<div class="print-code">' + escapeHtml(mosiS.stageDisplay) + "</div>" +
           '<div class="print-badge-row">' +
-            '<span class="print-badge">' + escapeHtml(mosiS.stage) + "</span>" +
-            (mosiS.subtype ? '<span class="print-badge">' + escapeHtml(mosiS.subtype) + "</span>" : "") +
+            '<span class="print-badge">MOSI code: ' + escapeHtml(formatMosiCode(mosiS.summary)) + "</span>" +
             '<span class="print-badge">Required target: ' + escapeHtml(target) + "</span>" +
           "</div>" +
         "</div>" +
@@ -2658,10 +2809,11 @@ button {
           '<p>' + escapeHtml(targetReason(mosiT)) + "</p></div>" +
         '<div class="print-section print-drivers"><h3>Key drivers</h3>' + driverMarkup + "</div>" +
       "</section>" +
-      '<section class="print-section print-estimates"><h3>Procedure-specific research estimates</h3>' +
-        '<table class="print-table"><thead><tr><th>Threshold</th><th>SG 12m</th><th>RYGB 12m</th><th>SG 60m</th><th>RYGB 60m</th></tr></thead><tbody>' + rows + "</tbody></table>" +
+      '<section class="print-section print-estimates"><h3>Procedure outcome estimates</h3>' +
+        '<table class="print-table"><thead><tr><th>Threshold</th>' + procedureHeaders + "</tr></thead><tbody>" + rows + "</tbody></table>" +
+        (note ? '<p class="print-muted">' + escapeHtml(note) + "</p>" : "") +
       "</section>" +
-      '<p class="print-interpretation">Procedure-specific estimates are retrospective research estimates and should be interpreted with bariatric surgeon judgment.</p>' +
+      '<p class="print-interpretation">Retrospective estimates support discussion and require bariatric surgeon judgment. BPD-DS/SADI-S values are exploratory; missing cells indicate no exact model estimate available.</p>' +
       renderPrintFooter();
   }
 
@@ -2686,8 +2838,10 @@ button {
     els.mosiCode.textContent = formatMosiCode(mosiS.summary);
     els.stageBadge.className = "badge stage";
     els.stageBadge.textContent = mosiS.stage;
+    els.stageBadge.setAttribute("aria-label", "MOSI stage: " + mosiS.stage);
     els.substageBadge.className = "badge";
     els.substageBadge.textContent = mosiS.subtype || "No subgroup";
+    els.substageBadge.setAttribute("aria-label", "MOSI subgroup: " + (mosiS.subtype || "none"));
     els.tierBadge.className = "badge tier-" + mosiT.tier;
     els.tierBadge.textContent = targetSummary(mosiT);
     els.stageExplanation.textContent = displayText(mosiS.explanation);

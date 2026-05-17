@@ -1,6 +1,6 @@
 # MOSI System
 
-MOSI System is a single-page, calculator-only static research decision-support platform for the Mayo Obesity Staging Index. The active platform is `index.html`; it calculates MOSI-S severity stage, MOSI-T therapeutic target tier, and MOSI-D procedure-specific probability estimates for sleeve gastrectomy (SG) and Roux-en-Y gastric bypass (RYGB).
+MOSI System is a single-page, calculator-only static research decision-support platform for the Mayo Obesity Staging Index. The active platform is `index.html`; it calculates MOSI-S severity stage, MOSI-T therapeutic target tier, and MOSI-D procedure outcome estimates for sleeve gastrectomy (SG), Roux-en-Y gastric bypass (RYGB), and exploratory BPD-DS/SADI-S values when exact estimates are available.
 
 The platform does not collect, save, sync, or submit patient-level data. It asks only for BMI and yes/no clinical features needed for the calculation. It has no database behavior and can be opened directly in a browser.
 
@@ -61,9 +61,9 @@ MOSI-T uses highest-tier-wins logic.
 
 ## MOSI-D Decision-Support Estimates
 
-MOSI-D displays procedure-specific probability estimates for SG and RYGB at 12 and 60 months across TWL thresholds of ≥5%, ≥10%, ≥20%, ≥25%, ≥30%, and ≥35%.
+The active UI title is "Bariatric procedure outcome estimates." MOSI-D displays retrospective probability estimates for SG, RYGB, and exploratory BPD-DS/SADI-S at 12 and 60 months across TWL thresholds of ≥5%, ≥10%, ≥20%, ≥25%, ≥30%, and ≥35% when exact values are available.
 
-The static lookup uses the final available v5.1 probability values. Exact 60-month values for ≥5%, ≥10%, and ≥25% TWL are not available in the current model output, so those cells display `N/A`. No values are interpolated.
+The static lookup uses the final available v5.1 probability values. Exact 60-month values for ≥5%, ≥10%, and ≥25% TWL are not available in the current model output, so those cells display `N/A`. BPD-DS/SADI-S values are exploratory and limited by smaller subgroup size and likely procedure-selection bias. Missing cells remain `N/A`; no values are interpolated.
 
 ## Final Manuscript-Aligned Findings
 
