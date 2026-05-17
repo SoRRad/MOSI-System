@@ -86,6 +86,7 @@ const stageTwoTierC = getMosiDEstimates("Stage II", "C");
 const bpddsStageTwo = stageTwoTierC.procedures.find((procedure) => procedure.key === "BPD_DS_SADI_S");
 assert.ok(bpddsStageTwo, "Stage II Tier C estimates include BPD-DS/SADI-S");
 assert.strictEqual(bpddsStageTwo.estimates[20].month12, 97.0);
+assert.notStrictEqual(bpddsStageTwo.estimates[25], undefined);
 assert.strictEqual(bpddsStageTwo.estimates[25].month12, null);
 assert.strictEqual(bpddsStageTwo.estimates[25].month60, null);
 

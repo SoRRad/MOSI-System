@@ -28,7 +28,14 @@
         30: { month12: 64.4, month60: 25.0 },
         35: { month12: 34.8, month60: 11.8 }
       },
-      BPD_DS_SADI_S: {}
+      BPD_DS_SADI_S: {
+        5: { month12: null, month60: null },
+        10: { month12: null, month60: null },
+        20: { month12: null, month60: null },
+        25: { month12: null, month60: null },
+        30: { month12: null, month60: null },
+        35: { month12: null, month60: null }
+      }
     },
     "Stage II": {
       SG: {
@@ -48,7 +55,12 @@
         35: { month12: 38.5, month60: 19.1 }
       },
       BPD_DS_SADI_S: {
-        20: { month12: 97.0, month60: null }
+        5: { month12: null, month60: null },
+        10: { month12: null, month60: null },
+        20: { month12: 97.0, month60: null },
+        25: { month12: null, month60: null },
+        30: { month12: null, month60: null },
+        35: { month12: null, month60: null }
       }
     },
     "Stage III": {
@@ -69,7 +81,12 @@
         35: { month12: 24.5, month60: 16.6 }
       },
       BPD_DS_SADI_S: {
-        20: { month12: 94.9, month60: null }
+        5: { month12: null, month60: null },
+        10: { month12: null, month60: null },
+        20: { month12: 94.9, month60: null },
+        25: { month12: null, month60: null },
+        30: { month12: null, month60: null },
+        35: { month12: null, month60: null }
       }
     },
     "Stage IV": {
@@ -90,7 +107,12 @@
         35: { month12: 50.0, month60: 25.0 }
       },
       BPD_DS_SADI_S: {
-        20: { month12: 100.0, month60: null }
+        5: { month12: null, month60: null },
+        10: { month12: null, month60: null },
+        20: { month12: 100.0, month60: null },
+        25: { month12: null, month60: null },
+        30: { month12: null, month60: null },
+        35: { month12: null, month60: null }
       }
     }
   };
@@ -103,7 +125,7 @@
       name: "BPD-DS / SADI-S",
       shortName: "BPD-DS/SADI-S",
       exploratory: true,
-      warning: "Exploratory estimate; smaller subgroup size and likely procedure-selection bias.",
+      warning: "Exploratory; smaller subgroup size and likely procedure-selection bias.",
       note: "Exploratory; limited subgroup size. Missing cells indicate no exact model estimate available."
     }
   ];

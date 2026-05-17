@@ -595,13 +595,36 @@ button {
   text-transform: uppercase;
 }
 
-.mosi-code {
-  margin: 0 0 9px;
+.stage-hero {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 6px;
+  padding: 4px 10px 6px;
+  border: 1px solid color-mix(in srgb, var(--stage-color) 36%, var(--line));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--stage-color) 14%, transparent);
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 3.2rem);
-  line-height: 0.98;
-  font-weight: 780;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  line-height: 0.95;
+  font-weight: 820;
+  letter-spacing: 0;
+}
+
+.mosi-code-small {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  margin: 0 0 10px;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel-strong) 70%, transparent);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  font-weight: 850;
+  letter-spacing: 0;
 }
 
 .badge-row {
@@ -612,7 +635,7 @@ button {
 }
 
 .stage-badges {
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .badge {
@@ -689,8 +712,8 @@ button {
   border-radius: 999px;
   background: var(--panel-strong);
   color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 850;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .severity-rail {
@@ -914,22 +937,13 @@ button {
   font-size: 0.76rem;
 }
 
-.procedure-warning,
-.procedure-note {
-  margin: 0;
-  padding: 8px 10px;
-  border-top: 1px solid var(--line);
-  font-size: 0.74rem;
-  font-weight: 800;
-}
-
-.procedure-warning {
-  background: var(--amber-soft);
-  color: var(--ink);
-}
-
-.procedure-note {
+.procedure-note,
+.procedure-footnote {
+  margin: 8px 10px 10px;
   color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.35;
+  font-weight: 500;
 }
 
 .target-probability {
@@ -1571,7 +1585,7 @@ button {
     padding: 11px;
   }
 
-  .mosi-code {
+  .stage-hero {
     font-size: 2rem;
   }
 
@@ -1957,10 +1971,10 @@ button {
       <section class="passport" id="passport">
         <div class="passport-top">
           <div class="passport-label">MOSI summary</div>
-          <p class="mosi-code" id="mosiCode">Enter BMI</p>
+          <div class="stage-hero" id="stageBadge" aria-label="MOSI stage: pending">Stage pending</div>
+          <div class="mosi-code-small" id="mosiCode">MOSI code pending</div>
           <div class="badge-row stage-badges">
-            <span class="badge stage" id="stageBadge" aria-label="MOSI stage: pending">Stage pending</span>
-            <span class="badge" id="substageBadge" aria-label="MOSI subgroup: none">No subgroup</span>
+            <span class="badge" id="substageBadge" aria-label="MOSI subgroup: none" hidden></span>
           </div>
           <div class="target-summary">
             <h3>Required weight-loss target</h3>
@@ -1975,6 +1989,28 @@ button {
           <span class="rail-step" data-rail="2" aria-hidden="true"></span>
           <span class="rail-step" data-rail="3" aria-hidden="true"></span>
           <span class="rail-step" data-rail="4" aria-hidden="true"></span>
+        </div>
+        <div class="target-ladder" id="targetLadder" role="list" aria-label="MOSI target ladder: tier pending">
+          <div class="ladder-step" role="listitem" data-tier="A">
+            <strong>Tier A</strong>
+            <span>&ge;7.5%</span>
+            <small>No qualifying comorbidity</small>
+          </div>
+          <div class="ladder-step" role="listitem" data-tier="B">
+            <strong>Tier B</strong>
+            <span>&ge;15%</span>
+            <small>Metabolic, reflux, or joint qualifier</small>
+          </div>
+          <div class="ladder-step" role="listitem" data-tier="C">
+            <strong>Tier C</strong>
+            <span>&ge;25%</span>
+            <small>Glycemic or microvascular qualifier</small>
+          </div>
+          <div class="ladder-step" role="listitem" data-tier="D">
+            <strong>Tier D</strong>
+            <span>&ge;30%</span>
+            <small>Systemic or cardiovascular qualifier</small>
+          </div>
         </div>
         <div class="component-stack" aria-label="MOSI component breakdown">
           <button class="component-row" type="button" data-jump="section-bmi">
@@ -2278,6 +2314,7 @@ button {
     tierDetail: document.getElementById("tierDetail"),
     driverList: document.getElementById("driverList"),
     severityRail: document.getElementById("severityRail"),
+    targetLadder: document.getElementById("targetLadder"),
     mScore: document.getElementById("mScore"),
     mDetail: document.getElementById("mDetail"),
     oScore: document.getElementById("oScore"),
@@ -2541,8 +2578,8 @@ button {
 
   function renderEstimates(stageDisplay, mosiT) {
     if (!mosiT || !stageDisplay) {
-      els.estimateGrid.innerHTML = '<article class="procedure-card"><div class="procedure-head"><div><h3>SG</h3><p>Research estimate pending.</p></div></div></article>' +
-        '<article class="procedure-card"><div class="procedure-head"><div><h3>RYGB</h3><p>Research estimate pending.</p></div></div></article>' +
+      els.estimateGrid.innerHTML = '<article class="procedure-card"><div class="procedure-head"><div><h3>SG</h3><p>Retrospective estimate pending.</p></div></div></article>' +
+        '<article class="procedure-card"><div class="procedure-head"><div><h3>RYGB</h3><p>Retrospective estimate pending.</p></div></div></article>' +
         '<article class="procedure-card exploratory"><div class="procedure-head"><div><h3>BPD-DS/SADI-S</h3><p>Exploratory estimate pending.</p></div></div></article>';
       els.targetNote.textContent = targetNote("");
       return;
@@ -2567,8 +2604,8 @@ button {
       return '<article class="procedure-card' + (procedure.exploratory ? " exploratory" : "") + '" aria-label="' + escapeHtml(procedure.shortName + " procedure outcome estimate card") + '">' +
         '<div class="procedure-head"><div><h3>' + escapeHtml(procedure.shortName) + '</h3><p>' + escapeHtml(procedure.name) + ". Retrospective estimate, " + timepointLabel(currentTimepoint) + ". Supports discussion; requires bariatric surgeon judgment.</p></div>" +
         '<div class="target-probability" aria-label="' + escapeHtml(procedure.shortName + " target-related estimate: " + targetValue) + '"><span>' + escapeHtml(targetLabel) + "</span><strong>" + escapeHtml(targetValue) + "</strong></div></div>" +
-        (procedure.warning ? '<p class="procedure-warning">' + escapeHtml(procedure.warning) + "</p>" : "") +
         '<table class="estimate-table"><thead><tr><th>Threshold</th><th>Retrospective estimate</th></tr></thead><tbody>' + rows + "</tbody></table>" +
+        (procedure.exploratory ? '<p class="procedure-footnote">*BPD-DS/SADI-S estimates are exploratory because of smaller subgroup size and potential procedure-selection bias.</p>' : "") +
         (procedure.note ? '<p class="procedure-note">' + escapeHtml(procedure.note) + "</p>" : "") +
         "</article>";
     }).join("");
@@ -2602,6 +2639,9 @@ button {
       step.classList.toggle("active", active);
       step.setAttribute("aria-current", active ? "true" : "false");
     });
+    if (els.targetLadder) {
+      els.targetLadder.setAttribute("aria-label", tier ? "MOSI target ladder: Tier " + tier + " selected" : "MOSI target ladder: tier pending");
+    }
   }
 
   function updateBmiReadout(mScore) {
@@ -2620,12 +2660,14 @@ button {
     var warning = Boolean(mosiS.warning);
     els.bmiWarning.classList.toggle("visible", warning);
     els.passport.className = "passport";
-    els.mosiCode.textContent = warning ? "BMI below range" : "Enter BMI";
-    els.stageBadge.className = "badge stage";
-    els.stageBadge.textContent = "Stage pending";
+    els.stageBadge.className = "stage-hero";
+    els.stageBadge.textContent = warning ? "BMI below range" : "Stage pending";
     els.stageBadge.setAttribute("aria-label", "MOSI stage: pending");
+    els.mosiCode.className = "mosi-code-small";
+    els.mosiCode.textContent = "MOSI code pending";
     els.substageBadge.className = "badge";
-    els.substageBadge.textContent = "No subgroup";
+    els.substageBadge.textContent = "";
+    els.substageBadge.hidden = true;
     els.substageBadge.setAttribute("aria-label", "MOSI subgroup: none");
     els.tierBadge.className = "badge";
     els.tierBadge.textContent = "Tier pending";
@@ -2835,12 +2877,14 @@ button {
 
     els.bmiWarning.classList.remove("visible");
     els.passport.className = "passport " + stageClassName;
+    els.stageBadge.className = "stage-hero";
+    els.stageBadge.textContent = mosiS.stageDisplay;
+    els.stageBadge.setAttribute("aria-label", "MOSI stage: " + mosiS.stageDisplay);
+    els.mosiCode.className = "mosi-code-small";
     els.mosiCode.textContent = formatMosiCode(mosiS.summary);
-    els.stageBadge.className = "badge stage";
-    els.stageBadge.textContent = mosiS.stage;
-    els.stageBadge.setAttribute("aria-label", "MOSI stage: " + mosiS.stage);
     els.substageBadge.className = "badge";
-    els.substageBadge.textContent = mosiS.subtype || "No subgroup";
+    els.substageBadge.hidden = !mosiS.subtype;
+    els.substageBadge.textContent = mosiS.subtype || "";
     els.substageBadge.setAttribute("aria-label", "MOSI subgroup: " + (mosiS.subtype || "none"));
     els.tierBadge.className = "badge tier-" + mosiT.tier;
     els.tierBadge.textContent = targetSummary(mosiT);
