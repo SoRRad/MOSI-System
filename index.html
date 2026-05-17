@@ -7,8 +7,8 @@
 <style>
 :root {
   color-scheme: light;
-  --font-display: "Aptos Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Aptos", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-display: "Inter Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, Arial, sans-serif;
   --font-mono: "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, monospace;
   --font-sans: var(--font-body);
   --bg: #f7faf8;
@@ -39,23 +39,23 @@
     color-scheme: dark;
     --bg: #08131f;
     --bg-2: #101b28;
-    --panel: rgba(16, 27, 40, 0.86);
-    --panel-strong: #132233;
+    --panel: rgba(20, 32, 46, 0.9);
+    --panel-strong: #18283a;
     --ink: #f4f7f5;
     --muted: #9fb0bf;
-    --soft: #102f3a;
+    --soft: #182f3e;
     --line: rgba(233, 246, 245, 0.13);
     --line-strong: rgba(233, 246, 245, 0.22);
-    --teal: #2dd4bf;
-    --teal-2: #5eead4;
-    --cyan: #38bdf8;
-    --blue: #60a5fa;
+    --teal: #5ccfc2;
+    --teal-2: #78ded4;
+    --cyan: #67c5ec;
+    --blue: #7aa7ee;
     --amber: #fbbf24;
     --amber-soft: rgba(251, 191, 36, 0.14);
     --rose: #fb7185;
     --green: #4ade80;
-    --shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
-    --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.22);
+    --shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+    --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.18);
   }
 }
 
@@ -86,23 +86,23 @@ html[data-theme="dark"] {
   color-scheme: dark;
   --bg: #08131f;
   --bg-2: #101b28;
-  --panel: rgba(16, 27, 40, 0.86);
-  --panel-strong: #132233;
+  --panel: rgba(20, 32, 46, 0.9);
+  --panel-strong: #18283a;
   --ink: #f4f7f5;
   --muted: #9fb0bf;
-  --soft: #102f3a;
+  --soft: #182f3e;
   --line: rgba(233, 246, 245, 0.13);
   --line-strong: rgba(233, 246, 245, 0.22);
-  --teal: #2dd4bf;
-  --teal-2: #5eead4;
-  --cyan: #38bdf8;
-  --blue: #60a5fa;
+  --teal: #5ccfc2;
+  --teal-2: #78ded4;
+  --cyan: #67c5ec;
+  --blue: #7aa7ee;
   --amber: #fbbf24;
   --amber-soft: rgba(251, 191, 36, 0.14);
   --rose: #fb7185;
   --green: #4ade80;
-  --shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
-  --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.22);
+  --shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+  --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
 * {
@@ -234,7 +234,7 @@ button {
 
 .calculator-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.46fr);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.42fr);
   gap: 14px;
   align-items: start;
 }
@@ -571,10 +571,9 @@ button {
 
 .passport {
   overflow: clip;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--stage-color) 12%, transparent), transparent 48%),
-    var(--panel);
-  box-shadow: var(--shadow);
+  border-left: 4px solid color-mix(in srgb, var(--stage-color) 64%, var(--line));
+  background: var(--panel);
+  box-shadow: var(--shadow-soft);
 }
 
 .passport-top {
@@ -587,44 +586,76 @@ button {
   gap: 10px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.summary-stage-block {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.stage-eyebrow,
+.target-eyebrow {
+  margin: 0;
   color: var(--muted);
   font-size: 0.78rem;
-  font-weight: 950;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-weight: 720;
+  line-height: 1.2;
 }
 
 .stage-hero {
-  display: inline-flex;
-  align-items: center;
+  display: block;
+  width: 100%;
   margin: 0 0 6px;
-  padding: 4px 10px 6px;
-  border: 1px solid color-mix(in srgb, var(--stage-color) 36%, var(--line));
-  border-radius: var(--radius);
-  background: color-mix(in srgb, var(--stage-color) 14%, transparent);
-  color: var(--ink);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--stage-color, var(--ink));
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 6vw, 4.2rem);
-  line-height: 0.95;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.98;
   font-weight: 820;
-  letter-spacing: 0;
+  letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
+}
+
+.stage-hero.is-pending {
+  color: var(--muted);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .mosi-code-small {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   min-height: 28px;
-  margin: 0 0 10px;
+  margin: 2px 0 12px;
   padding: 4px 9px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--panel-strong) 70%, transparent);
+  background: color-mix(in srgb, var(--panel-strong) 72%, transparent);
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: clamp(0.9rem, 2vw, 1.15rem);
-  font-weight: 850;
-  letter-spacing: 0;
+  font-size: clamp(0.78rem, 1.4vw, 0.95rem);
+  font-weight: 720;
+  letter-spacing: -0.02em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.mosi-code-small.is-pending {
+  color: color-mix(in srgb, var(--muted) 78%, transparent);
+  font-family: var(--font-body);
+  font-weight: 640;
 }
 
 .badge-row {
@@ -632,6 +663,14 @@ button {
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 10px;
+}
+
+.badge:empty,
+.badge[hidden],
+.badge-row:empty,
+.stage-badges:empty,
+.stage-badges.is-empty {
+  display: none !important;
 }
 
 .stage-badges {
@@ -670,7 +709,8 @@ button {
 
 .passport-note {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
 .tier-reason {
@@ -683,18 +723,36 @@ button {
   margin: 8px 0 10px;
 }
 
-.target-summary h3 {
+.target-summary h3,
+.target-summary .target-eyebrow {
   margin: 0;
   color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.82rem;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
-.target-summary .badge {
+.target-summary .target-badge {
+  display: inline-flex;
+  align-items: center;
   justify-self: start;
-  font-size: 0.84rem;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--amber) 28%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--amber) 12%, var(--panel-strong));
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.target-summary .target-badge.is-pending {
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel-strong) 72%, transparent);
+  font-weight: 680;
 }
 
 .driver-list {
@@ -712,8 +770,8 @@ button {
   border-radius: 999px;
   background: var(--panel-strong);
   color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 650;
 }
 
 .severity-rail {
@@ -914,7 +972,8 @@ button {
 }
 
 .procedure-card.exploratory {
-  border-color: color-mix(in srgb, var(--amber) 42%, var(--line));
+  border-color: var(--line);
+  box-shadow: none;
 }
 
 .procedure-head {
@@ -941,7 +1000,7 @@ button {
 .procedure-footnote {
   margin: 8px 10px 10px;
   color: var(--muted);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   line-height: 1.35;
   font-weight: 500;
 }
@@ -1095,12 +1154,20 @@ button {
   line-height: 1;
 }
 
+.report-stage-result.is-pending {
+  border-color: var(--line);
+  background: color-mix(in srgb, var(--panel-strong) 72%, transparent);
+  color: var(--muted);
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  font-weight: 720;
+}
+
 .report-code-line {
   margin: 8px 0 12px;
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 0.84rem;
-  font-weight: 950;
+  font-weight: 760;
 }
 
 .report-chip-grid {
@@ -1443,7 +1510,7 @@ button {
   padding-block: 12px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1050px) {
   .main-space {
     display: flex;
     flex-direction: column;
@@ -1495,6 +1562,14 @@ button {
 
   .target-ladder {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stage-hero {
+    font-size: clamp(1.9rem, 8vw, 2.8rem);
+  }
+
+  .stage-hero.is-pending {
+    font-size: clamp(1.25rem, 5vw, 1.7rem);
   }
 }
 
@@ -1586,7 +1661,11 @@ button {
   }
 
   .stage-hero {
-    font-size: 2rem;
+    font-size: clamp(1.85rem, 8vw, 2.8rem);
+  }
+
+  .stage-hero.is-pending {
+    font-size: clamp(1.25rem, 5vw, 1.65rem);
   }
 
   .report-list {
@@ -1971,14 +2050,17 @@ button {
       <section class="passport" id="passport">
         <div class="passport-top">
           <div class="passport-label">MOSI summary</div>
-          <div class="stage-hero" id="stageBadge" aria-label="MOSI stage: pending">Stage pending</div>
-          <div class="mosi-code-small" id="mosiCode">MOSI code pending</div>
-          <div class="badge-row stage-badges">
+          <div class="summary-stage-block">
+            <div class="stage-eyebrow">MOSI stage</div>
+            <div class="stage-hero is-pending" id="stageBadge" aria-label="MOSI stage pending">Pending</div>
+            <div class="mosi-code-small is-pending" id="mosiCode">MOSI code pending</div>
+          </div>
+          <div class="badge-row stage-badges is-empty" id="substageRow">
             <span class="badge" id="substageBadge" aria-label="MOSI subgroup: none" hidden></span>
           </div>
           <div class="target-summary">
-            <h3>Required weight-loss target</h3>
-            <span class="badge" id="tierBadge">Tier pending</span>
+            <div class="target-eyebrow">Required weight-loss target</div>
+            <span class="target-badge is-pending" id="tierBadge">Tier pending</span>
           </div>
           <p class="passport-note" id="stageExplanation">BMI is required to assign MOSI stage.</p>
           <p class="passport-note tier-reason" id="tierExplanation">Weight-loss target appears after BMI is valid.</p>
@@ -2307,6 +2389,7 @@ button {
     mosiCode: document.getElementById("mosiCode"),
     stageBadge: document.getElementById("stageBadge"),
     substageBadge: document.getElementById("substageBadge"),
+    substageRow: document.getElementById("substageRow"),
     tierBadge: document.getElementById("tierBadge"),
     stageExplanation: document.getElementById("stageExplanation"),
     tierExplanation: document.getElementById("tierExplanation"),
@@ -2606,7 +2689,6 @@ button {
         '<div class="target-probability" aria-label="' + escapeHtml(procedure.shortName + " target-related estimate: " + targetValue) + '"><span>' + escapeHtml(targetLabel) + "</span><strong>" + escapeHtml(targetValue) + "</strong></div></div>" +
         '<table class="estimate-table"><thead><tr><th>Threshold</th><th>Retrospective estimate</th></tr></thead><tbody>' + rows + "</tbody></table>" +
         (procedure.exploratory ? '<p class="procedure-footnote">*BPD-DS/SADI-S estimates are exploratory because of smaller subgroup size and potential procedure-selection bias.</p>' : "") +
-        (procedure.note ? '<p class="procedure-note">' + escapeHtml(procedure.note) + "</p>" : "") +
         "</article>";
     }).join("");
     els.targetNote.textContent = targetNote(mosiT.tier) + " Supports discussion; requires bariatric surgeon judgment." +
@@ -2660,18 +2742,19 @@ button {
     var warning = Boolean(mosiS.warning);
     els.bmiWarning.classList.toggle("visible", warning);
     els.passport.className = "passport";
-    els.stageBadge.className = "stage-hero";
-    els.stageBadge.textContent = warning ? "BMI below range" : "Stage pending";
-    els.stageBadge.setAttribute("aria-label", "MOSI stage: pending");
-    els.mosiCode.className = "mosi-code-small";
+    els.stageBadge.className = "stage-hero is-pending";
+    els.stageBadge.textContent = warning ? "BMI below range" : "Pending";
+    els.stageBadge.setAttribute("aria-label", warning ? "MOSI stage unavailable: BMI below range" : "MOSI stage pending");
+    els.mosiCode.className = "mosi-code-small is-pending";
     els.mosiCode.textContent = "MOSI code pending";
     els.substageBadge.className = "badge";
     els.substageBadge.textContent = "";
     els.substageBadge.hidden = true;
+    els.substageRow.classList.add("is-empty");
     els.substageBadge.setAttribute("aria-label", "MOSI subgroup: none");
-    els.tierBadge.className = "badge";
+    els.tierBadge.className = "target-badge is-pending";
     els.tierBadge.textContent = "Tier pending";
-    els.stageExplanation.textContent = warning ? mosiS.warning : "BMI is required to assign MOSI stage.";
+    els.stageExplanation.textContent = warning ? mosiS.warning : "BMI required to calculate stage.";
     els.tierExplanation.textContent = "Weight-loss target appears after BMI is valid.";
     els.stageDetail.textContent = displayText(mosiS.reason || "BMI is required to assign MOSI stage.");
     els.tierDetail.textContent = "Weight-loss target appears after BMI is valid.";
@@ -2720,7 +2803,7 @@ button {
     if (!complete) {
       els.reportText.innerHTML =
         '<div class="report-stage-label">Current result</div>' +
-        '<div class="report-stage-result" aria-label="MOSI stage: incomplete">Incomplete</div>' +
+        '<div class="report-stage-result is-pending" aria-label="MOSI stage pending">Incomplete</div>' +
         '<div class="report-code-line">MOSI code pending</div>' +
         '<div class="report-section"><h3>Required weight-loss target</h3><p>Incomplete</p></div>' +
         '<div class="report-section"><h3>Key drivers</h3><p>BMI required.</p></div>' +
@@ -2885,8 +2968,9 @@ button {
     els.substageBadge.className = "badge";
     els.substageBadge.hidden = !mosiS.subtype;
     els.substageBadge.textContent = mosiS.subtype || "";
+    els.substageRow.classList.toggle("is-empty", !mosiS.subtype);
     els.substageBadge.setAttribute("aria-label", "MOSI subgroup: " + (mosiS.subtype || "none"));
-    els.tierBadge.className = "badge tier-" + mosiT.tier;
+    els.tierBadge.className = "target-badge tier-" + mosiT.tier;
     els.tierBadge.textContent = targetSummary(mosiT);
     els.stageExplanation.textContent = displayText(mosiS.explanation);
     els.tierExplanation.textContent = targetReason(mosiT);

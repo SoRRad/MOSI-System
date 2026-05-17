@@ -71,6 +71,13 @@ for (const example of examples) {
   }
 }
 
+const missingBmi = calculateMosiS({});
+assert.strictEqual(missingBmi.complete, false);
+
+const belowRangeBmi = calculateMosiS({ bmi: 28 });
+assert.strictEqual(belowRangeBmi.complete, false);
+assert.ok(belowRangeBmi.warning);
+
 const stageThreeTierC = getMosiDEstimates("Stage III", "C");
 assert.strictEqual(stageThreeTierC.highlightThreshold, 25);
 assert.strictEqual(stageThreeTierC.procedures[0].estimates[25].month12, 30.5);
